@@ -1,0 +1,36 @@
+<div class="main-wrapper">
+  <div class="unix-login">
+    <div class="row justify-content-center">
+      <div class="col-lg-4">
+        <div class="login-content card">
+          <div class="login-form">
+            <h4>Sistema de Ventas</h4>
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="errorCredentials">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                usuario contraseña invalida.
+            </div>
+            <form [formGroup]="f">
+              <div class="form-group" [ngClass]="{'has-success': f.controls['email'].valid,
+              'has-error': f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)}">
+                <label>Email</label>
+                <input type="email"  formControlName="email" id="InputEmail" class="form-control" placeholder="Email">
+                <span *ngIf="f.controls['email'].valid" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                <span *ngIf="f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)">
+                  <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                  <span class="text-danger">E-mail inválido.</span>
+                </span>
+              </div>
+              <div class="form-group" [ngClass]="{'has-success': f.controls['password'].valid,
+              'has-error': f.controls['password'].invalid && (f.controls['password'].touched || f.controls['password'].dirty)}">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" formControlName="password" id="InputPassword" placeholder="Contraseña">
+                <span class="text-danger" *ngIf="f.controls['password'].invalid && (f.controls['password'].touched || f.controls['password'].dirty)">Campo obrigatório.</span>
+              </div>
+                <input type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30" [disabled]="f.invalid" (click)="onSubmit()" value="Ingresar">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
