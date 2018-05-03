@@ -11,18 +11,22 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AuthGuard } from './guards/auth.guards';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
-
+import { ProductosComponent } from './productos/componentes/productos.component';
+import {ProductoService} from'./productos/services/producto.service';
+import{HttpModule}from '@angular/http';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ProductosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AuthModule,
-    AdminModule
-
+    AdminModule,
+    HttpModule
+    
   ],
   providers: [
     AuthGuard,

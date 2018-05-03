@@ -5,11 +5,13 @@ import { LoginComponent } from '../auth/login/login.component';
 
 
 
+
 @NgModule({
     imports:[
         RouterModule.forRoot([
             { path:'', redirectTo:'admin', pathMatch:'full' },
             { path:'auth/login',component:LoginComponent},
+           
         ])
     ],
     declarations:[],
