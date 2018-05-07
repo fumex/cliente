@@ -7,12 +7,18 @@
         </label>
         <label id="rec" *ngIf="!nombre.valid">*</label>
         <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="producto.nombre_producto" class="form-control" required/>
-        <label>
-            Categoria
-        </label>
-        <select #categorias="ngModel" name="categorias" [(ngModel)]="producto.id_categorias" class="form-control" >
-                <option><b>--categorias</b></option>
-        </select>
+        <div *ngIf="!cate">
+                cargando categorias....
+        </div>
+        <div *ngIf="cate">
+                <label  id="cate" class="col-lg-6">
+                Categoria  
+                        <select #categorias="ngModel" name="categorias" [(ngModel)]="producto.id_categorias" class="form-control col-lg-12" >
+                                <option *ngFor="let categoria of cate"><b>{{categoria.nombre}}</b></option>
+                        </select>
+                </label><a [routerLink]="['/admin/productos/agregar']" class="col-lg-10">añadir categoria</a>
+        </div>
+        
         <label>
                 Unidad de media
         </label>

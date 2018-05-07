@@ -4,10 +4,10 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/observable';
-import {producto}from '../modelos/productos';
+import {categoria}from '../modelos/categorias';
 
 @Injectable()
-export class ProductoService{
+export class CategoriaService{
     public url:string;
     constructor(
         public _http:HttpClient
@@ -15,16 +15,16 @@ export class ProductoService{
      this.url=environment.api_url;   
     }
 
-    getProductos(){
-        return this._http.get<any>(this.url+'/productos').shareReplay();
+    getCategoria(){
+        return this._http.get<any>(this.url+'/categorias').shareReplay();
     }
-    addproducto(producto:producto):Observable<any>{
-        let json = JSON.stringify(producto);
+    addCategoria(categiria:categoria):Observable<any>{
+        let json = JSON.stringify(categoria);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/productos',params,{headers:headers});
+        return this._http.post(this.url+'/categorias',params,{headers:headers});
             
     }
     

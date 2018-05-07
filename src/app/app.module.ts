@@ -14,6 +14,7 @@ import { AdminModule } from './admin/admin.module';
 import { ProductosComponent } from './productos/componentes/productos.component';
 import { ProductosAddComponent } from './productos/componentes/producto-add.components';
 import {ProductoService} from'./productos/services/producto.service';
+import{CategoriaService} from './categorias/services/services.categoria';
 import{HttpModule}from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
