@@ -1,30 +1,41 @@
 <h2>{{titulo}}</h2>
-
-<div style="margin: 0 auto;" class="form-group row last col-lg-10">
-    <label class="control-label text-right col-md-3 ">Buscar</label>
-    <div class="col-md-5">
-        <select class="form-control">
-        </select>
+<div *ngIf="!productos">
+    cargando listado de productos....
+ </div>
+ <div *ngIf="productos">
+    <div style="margin: 0 auto;" class="form-group row last col-lg-10">
+        <label class="control-label text-right col-md-3 ">Buscar</label>
+        <div class="col-md-5">
+            <select class="form-control custom-select" >
+                <option><b>  </b></option>
+                <option *ngFor="let producto of productos">{{producto.nombre_producto}}</option>
+            </select>
+        </div>
+        <a [routerLink]="['/admin/productos/agregar']" class="btn btn-ml btn-link">añadir producto</a>
     </div>
+
+    <br>
+    <table border="1" style="margin: 0 auto;" class="text-left col-md-10 col-lg-offset-1" >
+        <tr class="text-left" >
+          <td><strong>Nombre</strong></td>
+          <td><strong>categoria</strong></td>
+          <td><strong>descripcion</strong></td>
+          <td><strong>unidad de medida</strong></td>
+          <td><strong>precio</strong></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let producto of productos">
+            <td>{{producto.nombre_producto}}</td>
+            <td>{{producto.categorias}}</td>
+            <td>{{producto.descripcion}}</td>
+            <td>{{producto.unidad_de_medida}}</td>
+            <td>{{producto.precio}}</td>
+            <td><div class="botones" *ngIf="confirmado != producto.id">
+                <a  class="btn btn-xs btn-link">editar</a>
+                <a  class="btn btn-xs btn-link">eliminar</a>
+            </div></td>
+        </tr>
+         
+        
+    </table>
 </div>
-<br>
-<table border="1" style="margin: 0 auto;" class="text-left col-md-10 col-lg-offset-1" >
-    <tr class="text-left" >
-      <td><strong>Nombre</strong></td>
-      <td><strong>categoria</strong></td>
-      <td><strong>descripcion</strong></td>
-      <td><strong>unidad de medida</strong></td>
-      <td><strong>precio</strong></td>
-      <td></td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-    </tr>
-     
-    
-</table>

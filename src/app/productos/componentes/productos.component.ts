@@ -5,7 +5,7 @@ import { producto } from '../modelos/productos';
 
 
 @Component({
-  selector: 'productos',
+  selector: 'productos-list',
   templateUrl: '../views/productos.component.html',
   providers: [ProductoService]
 })
@@ -23,8 +23,8 @@ export class ProductosComponent{
     ngOnInit(){
         this._productoservice.getProductos().subscribe(
             result=>{
-                
-                console.log(<any>result);
+                this.productos=result;
+                console.log(result);
             },
             error=>{
                 console.log(<any>error);
