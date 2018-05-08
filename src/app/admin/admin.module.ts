@@ -5,6 +5,9 @@ import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { AdminLeftSideComponent } from './admin-left-side/admin-left-side.component';
 import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 import { AdminRoutingModule } from './admin-routing/admin-routing.module';
+import { AdminContentComponent } from './admin-content/admin-content.component';
+
+
 
 
 @NgModule({
@@ -16,7 +19,10 @@ import { AdminRoutingModule } from './admin-routing/admin-routing.module';
         AdminComponent,
         AdminHeaderComponent,
         AdminLeftSideComponent,
-        AdminFooterComponent
+        AdminFooterComponent,
+        AdminContentComponent
+        
+        
     ],
     exports:[AdminComponent]
 })

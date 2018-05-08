@@ -1,0 +1,142 @@
+
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">Proveedor</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">Proveedor</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fuid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-title ">
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" #formProveedor="ngForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 control-label" >
+                                        Proveedor:
+                                        <span *ngIf="!nombre.valid && nombre.touched">el campo es obligatorio</span>
+                                    </label>
+                                   <div class="col-sm-9">
+                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control"/>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 control-label">Ruc:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" #ruc="ngModel"  name=ruc [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 control-label">Direccion</label>
+                                    <div class="col-sm-9">
+                                            <input type="text" #direccion="ngModel"  name=direccion [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 control-label" >Telefono</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" #telefono="ngModel"  name=telefono [(ngModel)]="proveedor.telefono" placeholder="Telefono del proveedor" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 control-label">Email</label>
+                                  <div class="col-sm-9">
+                                        <input type="text" #email="ngModel"  name=email [(ngModel)]="proveedor.email" placeholder="Email" class="form-control"/>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 control-label">Tipo Proveedor</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control custom-select">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                        <input type="text" placeholder="Tipo de proveedor" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="offset-sm-3 col-md-9">
+                                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
+                                            <button type="button" class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <h4>Lista Proveedores </h4>
+                        <div class="col-lg-5 ">
+                            <div class="input-group input-group-rounded">
+                                <input type="text" placeholder="Buscar Proveedor" name="Search" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">            
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Ruc</th>
+                                        <th>Direccion</th>
+                                        <th>telefono</th>
+                                        <th>email</th>
+                                        <th>id</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let proveedor of proveedores">
+                                    <tr>
+                                        <th scope="row">{{proveedor.id}}</th>
+                                        <td>{{proveedor.nombre_proveedor}}</td>
+                                        <td>{{proveedor.ruc}}</td>
+                                        <td>{{proveedor.direccion}}</td>
+                                        <td>{{proveedor.telefono}}</td>
+                                        <td>{{proveedor.email}}</td>
+                                        <td>{{proveedor.tipo_proveedor}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

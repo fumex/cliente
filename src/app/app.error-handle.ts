@@ -19,6 +19,7 @@ export class AplicationErrorHandle extends ErrorHandler{
             if(errorResponse.status==400 && 
                 (error.error==='token_expired' || error.error==='token_invalid' || error.error==='A token is required' || error.error==='token_not_provided')){
                 this.goToLogin();
+                console.log(error);
             }
             if(errorResponse.status==401 && error.error==='token_has_been_blackListed'){
                 this.goToLogin();

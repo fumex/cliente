@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { AdminComponent } from '../admin.component';
 import { AuthGuard } from '../../guards/auth.guards';
 import { ProfileComponent } from '../../auth/profile/profile.component';
+import { AdminContentComponent } from '../admin-content/admin-content.component';
+import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.component';
 
 @NgModule({
     imports:[
@@ -12,8 +14,18 @@ import { ProfileComponent } from '../../auth/profile/profile.component';
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
                 children:[
                     {
-                        path:'profile',component:ProfileComponent
+                        path:'',
+                        component:AdminContentComponent
+                    },
+                    {
+                         path:'profile',
+                         component:ProfileComponent
+                    },
+                    {
+                        path:'proveedor',
+                        component:ProveedorAddComponent
                     }
+
                 ]
             }
         ])
