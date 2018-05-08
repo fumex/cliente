@@ -1,0 +1,15 @@
+#form-producto label{
+    margin-top: 20px;
+    
+}
+#form-producto {
+    margin-left: 300px;
+}
+h2{
+    margin-left: 520px;
+    font-style: italic;
+    padding: 2px;
+}
+#rec{
+    color: red;
+}

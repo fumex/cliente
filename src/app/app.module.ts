@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS , HttpClientModule} from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { RefreshTokenInterceptor } from './interceptors/refresh-token.interceptor';
 import { AplicationErrorHandle } from './app.error-handle';
@@ -13,11 +13,16 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
 
-
-
+import { ProductosComponent } from './productos/componentes/productos.component';
+import { ProductosAddComponent } from './productos/componentes/producto-add.components';
+import {ProductoService} from'./productos/services/producto.service';
+import{HttpModule}from '@angular/http';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
+    ProductosComponent,
+    ProductosAddComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,9 @@ import { ProveedorModule } from './proveedor/proveedor.module';
     AdminModule,
     ProveedorModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpModule,
+    FormsModule
   ],
   providers: [
     AuthGuard,

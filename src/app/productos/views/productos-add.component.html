@@ -1,0 +1,34 @@
+<h2>{{titulo}}</h2>
+<br>
+<form #formProducto="ngForm" (ngSubmit)="onSubmit()" class="col-lg-6" id="form-producto">
+        <label>
+            Nombre
+            <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
+        </label>
+        <label id="rec" *ngIf="!nombre.valid">*</label>
+        <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="producto.nombre_producto" class="form-control" required/>
+        <label>
+            Categoria
+        </label>
+        <select #categorias="ngModel" name="categorias" [(ngModel)]="producto.id_categorias" class="form-control" >
+                <option><b>--categorias</b></option>
+        </select>
+        <label>
+                Unidad de media
+        </label>
+        <select  #unidadmedida="ngModel" name="unidadmedida" [(ngModel)]="producto.unidad_de_medida" class="form-control" >
+                <option><b>--unidad de medida</b></option>
+        </select>
+        <label>
+            Descripción
+        </label>
+        <textarea #Descripcion="ngModel" name="Descripcion" [(ngModel)]="producto.descripcion" class="form-control" required></textarea>
+        <label>
+            Precio
+             <span *ngIf="!Precio.valid && Precio.touched" class="label label-default">El precio no es correcto</span>
+        </label>
+        <label id="rec" *ngIf="!nombre.valid">*</label>
+        <input type="text" #Precio="ngModel" name="Precio" [(ngModel)]="producto.precio" class="form-control" required pattern="[0-9]+"/>
+        <br/>
+        <input type="submit" value="{{titulo}}" [disabled]="!formProducto.form.valid" class="btn btn-success"/>
+</form>

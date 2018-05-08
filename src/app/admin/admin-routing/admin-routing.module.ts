@@ -3,8 +3,13 @@ import { RouterModule } from '@angular/router';
 import { AdminComponent } from '../admin.component';
 import { AuthGuard } from '../../guards/auth.guards';
 import { ProfileComponent } from '../../auth/profile/profile.component';
+
 import { AdminContentComponent } from '../admin-content/admin-content.component';
 import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.component';
+
+import { ProductosComponent } from '../../productos/componentes/productos.component';
+import{ProductosAddComponent}from '../../productos/componentes/producto-add.components';
+
 
 @NgModule({
     imports:[
@@ -24,8 +29,10 @@ import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.
                     {
                         path:'proveedor',
                         component:ProveedorAddComponent
-                    }
-
+                    },
+                    { path:'profile',component:ProfileComponent},
+                    { path:'productos',component:ProductosComponent},
+                    { path:'productos/agregar',component:ProductosAddComponent}
                 ]
             }
         ])
