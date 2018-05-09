@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { Proveedor } from '../models/proveedor';
+import { ProveedorModel } from '../models/proveedor';
 
 @Injectable()
 export class ProveedorService{
@@ -12,10 +12,10 @@ export class ProveedorService{
     constructor(
        private http:HttpClient
     ){}
-    getProveedor():Observable<Proveedor[]>{
+    getProveedor():Observable<ProveedorModel[]>{
        return this.http.get<any>(`${environment.api_url}/auth/proveedores`).shareReplay();
     }
-    addProveedor(proveedor:Proveedor):Observable<any>{
+    addProveedor(proveedor:ProveedorModel):Observable<any>{
         let json=JSON.stringify(proveedor);
         let params="json="+json;
         let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');

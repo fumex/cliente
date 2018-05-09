@@ -9,6 +9,7 @@ import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.
 
 import { ProductosComponent } from '../../productos/componentes/productos.component';
 import{ProductosAddComponent}from '../../productos/componentes/producto-add.components';
+import { TipoProveedor } from '../../proveedor/components/tipo-proveedor.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import{ProductosAddComponent}from '../../productos/componentes/producto-add.comp
                     {
                         path:'proveedor',
                         component:ProveedorAddComponent
+                       
                     },
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},

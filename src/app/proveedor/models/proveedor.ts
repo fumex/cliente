@@ -1,4 +1,4 @@
-export class Proveedor{
+export class ProveedorModel{
     
     constructor(
     public nombre_proveedor:string,

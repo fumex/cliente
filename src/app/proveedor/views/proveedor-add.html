@@ -23,18 +23,22 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 control-label" >
                                         Proveedor:
-                                        <span *ngIf="!nombre.valid && nombre.touched">el campo es obligatorio</span>
+                                        <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
+                                        <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                     </label>
                                    <div class="col-sm-9">
-                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control"/>
+                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control" required pattern="[a-zA-Z ]*"/>
                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label">Ruc:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" #ruc="ngModel"  name=ruc [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control"/>
+                                    <label class="col-sm-4 control-label">Ruc:
+                                        <span *ngIf="!ruc.valid && ruc.touched" class="label label-danger">*</span>
+                                        <span *ngIf="ruc.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" #ruc="ngModel"  maxlength="11" name="ruc" [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control" required  pattern="[0-9]{11}"/>
                                     </div>
                                 </div>
                             </div>
@@ -42,17 +46,25 @@
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label">Direccion</label>
+                                    <label class="col-sm-3 control-label">
+                                        Direccion
+                                        <span *ngIf="!direccion.valid && direccion.touched" class="label label-danger">*</span>
+                                        <span *ngIf="direccion.valid && direccion.touched" class="label label-success"><i class="fa fa-check"></i></span>
+                                    </label>
                                     <div class="col-sm-9">
-                                            <input type="text" #direccion="ngModel"  name=direccion [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control"/>
+                                            <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control" required/>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" >Telefono</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" #telefono="ngModel"  name=telefono [(ngModel)]="proveedor.telefono" placeholder="Telefono del proveedor" class="form-control"/>
+                                    <label class="col-sm-4 control-label" >
+                                        Telefono
+                                        <span *ngIf="!telefono.valid && telefono.touched" class="label label-danger">*</span>
+                                        <span *ngIf="telefono.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
                                     </div>
                                 </div>
                             </div>
@@ -60,23 +72,38 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                  <label class="col-sm-3 control-label">Email</label>
-                                  <div class="col-sm-9">
-                                        <input type="text" #email="ngModel"  name=email [(ngModel)]="proveedor.email" placeholder="Email" class="form-control"/>
+                                  <label class="col-sm-4 control-label">
+                                      Email
+                                      <span *ngIf="!email.valid && email.touched" class="label label-danger">*</span>
+                                      <span *ngIf="email.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                    </label>
+                                  <div class="col-sm-8">
+                                        <input type="email" #email="ngModel"  name="email" [(ngModel)]="proveedor.email" placeholder="Email" class="form-control" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"/>
                                   </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 control-label">Tipo Proveedor</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control custom-select">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
-                                        <input type="text" placeholder="Tipo de proveedor" class="form-control"/>
+                                <div  class="form-group">
+                                    <div class="row" *ngIf="estado==true">
+                                        <label class="col-sm-4 control-label">
+                                            Tipo
+                                            <span *ngIf="!id.valid && id.touched" class="label label-danger">*</span>
+                                            <span *ngIf="id.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
+                                                <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
+                                                    {{tipo.tipo}}
+                                                </option>               
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" (click)="getAdd()" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-plus"></i></button>
+                                        </div>
                                     </div>
+                                </div>
+                                <div *ngIf="estado==false" class="row">
+                                    <tipo-proveedor></tipo-proveedor>
                                 </div>
                             </div>
                         </div>
@@ -85,8 +112,8 @@
                                 <div class="col-md-8">
                                     <div class="row">
                                         <div class="offset-sm-3 col-md-9">
-                                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
-                                            <button type="button" class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                            <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
+                                            <button type="button" [disabled]="!formProveedor.form.valid"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -97,46 +124,42 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-title">
-                        <h4>Lista Proveedores </h4>
-                        <div class="col-lg-5 ">
-                            <div class="input-group input-group-rounded">
-                                <input type="text" placeholder="Buscar Proveedor" name="Search" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">            
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nombre</th>
-                                        <th>Ruc</th>
-                                        <th>Direccion</th>
-                                        <th>telefono</th>
-                                        <th>email</th>
-                                        <th>id</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngFor="let proveedor of proveedores">
-                                    <tr>
-                                        <th scope="row">{{proveedor.id}}</th>
-                                        <td>{{proveedor.nombre_proveedor}}</td>
-                                        <td>{{proveedor.ruc}}</td>
-                                        <td>{{proveedor.direccion}}</td>
-                                        <td>{{proveedor.telefono}}</td>
-                                        <td>{{proveedor.email}}</td>
-                                        <td>{{proveedor.tipo_proveedor}}</td>
-                                    </tr>
-                                </tbody>
+                    <div class="card-body">
+                        <h4 class="card-title">Exportar Informacion</h4>
+                        <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                        <div class="table-responsive m-t-40">
+                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre</th>
+                                            <th>Ruc</th>
+                                            <th>Direccion</th>
+                                            <th>telefono</th>
+                                            <th>email</th>
+                                            <th>id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let proveedor of proveedores">
+                                        <tr>
+                                            <th scope="row">{{proveedor.id}}</th>
+                                            <td>{{proveedor.nombre_proveedor}}</td>
+                                            <td>{{proveedor.ruc}}</td>
+                                            <td>{{proveedor.direccion}}</td>
+                                            <td>{{proveedor.telefono}}</td>
+                                            <td>{{proveedor.email}}</td>
+                                            <td>{{proveedor.tipo_proveedor}}</td>
+                                        </tr>
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>

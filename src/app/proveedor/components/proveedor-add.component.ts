@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ProveedorService } from '../services/proveedor.service'; 
-import { Proveedor } from '../models/proveedor';
+import { ProveedorModel } from '../models/proveedor';
+import { TipoProveedorService } from '../services/tipoProveedor.service';
+import { TipoProveedorModel } from '../models/tipoProveedor';
 
 @Component({
     selector:'proveedor-add',
@@ -9,17 +11,30 @@ import { Proveedor } from '../models/proveedor';
 
 })
 export class ProveedorAddComponent{
-
-    public proveedor:Proveedor;
-    public proveedores:Proveedor[];
+    public estado:boolean;
+    public proveedor:ProveedorModel;
+    public proveedores:ProveedorModel[];
+    public tipos:TipoProveedorModel[];
     constructor(
         private proveedorService:ProveedorService,
+        private tipoProveedor:TipoProveedorService
     ){
-        this.proveedor= new Proveedor('','','','','',1);  
+        this.proveedor= new ProveedorModel('','','','','',null);
+        this.estado=true;
     }
     ngOnInit(){
             this.getProveedores();
+            this.getTipo();
     }
+
+    getAdd(){
+        this.estado=false;
+    }
+    getExit(){
+        this.estado=true;
+        this.getTipo();
+    }
+    
     onSubmit(){
         
         this.proveedorService.addProveedor(this.proveedor).subscribe(
@@ -27,6 +42,17 @@ export class ProveedorAddComponent{
                 console.log(response);
                 this.getProveedores();
                 this.clearProveedor();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    getTipo(){
+        this.tipoProveedor.getTipo().subscribe(
+            result=>{
+                console.log(result);
+                this.tipos=result;
             },
             error=>{
                 console.log(<any>error);
@@ -41,13 +67,13 @@ export class ProveedorAddComponent{
             error=>{
                 console.log(<any>error);
             }
-        )
+        );
     }
     onCancel(){
         this.clearProveedor();
     }
     clearProveedor(){
-        this.proveedor= new Proveedor('','','','','',null);
+        this.proveedor= new ProveedorModel('','','','','',null);
     }
     
 }
