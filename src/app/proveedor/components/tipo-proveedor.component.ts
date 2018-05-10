@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { TipoProveedorService } from "../services/tipoProveedor.service";
-import { TipoProveedorModel } from "../models/tipoProveedor";
-import { ProveedorAddComponent } from "./proveedor-add.component";
+import { TipoProveedorModel } from '../models/tipoProveedor';
+import { ProveedorAddComponent } from './proveedor-add.component';
 
 
 @Component({

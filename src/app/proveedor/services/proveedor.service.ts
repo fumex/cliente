@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { ProveedorModel } from '../models/proveedor';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class ProveedorService{
@@ -12,9 +13,10 @@ export class ProveedorService{
     constructor(
        private http:HttpClient
     ){}
-    getProveedor():Observable<ProveedorModel[]>{
-       return this.http.get<any>(`${environment.api_url}/auth/proveedores`).shareReplay();
+    getTable():Observable<any[]>{
+        return this.http.get<any>(`${environment.api_url}/auth/proveedores`).shareReplay();
     }
+
     addProveedor(proveedor:ProveedorModel):Observable<any>{
         let json=JSON.stringify(proveedor);
         let params="json="+json;
