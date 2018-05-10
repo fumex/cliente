@@ -141,7 +141,7 @@
                                         <th>email</th>
                                         <th>id</th>
                                         <th></th>
-                                        <th></th>
+                                          
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -152,31 +152,43 @@
                                         <th>telefono</th>
                                         <th>email</th>
                                         <th>id</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th></th>   
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr  *ngFor="let proveedor of proveedores">
-                                        <td>{{proveedor.nombre_proveedor}}</td>
-                                        <td>{{proveedor.ruc}}</td>
-                                        <td>{{proveedor.direccion}}</td>
-                                        <td>{{proveedor.telefono}}</td>
-                                        <td>{{proveedor.email}}</td>
-                                        <td>{{proveedor.tipo_proveedor}}</td>
-                                        <td><button type="button"  class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button></td>
-                                        <td><button type="button"  class="btn btn-danger  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><input type="text" class="col md-6"></td>
-                                        <td><button type="button"  class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button></td>
-                                        <td><button type="button"  class="btn btn-danger  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button></td>
+                                    <tr *ngFor="let proveedor of proveedores">
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.nombre_proveedor}}</td>
+                                        <td *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-4" type="text" value="{{proveedor.nombre_proveedor}}">
+                                        </td>
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.ruc}}</td>
+                                        <td *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-4" type="text" value="{{proveedor.ruc}}">
+                                        </td>
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.direccion}}</td>
+                                        <td *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-4" type="text" value="{{proveedor.direccion}}">
+                                        </td>
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.telefono}}</td>
+                                        <td class="col-lg-2" *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-12" type="text" value="{{proveedor.telefono}}">
+                                        </td>
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.email}}</td>
+                                        <td *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-4" type="text" value="{{proveedor.email}}">
+                                        </td>
+                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.tipo}}</td>
+                                        <td *ngIf="confirmUpdate==proveedor.id">
+                                            <input class="col-lg-4" type="text" value="{{proveedor.tipo}}">
+                                        </td>
+                                        <td *ngIf="confirmado!=proveedor.id" >
+                                            <button type="button" (click)="actualizarConfirm(proveedor.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
+                                            <button type="button" (click)="borrarConfirm(proveedor.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
+                                        </td>
+                                        <td *ngIf="confirmado==proveedor.id">
+                                            <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
+                                            <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

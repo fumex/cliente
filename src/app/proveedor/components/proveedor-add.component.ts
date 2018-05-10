@@ -17,22 +17,32 @@ export class ProveedorAddComponent implements OnInit{
     public proveedor:ProveedorModel;
     public proveedores:any=[];
     public tipos:TipoProveedorModel[];
+    public confirmado;
+    public confirmUpdate;
     constructor(
         private proveedorService:ProveedorService,
         private tipoProveedor:TipoProveedorService
     ){
         this.proveedor= new ProveedorModel('','','','','',null);
         this.estado=true;
+        this.confirmado=null;
+        this.confirmUpdate=null;
         this.tabla();
         
     }
     ngOnInit(){
             this.getProveedores();
             this.getTipo();
+            
     }
-
-    editar(){
-        console.log('mubuena edicion');
+    actualizarConfirm(id){
+        this.confirmUpdate=id;
+    }
+    borrarConfirm(id){
+        this.confirmado=id;
+    }
+    cancelarConfirm(){
+        this.confirmado=null;
     }
 
     tabla(){
@@ -94,6 +104,17 @@ export class ProveedorAddComponent implements OnInit{
     }
     clearProveedor(){
         this.proveedor= new ProveedorModel('','','','','',null);
+    }
+    onDeleteProveedor(id){
+        this.proveedorService.deleteProveedor(id).subscribe(
+            result=>{
+               // console.log(result);
+               this.getProveedores();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        )
     }
     
 }

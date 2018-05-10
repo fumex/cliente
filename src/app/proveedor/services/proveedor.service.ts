@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { ProveedorModel } from '../models/proveedor';
 import { Http } from '@angular/http';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable()
 export class ProveedorService{
@@ -24,5 +25,8 @@ export class ProveedorService{
         return this.http.post(`${environment.api_url}/auth/proveedores-add`,params,{headers:headers});
     }
 
+    deleteProveedor(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/auth/proveedores-delete/`+id).shareReplay();
+    }
   
 }
