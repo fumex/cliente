@@ -10,116 +10,118 @@
         </ol>
     </div>
 </div>
-<div class="container-fuid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-title ">
-                </div>
-                <div class="card-body">
-                    <form class="form-horizontal" #formProveedor="ngForm" (ngSubmit)="onSubmit()">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 control-label" >
-                                        Proveedor:
-                                        <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
-                                        <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
-                                    </label>
-                                   <div class="col-sm-9">
-                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control" required pattern="[a-zA-Z ]*"/>
-                                   </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 control-label">Ruc:
-                                        <span *ngIf="!ruc.valid && ruc.touched" class="label label-danger">*</span>
-                                        <span *ngIf="ruc.valid" class="label label-success"><i class="fa fa-check"></i></span>
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" #ruc="ngModel"  maxlength="11" name="ruc" [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control" required  pattern="[0-9]{11}"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 control-label">
-                                        Direccion
-                                        <span *ngIf="!direccion.valid && direccion.touched" class="label label-danger">*</span>
-                                        <span *ngIf="direccion.valid && direccion.touched" class="label label-success"><i class="fa fa-check"></i></span>
-                                    </label>
-                                    <div class="col-sm-9">
-                                            <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control" required/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 control-label" >
-                                        Telefono
-                                        <span *ngIf="!telefono.valid && telefono.touched" class="label label-danger">*</span>
-                                        <span *ngIf="telefono.valid" class="label label-success"><i class="fa fa-check"></i></span>
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="text" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                  <label class="col-sm-4 control-label">
-                                      Email
-                                      <span *ngIf="!email.valid && email.touched" class="label label-danger">*</span>
-                                      <span *ngIf="email.valid" class="label label-success"><i class="fa fa-check"></i></span>
-                                    </label>
-                                  <div class="col-sm-8">
-                                        <input type="email" #email="ngModel"  name="email" [(ngModel)]="proveedor.email" placeholder="Email" class="form-control" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"/>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div  class="form-group">
-                                    <div class="row" *ngIf="estado==true">
-                                        <label class="col-sm-4 control-label">
-                                            Tipo
-                                            <span *ngIf="!id.valid && id.touched" class="label label-danger">*</span>
-                                            <span *ngIf="id.valid" class="label label-success"><i class="fa fa-check"></i></span>
-                                        </label>
-                                        <div class="col-sm-6">
-                                            <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
-                                                <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
-                                                    {{tipo.tipo}}
-                                                </option>               
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="button" (click)="getAdd()" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="estado==false" class="row">
-                                    <tipo-proveedor></tipo-proveedor>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
+<div class="container">
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title ">
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" #formProveedor="ngForm" (ngSubmit)="onSubmit()">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="offset-sm-3 col-md-9">
-                                            <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
-                                            <button type="button" [disabled]="!formProveedor.form.valid"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label" >
+                                            Proveedor:
+                                            <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
+                                            <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control" required pattern="[a-zA-Z ]*"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">Ruc:
+                                            <span *ngIf="!ruc.valid && ruc.touched" class="label label-danger">*</span>
+                                            <span *ngIf="ruc.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" #ruc="ngModel"  maxlength="11" name="ruc" [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control" required  pattern="[0-9]{11}"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label">
+                                            Direccion
+                                            <span *ngIf="!direccion.valid && direccion.touched" class="label label-danger">*</span>
+                                            <span *ngIf="direccion.valid && direccion.touched" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                                <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label" >
+                                            Telefono
+                                            <span *ngIf="!telefono.valid && telefono.touched" class="label label-danger">*</span>
+                                            <span *ngIf="telefono.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">
+                                            Email
+                                            <span *ngIf="!email.valid && email.touched" class="label label-danger">*</span>
+                                            <span *ngIf="email.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="email" #email="ngModel"  name="email" [(ngModel)]="proveedor.email" placeholder="Email" class="form-control" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div  class="form-group">
+                                        <div class="row" *ngIf="estado==true">
+                                            <label class="col-sm-4 control-label">
+                                                Tipo
+                                                <span *ngIf="!id.valid && id.touched" class="label label-danger">*</span>
+                                                <span *ngIf="id.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
+                                                    <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
+                                                        {{tipo.tipo}}
+                                                    </option>               
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" (click)="getAdd()" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="estado==false" class="row">
+                                        <tipo-proveedor></tipo-proveedor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="offset-sm-3 col-md-9">
+                                                <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
+                                                <button type="button" [disabled]="!formProveedor.form.valid"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,9 +131,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Exportar Informacion</h4>
+                        <h4 class="card-title">Exportar Información</h4>
                         <div class="table-responsive m-t-40">
-                            <table id="mytable" class="table table-bordered table-striped">
+                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -139,9 +141,8 @@
                                         <th>Direccion</th>
                                         <th>telefono</th>
                                         <th>email</th>
-                                        <th>id</th>
+                                        <th>Tipo</th>
                                         <th></th>
-                                          
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -151,43 +152,77 @@
                                         <th>Direccion</th>
                                         <th>telefono</th>
                                         <th>email</th>
-                                        <th>id</th>
-                                        <th></th>   
+                                        <th>Tipo</th>
+                                        <th></th> 
                                     </tr>
                                 </tfoot>
                                 <tbody>
                                     <tr *ngFor="let proveedor of proveedores">
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.nombre_proveedor}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-4" type="text" value="{{proveedor.nombre_proveedor}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.nombre_proveedor}}" #nombre>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.ruc}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-4" type="text" value="{{proveedor.ruc}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.ruc}}" #ruc>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.direccion}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-4" type="text" value="{{proveedor.direccion}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.direccion}}" #direccion>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.telefono}}</td>
-                                        <td class="col-lg-2" *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-12" type="text" value="{{proveedor.telefono}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="text" style="width:100%; height: 34px;"  value="{{proveedor.telefono}}" #telefono>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.email}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-4" type="text" value="{{proveedor.email}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.email}}" #email>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.tipo}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id">
-                                            <input class="col-lg-4" type="text" value="{{proveedor.tipo}}">
+                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <select style="width:100%; height: 34px;">
+                                                        <option *ngFor="let tipo of tipos" [ngValue]="tipo.id">
+                                                            {{tipo.tipo}}
+                                                        </option>               
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td *ngIf="confirmado!=proveedor.id" >
+                                        <td *ngIf="confirmado!==proveedor.id" >
                                             <button type="button" (click)="actualizarConfirm(proveedor.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
                                             <button type="button" (click)="borrarConfirm(proveedor.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
                                         </td>
                                         <td *ngIf="confirmado==proveedor.id">
-                                            <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
-                                            <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
+                                            <div *ngIf="confirmUpdate!==proveedor.id">
+                                                <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
+                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
+                                            </div>
+                                            <div *ngIf="confirmUpdate==proveedor.id">
+                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarUpdate()"><i class="fa fa-times"></i></a>
+                                                <button class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onUpdate(proveedor.id, nombre.value, ruc.value, direccion.value, telefono.value, email.value)"><i class="fa fa-floppy-o"></i></button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

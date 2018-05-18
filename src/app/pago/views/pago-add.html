@@ -1,0 +1,219 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">{{title}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <label class="control-label" >
+                            <i class="fa fa-archive"></i>
+                            Registro de {{title}}
+                        </label>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-lg-6">
+                           <form class="form-horizonta">
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Codigo:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <label class="control-label">{{codigo}}</label>   
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Nro de Recibo</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Proveedor</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <select class="form-control custom-select" #idProveedor name="idProveedor">
+                                            <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">
+                                                {{ proveedor.nombre_proveedor}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Tipo Pago</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <select class="form-control custom-select" #tipo>
+                                            <option>Efectivo</option>
+                                            <option>Bancario</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form> 
+                        </div>
+                        <!--Detalle-->
+                        <div class="col-lg-6">
+                            <form #formDetalle="ngForm" (ngSubmit)="addCompra()">
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label  class="control-label">Producto:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input name="producto" #producto="ngModel" [(ngModel)]="compra.id_producto" type="text" class="form-control" >  
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Cantidad:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input name="cantidad" #cantidad="ngModel" [(ngModel)]="compra.cantidad" class="form-control">  
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Unidades:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="row" *ngIf="estado==true">
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select"  name="unidad" #unidad="ngModel" [(ngModel)]="compra.id_unidad">
+                                                    <option *ngFor="let unidad of unidades"  [ngValue]="unidad.id">
+                                                        {{unidad.unidad}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-info"(click)="getAdd()"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="estado==false">
+                                            <div class="col-sm-8">
+                                                <input #unid type="text" class="form-control" placeholder="Agregar Unidad">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <button type="button" (click)="saveUnidad(unid.value)"class="btn btn-success btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-check"></i></button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <button type="button" (click)="getSalir()" class="btn btn-danger btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Precio x unidad:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input name="precio" #precio="ngModel" [(ngModel)]="compra.precio_unitario" type="text" class="form-control" >  
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12 col-sm-offset-3">
+                                        <button type="submit" class="btn btn-info btn-responsive">Agregar</button>
+                                    </div>
+                                </div> 
+                            </form>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <label class="control-label">
+                            <i class="fa fa-shopping-cart"></i>
+                            Registro de Compras
+                        </label>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Unidad</th>
+                                        <th>Precio</th>
+                                        <th>igv</th>
+                                        <th>total</th>
+                                        <th></th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let compra of compras; let $index=index">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{compra.id_producto}}</td>
+                                        <td>{{compra.cantidad}}</td>
+                                        <td>{{compra.id_unidad}}</td>
+                                        <td>{{compra.precio_unitario}}</td>
+                                        <td>1.20</td>
+                                        <td>{{compra.cantidad * compra.precio_unitario}}</td>
+                                        <td><a class="btn btn-danger" (click)="exitCompra($index)">eliminar</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-3">
+                <div class="card">
+                    <div class="card-title">
+                        <label class="label-control">
+                            <i class="fa fa-money "></i>
+                                <strong>Pago</strong>
+                        </label>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-lg-10 col-lg-offset-3 row">
+                            <div class="form-goup ">
+                                <label > total:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-goup">
+                                <label > Adelanto:</label>
+                                <input type="text">
+                            </div>
+                            <div class="form-goup">
+                                <label> Adelanto:</label>
+                                <input stype="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-lg-offset-2">
+                            <div class="form-goup">
+                                <input type="button" (click)="onSubmit(idProveedor.value,recibo.value,tipo.value)" class="btn btn-info btn-responsive" value="Guardar">
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

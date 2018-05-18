@@ -20,9 +20,7 @@ import { AdminContentComponent } from './admin-content/admin-content.component';
         AdminHeaderComponent,
         AdminLeftSideComponent,
         AdminFooterComponent,
-        AdminContentComponent
-        
-        
+        AdminContentComponent    
     ],
     exports:[AdminComponent]
 })

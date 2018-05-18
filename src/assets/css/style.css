@@ -5414,7 +5414,7 @@ tbody tr td:last-child {
 .table > tfoot > tr > th,
 .table > thead > tr > td,
 .table > thead > tr > th {
-  line-height: 18px;
+  line-height: 29px;
   vertical-align: top;
 }
 .table > thead > tr > th {
@@ -5456,7 +5456,7 @@ tbody tr td:last-child {
 }
 .table td,
 .table th {
-  padding: 0.5em;
+  padding: 0em;
 }
 .table .round-img img {
   width: 38px;

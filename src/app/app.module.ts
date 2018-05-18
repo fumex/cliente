@@ -12,12 +12,14 @@ import { AuthGuard } from './guards/auth.guards';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
 import { ProveedorModule } from './proveedor/proveedor.module';
+import { PagoModule } from './pago/pagos.module';
 
 import { ProductosComponent } from './productos/componentes/productos.component';
 import { ProductosAddComponent } from './productos/componentes/producto-add.components';
 import {ProductoService} from'./productos/services/producto.service';
 import{HttpModule}from '@angular/http';
 import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     AuthModule,
     AdminModule,
     ProveedorModule,
+    PagoModule,
     HttpClientModule,
     AppRoutingModule,
     HttpModule,

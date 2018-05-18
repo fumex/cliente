@@ -16,9 +16,8 @@ export class TipoProveedorService{
     }
 
     addTipo(tipo:TipoProveedorModel):Observable<any>{
-        let json=JSON.stringify(tipo);
-        let params="json="+json;
-        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+        let params=JSON.stringify(tipo);
+        let headers=new HttpHeaders().set('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/auth/tipo-add`,params,{headers:headers});
     }
 }

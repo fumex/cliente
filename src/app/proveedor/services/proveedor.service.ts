@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { ProveedorModel } from '../models/proveedor';
-import { Http } from '@angular/http';
 import { shareReplay } from 'rxjs/operators';
 
 @Injectable()
@@ -23,6 +22,13 @@ export class ProveedorService{
         let params="json="+json;
         let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
         return this.http.post(`${environment.api_url}/auth/proveedores-add`,params,{headers:headers});
+    }
+
+    updateProveedor(id, proveedor:ProveedorModel):Observable<any>{
+        let json=JSON.stringify(proveedor);
+        let params="json"+json;
+        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+        return this.http.put(`${environment.api_url}/auth/proveedores-update/${id}`,params,{headers:headers});
     }
 
     deleteProveedor(id):Observable<any>{

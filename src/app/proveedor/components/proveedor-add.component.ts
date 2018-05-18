@@ -36,14 +36,20 @@ export class ProveedorAddComponent implements OnInit{
             
     }
     actualizarConfirm(id){
+        this.confirmado=id;
         this.confirmUpdate=id;
     }
     borrarConfirm(id){
         this.confirmado=id;
+        this.confirmUpdate=null;
     }
     cancelarConfirm(){
         this.confirmado=null;
     }
+    cancelarUpdate(){
+        this.confirmado=null;
+        this.confirmUpdate=null;
+    }   
 
     tabla(){
        setTimeout(function(){
@@ -67,12 +73,32 @@ export class ProveedorAddComponent implements OnInit{
     }
     
     onSubmit(){
-        
         this.proveedorService.addProveedor(this.proveedor).subscribe(
             response=>{
                 console.log(response);
                 this.getProveedores();
                 this.clearProveedor();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    onUpdate(
+        id,
+        nombre_proveedor,
+        ruc,
+        direccion,
+        telefono,
+        email,
+        tipo
+        ){
+        this.proveedor = new ProveedorModel('compu Serve','111211111','av. los incas','084701211','gregouqa@asd.com',3);
+        console.log(this.proveedor);
+        console.log(id);
+        this.proveedorService.updateProveedor(id,this.proveedor).subscribe(
+            response=>{
+                console.log(response);
             },
             error=>{
                 console.log(<any>error);
