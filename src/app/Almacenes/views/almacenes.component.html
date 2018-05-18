@@ -1,0 +1,114 @@
+<div class="col-lg-12">
+    <div class="card card-outline-primary">
+        <div class="card-body">
+            <h2>{{titulo}}</h2>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <form #formAlmacen="ngForm" (ngSubmit)="agregaralmacen()" action="#">
+                       <span *ngIf="!formAlmacen.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
+                        <div class="form-body">
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                     <div class="form-group">
+                                        <label class="control-label">Nombre
+                                            <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
+                                            <label id="rec" *ngIf="!nombre.valid">*</label>
+                                        </label>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="almacen.nombre"  class="form-control"required/>
+                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group has-danger">           
+                                        <label class="control-label">telefono
+                                                <span *ngIf="!telefono.valid && telefono.touched" class="label label-default">El precio no es correcto</span>                                                 
+                                                <label id="rec" *ngIf="!telefono.valid">*</label>
+                                        </label>
+                                        <input type="text" id="lastName" #telefono="ngModel" name="telefono" [(ngModel)]="almacen.telefono" class="form-control" required pattern="[0-9]+"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <div class="form-group">                                             
+                                        <label>Descripción</label>
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="almacen.descripcion" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <div class="form-group">                                             
+                                        <label>Direccion</label>
+                                        <input type="text" #Direccion="ngModel" name="Direccion" [(ngModel)]="almacen.direccion" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                                        
+                        </div>
+                        <div class="form-actions">
+                                <button type="submit" [disabled]="!formAlmacen.form.valid "  class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                        </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div *ngIf="!almacenes">
+                        cargando listado de almacenes....
+                    </div>
+                    <div *ngIf="almacenes">
+                        <div class="form-group row last col-lg-12">
+                        </div>
+                        <div >
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive m-t-20">
+                                        <table id="myTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                 <tr>
+                                                    <th>Nombre</th>
+                                                    <th>direccion</th>
+                                                    <th>descripcion</th>
+                                                    <th>telefono</th>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                   
+                                                <tr *ngFor="let almacen of almacenes">
+                                                        <td>{{almacen.nombre}}</td>
+                                                        <td>{{almacen.direccion}}</td>
+                                                        <td>{{almacen.descripcion}}</td>
+                                                        <td>{{almacen.telefono}}</td>
+                                                   
+                                                        <td>
+                                                        <a (click)="actualizar(producto.id)" class="btn btn-xs btn-link">Editar</a>                                            
+                                                        <a  class="btn btn-xs btn-link">eliminar</a>
+                                                        </td> 
+                                                     
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

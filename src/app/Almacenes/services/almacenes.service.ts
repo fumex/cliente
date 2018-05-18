@@ -4,10 +4,10 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/observable';
-import {producto}from '../modelos/productos';
+import {almacen}from '../modelos/almacenes';
 
 @Injectable()
-export class ProductoService{
+export class AlmacenesService{
     public url:string;
     constructor(
         public _http:HttpClient
@@ -15,20 +15,24 @@ export class ProductoService{
      this.url=environment.api_url;   
     }
 
-    getProductos(){
-        return this._http.get<any>(this.url+'/productos').shareReplay();
+    getAlmacenes(){
+        return this._http.get<any>(this.url+'/almacenes').shareReplay();
     }
-    addproducto(producto:producto):Observable<any>{
-        let json = JSON.stringify(producto);
+    addAlmacenes(almacen:almacen):Observable<any>{
+        let json = JSON.stringify(almacen);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/productos',params,{headers:headers});
+        return this._http.post(this.url+'/almacenes',params,{headers:headers});
             
     }
-    SeleccionarProducto(id){
-        return this._http.get<any>(this.url+'/productos/'+id).shareReplay();
+    veralmacen(id){
+        return this._http.get<any>(this.url+'/veralmacen/'+id).shareReplay();
+            
+    }
+    SeleccionarAlmacen(id){
+        return this._http.get<any>(this.url+'/almacenes/'+id).shareReplay();
 
     }
 

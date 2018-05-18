@@ -1,0 +1,57 @@
+<div class="col-lg-12">
+    <div class="card card-outline-primary">
+        <div class="card-body">
+            <h2>{{titulo}}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-primary">
+                    <div class="card-body">
+                        <div *ngIf="!stoks">
+                            cargando listado de almacenes....
+                        </div>
+                        <div *ngIf="stoks">
+                            <div class="form-group row last col-lg-12">
+                            </div>
+                            <div >
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive m-t-20">
+                                            <table id="myTable" class="table table-bordered table-striped">
+                                                <thead>
+                                                     <tr>
+                                                        <th>almacen</th>
+                                                        <th>producto</th>
+                                                        <th>stock</th>
+                                                        <th>compra</th>
+                                                        <th>venta</th>
+                                                        <td></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let cantidad of stoks">
+                                                            <td>{{cantidad.nombre}}</td>
+                                                            <td>{{cantidad.nombre_producto}}</td>
+                                                            <td>{{cantidad.stock}}</td>
+                                                            <td>{{cantidad.precio_compra}}</td>
+                                                            <td>{{cantidad.precio_venta}}</td>
+                                                            <td>
+                                                            <a (click)="actualizar(cantidad.id)" class="btn btn-xs btn-link">editar precio de venta</a>                                            
+                                                            </td> 
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

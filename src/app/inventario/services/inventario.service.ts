@@ -4,10 +4,10 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/observable';
-import {producto}from '../modelos/productos';
+import {inventario}from '../modelos/inventario';
 
 @Injectable()
-export class ProductoService{
+export class InventarioService{
     public url:string;
     constructor(
         public _http:HttpClient
@@ -15,20 +15,20 @@ export class ProductoService{
      this.url=environment.api_url;   
     }
 
-    getProductos(){
-        return this._http.get<any>(this.url+'/productos').shareReplay();
+    getInventario(){
+        return this._http.get<any>(this.url+'/inventario').shareReplay();
     }
-    addproducto(producto:producto):Observable<any>{
-        let json = JSON.stringify(producto);
+    addInventario(inventario:inventario):Observable<any>{
+        let json = JSON.stringify(inventario);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/productos',params,{headers:headers});
+        return this._http.post(this.url+'/inventario',params,{headers:headers});
             
     }
-    SeleccionarProducto(id){
-        return this._http.get<any>(this.url+'/productos/'+id).shareReplay();
+    SeleccionarInventario(id){
+        return this._http.get<any>(this.url+'/inventario/'+id).shareReplay();
 
     }
 

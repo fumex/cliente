@@ -1,9 +1,14 @@
+
 #form-producto label{
     margin-top: 20px;
+
     
 }
 #form-producto {
-    margin-left: 300px;
+    margin-left: 200px;
+    margin-right: 1500px;
+    border: 1px;
+    border-color:gray;
 }
 h2{
     margin-left: 520px;
@@ -13,7 +18,21 @@ h2{
 #rec{
     color: red;
 }
-cate{
-    margin-left: 200px;
-    padding: 2px;
+#form-producto div{
+    padding-left: 10px;
+    float: left;
 }
+
+divcategoria {
+    padding-top: 1px;
+    padding-left: 30px;
+    float: left;
+}
+catessss{
+    float: left;
+}
+boton{
+    float: right;
+    padding-top: 200px;
+}
+

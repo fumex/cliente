@@ -11,18 +11,18 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AuthGuard } from './guards/auth.guards';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
-import { ProductosComponent } from './productos/componentes/productos.component';
-import { ProductosAddComponent } from './productos/componentes/producto-add.components';
-import {ProductoService} from'./productos/services/producto.service';
-import{CategoriaService} from './categorias/services/services.categoria';
-import{HttpModule}from '@angular/http';
+import { CategoriaService} from './categorias/services/services.categoria';
+import { HttpModule}from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { importType } from '@angular/compiler/src/output/output_ast';
+import { ProductoModule } from './productos/productos.module';
+import { InventarioModule } from './inventario/inventario.moule';
+import { AlmacenesModule } from './Almacenes/almacenes.module';
+import { AlmacenModule } from './almacen/almacen.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ProductosComponent,
-    ProductosAddComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +31,11 @@ import { FormsModule } from '@angular/forms';
     AdminModule,
     HttpModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ProductoModule,
+    InventarioModule,
+    AlmacenesModule,
+    AlmacenModule
     
   ],
   providers: [

@@ -1,40 +1,77 @@
-<h2>{{titulo}}</h2>
-<br>
-<form #formProducto="ngForm" (ngSubmit)="onSubmit()" class="col-lg-6" id="form-producto">
-        <label>
-            Nombre
-            <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
-        </label>
-        <label id="rec" *ngIf="!nombre.valid">*</label>
-        <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="producto.nombre_producto" class="form-control" required/>
-        <div *ngIf="!cate">
-                cargando categorias....
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <form #formProducto="ngForm" (ngSubmit)="onSubmit()" action="#">
+                       <span *ngIf="!formProducto.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
+                        <div class="form-body">
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                     <div class="form-group">
+                                        <label class="control-label">Nombre
+                                            <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
+                                            <label id="rec" *ngIf="!nombre.valid">*</label>
+                                        </label>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="producto.nombre_producto"  class="form-control"required/>
+                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group has-danger">           
+                                        <label class="control-label">Precio
+                                                <span *ngIf="!Precio.valid && Precio.touched" class="label label-default">El precio no es correcto</span>                                                 
+                                                <label id="rec" *ngIf="!Precio.valid">*</label>
+                                        </label>
+                                        <input type="text" id="lastName" #Precio="ngModel" name="Precio" [(ngModel)]="producto.precio" class="form-control" required pattern="[0-9]+"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <div class="form-group">                                             
+                                        <label>Descripción</label>
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="producto.descripcion" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">-->
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                        <label class="control-label">Unidad de media</label>
+                                        <span *ngIf="!unidadmedida.valid" class="label label-default">SELECCIONE</span>                                                        
+                                       <label id="rec" *ngIf="!unidadmedida.valid"> *</label> 
+                                            <select #unidadmedida="ngModel" name="unidadmedida" [(ngModel)]="producto.unidad_de_medida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                    <option><b>--unidad de medida</b></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                    <label class="control-label col-md-8">Categoria
+                                   
+                                    <span *ngIf="!cates.valid "  class="label label-default">seleccione categoria</span>                                                        
+                                       <label id="rec" *ngIf="!cates.valid"> *</label>  </label>
+                                        <select #cates="ngModel" name="cates" [(ngModel)]="producto.id_categoria" class="form-control custom-select col-md-4" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la categoria</option>    
+                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
+                                        </select>
+                                        <button type="submit" [disabled]="!formProducto.form.valid "  class="btn btn-link"> <i class="fa fa-check"></i>añadir categoria</button>
+                                    </div>
+                                </div>
+                            </div>
+                             <!--</div> -->
+                                        
+                        </div>
+                        <div class="form-actions">
+                                <button type="submit" [disabled]="!formProducto.form.valid "  class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                        </div>
+                </form>
+            </div>
         </div>
-        <div *ngIf="cate">
-                <label  id="cate" class="col-lg-6">
-                Categoria  
-                        <select #categorias="ngModel" name="categorias" [(ngModel)]="producto.id_categorias" class="form-control col-lg-12" >
-                                <option *ngFor="let categoria of cate"><b>{{categoria.nombre}}</b></option>
-                        </select>
-                </label><a [routerLink]="['/admin/productos/agregar']" class="col-lg-10">añadir categoria</a>
-        </div>
-        
-        <label>
-                Unidad de media
-        </label>
-        <select  #unidadmedida="ngModel" name="unidadmedida" [(ngModel)]="producto.unidad_de_medida" class="form-control" >
-                <option><b>--unidad de medida</b></option>
-        </select>
-        <label>
-            Descripción
-        </label>
-        <textarea #Descripcion="ngModel" name="Descripcion" [(ngModel)]="producto.descripcion" class="form-control" required></textarea>
-        <label>
-            Precio
-             <span *ngIf="!Precio.valid && Precio.touched" class="label label-default">El precio no es correcto</span>
-        </label>
-        <label id="rec" *ngIf="!nombre.valid">*</label>
-        <input type="text" #Precio="ngModel" name="Precio" [(ngModel)]="producto.precio" class="form-control" required pattern="[0-9]+"/>
-        <br/>
-        <input type="submit" value="{{titulo}}" [disabled]="!formProducto.form.valid" class="btn btn-success"/>
-</form>
+    </div>
+</div>
+</div>
+

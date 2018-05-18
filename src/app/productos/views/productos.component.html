@@ -1,41 +1,72 @@
-<h2>{{titulo}}</h2>
-<div *ngIf="!productos">
-    cargando listado de productos....
- </div>
- <div *ngIf="productos">
-    <div style="margin: 0 auto;" class="form-group row last col-lg-10">
-        <label class="control-label text-right col-md-3 ">Buscar</label>
-        <div class="col-md-5">
-            <select class="form-control custom-select" >
-                <option><b>  </b></option>
-                <option *ngFor="let producto of productos">{{producto.nombre_producto}}</option>
-            </select>
+<div class="col-lg-12">
+    <div class="card card-outline-primary">
+        <div class="card-body">
+            <h2>{{titulo}}</h2>
         </div>
-        <a [routerLink]="['/admin/productos/agregar']" class="btn btn-ml btn-link">añadir producto</a>
     </div>
-
-    <br>
-    <table border="1" style="margin: 0 auto;" class="text-left col-md-10 col-lg-offset-1" >
-        <tr class="text-left" >
-          <td><strong>Nombre</strong></td>
-          <td><strong>categoria</strong></td>
-          <td><strong>descripcion</strong></td>
-          <td><strong>unidad de medida</strong></td>
-          <td><strong>precio</strong></td>
-          <td></td>
-        </tr>
-        <tr *ngFor="let producto of productos">
-            <td>{{producto.nombre_producto}}</td>
-            <td>{{producto.nombre}}</td>
-            <td>{{producto.descripcion}}</td>
-            <td>{{producto.unidad_de_medida}}</td>
-            <td>{{producto.precio}}</td>
-            <td><div class="botones" *ngIf="confirmado != producto.id">
-                <a  class="btn btn-xs btn-link">editar</a>
-                <a  class="btn btn-xs btn-link">eliminar</a>
-            </div></td>
-        </tr>
-         
-        
-    </table>
 </div>
+<div *ngIf="inden==null">
+    <productos-add></productos-add>
+</div>
+<div *ngIf="inden==12">
+    <productos-edit></productos-edit>
+</div>
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-primary">
+                    <div class="card-body">
+                        <div *ngIf="!productos">
+                            cargando listado de productos....
+                        </div>
+                        <div *ngIf="productos">
+                            <div class="form-group row last col-lg-12">
+                                <label class="control-label text-right col-md-3 ">Buscar</label>
+                                <div class="col-md-5">
+                                    <select class="form-control custom-select" >
+                                        <option><b>  </b></option>
+                                        <option *ngFor="let producto of productos">{{producto.nombre_producto}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive m-t-40">
+                                            <table id="myTable" class="table table-bordered table-striped">
+                                                <thead>
+                                                     <tr>
+                                                        <th>Nombre</th>
+                                                        <th>categoria</th>
+                                                        <th>descripcion</th>
+                                                        <th>unidad de medida</th>
+                                                        <th>precio</th>
+                                                        <td></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                       
+                                                    <tr *ngFor="let producto of productos">
+                                                            <td>{{producto.nombre_producto}}</td>
+                                                            <td>{{producto.nombre}}</td>
+                                                            <td>{{producto.descripcion}}</td>
+                                                            <td>{{producto.unidad_de_medida}}</td>
+                                                            <td>{{producto.precio}}</td>
+                                                            <td>
+                                                            <a (click)="actualizar(producto.id)" class="btn btn-xs btn-link">Editar</a>                                            
+                                                            <a  class="btn btn-xs btn-link">eliminar</a>
+                                                            </td> 
+                                                         
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -12,15 +12,26 @@ import { producto } from '../modelos/productos';
 export class ProductosComponent{
     public titulo:string;
     public productos:producto[];
-
+    public ident;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _productoservice: ProductoService
+        
     ){
         this.titulo = "productos";
+        this.ident=null;
+     
     }
     ngOnInit(){
+        this.mostrar();
+        this.actualizar(this.ident);
+    }  
+    actualizar(id){
+        this.ident=id;
+        console.log(this.ident);
+    }
+    mostrar(){
         this._productoservice.getProductos().subscribe(
             result=>{
                 this.productos=result;
@@ -32,5 +43,4 @@ export class ProductosComponent{
         );
     }
 
-  
 }
