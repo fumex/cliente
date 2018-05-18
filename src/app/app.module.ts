@@ -11,8 +11,17 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AuthGuard } from './guards/auth.guards';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
+
 import { CategoriaService} from './categorias/services/services.categoria';
 import { HttpModule}from '@angular/http';
+
+import { ProveedorModule } from './proveedor/proveedor.module';
+import { PagoModule } from './pago/pagos.module';
+
+import { ProductosComponent } from './productos/componentes/productos.component';
+import { ProductosAddComponent } from './productos/componentes/producto-add.components';
+import {ProductoService} from'./productos/services/producto.service';
+
 import { FormsModule } from '@angular/forms';
 import { importType } from '@angular/compiler/src/output/output_ast';
 import { ProductoModule } from './productos/productos.module';
@@ -29,14 +38,18 @@ import { AlmacenModule } from './almacen/almacen.module';
     AppRoutingModule,
     AuthModule,
     AdminModule,
+    ProveedorModule,
+    PagoModule,
+    HttpClientModule,
+    AppRoutingModule,
     HttpModule,
+
     FormsModule,
     HttpClientModule,
     ProductoModule,
     InventarioModule,
     AlmacenesModule,
     AlmacenModule
-    
   ],
   providers: [
     AuthGuard,

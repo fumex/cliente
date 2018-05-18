@@ -6,12 +6,7 @@
             <ul id="sidebarnav">
                 <li class="nav-devider"></li>
                 <li class="nav-label">Home</li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard <span class="label label-rouded label-primary pull-right">3</span></span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="index.html">Dashboard 1 </a></li>
-                        <li><a href="index1.html">Dashboard 2 </a></li>
-                        <li><a href="index2.html">Dashboard 3 </a></li>
-                    </ul>
+                <li> <a [routerLink]="['']" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Inicio</span></a>
                 </li>
                 <li class="nav-label">Layout</li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-columns"></i><span class="hide-menu">Layout</span></a>
@@ -42,7 +37,7 @@
                         <li><a href="chart-peity.html">Peity</a></li>
                     </ul>
                 </li>
-                <li> <a href="app-profile.html" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Profile</span></a></li>
+                <li> <a [routerLink]="['profile']" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Profile</span></a></li>
                 <li class="nav-label">Features</li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Ui Elements <span class="label label-rouded label-danger pull-right">12</span></span></a>
                     <ul aria-expanded="false" class="collapse">

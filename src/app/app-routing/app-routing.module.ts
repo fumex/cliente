@@ -10,8 +10,7 @@ import { LoginComponent } from '../auth/login/login.component';
     imports:[
         RouterModule.forRoot([
             { path:'', redirectTo:'admin', pathMatch:'full' },
-            { path:'auth/login',component:LoginComponent},
-           
+            { path:'auth/login',component:LoginComponent}
         ])
     ],
     declarations:[],
