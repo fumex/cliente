@@ -18,7 +18,7 @@ export class CategoriaService{
     getCategoria(){
         return this._http.get<any>(this.url+'/categorias').shareReplay();
     }
-    addCategoria(categiria:categoria):Observable<any>{
+    addCategoria(categoria:categoria):Observable<any>{
         let json = JSON.stringify(categoria);
         
         let params = "json="+json;
@@ -27,7 +27,15 @@ export class CategoriaService{
         return this._http.post(this.url+'/categorias',params,{headers:headers});
             
     }
-    
+    actualizarcategoria(id, categoria:categoria):Observable<any>{
+        let json=JSON.stringify(categoria);
+        let params="json"+json;
+        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+        return this._http.post(this.url+'/categorias/'+id,params,{headers:headers});
+    }
+    selectcategoria(id){
+        return this._http.get<any>(this.url+'/categorias/'+id).shareReplay();
+    }
 
  
 }

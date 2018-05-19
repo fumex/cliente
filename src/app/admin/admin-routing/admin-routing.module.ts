@@ -9,7 +9,6 @@ import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.
 
 import { ProductosComponent } from '../../productos/componentes/productos.component';
 import {AlmacenesComponent} from '../../Almacenes/componentes/almacenes.component';
-import{ProductosAddComponent}from '../../productos/componentes/producto-add.components';
 
 import{ProductosEditComponent}from '../../productos/componentes/producto-edit.component';
 import{InventarioComponent} from '../../inventario/componentes/inventario.component';
@@ -47,7 +46,6 @@ import { PagoListComponent } from '../../pago/components/pago-list.component';
                     { path:'transaccion/list', component:PagoListComponent},
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
-                    { path:'productos/agregar',component:ProductosAddComponent},
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'productos/:id',component:ProductosEditComponent},
                     { path:'almacen',component:AlmacenComponent},

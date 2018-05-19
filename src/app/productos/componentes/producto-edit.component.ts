@@ -5,7 +5,7 @@ import {ProductoService} from '../services/producto.service';
 import { producto } from '../modelos/productos';
 @Component({
     selector: 'productos-edit',
-    templateUrl: '../views/productos-add.component.html',
+    templateUrl: '../views/productos.component.html',
     providers: [ProductoService ],
     styleUrls: ['../styles/productos.component.css']
   })
