@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { PagoModel } from '../models/pago';
 import { PagoDetalleModel } from '../models/pago-detalle';
 import { UnidadModel } from '../models/unidad';
+import { almacenstock } from '../../almacen/modelos/almacen';
 
 @Injectable()
 export class PagoService{
@@ -40,5 +41,11 @@ export class PagoService{
         let params=JSON.stringify(unidad);
         let headers=new HttpHeaders().set('Content-Type','application/json');
         return  this.http.post<any>(`${environment.api_url}/auth/unidad`,params,{headers:headers});
+    }
+    //---------------------------------Actualizacion y creacion de Detalle alamcen-----------------------
+    creUpDetalleAlmacen(detalleAlmacen:almacenstock):Observable<any>{
+        let params=JSON.stringify(detalleAlmacen);
+        let headers=new HttpHeaders().set('Content-Type','application/json');
+        return  this.http.post<any>(`${environment.api_url}/auth/almacen-detalle`,params,{headers:headers});
     }
 }
