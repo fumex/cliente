@@ -10,23 +10,17 @@ declare var $:any;
 declare var swal:any;
 
 @Component({
-  selector: 'productos-add',
-  templateUrl: '../views/productos.component.html',
+  selector: 'productos-list',
+  templateUrl: '../views/productos-list.component.html',
   providers: [ProductoService,CategoriaService]
 })
-export class ProductosComponent{
+export class ProductosListarComponent{
     public titulo:string;
     public productos:producto;
     public producto:producto;
     public editproducto:producto;
-    public agregarpro:producto;
     public cate:categoria;
-    public categorias:categoria;
-    public modificarcategoria;
     public ident;
-    public apareceredit;
-    public llamarcategoria;
-
     public modificarproducto;
 	constructor(
         private _route:ActivatedRoute,
@@ -37,14 +31,8 @@ export class ProductosComponent{
     ){
         this.titulo = "productos";
         this.tabla();
-
         this.producto=new producto(0,'','','','',null);
         this.editproducto=new producto(0,'','','','',null);
-        this.agregarpro=new producto(0,'','','','',null);
-        this.categorias=new categoria(0,'');
-        this.modificarcategoria=null;
-        this.llamarcategoria=null;
-        this.apareceredit=null;
         this.modificarproducto=null;
         this.ident=null;
         
@@ -54,19 +42,9 @@ export class ProductosComponent{
         this.mostrar();
         this.mostrarcategoria();
         this.confirmaractualizar(this.modificarproducto);
-        this.aparecermodificarcategoria(this.modificarcategoria);
-        this.llamarcate(this.llamarcategoria,this.apareceredit);
-    }  
-    aparecermodificarcategoria(id){
-        this.modificarcategoria=id;    
-        console.log(this.modificarcategoria);
-    }
 
-    llamarcate(id,apa){
-        this.llamarcategoria=id;
-        this.apareceredit=apa;
-        console.log(this.llamarcategoria);
-    }
+    }  
+   
     confirmaractualizar(id){
         this.modificarproducto=id;
         console.log(this.modificarproducto );
@@ -98,12 +76,10 @@ export class ProductosComponent{
         console.log(this.editproducto);
         this._productoservice.Productosupdate(id,this.editproducto).subscribe(
             result=>{
-                this.mostrar();
                 console.log(result);
                 console.log(this.productos);
-                this.modificarproducto=null;
+                this.limpiar();
                 this.mostrar();
-                this.tabla();
             },
             error=>{
                 console.log(<any>error);               
@@ -122,25 +98,11 @@ export class ProductosComponent{
             }   
         );
     }
-    agregarproducto(){
-        console.log(this.agregarpro);
-        this._productoservice.addproducto(this.agregarpro).subscribe(
-            result=>{
-                this.mostrar();
-                console.log(result);
-
-            },
-            error=>{
-                console.log(<any>error);
-            }
-
-        )
-
-    }
     eliminarproducto(){
         this._productoservice.borrarproducto(this.ident).subscribe(
             result=>{
                 this.mostrar();
+                this.limpiar();
             },
             error=>{
                 console.log(<any>error);
@@ -148,17 +110,12 @@ export class ProductosComponent{
         )
     }
 
-    cancelar(){
+    limpiar(){
         this.ident=null;
         this.modificarproducto=null;
+        this.editproducto=new producto(0,'','','','',null);
     }
 
-
-    getexit(){
-        this.modificarcategoria=null;
-        this.llamarcategoria=null;
-        this.apareceredit=null;
-    }
     mostrarcategoria(){
         this._categoriaservice.getCategoria().subscribe(
             result=>{

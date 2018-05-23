@@ -46,7 +46,4 @@ export class ProductoService{
     listProductos(){
         return this._http.get<any>(this.url+'/productos-get').shareReplay();
     }
-
- 
-b
 }
