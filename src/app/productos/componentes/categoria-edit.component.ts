@@ -12,6 +12,7 @@ import { ProductosComponent } from './productos.component';
 })
 export class categoriaedit{
     public categoria:categoria;
+    public categorias;
     public id;
     public titulo;
     constructor(
@@ -20,25 +21,26 @@ export class categoriaedit{
        private _productoscomponent:ProductosComponent
     ){
         this.categoria = new categoria(null,'');
+        
         this.id=0;
         this.titulo="editar categoria"
-        this.id=this._productoscomponent.modificar;
+        this.id=this._productoscomponent.modificarcategoria;
     }
     exit(){
         this._productoscomponent.getexit();
     }
     ngOnInit(){
-        this.getProducto();
-    }
-    onSubmit(){
-        this.actualizarcategoria();
+        this.getcategoria();
     }
     actualizarcategoria(){
-        //this.categoria = new categoria(tipo1);
-        
+        console.log(this.categorias)
+        this.categorias=new categoria(null,'');
+        this.categorias=this.categoria;
+        console.log(this.categorias)
         this._categoriaservice.actualizarcategoria(this.id,this.categoria).subscribe(
             response=>{
                 console.log(response);
+                this._productoscomponent.mostrarcategoria();
                 this.exit();
             },
             error=>{
@@ -46,8 +48,8 @@ export class categoriaedit{
             }
         );
     }
-    getProducto(){
-        this.id=this._productoscomponent.modificar;
+    getcategoria(){
+        this.id=this._productoscomponent.modificarcategoria;
 		this._categoriaservice.selectcategoria(this.id).subscribe(
 			response => {
 				this.categoria = response;

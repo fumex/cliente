@@ -10,7 +10,6 @@ import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.
 import { ProductosComponent } from '../../productos/componentes/productos.component';
 import {AlmacenesComponent} from '../../Almacenes/componentes/almacenes.component';
 
-import{ProductosEditComponent}from '../../productos/componentes/producto-edit.component';
 import{InventarioComponent} from '../../inventario/componentes/inventario.component';
 import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 
@@ -57,7 +56,6 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
                     { path:'almacenes',component:AlmacenesComponent},
-                    { path:'productos/:id',component:ProductosEditComponent},
                     { path:'almacen',component:AlmacenComponent},
                     { path:'inventario',component:InventarioComponent}
                 ]
