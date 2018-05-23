@@ -1,5 +1,4 @@
-
-<form #formcategoria="ngForm" (ngSubmit)="onSubmit()" (ngSubmit)="onSubmit()">
+<form #formcategoria="ngForm" >
     <div class="row p-t-1">
         <div class="col-md-9">
             <div class="form-group">
@@ -13,7 +12,8 @@
         <div class="col-md-3">  
             <br>
             <br>
-             <button  type="submit" value="{{titulo}}" [disabled]="!formcategoria.form.valid" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check"></i></button>  
+             <button  *ngIf="titulo=='editar categoria'" (click)="actualizarcategoria()" value="{{titulo}}" [disabled]="!formcategoria.form.valid" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check"></i></button>
+             <button  *ngIf="titulo!='editar categoria'" (click)="guardarcategoria()" value="{{titulo}}" [disabled]="!formcategoria.form.valid" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-save"></i></button>    
             <button type="button" (click)="exit()" class="btn btn-warning btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-close"></i></button>
         </div>
     </div>

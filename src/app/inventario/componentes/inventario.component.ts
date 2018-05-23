@@ -7,6 +7,9 @@ import{inventario} from '../modelos/inventario';
 import{almacen}from '../../Almacenes/modelos/almacenes';
 import{producto} from '../../productos/modelos/productos';
 
+
+declare var swal:any;
+
 @Component({
   selector: 'productos-list',
   templateUrl: '../views/inventario.component.html',
@@ -32,7 +35,9 @@ export class InventarioComponent{
         this.inventario=new inventario(0,'','',0,0,0,0,'',0);
         this.ident=null;
         this.almacenselec=null;
+
     }
+
     ngOnInit(){
         this.mostrar();
         this.mostraralmacen();

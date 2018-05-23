@@ -22,9 +22,7 @@ export class categoriacomponent{
     exit(){
         this._productoscomponent.getexit();
     }
-    onSubmit(){
-        this.guardarcategoria();
-    }
+
     guardarcategoria(){
         //this.categoria = new categoria(tipo1);
         console.log(this.categoria);
@@ -32,6 +30,7 @@ export class categoriacomponent{
             response=>{
                 console.log(response);
                 this.categoria = new categoria(null,'');
+                this._productoscomponent.mostrarcategoria();
                 this.exit();
             },
             error=>{

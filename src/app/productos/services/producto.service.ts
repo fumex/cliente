@@ -29,8 +29,16 @@ export class ProductoService{
     }
     SeleccionarProducto(id){
         return this._http.get<any>(this.url+'/productos/'+id).shareReplay();
-
     }
-
- 
+    borrarproducto(id){
+        return this._http.get<any>(this.url+'/productos/eliminar/'+id).shareReplay();
+    }
+    Productosupdate(id,producto:producto):Observable<any>{
+        let json = JSON.stringify(producto);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/productos/'+id,params,{headers:headers});
+    }
 }
