@@ -17,6 +17,8 @@ import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 import { TipoProveedor } from '../../proveedor/components/tipo-proveedor.component';
 import { PagoAddComponent } from '../../pago/components/pago-add.component';
 import { PagoListComponent } from '../../pago/components/pago-list.component';
+import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
+import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
 
 
 
@@ -38,6 +40,14 @@ import { PagoListComponent } from '../../pago/components/pago-list.component';
                     {
                         path:'proveedor',
                         component:ProveedorAddComponent
+                    },
+                    {
+                        path:'proveedor/list',
+                        component:ProveedorListComponent
+                    },
+                    {
+                        path:'proveedor/edit/:id',
+                        component:ProveedorEditComponent
                     },
                     {
                         path:'transaccion',

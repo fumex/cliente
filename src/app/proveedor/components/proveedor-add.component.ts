@@ -3,9 +3,9 @@ import { ProveedorService } from '../services/proveedor.service';
 import { ProveedorModel } from '../models/proveedor';
 import { TipoProveedorService } from '../services/tipoProveedor.service';
 import { TipoProveedorModel } from '../models/tipoProveedor';
+import { Router, ActivatedRoute } from '@angular/router';
 
-declare var jQuery:any;
-declare var $:any;
+
 @Component({
     selector:'proveedor-add',
     templateUrl:'../views/proveedor-add.html',
@@ -15,53 +15,21 @@ declare var $:any;
 export class ProveedorAddComponent implements OnInit{
     public estado:boolean;
     public proveedor:ProveedorModel;
-    public proveedores:any=[];
     public tipos:TipoProveedorModel[];
-    public confirmado;
-    public confirmUpdate;
+   
     constructor(
         private proveedorService:ProveedorService,
-        private tipoProveedor:TipoProveedorService
+        private tipoProveedor:TipoProveedorService,
+        private  route:ActivatedRoute,
+        private router:Router
     ){
-        this.proveedor= new ProveedorModel('','','','','',null);
-        this.estado=true;
-        this.confirmado=null;
-        this.confirmUpdate=null;
-        this.tabla();
-        
+        this.proveedor= new ProveedorModel(null,'','','','','',null);
+        this.estado=true;   
     }
     ngOnInit(){
-            this.getProveedores();
-            this.getTipo();
             
-    }
-    actualizarConfirm(id){
-        this.confirmado=id;
-        this.confirmUpdate=id;
-    }
-    borrarConfirm(id){
-        this.confirmado=id;
-        this.confirmUpdate=null;
-    }
-    cancelarConfirm(){
-        this.confirmado=null;
-    }
-    cancelarUpdate(){
-        this.confirmado=null;
-        this.confirmUpdate=null;
-    }   
-
-    tabla(){
-       setTimeout(function(){
-           $(function(){
-                $('#mytable').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                });
-           });
-       },3000);
+        this.getTipo();
+            
     }
 
     getAdd(){
@@ -76,29 +44,7 @@ export class ProveedorAddComponent implements OnInit{
         this.proveedorService.addProveedor(this.proveedor).subscribe(
             response=>{
                 console.log(response);
-                this.getProveedores();
-                this.clearProveedor();
-            },
-            error=>{
-                console.log(<any>error);
-            }
-        );
-    }
-    onUpdate(
-        id,
-        nombre_proveedor,
-        ruc,
-        direccion,
-        telefono,
-        email,
-        tipo
-        ){
-        this.proveedor = new ProveedorModel('compu Serve','111211111','av. los incas','084701211','gregouqa@asd.com',3);
-        console.log(this.proveedor);
-        console.log(id);
-        this.proveedorService.updateProveedor(id,this.proveedor).subscribe(
-            response=>{
-                console.log(response);
+                this.router.navigate(['/admin/proveedor/list']);
             },
             error=>{
                 console.log(<any>error);
@@ -115,32 +61,11 @@ export class ProveedorAddComponent implements OnInit{
             }
         );
     }
-    getProveedores(){
-        this.proveedorService.getTable().subscribe(
-            result=>{
-                this.proveedores=result;
-            },
-            error=>{
-                console.log(<any>error);
-            }
-        );
-    }
+    
     onCancel(){
         this.clearProveedor();
     }
     clearProveedor(){
-        this.proveedor= new ProveedorModel('','','','','',null);
-    }
-    onDeleteProveedor(id){
-        this.proveedorService.deleteProveedor(id).subscribe(
-            result=>{
-               // console.log(result);
-               this.getProveedores();
-            },
-            error=>{
-                console.log(<any>error);
-            }
-        )
-    }
-    
+        this.proveedor= new ProveedorModel(null,'','','','','',null);
+    }  
 }
