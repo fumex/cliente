@@ -15,6 +15,7 @@ export class ProveedorEditComponent implements OnInit{
     public titulo:string;
     public proveedor:ProveedorModel;
     public tipos:TipoProveedorModel[];
+    public tipo:TipoProveedorModel;
     public estado;
     constructor(
         private proveedorService:ProveedorService,
@@ -71,5 +72,22 @@ export class ProveedorEditComponent implements OnInit{
                 }
             );
         });
+    }
+    saveTipo(tipo1:string){
+        this.tipo = new TipoProveedorModel(tipo1);
+        console.log(this.tipo);
+        this.tipoProveedorService.addTipo(this.tipo).subscribe(
+            response=>{
+                console.log(response);
+                this.exit();
+                this.getTipo();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    exit(){
+        this.estado=true;
     }
 }

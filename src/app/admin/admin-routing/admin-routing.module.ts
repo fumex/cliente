@@ -13,7 +13,6 @@ import {AlmacenesComponent} from '../../Almacenes/componentes/almacenes.componen
 import{InventarioComponent} from '../../inventario/componentes/inventario.component';
 import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 
-import { TipoProveedor } from '../../proveedor/components/tipo-proveedor.component';
 import { PagoAddComponent } from '../../pago/components/pago-add.component';
 import { PagoListComponent } from '../../pago/components/pago-list.component';
 

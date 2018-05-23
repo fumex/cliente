@@ -16,6 +16,7 @@ export class ProveedorAddComponent implements OnInit{
     public estado:boolean;
     public proveedor:ProveedorModel;
     public tipos:TipoProveedorModel[];
+    public tipo:TipoProveedorModel;
    
     constructor(
         private proveedorService:ProveedorService,
@@ -24,7 +25,8 @@ export class ProveedorAddComponent implements OnInit{
         private router:Router
     ){
         this.proveedor= new ProveedorModel(null,'','','','','',null);
-        this.estado=true;   
+        this.estado=true;
+        this.tipo = new TipoProveedorModel(null);
     }
     ngOnInit(){
             
@@ -61,7 +63,23 @@ export class ProveedorAddComponent implements OnInit{
             }
         );
     }
-    
+    saveTipo(tipo1:string){
+        this.tipo = new TipoProveedorModel(tipo1);
+        console.log(this.tipo);
+        this.tipoProveedor.addTipo(this.tipo).subscribe(
+            response=>{
+                console.log(response);
+                this.exit();
+                this.getTipo();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    exit(){
+        this.estado=true;
+    }
     onCancel(){
         this.clearProveedor();
     }
