@@ -25,10 +25,13 @@ export class ProveedorService{
     }
 
     updateProveedor(id, proveedor:ProveedorModel):Observable<any>{
-        let json=JSON.stringify(proveedor);
-        let params="json"+json;
-        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
-        return this.http.put(`${environment.api_url}/auth/proveedores-update/${id}`,params,{headers:headers});
+        let params=JSON.stringify(proveedor);
+        let headers=new HttpHeaders().set('Content-Type','application/json');
+        return this.http.post(`${environment.api_url}/auth/proveedores-update/`+id,params,{headers:headers});
+    }
+
+    getProveedor(id):Observable<any>{
+        return this.http.get<any>(`${environment.api_url}/auth/proveedor/`+id).shareReplay();
     }
 
     deleteProveedor(id):Observable<any>{

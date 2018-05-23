@@ -28,6 +28,7 @@ export class PagoAddComponent implements OnInit{
     public unidades:UnidadModel[];
     public almacenes:almacen[];
     public productos:producto[];
+    public total:number;
 
     constructor(
         private pagoService:PagoService,
@@ -37,8 +38,9 @@ export class PagoAddComponent implements OnInit{
     ){
         this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.pago= new PagoModel(this.codigo,null,'',null,'');
-        this.title="Transacciones";
+        this.title="Compras";
         this.estado=true;
+        this.total=0;
     }
     ngOnInit(){
         this.getProveedor();
@@ -137,10 +139,19 @@ export class PagoAddComponent implements OnInit{
         this.compras.push(this.compra);
         console.log(this.compras)
         this.compra=new PagoDetalleModel(null,null,null,null,null);
-       
+        this.sumaTotal();
+    }
+    sumaTotal(){
+        let total=0;
+       this.compras.forEach(function(value){
+         total=total+(value.cantidad*value.precio_unitario);
+         console.log(total);
+       });
+       this.total=total;
     }
     exitCompra(index){
         this.compras.splice(index,1);
+        this.sumaTotal();
     }
     addDetalles(){
         let pago=this.pagoService;

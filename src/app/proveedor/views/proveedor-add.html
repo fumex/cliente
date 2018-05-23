@@ -84,8 +84,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div  class="form-group">
-                                        <div class="row" *ngIf="estado==true">
+                                    <div  class="form-group" *ngIf="estado==true">
+                                        <div class="row">
                                             <label class="col-sm-4 control-label">
                                                 Tipo
                                                 <span *ngIf="!id.valid && id.touched" class="label label-danger">*</span>
@@ -113,121 +113,14 @@
                                     <div class="col-md-8">
                                         <div class="row">
                                             <div class="offset-sm-3 col-md-9">
-                                                <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
-                                                <button type="button" [disabled]="!formProveedor.form.valid"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                                <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
+                                                <button type="button"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Exportar Información</h4>
-                        <div class="table-responsive m-t-40">
-                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Ruc</th>
-                                        <th>Direccion</th>
-                                        <th>telefono</th>
-                                        <th>email</th>
-                                        <th>Tipo</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Ruc</th>
-                                        <th>Direccion</th>
-                                        <th>telefono</th>
-                                        <th>email</th>
-                                        <th>Tipo</th>
-                                        <th></th> 
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr *ngFor="let proveedor of proveedores">
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.nombre_proveedor}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.nombre_proveedor}}" #nombre>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.ruc}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.ruc}}" #ruc>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.direccion}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.direccion}}" #direccion>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.telefono}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text" style="width:100%; height: 34px;"  value="{{proveedor.telefono}}" #telefono>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.email}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text" style="width:100%; height: 34px;" value="{{proveedor.email}}" #email>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmUpdate!=proveedor.id">{{proveedor.tipo}}</td>
-                                        <td *ngIf="confirmUpdate==proveedor.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <select style="width:100%; height: 34px;">
-                                                        <option *ngFor="let tipo of tipos" [ngValue]="tipo.id">
-                                                            {{tipo.tipo}}
-                                                        </option>               
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="confirmado!==proveedor.id" >
-                                            <button type="button" (click)="actualizarConfirm(proveedor.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
-                                            <button type="button" (click)="borrarConfirm(proveedor.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
-                                        </td>
-                                        <td *ngIf="confirmado==proveedor.id">
-                                            <div *ngIf="confirmUpdate!==proveedor.id">
-                                                <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
-                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
-                                            </div>
-                                            <div *ngIf="confirmUpdate==proveedor.id">
-                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarUpdate()"><i class="fa fa-times"></i></a>
-                                                <button class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onUpdate(proveedor.id, nombre.value, ruc.value, direccion.value, telefono.value, email.value)"><i class="fa fa-floppy-o"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>

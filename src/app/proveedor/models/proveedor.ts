@@ -1,6 +1,7 @@
 export class ProveedorModel{
     
     constructor(
+    public id:number,
     public nombre_proveedor:string,
     public ruc:string,
     public direccion:string,
