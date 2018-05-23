@@ -5,6 +5,7 @@ import { ProductoService } from "./services/producto.service";
 import { ProductosComponent } from "./componentes/productos.component";
 import {categoriacomponent} from './componentes/categoria.component';
 import{categoriaedit}from './componentes/categoria-edit.component';
+import{ ProductosListarComponent}from './componentes/productos-list.component';
 
 
 
@@ -12,7 +13,8 @@ import{categoriaedit}from './componentes/categoria-edit.component';
     declarations: [
         ProductosComponent,
         categoriacomponent,
-        categoriaedit
+        categoriaedit,
+        ProductosListarComponent
       ],
       imports: [
         CommonModule,

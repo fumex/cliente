@@ -30,7 +30,7 @@ export class ProductoService{
     SeleccionarProducto(id){
         return this._http.get<any>(this.url+'/productos/'+id).shareReplay();
     }
-<<<<<<< HEAD
+
     borrarproducto(id){
         return this._http.get<any>(this.url+'/productos/eliminar/'+id).shareReplay();
     }
@@ -42,11 +42,8 @@ export class ProductoService{
        
         return this._http.post(this.url+'/productos/'+id,params,{headers:headers});
     }
-=======
+
     listProductos(){
         return this._http.get<any>(this.url+'/productos-get').shareReplay();
     }
-
- 
->>>>>>> 80834b34817ab682d3ca53ccc7118cd81704645b
 }
