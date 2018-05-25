@@ -10,6 +10,8 @@ import { AlmacenesService } from '../../Almacenes/services/almacenes.service';
 import { almacenstock } from '../../almacen/modelos/almacen';
 import { producto } from '../../productos/modelos/productos';
 import { ProductoService } from '../../productos/services/producto.service';
+import { DocumentoModel } from '../../TipoDocumento/models/documento';
+import { DocumentoService } from '../../TipoDocumento/services/documento.service';
 
 @Component({
     selector:'pago-add',
@@ -22,6 +24,7 @@ export class PagoAddComponent implements OnInit{
     public title:string;
     public codigo:any;
     public pago:PagoModel;
+    public documentos:DocumentoModel[];
     public proveedores:ProveedorModel[];
     public compra:PagoDetalleModel;
     public compras:Array<PagoDetalleModel>=[];
@@ -34,10 +37,11 @@ export class PagoAddComponent implements OnInit{
         private pagoService:PagoService,
         private almacenService:AlmacenesService,
         private productoService:ProductoService,
-        public router:Router
+        public router:Router,
+        public documentoService:DocumentoService
     ){
         this.compra=new PagoDetalleModel(null,null,null,null,null);
-        this.pago= new PagoModel(this.codigo,null,'',null,'');
+        this.pago= new PagoModel(this.codigo,null,null,'',null,'');
         this.title="Compras";
         this.estado=true;
         this.total=0;
@@ -48,6 +52,7 @@ export class PagoAddComponent implements OnInit{
         this.listUnidades();
         this.getAlmacenes();
         this.listProducto();
+        this.getDocumentos();
     }
     getProveedor(){
         this.pagoService.getProveedor().subscribe(
@@ -71,8 +76,8 @@ export class PagoAddComponent implements OnInit{
         );
     }
 
-    onSubmit(id_proveedor:number,recibo:string,id_almacen:number,tipo:string){
-        this.pago= new PagoModel(this.codigo,id_proveedor,recibo,id_almacen,tipo);
+    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
+        this.pago= new PagoModel(this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -83,7 +88,19 @@ export class PagoAddComponent implements OnInit{
             }
         );
     }
-    //Almacenes 
+    //Tipo de Documento
+    getDocumentos(){
+        this.documentoService.getDocumComprobante().subscribe(
+            result=>{
+                this.documentos=result;
+                console.log(this.documentos);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    //almacen
     getAlmacenes(){
         this.almacenService.getAlmacenes().subscribe(
             result=>{

@@ -22,6 +22,7 @@ import { ProductoModule } from './productos/productos.module';
 import { InventarioModule } from './inventario/inventario.moule';
 import { AlmacenesModule } from './Almacenes/almacenes.module';
 import { AlmacenModule } from './almacen/almacen.module';
+import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AlmacenModule } from './almacen/almacen.module';
     ProductoModule,
     InventarioModule,
     AlmacenesModule,
-    AlmacenModule
+    AlmacenModule,
+    TipoDocumentoModule
   ],
   providers: [
     AuthGuard,

@@ -20,6 +20,9 @@ import {ProductosListarComponent} from '../../productos/componentes/productos-li
 
 import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
+import { TipoDocumentoListComponent } from '../../TipoDocumento/components/documento-list.component';
+import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
+import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 
 
 
@@ -42,6 +45,18 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
                     {
                         path:'proveedor',
                         component:ProveedorAddComponent
+                    },
+                    {
+                        path:'documento/list',
+                        component:TipoDocumentoListComponent
+                    },
+                    {
+                        path:'documento',
+                        component:TipoDocumentoAddComponent
+                    },
+                    {
+                        path:'documento/edit/:id',
+                        component:TipoDocumentoEditComponent
                     },
                     {
                         path:'proveedor/list',
