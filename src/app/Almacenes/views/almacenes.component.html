@@ -75,8 +75,11 @@
                         <div >
                             <div class="card">
                                 <div class="card-body">
+                                <h4 class="card-title">Exportar Información</h4>
+                                <hr>
                                     <div class="table-responsive m-t-20">
-                                        <table id="myTable" class="table table-bordered table-striped">
+                                    <form #formEditarAlmacen="ngForm" (ngSubmit)="editarAlmacen(s)">   
+                                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                             <thead>
                                                  <tr>
                                                     <th>Nombre</th>
@@ -86,22 +89,63 @@
                                                     <td></td>
                                                 </tr>
                                             </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>direccion</th>
+                                                    <th>descripcion</th>
+                                                    <th>telefono</th>
+                                                    <td></td>
+                                                     </tr>
+                                            </tfoot>
                                             <tbody>
-                                                   
                                                 <tr *ngFor="let almacen of almacenes">
-                                                        <td>{{almacen.nombre}}</td>
-                                                        <td>{{almacen.direccion}}</td>
-                                                        <td>{{almacen.descripcion}}</td>
-                                                        <td>{{almacen.telefono}}</td>
-                                                   
+                                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.nombre}}</td>
+                                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                                            <div style="margin-right: 0px;">
+                                                                <div style="padding-right: 0px;">
+                                                                    <input #nombre="ngModel" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.direccion}}</td>
+                                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                                            <div style="margin-right: 0px;">
+                                                                <div style="padding-right: 0px;">
+                                                                    <input #direccion="ngModel" name="direccion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.direccion" >
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.descripcion}}</td>
+                                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                                            <div style="margin-right: 0px;">
+                                                                <div style="padding-right: 0px;">
+                                                                    <input #descripcion="ngModel" name="descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.descripcion" >
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.telefono}}</td>
+                                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                                            <div style="margin-right: 0px;">
+                                                                <div style="padding-right: 0px;">
+                                                                    <input #telefono="ngModel" name="telefono" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.telefono" >
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td>
-                                                        <a (click)="actualizar(producto.id)" class="btn btn-xs btn-link">Editar</a>                                            
-                                                        <a  class="btn btn-xs btn-link">eliminar</a>
+                                                            <div *ngIf="idalmacen!=almacen.id">
+                                                                <a class="btn btn-sm btn-warning " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
+                                                                <a class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
+                                                            </div>
+                                                            <div *ngIf="idalmacen==almacen.id">
+                                                                <button class="btn btn-sm btn-warning" type="submit"><i class="fa fa-check"></i></button>                                            
+                                                                <a class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
+                                                            </div>
                                                         </td> 
-                                                     
                                                     </tr>
                                             </tbody>
                                         </table>
+                                    </form>
                                     </div>
                                 </div>
                             </div>

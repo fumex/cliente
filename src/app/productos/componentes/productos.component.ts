@@ -99,18 +99,33 @@ export class ProductosComponent{
         this._productoservice.Productosupdate(id,this.editproducto).subscribe(
             result=>{
                 this.mostrar();
+                this.limpiar();
+                this.destruir();
+                this.reconstruir();
                 console.log(result);
                 console.log(this.productos);
                 this.modificarproducto=null;
-                this.mostrar();
-                this.tabla();
+                this.modificaralerta();
             },
             error=>{
                 console.log(<any>error);               
             }
         );
     }
-    
+    modificaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo el almacen',
+            buttons: false,
+            timer: 3000
+          })
+    }
+    limpiar(){
+        this.ident=null;
+        this.modificarproducto=null;
+        this.editproducto=new producto(0,'','','','',null);
+    }
     mostrar(){
         this._productoservice.getProductos().subscribe(
             result=>{
@@ -149,8 +164,7 @@ export class ProductosComponent{
     }
 
     cancelar(){
-        this.ident=null;
-        this.modificarproducto=null;
+        this.limpiar();
     }
 
 
@@ -206,5 +220,13 @@ export class ProductosComponent{
             }
           });
     }
-
+    destruir(){	
+        var table = $('#mytable').DataTable(); table .clear() ;
+        $('#mytable').DataTable().destroy();
+    }
+    reconstruir(){
+        this.tabla();
+    
+        this.mostrar();
+    }
 }

@@ -49,6 +49,7 @@
                                                 <option disabled="disabled">--seleccione el almacen</option>    
                                             <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
                                         </select>
+                                        <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir categoria</a>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -73,6 +74,7 @@
                                                 <label id="rec" *ngIf="!descripcion.valid">*</label>
                                             </label>
                                             <select #descripcion="ngModel"  (change)="actualizar(inventario.opciones)" name="descripcion" [(ngModel)]="inventario.opciones" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                <option ></option>  
                                                 <option value="tranferencia entre almacenes" >tranferencia entre almacenes</option>  
                                                 <option value="merma">merma</option>  
                                                 <option value="devoluciones">devoluciones</option>  

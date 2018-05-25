@@ -8,6 +8,7 @@ import {CategoriaService}from '../../categorias/services/services.categoria';
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
+var myTable = $('#mytable').DataTable(); 
 
 @Component({
   selector: 'productos-list',
@@ -78,6 +79,9 @@ export class ProductosListarComponent{
             result=>{
                 console.log(result);
                 console.log(this.productos);
+                myTable.clear().rows.add(this.productos).draw(); 
+                this.l();
+                this.r();
                 this.limpiar();
                 this.mostrar();
             },
@@ -129,7 +133,7 @@ export class ProductosListarComponent{
        
     }
     tabla(){
-        this.mostrar();
+       
         setTimeout(function(){
             $(function(){
                  $('#mytable').DataTable({
@@ -140,6 +144,7 @@ export class ProductosListarComponent{
                  });
             });
         },3000);
+        
     }
     borraralerta(id){
         this.ident=id;
@@ -163,5 +168,13 @@ export class ProductosListarComponent{
             }
           });
     }
-
+    l(){	
+        var table = $('#mytable').DataTable(); table .clear() ;
+        $('#mytable').DataTable().destroy();
+    }
+    r(){
+        this.tabla();
+    
+        this.mostrar();
+    }
 }
