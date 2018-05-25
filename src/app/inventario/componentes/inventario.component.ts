@@ -121,6 +121,8 @@ export class InventarioComponent{
         )
 
     }
-
-      
+    iralmacen(){
+        console.log(this._router.navigate(['/almacenes']));
+    }
+    
 }

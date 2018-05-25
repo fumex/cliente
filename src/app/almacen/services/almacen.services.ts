@@ -27,6 +27,15 @@ export class AlmaceneService{
         return this._http.post(this.url+'/almacen',params,{headers:headers});
             
     }
+    ActualizarAlmacen(id,almacen:almacenstock):Observable<any>{
+        let json = JSON.stringify(almacen);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/almacen/'+id,params,{headers:headers});
+            
+    }
     SeleccionarAlmacen(id){
         return this._http.get<any>(this.url+'/almacen/'+id).shareReplay();
 
