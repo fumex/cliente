@@ -24,7 +24,7 @@ import { TipoDocumentoListComponent } from '../../TipoDocumento/components/docum
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 
-
+import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
 
 
 @NgModule({
@@ -76,6 +76,7 @@ import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/docum
                     { path:'productos/list',component:ProductosListarComponent},
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
+                    { path:'pedido',component:OrdenDePedidoComponent},
                     { path:'inventario',component:InventarioComponent}
                 ]
             }

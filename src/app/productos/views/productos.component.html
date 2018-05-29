@@ -22,17 +22,9 @@
                                             <label id="rec" *ngIf="!nombre.valid">*</label>
                                         </label>
                                         <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control"required/>
-                                        </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">Precio
-                                                <span *ngIf="!Precio.valid && Precio.touched" class="label label-default">El precio no es correcto</span>                                                 
-                                                <label id="rec" *ngIf="!Precio.valid">*</label>
-                                        </label>
-                                        <input type="text" id="lastName" #Precio="ngModel" name="Precio" [(ngModel)]="agregarpro.precio" class="form-control" required pattern="[0-9]+"/>
                                     </div>
                                 </div>
+                                
                             </div>
 
                             <div class="row">
@@ -44,15 +36,39 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-5">
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                     <label class="control-label">Unidad de media</label>
                                     <span *ngIf="!unidadmedida.valid" class="label label-default">SELECCIONE</span>                                                        
                                    <label id="rec" *ngIf="!unidadmedida.valid"> *</label> 
-                                        <select #unidadmedida="ngModel" name="unidadmedida" [(ngModel)]="agregarpro.unidad_de_medida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
-                                                <option><b>--unidad de medida</b></option>
+                                        <select #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.unidadmedida)" name="unidadmedida" [(ngModel)]="agregarpro.unidadmedida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                <option disabled="disabled"><b>--unidad de medida</b></option>
+                                                <option value="u"><b>unidad</b></option>
+                                                <option disabled="disabled"><b></b></option>
+                                                <option value="Mg"><b>miligramo</b></option>
+                                                <option value="Dg"><b>decigramo</b></option>
+                                                <option value="G"><b>gramo</b></option>
+                                                <option value="Kg"><b>Kilogramo</b></option>
+                                                <option disabled="disabled"><b></b></option>
+                                                <option value="Ml"><b>mililitro</b></option>
+                                                <option value="Cl"><b>centilitro</b></option>
+                                                <option value="L"><b>litro</b></option>
+                                                <option disabled="disabled"><b></b></option>
+                                                <option value="m³"><b>metro cúbico</b></option>
+                                                <option value="mm³"><b>milímetro cúbico</b></option>
+                                                <option disabled="disabled"><b></b></option>
+                                                <option value="m²"><b>metro cuadrado</b></option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div *ngIf="unidad!=null" class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">cantidad
+                                            <span *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" class="label label-default">la cantidad es obligatoria
+                                            </span>
+                                        </label>
+                                        <input style="height: 36px;" type="number" text="1" min="1" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control col-md-6" required/>                            
                                     </div>
                                 </div>
                             </div>
@@ -111,21 +127,21 @@
                                 <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                     <thead>
                                         <tr>
-                                        <th>Nombre</th>
-                                        <th>categoria</th>
-                                        <th>descripcion</th>
-                                        <th>unidad de medida</th>
-                                        <th>precio</th>
-                                        <td ><a *ngIf="modificarproducto!=null">Guardar?</a></td>
+                                            <th>Nombre</th>
+                                            <th>cantidad</th>
+                                            <th>unidad de medida</th>
+                                            <th>categoria</th>
+                                            <th>descripcion</th>
+                                            <td ><a *ngIf="modificarproducto!=null">Guardar?</a></td>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                        <th>Nombre</th>
-                                        <th>categoria</th>
-                                        <th>descripcion</th>
-                                        <th>unidad de medida</th>
-                                        <th>precio</th>
+                                            <th>Nombre</th>
+                                            <th>cantidad</th>
+                                            <th>unidad de medida</th>
+                                            <th>categoria</th>
+                                            <th>descripcion</th>
                                         <th></th> 
                                     </tr>
                                     </tfoot>
@@ -137,6 +153,37 @@
                                                 <div style="padding-right: 0px;">
                                                     <input #nombre="ngModel" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editproducto.nombre_producto" #nombre>
                                                 </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="modificarproducto!=producto.id">{{producto.cantidad}}</td>
+                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="number"  #cantidad="ngModel" name="cantidad" style="width:100%; height: 38px;" [(ngModel)]="editproducto.cantidad" #cantidad required/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="modificarproducto!=producto.id">{{producto.unidad_de_medida}}</td>
+                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <select #unidadmedida="ngModel"  name="unidadmedida" [(ngModel)]="editproducto.unidad_de_medida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                    <option disabled="disabled"><b>--unidad de medida</b></option>
+                                                    <option value="u"><b>unidad</b></option>
+                                                    <option disabled="disabled"><b></b></option>
+                                                    <option value="Mg"><b>miligramo</b></option>
+                                                    <option value="Dg"><b>decigramo</b></option>
+                                                    <option value="G"><b>gramo</b></option>
+                                                    <option value="Kg"><b>Kilogramo</b></option>
+                                                    <option disabled="disabled"><b></b></option>
+                                                    <option value="Ml"><b>mililitro</b></option>
+                                                    <option value="Cl"><b>centilitro</b></option>
+                                                    <option value="L"><b>litro</b></option>
+                                                    <option disabled="disabled"><b></b></option>
+                                                    <option value="m³"><b>metro cúbico</b></option>
+                                                    <option value="mm³"><b>milímetro cúbico</b></option>
+                                                    <option disabled="disabled"><b></b></option>
+                                                    <option value="m²"><b>metro cuadrado</b></option>
+                                                </select>
                                             </div>
                                         </td>
                                         <td *ngIf="modificarproducto!=producto.id">{{producto.nombre}}</td>
@@ -154,22 +201,6 @@
                                             <div style="margin-right: 0px;">
                                                 <div style="padding-right: 0px;">
                                                     <input  #Descripcion="ngModel" name="Descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editproducto.descripcion" #direccion>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.unidad_de_medida}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <select #unidadmedida="ngModel" name="unidadmedida" style="width:100%; height: 38px;" #unidadmedida="ngModel" name="unidadmedida" [(ngModel)]="editproducto.unidad_de_medida"  tabindex="1" required>
-                                                    <option><b>--unidad de medida</b></option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.precio}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="text"  #Precio="ngModel" name="Precio" style="width:100%; height: 38px;" [(ngModel)]="editproducto.precio" #email>
                                                 </div>
                                             </div>
                                         </td>

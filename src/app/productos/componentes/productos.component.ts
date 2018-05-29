@@ -26,7 +26,7 @@ export class ProductosComponent{
     public ident;
     public apareceredit;
     public llamarcategoria;
-
+    public unidad;
     public modificarproducto;
 	constructor(
         private _route:ActivatedRoute,
@@ -47,16 +47,19 @@ export class ProductosComponent{
         this.apareceredit=null;
         this.modificarproducto=null;
         this.ident=null;
-        
+        this.unidad=null;
     }
     ngOnInit(){
-        
         this.mostrar();
         this.mostrarcategoria();
         this.confirmaractualizar(this.modificarproducto);
         this.aparecermodificarcategoria(this.modificarcategoria);
         this.llamarcate(this.llamarcategoria,this.apareceredit);
-    }  
+    } 
+    aparecerunidad(id){
+        this.unidad=id;
+        console.log(this.unidad);
+    } 
     aparecermodificarcategoria(id){
         this.modificarcategoria=id;    
         console.log(this.modificarcategoria);
@@ -185,6 +188,7 @@ export class ProductosComponent{
         );
        
     }
+    
     tabla(){
         this.mostrar();
         setTimeout(function(){
@@ -229,4 +233,5 @@ export class ProductosComponent{
     
         this.mostrar();
     }
+
 }
