@@ -22,7 +22,11 @@ import { ProductoModule } from './productos/productos.module';
 import { InventarioModule } from './inventario/inventario.moule';
 import { AlmacenesModule } from './Almacenes/almacenes.module';
 import { AlmacenModule } from './almacen/almacen.module';
+<<<<<<< HEAD
 import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
+=======
+import { TipoDocumentoModule } from './TipoDocumento/documento.module';
+>>>>>>> e5bfc0cfa5cc1740ab164bf38f2041e5e426ff02
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
     InventarioModule,
     AlmacenesModule,
     AlmacenModule,
+<<<<<<< HEAD
     OrdenDePedidoModule
+=======
+    TipoDocumentoModule
+>>>>>>> e5bfc0cfa5cc1740ab164bf38f2041e5e426ff02
   ],
   providers: [
     AuthGuard,

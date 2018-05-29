@@ -90,4 +90,7 @@ export class ProveedorEditComponent implements OnInit{
     exit(){
         this.estado=true;
     }
+    onCancel(){
+        this.router.navigate(['/admin/proveedor/list']);
+    }
 }

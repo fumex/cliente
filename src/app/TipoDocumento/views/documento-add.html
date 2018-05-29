@@ -1,0 +1,70 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">{{title}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title ">
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" #formDocumento="ngForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label" >
+                                            Documento
+                                            <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
+                                            <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="documento.documento" placeholder="ingrese nombre del documento" class="form-control" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label">
+                                            Operaciones
+                                            <span *ngIf="!operacion.valid && operacion.touched" class="label label-danger">*</span>
+                                            <span *ngIf="operacion.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control custom-select" #operacion="ngModel" name="operacion" [(ngModel)]="documento.operacion" required>
+                                                <option>Pesonal</option>
+                                                <option>Comprobante</option>               
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="offset-sm-3 col-md-9">
+                                                <button type="submit" [disabled]="!formDocumento.form.valid" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
+                                                <button type="button"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

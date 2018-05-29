@@ -1,0 +1,60 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item"><a href="">{{title}}</a></li>
+            <li class="breadcrumb-item active">Lista</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Exportar Información</h4>
+                        <div class="table-responsive m-t-40">
+                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Documento</th>
+                                            <th>Operacion</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Documento</th>
+                                            <th>Operacion</th>
+                                            <th>Opciones</th> 
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr *ngFor="let documento of documentos ; let $index=index">
+                                            <td>{{$index +1}}</td>
+                                            <td>{{documento.documento}}</td>
+                                            <td>{{documento.operacion}}</td>                    
+                                            <td *ngIf="confirmado!==documento.id" >
+                                                <button type="button" (click)="edit(documento.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
+                                                <button type="button" (click)="borrarConfirm(documento.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
+                                            </td>
+                                            <td *ngIf="confirmado==documento.id">
+                                                <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteDocumentos(documento.id)"><i class="fa fa-check"></i></a>
+                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
