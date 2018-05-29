@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { PagoService } from '../services/pago.service';
 import { ProveedorModel } from '../../proveedor/models/proveedor';
 import { PagoModel } from '../models/pago';
 import { PagoDetalleModel } from '../models/pago-detalle';
-import { UnidadModel } from '../models/unidad';
 import { Router } from '@angular/router';
 import { almacen } from '../../Almacenes/modelos/almacenes';
 import { AlmacenesService } from '../../Almacenes/services/almacenes.service';
 import { almacenstock } from '../../almacen/modelos/almacen';
-import { producto } from '../../productos/modelos/productos';
-import { ProductoService } from '../../productos/services/producto.service';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { DocumentoService } from '../../TipoDocumento/services/documento.service';
+import { CompraModel } from '../models/compra';
 
+declare  var $:any;
 @Component({
     selector:'pago-add',
     templateUrl:'../views/pago-add.html',
@@ -20,36 +19,33 @@ import { DocumentoService } from '../../TipoDocumento/services/documento.service
 })
 export class PagoAddComponent implements OnInit{
 
-    public estado:boolean;
     public title:string;
     public codigo:any;
     public pago:PagoModel;
     public documentos:DocumentoModel[];
     public proveedores:ProveedorModel[];
-    public compra:PagoDetalleModel;
-    public compras:Array<PagoDetalleModel>=[];
-    public unidades:UnidadModel[];
+    public compra:CompraModel;
+    public compras:Array<CompraModel>=[];
     public almacenes:almacen[];
-    public productos:producto[];
     public total:number;
+    public productos:any=[];
 
+   
     constructor(
         private pagoService:PagoService,
         private almacenService:AlmacenesService,
-        private productoService:ProductoService,
         public router:Router,
-        public documentoService:DocumentoService
+        public documentoService:DocumentoService,
     ){
-        this.compra=new PagoDetalleModel(null,null,null,null,null);
+        //this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.pago= new PagoModel(this.codigo,null,null,'',null,'');
         this.title="Compras";
-        this.estado=true;
         this.total=0;
+        this.tabla();
     }
     ngOnInit(){
         this.getProveedor();
         this.getCodigo();
-        this.listUnidades();
         this.getAlmacenes();
         this.listProducto();
         this.getDocumentos();
@@ -75,13 +71,20 @@ export class PagoAddComponent implements OnInit{
 
         );
     }
+    tabla(){
+        setTimeout(function(){
+            $(function(){
+                 $('#mytable').DataTable();
+            });
+        },3000);
+     }
 
     onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
         this.pago= new PagoModel(this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
-                this.addDetalles();
+                //this.addDetalles();
             },
             error=>{
                 console.log(<any>error);
@@ -113,63 +116,23 @@ export class PagoAddComponent implements OnInit{
     }
     //productos 
     listProducto(){
-        this.productoService.listProductos().subscribe(
+        this.pagoService.ListProductos().subscribe(
             result=>{
                 this.productos=result;
-                console.log(result);
             }
         );
-    }
-    //Unidades
-    getAdd(){
-        
-        this.estado=false;
-    }
-    getSalir(){
-        this.estado=true;
-    }
-    saveUnidad(uni:string){
-        let unidad = new UnidadModel(uni);
-        this.pagoService.addUnidad(unidad).subscribe(
-            result=>{
-                console.log(result);
-                this.estado=true;
-                this.listUnidades();
-            },
-            error=>{
-                console.log(<any>error);
-            }
-        );
-    }
-    listUnidades(){
-      this.pagoService.getUnidades().subscribe(
-          result=>{
-              this.unidades=result;
-          },
-          error=>{
-            console.log(<any> error);
-          }
-      );  
     }
     //detalles
-    addCompra(){
+    addCompra(id,categoria,unidad_medida,articulo,descripcion){
+        this.compra= new CompraModel(id,categoria,unidad_medida,articulo,descripcion);
         this.compras.push(this.compra);
         console.log(this.compras)
-        this.compra=new PagoDetalleModel(null,null,null,null,null);
-        this.sumaTotal();
-    }
-    sumaTotal(){
-        let total=0;
-       this.compras.forEach(function(value){
-         total=total+(value.cantidad*value.precio_unitario);
-         console.log(total);
-       });
-       this.total=total;
     }
     exitCompra(index){
         this.compras.splice(index,1);
-        this.sumaTotal();
+        
     }
+    /*
     addDetalles(){
         let pago=this.pagoService;
         let cod= this.codigo;
@@ -194,5 +157,5 @@ export class PagoAddComponent implements OnInit{
             );   
             }   
         );
-    }
+    }*/
 }

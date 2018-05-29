@@ -48,4 +48,8 @@ export class PagoService{
         let headers=new HttpHeaders().set('Content-Type','application/json');
         return  this.http.post<any>(`${environment.api_url}/auth/almacen-detalle`,params,{headers:headers});
     }
+    //-----------------Productos ------------------------------------------------------------------------------
+    ListProductos():Observable<any[]>{
+        return this.http.get<any>(`${environment.api_url}/auth/productos-listas`).shareReplay();
+    }
 }

@@ -24,6 +24,7 @@ import { AlmacenesModule } from './Almacenes/almacenes.module';
 import { AlmacenModule } from './almacen/almacen.module';
 import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 
+
 @NgModule({
   declarations: [
     AppComponent
