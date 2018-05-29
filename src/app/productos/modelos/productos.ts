@@ -4,7 +4,7 @@ export class producto{
         public id_categoria: string,
 		public nombre_producto: string,
 		public descripcion: string,
-		public unidad_de_medida: string,
-		public precio: number
+		public unidadmedida: string,
+		public cantidad: number
 	){}
 }

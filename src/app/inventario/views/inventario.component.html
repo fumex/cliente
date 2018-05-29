@@ -49,7 +49,7 @@
                                                 <option disabled="disabled">--seleccione el almacen</option>    
                                             <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
                                         </select>
-                                        <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir categoria</a>
+                                        <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir almacen</a>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -61,6 +61,7 @@
                                                 <option disabled="disabled">--seleccione el producto</option>    
                                             <option *ngFor="let producto of productos" value="{{producto.id}}"><b>{{producto.nombre_producto}}</b></option>
                                         </select>
+                                        <a (click)="irproducto()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir producto</a>
                                     </div>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@ declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
 @Component({
-  selector: 'productos-list',
+  selector: 'almacenes',
   templateUrl: '../views/almacenes.component.html',
   providers: [AlmacenesService]
 })
@@ -161,7 +161,7 @@ export class AlmacenesComponent{
             if (willDelete) {
                 console.log(this.idalmacen);
                 this.limpiar();
-               // this.EliminarAlmacen();
+               this.EliminarAlmacen();
               swal("su producto se borro satisfactoriamente", {
                 icon: "success",
               });

@@ -1,0 +1,186 @@
+<div class="col-lg-12">
+    <div class="card card-outline-primary">
+        <div class="card-body">
+            <h2>{{titulo}}</h2>
+        </div>
+    </div>
+</div>
+<form #formOrdenPedido="ngForm" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-primary">
+                    <div class="card-body">
+                    <span *ngIf="!formOrdenPedido.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
+                    <div class="form-body">
+                        <div class="row p-t-20">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Almacenes
+                                    <span *ngIf="!almacen.valid && almacen.touched" class="label label-default">Debe seleccionar un almacen </span>
+                                    <label id="rec" *ngIf="!almacen.valid">*</label>
+                                    </label>
+                                        <select #almacen="ngModel"  name="almacen" [(ngModel)]="agregarOrdenPedido.id_almacen" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                            <option disabled="disabled">--seleccione el almacen</option>    
+                                            <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
+                                        </select>
+                                    <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir almacen</a>
+                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Fecha de Entrega
+                                    <span *ngIf="!fecha.valid && fecha.touched" class="label label-default"><p>sleecione la fecha de entrega de pedido</p></span>
+                                    <label id="rec" *ngIf="!fecha.valid">*</label>
+                                    </label>
+                                    <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="agregarOrdenPedido.fecha_estimada_entrega"  class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row p-t-20">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">proveedores
+                                    <span *ngIf="!proveedor.valid && proveedor.touched" class="label label-default">Debe seleccionar un producto </span>
+                                    <label id="rec" *ngIf="!proveedor.valid">*</label>
+                                    </label>
+                                        <select #proveedor="ngModel"  name="proveedor" [(ngModel)]="agregarOrdenPedido.id_proveedor" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                            <option disabled="disabled">--seleccione producto</option>    
+                                            <option *ngFor="let provedor of provedores" value="{{provedor.id}}"><b>{{provedor.nombre_proveedor}}</b></option>
+                                        </select>
+                                    <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir proveedor</a>
+                                </div>
+                            </div>
+                            <div *ngIf="mostrar!=1" class="col-md-6">
+                                <div class="form-group">
+                                    <!--<label class="control-label">cantidad
+                                    <span *ngIf="!cantidad.valid && cantidad.touched" class="label label-default"><p>indique la cantidad</p></span>
+                                    <label id="rec" *ngIf="!fecha.valid">*</label>
+                                    </label>
+                                    <input type="number" min="1" #cantidad="ngModel" name="cantidad" [(ngModel)]="agregarDetalleOrden.cantidad"  class="form-control"/>
+                                -->
+                                <button  (click)="cambio()"  class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-cloud-download"></i>  Agregar productos</button>    
+                                
+                               </div>
+                            </div>
+                        </div>
+                        <div *ngIf="mostrar==1" class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Exportar Información</h4>
+                                                <div class="table-responsive m-t-40">
+                                                    <div *ngIf="!productos">
+                                                        cargando listado de productos....
+                                                    </div>
+                                                    <div *ngIf="productos">
+                                                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>producto</th>
+                                                                <th>cantidad de medida</th>
+                                                                <th>unidad de medida</th>
+                                                                <th>cantidad</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>producto</th>
+                                                                <th>cantidad de medida</th>
+                                                                <th>unidad de medida</th>
+                                                                <th>cantidad</th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>  
+                                                            <tr *ngFor="let producto of productos">
+                                                                <td><button (click)="addpedido(producto.nombre_producto,cantidad.value)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-cloud-download"></i></button></td>
+                                                                <td >{{producto.nombre_producto}} </td>
+                                                                <td>{{producto.cantidad}}</td>
+                                                                <td style="text-align: center"><strong>{{producto.unidad_de_medida}}</strong></td>
+                                                                <td>
+                                                                    <div style="margin-right: 0px;">
+                                                                        <div style="padding-right: 0px;">
+                                                                            <input type="number" min="1" #cantidad  class="form-control"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-md-3">  
+                            <br>
+                            <br>
+                            <button  (click)="addpedido()" value="{{titulo}}" [disabled]="!formOrdenPedido.form.valid" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check"></i></button>
+                            <button  (click)="limpiar()" value="{{titulo}}" [disabled]="!formOrdenPedido.form.valid" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-save"></i></button>    
+                       </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;padding-left: 100px;" class="container fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-4">
+                <div class="card">
+                    <div class="card-title">
+                        <label class="control-label">
+                            <i class="fa fa-shopping-cart"></i>
+                            Registro de Pedidos
+                        </label>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th></th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pedido of pedidos; let $index=index">
+                                        <td>producto n°{{$index + 1}}</td>
+                                        <td>{{pedido.id_producto}}</td>
+                                        <td *ngIf="editar!=$index">{{pedido.cantidad}}</td>
+                                        <td *ngIf="editar==$index">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <input type="number" min="1" #canti="ngModel" name="canti" [(ngModel)]="pedido.cantidad"  class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <div *ngIf="editar!=$index">
+                                            <a class="btn btn-sm btn-warning " (click)="editarcantidad($index)"><i class="fa fa-edit"></i></a>                                            
+                                            <a class="btn btn-sm btn-danger "(click)="exitCompra($index)" ><i class="fa fa-trash"></i></a>            
+                                        </div>
+                                        <div *ngIf="editar==$index">
+                                            <button class="btn btn-sm btn-warning" (click)="ingresarcantidad(pedido.cantidad)"><i class="fa fa-check"></i></button>                                            
+                                            <a class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
+                                        </div>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                            <br>
+                            <div *ngIf="mostrarguardar>=1" style="text-align:right;">
+                                <button class="btn btn-success"  (click)="guardartodo()">guardar</button>
+                            </div>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

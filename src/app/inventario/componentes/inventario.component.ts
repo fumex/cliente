@@ -11,7 +11,7 @@ import{producto} from '../../productos/modelos/productos';
 declare var swal:any;
 
 @Component({
-  selector: 'productos-list',
+  selector: 'inventario',
   templateUrl: '../views/inventario.component.html',
   providers: [InventarioService,AlmacenesService,ProductoService]
 })
@@ -122,7 +122,10 @@ export class InventarioComponent{
 
     }
     iralmacen(){
-        console.log(this._router.navigate(['/almacenes']));
+        this._router.navigate(['/admin/almacenes']);
+    }
+    irproducto(){
+        this._router.navigate(['/admin/productos']);
     }
     
 }

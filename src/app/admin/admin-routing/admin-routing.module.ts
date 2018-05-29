@@ -21,7 +21,7 @@ import {ProductosListarComponent} from '../../productos/componentes/productos-li
 import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
 
-
+import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
 
 
 @NgModule({
@@ -61,6 +61,7 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
                     { path:'productos/list',component:ProductosListarComponent},
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
+                    { path:'pedido',component:OrdenDePedidoComponent},
                     { path:'inventario',component:InventarioComponent}
                 ]
             }
