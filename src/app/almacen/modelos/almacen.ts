@@ -1,7 +1,8 @@
 export class almacenstock{
     constructor(
         public id: number,
-		public id_almacen: number,
+        public id_almacen: number,
+        public codigo:string,
 		public id_producto: number,
 		public stock: string,
         public precio_compra: number,
