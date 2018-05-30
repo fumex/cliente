@@ -161,34 +161,36 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>categoria</th>
-                                        <th>Unidad</th>
-                                        <th>Nombre Producto</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>total</th>
-                                        <th></th>
-                                        <th></th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let comp of compras; let $index=index">
-                                        <td>{{$index + 1}}</td>
-                                        <td>{{comp.nombre}}</td>
-                                        <td>{{comp.unidad_de_medida}}</td>
-                                        <td>{{comp.nombre_producto}}</td>
-                                        <td>{{comp.descripcion}}</td>
-                                        <td><input #cantidad type="text"/></td>
-                                        <td><input  #precion type="text"></td>
-                                        <td><input type="text"></td>
-                                        <td><a class="btn btn-danger" (click)="exitCompra($index)">eliminar</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>         
+                            <form #formProveedor="ngForm">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>categoria</th>
+                                            <th>Codigo</th>
+                                            <th>Unidad</th>
+                                            <th>Nombre Producto</th>
+                                            <th>Descripcion</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>total</th>
+                                            <th>accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let comp of compras; let $index=index">
+                                            <td>{{comp.nombre}}</td>
+                                            <td><input type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo"></td>
+                                            <td>{{comp.unidad_medida}}</td>
+                                            <td>{{comp.nombre_producto}}</td>
+                                            <td>{{comp.descripcion}}</td>
+                                            <td (change)="sumaTotal()"><input #can="ngModel"  name="can" [(ngModel)]="compras[$index].cantidad" type="text"></td>
+                                            <td (change)="sumaTotal()"><input #precio="ngModel" name="precio" [(ngModel)]="compras[$index].precio" type="text"></td>
+                                            <td>{{comp.cantidad * comp.precio}}</td>
+                                            <td><button class="btn btn-danger" (click)="exitCompra($index)">eliminar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>         
                         </div>
                     </div>
                 </div>
@@ -207,17 +209,17 @@
                     </div>
                     <div class="card-body row">
                         <div class="col-lg-10 col-lg-offset-3 row">
-                            <div class="form-goup ">
-                                <label > total:</label>
-                                <input type="text" value="{{total}}">
+                            <div class="form-goup col-lg-4 ">
+                                <label >Subtotal :</label>
+                                <label>{{total}}</label>
                             </div>
-                            <div class="form-goup">
-                                <label > Adelanto:</label>
-                                <input type="text">
+                            <div class="form-goup col-lg-5">
+                                <label > IGV 18% :</label>
+                                <label>{{total * 0.18}}</label>
                             </div>
-                            <div class="form-goup">
-                                <label> Adelanto:</label>
-                                <input stype="text">
+                            <div class="form-goup col-lg-3">
+                                <label> TOTAL:</label>
+                                <label>{{total + total*0.18}}</label>
                             </div>
                         </div>
                         <div class="col-lg-2 col-lg-offset-2">

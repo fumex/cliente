@@ -25,6 +25,7 @@ export class PagoAddComponent implements OnInit{
     public documentos:DocumentoModel[];
     public proveedores:ProveedorModel[];
     public compra:CompraModel;
+   
     public compras:Array<CompraModel>=[];
     public almacenes:almacen[];
     public total:number;
@@ -42,6 +43,7 @@ export class PagoAddComponent implements OnInit{
         this.title="Compras";
         this.total=0;
         this.tabla();
+        this.sumaTotal();
     }
     ngOnInit(){
         this.getProveedor();
@@ -79,12 +81,12 @@ export class PagoAddComponent implements OnInit{
         },3000);
      }
 
-    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
+    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string,cantidad,precio){
         this.pago= new PagoModel(this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
-                //this.addDetalles();
+                this.addDetalles();
             },
             error=>{
                 console.log(<any>error);
@@ -124,21 +126,32 @@ export class PagoAddComponent implements OnInit{
     }
     //detalles
     addCompra(id,categoria,unidad_medida,articulo,descripcion){
-        this.compra= new CompraModel(id,categoria,unidad_medida,articulo,descripcion);
+        this.compra= new CompraModel(id,categoria,unidad_medida,null,articulo,descripcion,null,null);
         this.compras.push(this.compra);
         console.log(this.compras)
     }
     exitCompra(index){
         this.compras.splice(index,1);
-        
+        console.log(this.compras);
+        this.sumaTotal();
     }
-    /*
+    //suma detalle
+    sumaTotal(){
+        let total=0;
+       this.compras.forEach(function(value){
+         total=total+(value.cantidad*value.precio);
+         console.log(total);
+       });
+       this.total=total;
+    }
+    //guardar todo
     addDetalles(){
         let pago=this.pagoService;
         let cod= this.codigo;
         this.compras.forEach(function(value){
-            let pagoD=new PagoDetalleModel(cod,value.id_producto,value.cantidad,value.id_unidad,value.precio_unitario);
-            let d_almacen=new almacenstock(null,null,value.id_producto,null,value.precio_unitario,null);
+            
+            let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
+            let d_almacen=new almacenstock(null,null,value.codigo,value.id,null,value.cantidad,null);
             pago.addPagoDetalle(pagoD).subscribe(
                     result=>{
                         console.log(result);
@@ -157,5 +170,5 @@ export class PagoAddComponent implements OnInit{
             );   
             }   
         );
-    }*/
+    }
 }
