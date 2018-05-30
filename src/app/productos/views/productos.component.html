@@ -51,7 +51,7 @@
                                                 <option value="G"><b>gramo</b></option>
                                                 <option value="Kg"><b>Kilogramo</b></option>
                                                 <option disabled="disabled"><b></b></option>
-                                                <option value="Ml"><b>mililitro</b></option>
+                                                <option value="ml"><b>mililitro</b></option>
                                                 <option value="Cl"><b>centilitro</b></option>
                                                 <option value="L"><b>litro</b></option>
                                                 <option disabled="disabled"><b></b></option>
@@ -132,7 +132,7 @@
                                             <th>unidad de medida</th>
                                             <th>categoria</th>
                                             <th>descripcion</th>
-                                            <td ><a *ngIf="modificarproducto!=null">Guardar?</a></td>
+                                            <th ><a *ngIf="modificarproducto!=null">Guardar?</a></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -166,7 +166,7 @@
                                         <td *ngIf="modificarproducto!=producto.id">{{producto.unidad_de_medida}}</td>
                                         <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
                                             <div style="margin-right: 0px;">
-                                                <select #unidadmedida="ngModel"  name="unidadmedida" [(ngModel)]="editproducto.unidad_de_medida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                <select #unidad_de_medida="ngModel"  name="unidad_de_medida" [(ngModel)]="editproducto.unidad_de_medida" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
                                                     <option disabled="disabled"><b>--unidad de medida</b></option>
                                                     <option value="u"><b>unidad</b></option>
                                                     <option disabled="disabled"><b></b></option>
@@ -175,7 +175,7 @@
                                                     <option value="G"><b>gramo</b></option>
                                                     <option value="Kg"><b>Kilogramo</b></option>
                                                     <option disabled="disabled"><b></b></option>
-                                                    <option value="Ml"><b>mililitro</b></option>
+                                                    <option value="ml"><b>mililitro</b></option>
                                                     <option value="Cl"><b>centilitro</b></option>
                                                     <option value="L"><b>litro</b></option>
                                                     <option disabled="disabled"><b></b></option>
