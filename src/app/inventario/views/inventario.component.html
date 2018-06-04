@@ -11,35 +11,11 @@
         <div class="col-lg-12">
             <div class="card card-outline-primary">
                 <div class="card-body">
-                    <form #formInventario="ngForm" (ngSubmit)="agregarinventario()" action="#">
+                    <form #formInventario="ngForm" (ngSubmit)="alertamodificar()" action="#">
                        <span *ngIf="!formInventario.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
                        <div class="form-body">
                             <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                    <label class="control-label">cantidad
-                                        <span *ngIf="!cantidad.valid && cantidad.touched" class="label label-default">El nombre es obligatorio</span>
-                                        <label id="rec" *ngIf="!cantidad.valid">*</label>
-                                    </label>
-                                    <input type="text"   #cantidad="ngModel" name="cantidad" [(ngModel)]="inventario.cantidad"  class="form-control"required/>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <fieldset >
-                                            <h4 >tipo de movimiento</h4>
-                                            <label>
-                                            <input type="radio" #tipo="ngModel" name="tipo" [(ngModel)]="inventario.tipo_movimiento"   value="2" > ingreso
-                                            </label>
-                                            <br>
-                                            <label>
-                                            <input type="radio" #tipo="ngModel" name="tipo" [(ngModel)]="inventario.tipo_movimiento"   value="1"> disminucion
-                                            </label>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-t-20">
+
                                 <div class="col-md-6">                                            
                                     <div class="form-group">
                                     <label class="control-label">almacen</label>
@@ -53,105 +29,118 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">producto</label>
-                                        <span *ngIf="!almacen.valid" class="label label-default">SELECCIONE</span>                                                        
-                                        <label id="rec" *ngIf="!almacen.valid">*</label> 
-                                        <select #almacen="ngModel" name="almacen" [(ngModel)]="inventario.id_producto" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
-                                                <option disabled="disabled">--seleccione el producto</option>    
-                                            <option *ngFor="let producto of productos" value="{{producto.id}}"><b>{{producto.nombre_producto}}</b></option>
-                                        </select>
-                                        <a (click)="irproducto()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir producto</a>
-                                    </div>
+                                    <label class="control-label">descripcion
+                                        <span *ngIf="!descripcion.valid && descripcion.touched" class="label label-default">la descripcion es obligatorio</span>
+                                        <label id="rec" *ngIf="!descripcion.valid">*</label>
+                                    </label>
+                                    <select #descripcion="ngModel"  (change)="actualizar(inventario.opciones)" name="descripcion" [(ngModel)]="inventario.opciones" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                        <option ></option>  
+                                        <option value="tranferencia entre almacenes" >tranferencia entre almacenes</option>  
+                                        <option value="merma">merma</option>  
+                                        <option value="devoluciones">devoluciones</option>  
+                                    </select>
                                 </div>
                             </div>
                             <div class="row p-t-20">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                    <div class="row p-t-20">
-                                        <div class="col-md-6">
-                                            <label class="control-label">descripcion
-                                                <span *ngIf="!descripcion.valid && descripcion.touched" class="label label-default">la descripcion es obligatorio</span>
-                                                <label id="rec" *ngIf="!descripcion.valid">*</label>
-                                            </label>
-                                            <select #descripcion="ngModel"  (change)="actualizar(inventario.opciones)" name="descripcion" [(ngModel)]="inventario.opciones" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
-                                                <option ></option>  
-                                                <option value="tranferencia entre almacenes" >tranferencia entre almacenes</option>  
-                                                <option value="merma">merma</option>  
-                                                <option value="devoluciones">devoluciones</option>  
-                                            </select>
+                                        <div class="row p-t-20">
+                                            <div *ngIf="ident == 'tranferencia entre almacenes'" class="col-md-6" >
+                                                <label  class="control-label">escoja el almacen de recepcion
+                                                    <span *ngIf="!escoja.valid && escoja.touched" class="label label-default">debe seleccionar un almacen</span>
+                                                    <label id="rec" *ngIf="!descripcion.valid">*</label>
+                                                </label>
+                                                <select  #escoja="ngModel" name="escoja" [(ngModel)]="inventario.escoja" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                                    <option disabled="disabled">--seleccione el almacen</option>    
+                                                    <option *ngFor="let almaceno of almacene" value="{{almaceno.id}}"><b>{{almaceno.nombre}}</b></option>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="ident != 'tranferencia entre almacenes'"  class="col-md-6" ></div>
+                                            <div class="col-md-6">
+                                                <input type="text area"  id="firstName" #descripcion2="ngModel" name="descripcion2" [(ngModel)]="inventario.descripcion"  class="form-control"  required/>
+                                            </div>
+                                            
                                         </div>
-                                        <div class="col-md-4" *ngIf="ident == 'tranferencia entre almacenes'">
-                                            <label class="control-label">escoja almacen
-                                                 <span *ngIf="!escoja.valid && escoja.touched" class="label label-default">la descripcion es obligatorio</span>
-                                                <label id="rec" *ngIf="!descripcion.valid">*</label>
-                                            </label>
-                                            <select #escoja="ngModel" name="escoja" [(ngModel)]="inventario.escoja" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
-                                                <option disabled="disabled">--seleccione el almacen</option>    
-                                                <option *ngFor="let almaceno of almacene" value="{{almaceno.id}}"><b>{{almaceno.nombre}}</b></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <input type="text area"  id="firstName" #descripcion2="ngModel" name="descripcion2" [(ngModel)]="inventario.descripcion"  class="form-control"  required/>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-actions">
+                            <div *ngIf="mostrabproductos==1" class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive m-t-40">
+                                                    <p class="card-title">seleccione los productos</p>
+                                                    <div *ngIf="!productos">
+                                                        cargando listado de productos....
+                                                    </div>
+                                                    <div *ngIf="productos">
+                                                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>producto</th>
+                                                                <th>cantidad de medida</th>
+                                                                <th>unidad de medida</th>
+                                                                <th>categoria</th>
+                                                                <th>descripcion</th>
+                                                                <th style="text-align: center">stock</th>
+                                                                <th style="text-align: center"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>producto</th>
+                                                                <th>cantidad de medida</th>
+                                                                <th>unidad de medida</th>
+                                                                <th>categoria</th>
+                                                                <th>descripcion</th>
+                                                                <th style="text-align: center">stock</th>
+                                                                <th style="text-align: center"></th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>  
+                                                            <tr *ngFor="let producto of productos; let $index=index">
+                                                                <td>
+                                                                    <div *ngIf="producto.id!=null"><button (click)="addcantidad($index,producto.id,producto.canti)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i></button></div>
+                                                                    <div *ngIf="producto.id==null" ><button (click)="quitarcantidad($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                                </td>
+                                                                <td >{{producto.nombre_producto}}</td>
+                                                                <td style="text-align: center">{{producto.cantidad}}</td>
+                                                                <td style="text-align: center"><strong>{{producto.unidad_de_medida}}</strong></td>
+                                                                <td style="text-align: center">{{producto.nombre}}</td>
+                                                                <td style="text-align: center">{{producto.descripcion}}</td>
+                                                                <th style="text-align: center">{{producto.stock}}</th>
+                                                                <th *ngIf="producto.id!=null" style="text-align: center;width : 200px;">
+                                                                    <div  style="margin-right: 0px;background: green">
+                                                                        <div style="padding-right: 0px;">
+                                                                            <input style="border: 0.3px solid #3bc1ff;" type="number" min="1" #canti="ngModel" name="canti" [(ngModel)]="producto.canti" class="form-control"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th *ngIf="producto.id==null">
+                                                                    <div  style="margin-right: 0px;">
+                                                                        <div style="padding-right: 0px;">
+                                                                            <input type="number" disabled="disabled" min="1" value={{this.productos[$index].canti}} class="form-control"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="mostrabproductos==1" class="form-actions"  style="text-align: right">
                                     <button type="submit" [disabled]="!formInventario.form.valid "  class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
                             </div>
                        </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-outline-primary">
-                <div class="card-body">
-                    <div *ngIf="!inventarios">
-                        cargando listado de almacenes....
-                    </div>
-                    <div *ngIf="inventarios">
-                        <div class="form-group row last col-lg-12">
-                        </div>
-                        <div >
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive m-t-40">
-                                        <table id="myTable" class="table table-bordered table-striped">
-                                            <thead>
-                                                 <tr>
-                                                    <th>fecha</th>
-                                                    <th>almacen</th>
-                                                    <th>producto</th>
-                                                    <th>descripcion</th>
-                                                    <th>movimiento</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                   
-                                                <tr *ngFor="let inventario of inventarios">
-                                                        <td>{{inventario.fecha}}</td>
-                                                        <td>{{inventario.nombre}}</td>
-                                                        <td>{{inventario.nombre_producto}}</td>
-                                                        <td>{{inventario.descripcion}}</td>
-                                                        <td style="text-align:right"><a *ngIf="inventario.tipo_movimiento==1" style="color: red">- </a>
-                                                            <a *ngIf="inventario.tipo_movimiento==2" style="color: green">+ </a>
-                                                            <a>{{inventario.cantidad}}</a>
-                                                        </td>
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

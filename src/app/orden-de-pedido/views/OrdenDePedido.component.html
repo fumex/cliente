@@ -41,7 +41,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">proveedores
-                                        <span *ngIf="!proveedor.valid && proveedor.touched" class="label label-default">Debe seleccionar un producto </span>
+                                        <span *ngIf="!proveedor.valid && proveedor.touched" class="label label-default">Debe seleccionar un provedor </span>
                                         <label id="rec" *ngIf="!proveedor.valid">*</label>
                                         </label>
                                             <select #proveedor="ngModel"  name="proveedor" [(ngModel)]="agregarOrdenPedido.id_proveedor" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>

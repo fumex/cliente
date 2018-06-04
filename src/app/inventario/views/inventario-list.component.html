@@ -1,0 +1,149 @@
+<div class="col-lg-12">
+    <div class="card card-outline-primary">
+        <div class="card-body">
+            <h2>{{titulo}}</h2>
+        </div>
+    </div>
+</div>
+<div *ngIf="ocutarformulario==null" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div class="form-body">
+                        <div class="row p-t-20">
+                            <div class="col-md-6">                                            
+                                <div class="form-group">
+                                    <label class="control-label">almacen</label>
+                                        <select #almacen="ngModel" (change)="cambio(cojeinventarioi.id_almacen)" name="almacen" [(ngModel)]="cojeinventarioi.id_almacen" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
+                                            <option disabled="disabled">--seleccione el almacen</option>    
+                                            <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="almacenselec!=0" class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive m-t-40">
+                                                <p class="card-title">seleccione los productos</p>
+                                                <div *ngIf="!productos">
+                                                    cargando listado de productos....
+                                                </div>
+                                                <div *ngIf="productos">
+                                                <table id="tablaproducto" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>producto</th>
+                                                            <th>cantidad de medida</th>
+                                                            <th>unidad de medida</th>
+                                                            <th>categoria</th>
+                                                            <th>descripcion</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>producto</th>
+                                                            <th>cantidad de medida</th>
+                                                            <th>unidad de medida</th>
+                                                            <th>categoria</th>
+                                                            <th>descripcion</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                    <tbody>  
+                                                        <tr *ngFor="let producto of productos; let $index=index">
+                                                            <td><button (click)="buscarreporte(producto.id,cojeinventarioi.id_almacen)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i></button></td>
+                                                            <td >{{producto.nombre_producto}}</td>
+                                                            <td style="text-align: center">{{producto.cantidad}}</td>
+                                                            <td style="text-align: center"><strong>{{producto.unidad_de_medida}}</strong></td>
+                                                            <td style="text-align: center">{{producto.nombre}}</td>
+                                                            <td style="text-align: center">{{producto.descripcion}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrareporte!=null" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div *ngIf="!inventarios">
+                    cargando listado de inventarios
+                </div>
+                <div *ngIf="inventarios">
+                    <div style="text-align:right">
+                            <button (click)="cerrar()" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i>
+                                sacar otro reporte
+                            </button>
+                    </div>
+                    <div >
+                        <div class="table-responsive m-t-40">
+                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                <thead style="text-align:center">
+                                    <tr style="text-align:center">
+                                        <th rowspan="2">fecha</th>
+                                        <th rowspan="2">detalle</th>
+                                        <th colspan="3">entradas</th>
+                                        <th colspan="3">salidas</th>
+                                        <th style="text-align:center" colspan="3">existencias</th>
+                                    </tr>
+                                    <tr>
+                                        <th>cantidad</th>
+                                        <th>cost. unit</th>
+                                        <th>total</th>
+                                        <th>cantidad</th>
+                                        <th>cost. unit</th>
+                                        <th>total</th>
+                                        <th>cantidad</th>
+                                        <th>cost. unit</th>
+                                        <th>total</th>
+                                    </tr>
+                                </thead>
+                               
+                                <tbody  >         
+                                    <tr *ngFor="let inventario of inventarios,let $index=index,let total of movimientos[index]">
+                                        <td style="text-align:left;width: 180px;">{{inventario.fecha}}</td>
+                                        <td style="text-align:left;width: 230px;">{{inventario.descripcion}}  de <strong> {{inventario.nombre_producto}} </strong></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a *ngIf="inventario.tipo_movimiento==2" style="color: green"> {{inventario.cantidad}}</a></td>
+                                        <td style="text-align:right;width: 78px;padding-right: 10px" >
+                                            <a *ngIf="inventario.tipo_movimiento==2" style="color: green"> {{inventario.precio}}</a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a *ngIf="inventario.tipo_movimiento==2" style="color: green">{{inventario.cantidad * inventario.precio}} </a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.cantidad}}</a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.precio}}</a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.cantidad * inventario.precio}}</a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px">
+                                            <a>{{total.id_almacen}}</a>
+                                        </td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id/total.id_almacen}}</a></td>
+                                        <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id}}</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

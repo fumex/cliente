@@ -27,10 +27,18 @@ export class InventarioService{
         return this._http.post(this.url+'/inventario',params,{headers:headers});
             
     }
-    SeleccionarInventario(id){
-        return this._http.get<any>(this.url+'/inventario/'+id).shareReplay();
+    SeleccionarInventario(inventario:inventario):Observable<any>{
+        let json = JSON.stringify(inventario);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/inventarioselect',params,{headers:headers});
 
     }
+    seleccionarproductos(id){
+        return this._http.get<any>(this.url+'/productosalmacen/'+id).shareReplay();
 
+    }
  
 }
