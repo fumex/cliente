@@ -13,6 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 })
 export class ProveedorAddComponent implements OnInit{
+    public title:string;
     public estado:boolean;
     public proveedor:ProveedorModel;
     public tipos:TipoProveedorModel[];
@@ -26,7 +27,8 @@ export class ProveedorAddComponent implements OnInit{
     ){
         this.proveedor= new ProveedorModel(null,'','','','','',null);
         this.estado=true;
-        this.tipo = new TipoProveedorModel(null);
+        this.tipo = new TipoProveedorModel(null,null);
+        this.title="Proveedor"
     }
     ngOnInit(){
             
@@ -63,8 +65,8 @@ export class ProveedorAddComponent implements OnInit{
             }
         );
     }
-    saveTipo(tipo1:string){
-        this.tipo = new TipoProveedorModel(tipo1);
+    saveTipo(tipo1:string,operacion:string){
+        this.tipo = new TipoProveedorModel(tipo1, operacion);
         console.log(this.tipo);
         this.tipoProveedor.addTipo(this.tipo).subscribe(
             response=>{

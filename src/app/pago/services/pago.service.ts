@@ -7,6 +7,7 @@ import { PagoModel } from '../models/pago';
 import { PagoDetalleModel } from '../models/pago-detalle';
 import { UnidadModel } from '../models/unidad';
 import { almacenstock } from '../../almacen/modelos/almacen';
+import { CompraAnularModel } from '../models/anula-compra';
 
 @Injectable()
 export class PagoService{
@@ -51,5 +52,25 @@ export class PagoService{
     //-----------------Productos ------------------------------------------------------------------------------
     ListProductos():Observable<any[]>{
         return this.http.get<any>(`${environment.api_url}/auth/productos-listas`).shareReplay();
+    }
+    //lista de pagos
+    listPago():Observable<any[]>{
+        return this.http.get<any>(`${environment.api_url}/auth/pagos-list`).shareReplay();
+    }
+
+    //------------------------DEtalles PAgos-------------------------------------------------------------------
+    listDetallePago(cod:string):Observable<any[]>{
+        return this.http.get<any>(`${environment.api_url}/auth/pagos_detalle-list/`+cod).shareReplay();
+    }
+    //-----------------------Anular Compra----------------------------------------------------------------------
+    anularPago(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/auth/pagos-delete/`+id).shareReplay();
+    }
+
+    anularPagoDetalle(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/auth/pagos_d/`+id).shareReplay();
+    }
+    getCompra(cod):Observable<any>{
+        return this.http.get(`${environment.api_url}/auth/compra-get/`+cod).shareReplay();
     }
 }

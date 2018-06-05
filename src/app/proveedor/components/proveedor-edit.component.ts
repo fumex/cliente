@@ -73,8 +73,8 @@ export class ProveedorEditComponent implements OnInit{
             );
         });
     }
-    saveTipo(tipo1:string){
-        this.tipo = new TipoProveedorModel(tipo1);
+    saveTipo(tipo1:string,operacion:string){
+        this.tipo = new TipoProveedorModel(tipo1,operacion);
         console.log(this.tipo);
         this.tipoProveedorService.addTipo(this.tipo).subscribe(
             response=>{

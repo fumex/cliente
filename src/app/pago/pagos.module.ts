@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PagoAddComponent } from './components/pago-add.component';
 import { PagoListComponent } from './components/pago-list.component';
+import { PagoAnularComponent } from './components/pago-anular.component';
 
 
 
@@ -14,7 +15,8 @@ import { PagoListComponent } from './components/pago-list.component';
     ],
     declarations:[
         PagoAddComponent,
-        PagoListComponent
+        PagoListComponent,
+        PagoAnularComponent,
       
     ],
     providers:[

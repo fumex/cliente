@@ -26,6 +26,7 @@ import { AlmacenModule } from './almacen/almacen.module';
 import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
 
 import { TipoDocumentoModule } from './TipoDocumento/documento.module';
+import { ServiciosModule } from './pago-servicios/pago-servicios.module';
 
 
 
@@ -51,7 +52,8 @@ import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 
     OrdenDePedidoModule,
 
-    TipoDocumentoModule
+    TipoDocumentoModule,
+    ServiciosModule
   ],
   providers: [
     AuthGuard,

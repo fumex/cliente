@@ -25,6 +25,10 @@ import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/docume
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 
 import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
+import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
+import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
+import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
+
 
 
 @NgModule({
@@ -70,7 +74,22 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
                         path:'transaccion',
                         component:PagoAddComponent,
                     },
-                    { path:'transaccion/list', component:PagoListComponent},
+                    { 
+                        path:'transaccion/list',
+                         component:PagoListComponent
+                    },
+                    {
+                        path:'transaccion/anular',
+                        component:PagoAnularComponent
+                    },
+                    {
+                        path:'servicio',
+                        component:ServicioAddComponent
+                    },
+                    {
+                        path:'servicio/anular',
+                        component:ServicioAnularComponent
+                    },
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},
