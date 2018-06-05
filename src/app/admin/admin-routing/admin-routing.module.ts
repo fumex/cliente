@@ -11,6 +11,7 @@ import { ProductosComponent } from '../../productos/componentes/productos.compon
 import {AlmacenesComponent} from '../../Almacenes/componentes/almacenes.component';
 
 import{InventarioComponent} from '../../inventario/componentes/inventario.component';
+import{InventarioListComponent} from '../../inventario/componentes/inventario.list.component';
 import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 
 import { PagoAddComponent } from '../../pago/components/pago-add.component';
@@ -28,6 +29,8 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
 import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
 import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
 import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
+
+
 
 
 
@@ -96,7 +99,8 @@ import { ServicioAnularComponent } from '../../pago-servicios/components/servici
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
                     { path:'pedido',component:OrdenDePedidoComponent},
-                    { path:'inventario',component:InventarioComponent}
+                    { path:'inventario',component:InventarioComponent},
+                    { path:'reporteInventario',component:InventarioListComponent}, 
                 ]
             }
         ])

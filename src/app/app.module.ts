@@ -52,8 +52,10 @@ import { ServiciosModule } from './pago-servicios/pago-servicios.module';
 
     OrdenDePedidoModule,
 
+
     TipoDocumentoModule,
     ServiciosModule
+
   ],
   providers: [
     AuthGuard,

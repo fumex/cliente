@@ -8,6 +8,7 @@ export class inventario{
         public tipo_movimiento: number,
         public cantidad: number,
         public opciones: string,
+        public precio:number,
         public escoja:number
 	){}
 }
