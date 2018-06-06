@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ) { }
 
   canActivate(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Observable<boolean>|Promise<boolean>|boolean{
+    console.log(this.auth.check());
     if(this.auth.check()){
       return true;
     }
@@ -25,6 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     this.router.navigate(['auth/login']);
     return false;
+
   }
 
 }

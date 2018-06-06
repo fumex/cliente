@@ -6,7 +6,7 @@ import { ProductosComponent } from './productos.component';
 
 
 @Component({
-    selector:'edit',
+    selector:'categoria-edit',
     templateUrl:'../views/categorias.component.html',
     providers:[CategoriaService]
 })

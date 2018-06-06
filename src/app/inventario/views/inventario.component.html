@@ -80,7 +80,6 @@
                                                                 <tr>
                                                                 <th></th>
                                                                 <th>producto</th>
-                                                                <th>cantidad de medida</th>
                                                                 <th>unidad de medida</th>
                                                                 <th>categoria</th>
                                                                 <th>descripcion</th>
@@ -92,7 +91,6 @@
                                                                 <tr>
                                                                 <th></th>
                                                                 <th>producto</th>
-                                                                <th>cantidad de medida</th>
                                                                 <th>unidad de medida</th>
                                                                 <th>categoria</th>
                                                                 <th>descripcion</th>
@@ -107,15 +105,14 @@
                                                                     <div *ngIf="producto.id==null" ><button (click)="quitarcantidad($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
                                                                 </td>
                                                                 <td >{{producto.nombre_producto}}</td>
-                                                                <td style="text-align: center">{{producto.cantidad}}</td>
-                                                                <td style="text-align: center"><strong>{{producto.unidad_de_medida}}</strong></td>
+                                                                <td style="text-align: center">{{producto.cantidad}}<strong>{{producto.unidad_de_medida}}</strong></td>
                                                                 <td style="text-align: center">{{producto.nombre}}</td>
                                                                 <td style="text-align: center">{{producto.descripcion}}</td>
                                                                 <th style="text-align: center">{{producto.stock}}</th>
-                                                                <th *ngIf="producto.id!=null" style="text-align: center;width : 200px;">
-                                                                    <div  style="margin-right: 0px;background: green">
+                                                                <th *ngIf="producto.id!=null"  style="text-align: center;width : 200px;">
+                                                                    <div  style="margin-right: 0px;">
                                                                         <div style="padding-right: 0px;">
-                                                                            <input style="border: 0.3px solid #3bc1ff;" type="number" min="1" #canti="ngModel" name="canti" [(ngModel)]="producto.canti" class="form-control"/>
+                                                                            <input (keyup)="limitar(producto.canti,producto.stock)" id="numero" style="border: 0.3px solid grey;" type="number"  min="1"  #canti="ngModel" name="canti" [(ngModel)]="producto.canti" class="form-control"/>
                                                                         </div>
                                                                     </div>
                                                                 </th>
