@@ -3,13 +3,13 @@ import { PagoService } from '../services/pago.service';
 import { ProveedorModel } from '../../proveedor/models/proveedor';
 import { PagoModel } from '../models/pago';
 import { PagoDetalleModel } from '../models/pago-detalle';
-import { Router } from '@angular/router';
 import { almacen } from '../../Almacenes/modelos/almacenes';
 import { AlmacenesService } from '../../Almacenes/services/almacenes.service';
 import { almacenstock } from '../../almacen/modelos/almacen';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { DocumentoService } from '../../TipoDocumento/services/documento.service';
 import { CompraModel } from '../models/compra';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare  var $:any;
 @Component({
@@ -35,11 +35,12 @@ export class PagoAddComponent implements OnInit{
     constructor(
         private pagoService:PagoService,
         private almacenService:AlmacenesService,
-        public router:Router,
-        public documentoService:DocumentoService,
+        private route:ActivatedRoute,
+        private router:Router,
+        private documentoService:DocumentoService,
     ){
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
-        this.pago= new PagoModel(this.codigo,null,null,'',null,'');
+        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,null);
         this.title="Compras";
         this.total=0;
         this.tabla();
@@ -82,11 +83,14 @@ export class PagoAddComponent implements OnInit{
      }
 
     onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string,cantidad,precio){
-        this.pago= new PagoModel(this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo);
+        let subtotal=this.sumaTotal();
+        let igv=this.total*0.18;
+        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,igv);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
                 this.addDetalles();
+                this.router.navigate(['/admin/transaccion/list']);
             },
             error=>{
                 console.log(<any>error);
@@ -143,6 +147,7 @@ export class PagoAddComponent implements OnInit{
          console.log(total);
        });
        this.total=total;
+       return this.total;
     }
     //guardar todo
     addDetalles(){

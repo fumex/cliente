@@ -21,79 +21,38 @@
                                 <thead>
                                     <tr>
                                         <th>Codigo</th>
-                                        <th>Producto</th>
                                         <th>Proveedor</th>
-                                        <th>NroBoleta</th>
-                                        <th>tipo Pago</th>
-                                        <th>cantidad</th>
-                                        <th>precio</th>
+                                        <th>Documento</th>
+                                        <th>Nro</th>
+                                        <th>Pago</th>
+                                        <th>SubTotal</th>
+                                        <th>IGV</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>Codigo</th>
-                                        <th>Producto</th>
                                         <th>Proveedor</th>
-                                        <th>NroBoleta</th>
-                                        <th>tipo Pago</th>
-                                        <th>cantidad</th>
-                                        <th>precio</th>
+                                        <th>Documento</th>
+                                        <th>Nro</th>
+                                        <th>Pago</th>
+                                        <th>SubTotal</th>
+                                        <th>IGV</th>
+                                        <th>Total</th>
+                                       
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P001</td>
-                                        <td>Pan</td>
-                                        <td>Gregori</td>
-                                        <td>B001020</td>
-                                        <td>Efectivo</td>
-                                        <td>120</td>
-                                        <td>12</td>
+                                    <tr *ngFor="let pago of pagos">
+                                        <td>{{pago.code}}</td>
+                                        <td>{{pago.nombre_proveedor}}</td>
+                                        <td>{{pago.documento}}</td>
+                                        <td>{{pago.nroBoleta}}</td>
+                                        <td>{{pago.tipoPago}}</td>
+                                        <td>{{pago.subtotal}}</td>
+                                        <td>{{pago.igv}}</td>
+                                        <td>{{pago.subtotal + pago.igv}}</td>
                                     </tr>
                                 </tbody>
                             </table>

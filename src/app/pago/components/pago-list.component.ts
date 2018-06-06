@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PagoService } from '../services/pago.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var jQuery:any;
 declare var $:any;
@@ -11,14 +12,20 @@ declare var $:any;
 export class PagoListComponent implements OnInit{
 
     public title:string;
-    constructor(){
+    public pagos:any=[];
+    public confirmado;
+
+    constructor(
+        private pagoService:PagoService,
+        private route:ActivatedRoute,
+        private router:Router
+    ){
         this.title='Lista de Compras';
         this.tabla();
     }
     ngOnInit(){
-
+        this.getPagos();
     }
-
     tabla(){
         setTimeout(function(){
             $(function(){
@@ -30,5 +37,15 @@ export class PagoListComponent implements OnInit{
                  });
             });
         },3000);
+     }
+     getPagos(){
+         this.pagoService.listPago().subscribe(
+             result=>{
+                this.pagos=result;
+             },
+             error=>{
+                console.log(<any>error);
+             }
+         );
      }
 }

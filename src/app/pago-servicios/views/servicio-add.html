@@ -1,0 +1,268 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">
+            <i class="fa fa-building"></i>
+             {{title}}
+        </h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">{{title}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="fuild">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        PAGO DE {{title}} : <strong>{{code}}</strong>
+                    </div>
+                    <ul class="nav nav-tabs profile-tab" role="tablist">
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#pago" role="tab">Comprobante</a> </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#servicio" role="tab">Servicios</a></li>
+                    </ul>
+                    <br>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="pago" role="tabpanel">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label>
+                                                    Comprobante
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #compro>
+                                                    <option *ngFor="let comprobante of comprobantes" [value]="comprobante.id" >
+                                                        {{comprobante.documento}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label>Nro Recibo</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" #nroRecibo>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label>Tipo de Pago</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #tipoP>
+                                                    <option>Efectivo</option>
+                                                    <option>Bancario</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="servicio" role="tabpanel">
+                            <div class="card-body">
+                               <div class="col-lg-12">
+                                   <strong> Lista Servicios </strong>
+                                   <div class="table-responsive">
+                                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Accion</th>
+                                                    <th>Nombre</th>
+                                                    <th>Ruc</th>
+                                                    <th>direccion</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Accion</th>
+                                                    <th>Nombre</th>
+                                                    <th>Ruc</th>
+                                                    <th>Direccion</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr *ngFor="let servicio of servicios">
+                                                    <td>
+                                                        <button class="btn btn-info" (click)="addServicio(servicio.id,servicio.nombre_proveedor,servicio.ruc,servicio.direccion,servicio.tipo)">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>{{servicio.nombre_proveedor}}</td>
+                                                    <td>{{servicio.ruc}}</td>
+                                                    <td>{{servicio.direccion}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table> 
+                                    </div>
+                               </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <label for="" class="control-label">
+                            <i class="fa fa-shopping-cart"></i>
+                            DETALLE DE PAGO
+                        </label>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                Nombre:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label>
+                                                <strong>{{nombre}}</strong> 
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                Ruc:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label>
+                                                <strong>{{ruc}}</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                Direccion:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label>
+                                                {{direccion}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                Tipo:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label>
+                                                <strong>{{tipo}}</strong> 
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                Decripcion Pago:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="3" #descrip></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <label class="control-label">
+                            <i class="fa fa-money"></i>
+                            PAGO
+                        </label>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                SUBTAL:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="number" #subtotal (change)="sumaTotal(subtotal.value)" class="form-control">
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                IGV(18%)
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label>{{igv}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <label>
+                                                TOTAL:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <label><strong>{{total}}</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-info" (click)="onSubmit(compro.value, nroRecibo.value, tipoP.value, descrip.value, subtotal.value)">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

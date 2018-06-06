@@ -11,6 +11,7 @@ import { ProveedorListComponent } from './components/proveedor-list.component';
 import { ProveedorEditComponent } from './components/proveedor-edit.component';
 
 
+
 @NgModule({
     imports:[
         CommonModule,
@@ -19,7 +20,8 @@ import { ProveedorEditComponent } from './components/proveedor-edit.component';
     declarations:[
         ProveedorAddComponent,
         ProveedorListComponent,
-        ProveedorEditComponent
+        ProveedorEditComponent,
+        
     ],
     providers:[
         ProveedorService,

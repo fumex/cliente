@@ -1,0 +1,258 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">
+                <i class="fa fa-archive">
+                </i> {{title}}
+        </h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">{{title}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                    </div>
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <strong>Lista de productos</strong>
+                            <div class="table-responsive m-t-4">
+                                <table id="mytable" class="table table-bordered table-striped" cell="0" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Codigo</th>
+                                            <th>Documento</th>
+                                            <th>Comprobante</th>
+                                            <th>Almacen</th>
+                                            <th>Nombre</th>
+                                            <th>Tipo Pago</th>
+                                            <th>Monto</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th>Codigo</th>
+                                            <th>Documento</th>
+                                            <th>Comprobante</th>
+                                            <th>Almacen</th>
+                                            <th>Nombre</th>
+                                            <th>Tipo Pago</th>
+                                            <th>Monto</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr *ngFor="let pago of pagos">
+                                            <td>
+                                                <button class="btn btn-info" (click)="getPago(pago.id,pago.code,pago.nombre_proveedor,
+                                                                                            pago.documento, pago.nroBoleta, pago.nombre,
+                                                                                            pago.tipoPago,pago.subtotal,pago.igv,
+                                                                                            pago.created_at)">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </td>
+                                            <td>{{pago.code}}</td>
+                                            <td>{{pago.documento}}</td>
+                                            <td>{{pago.nroBoleta}}</td>
+                                            <td>{{pago.nombre}}</td>
+                                            <td>{{pago.nombre_proveedor}}</td>
+                                            <td>{{pago.tipoPago}}</td>
+                                            <td>{{pago.subtotal + pago.igv}}</td>
+                                            <td>{{pago.created_at}}</td>                                    
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <h3>DATOS DE PAGO:</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>Fecha:</strong> 
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {{fecha}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                            <div class="col-sm-4">
+                                                <strong>Codigo:</strong> 
+                                            </div>
+                                            <div class="col-sm-8">
+                                                {{code}}
+                                            </div>
+                                        </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>{{documento}}</strong> 
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {{nroBoleta}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>Nombre :</strong> 
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {{nombre_proveedor}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>Tipo de Pago:</strong>  
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {{tipoPago}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>Almacen:</strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {{almacen}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                       <h3>Compras Realizada</h3> 
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive m-t-40">
+                            <table class="table table-bordered table-striped" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Codigo</th>
+                                    <th>Producto</th>
+                                    <th>Almacen</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </thead>
+                                <tfoot>
+                                    <th>#</th>
+                                    <th>Codigo</th>
+                                    <th>Producto</th>
+                                    <th>Almacen</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tfoot>
+                                <tbody>
+                                    <tr *ngFor="let compra of compras; let $index=index">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{compra.id_pago}}</td>
+                                        <td>{{compra.nombre_producto}}</td>
+                                        <td>{{compra.nombre}}</td>
+                                        <td>{{compra.cantidad}}</td>
+                                        <td>{{compra.precio_unitario}}</td>
+                                        <td>{{compra.cantidad * compra.precio_unitario}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Monto</h3> 
+                    </div>
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <strong>SUBTOTAL:</strong> 
+                                        </div>
+                                        <div class="col-sm-7">
+                                            s/.{{subtotal}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>IGV:</strong> 
+                                        </div>
+                                        <div class="col-sm-8">
+                                            s/.{{igv}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <strong>TOTAL:</strong> 
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <strong>s/. {{subtotal + igv}}</strong>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <button class="btn btn-danger" (click)="anularCompra()">Anular</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
