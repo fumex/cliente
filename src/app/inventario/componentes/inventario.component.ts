@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import{InventarioService}from '../services/inventario.service'
 import{AlmacenesService}from '../../Almacenes/services/almacenes.service';
@@ -31,6 +31,7 @@ export class InventarioComponent{
     public productos:ProductosfiltradoporAlmacenModel;
     public mostrabproductos;
     public vertablaproductos;
+    public input;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
@@ -57,13 +58,10 @@ export class InventarioComponent{
         this.mostrarveralmacen(this.almacenselec);
     }  
     cambio(id){
-        console.log(id);
+        //console.log(id);
         this.mostrabproductos=1;
         this.almacenselec=id;
-        this.destruir();
-        this.reconstruir();
-        //this.tabla();
-        
+        this.mostrarProducto(this.almacenselec);
         console.log(this.almacenselec);
         this.mostrarveralmacen(this.almacenselec);
     }
@@ -168,7 +166,10 @@ export class InventarioComponent{
     mostrarProducto(id){
     this._InventarioService.seleccionarproductos(id).subscribe(
         result=>{
+            this.destruir();
+            this.reconstruir();
             this.productos=result;
+            
             console.log(result);
          },
          error=>{
@@ -186,6 +187,30 @@ export class InventarioComponent{
     irproducto(){
         this._router.navigate(['/admin/productos']);
     }
+    limitar(numero,stock,id){
+         this.input =document.getElementById('numero');
+        console.log(this.input.value);
+        if(numero>stock)
+        {
+            this.input.value = stock-1;
+            this.input.style="border: 0.3px solid red;";
+           this.alerta();  
+            console.log("se paso");
+          
+        }else{
+            console.log(numero,stock);
+            this.input.style="border: 0.3px solid #3bc1ff;";
+        }
+       
+       
+    }
+    alerta(){
+        swal({
+        title: 'no existe esa cantidad en el almacen',
+        timer: 1000,
+       })
+    }
+
     tabla(){
         setTimeout(function(){
             $(document).ready(function() {
@@ -199,7 +224,6 @@ export class InventarioComponent{
     }
     reconstruir(){
         this.tabla();
-        this.mostrarProducto(this.almacenselec);
     }
     alertamodificar(id){
         this.ident=id;

@@ -56,12 +56,9 @@ declare var swal:any;
       }
         ngOnInit(){
         this.mostraralmacen();
-        this.mostrarProducto(this.almacenselec);
-        
         }  
         cambio(id){
-            this.destruirtablaproductos();
-            this.reconstruirtablaproductos();
+            //this.mostrarProducto(this.almacenselec);
             this.mostrabproductos=1;
             this.mostrarProducto(id);
             this.almacenselec=id;
@@ -144,7 +141,6 @@ declare var swal:any;
             this.id=0;
             this.mostrareporte=null;
             this.ocutarformulario=null;
-            this.destruirtablaprinmcipal();
             this.idalmacen=0;
             this.idproducto=0;
             this.movimientos.splice(1);
@@ -173,7 +169,10 @@ declare var swal:any;
         this.ident=id;
         this._InventarioService.seleccionarproductos(id).subscribe(
             result=>{
+                
                 this.productos=result;
+                this.destruirtablaproductos();
+                this.reconstruirtablaproductos();
                 //console.log(result);
              },
              error=>{
@@ -191,7 +190,6 @@ declare var swal:any;
         }
         reconstruirtablaproductos(){
             this.tabla2();
-            this.mostrarProducto(this.ident);
         }
         destruirtablaprinmcipal(){	
             var table = $('#mytable').DataTable(); table .clear() ;
@@ -199,18 +197,24 @@ declare var swal:any;
         }
         tabla(){
             //this.mostrar();
+           
             setTimeout(function(){
                 $(function(){
-                     $('#mytable').DataTable();
+                     $('#mytable').DataTable({
+                         dom: 'Bfrtip',
+                         buttons: [
+                             'copy', 'csv', 'excel', 'pdf', 'print'
+                         ]
+                     });
                 });
             },3000);
         }
         tabla2(){
             setTimeout(function(){
-                $(document).ready(function() {
+                $(function(){
                      $('#tablaproducto').DataTable();
                 });
-            },1500);
+            },500);
         }
 
   }

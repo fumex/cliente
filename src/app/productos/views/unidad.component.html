@@ -1,0 +1,29 @@
+<form #formunidad="ngForm" >
+    <div class="row p-t-1">
+        <div class="row p-t-20">    
+            <div class="form-group">
+                <label >Nombre
+                <label style="color:red;" *ngIf="!unidad.valid">*</label>
+                </label>
+                <input type="text"  #unidad="ngModel" name="unidad" [(ngModel)]="unidades.unidad" class="form-control col-md-11"required>
+            </div>
+            <div class="form-group">
+                <label >Abreviación
+                <label style="color:red;" *ngIf="!abreviacion.valid">*</label>
+                </label>
+                <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control col-md-6"required>
+            </div> 
+        </div>
+        <div class="col-md-3">  
+            <br>
+            <br>
+             <button  *ngIf="titulo=='agregar unidad'" (click)="guardarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
+                class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
+                    <i class="fa fa-upload"></i></button>
+             <button  *ngIf="titulo!='agregar unidad'" (click)="actualizarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
+                class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
+                    <i class="fa fa-save"></i></button>    
+            <button type="button" (click)="exit()" class="btn btn-warning btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-close"></i></button>
+        </div>
+    </div>
+</form>

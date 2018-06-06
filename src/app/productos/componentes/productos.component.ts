@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import {ProductoService} from '../services/producto.service';
 import { producto } from '../modelos/productos';
+import { UnidadesModel } from '../modelos/unidades';
 import{categoria} from '../../categorias/modelos/categorias';
 import {CategoriaService}from '../../categorias/services/services.categoria';
+import { UnidadService } from '../services/unidad.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -12,7 +14,7 @@ declare var swal:any;
 @Component({
   selector: 'productos-add',
   templateUrl: '../views/productos.component.html',
-  providers: [ProductoService,CategoriaService]
+  providers: [ProductoService,CategoriaService,UnidadService]
 })
 export class ProductosComponent{
     public titulo:string;
@@ -22,10 +24,14 @@ export class ProductosComponent{
     public agregarpro:producto;
     public cate:categoria;
     public categorias:categoria;
+    public unidadmodelo:UnidadesModel;
     public modificarcategoria;
+    public modificarunidad;
     public ident;
-    public apareceredit;
+    public aparecereditcate;
+    public aparecereditunidad;
     public llamarcategoria;
+    public llamarunidad;
     public unidad;
     public modificarproducto;
 	constructor(
@@ -33,7 +39,7 @@ export class ProductosComponent{
         private _router:Router,
         private _productoservice: ProductoService,
         private _categoriaservice:CategoriaService,
-        
+        private _UnidadService:UnidadService,
     ){
         this.titulo = "productos";
         this.tabla();
@@ -42,9 +48,16 @@ export class ProductosComponent{
         this.editproducto=new producto(0,'','','','',null);
         this.agregarpro=new producto(0,'','','','',null);
         this.categorias=new categoria(0,'');
+        //this.unidadmodelo=new UnidadesModel(0,'','');
+
         this.modificarcategoria=null;
         this.llamarcategoria=null;
-        this.apareceredit=null;
+        this.aparecereditcate=null;
+
+        this.modificarunidad=null;
+        this.llamarunidad=null;
+        this.aparecereditunidad=null;
+        
         this.modificarproducto=null;
         this.ident=null;
         this.unidad=null;
@@ -52,9 +65,10 @@ export class ProductosComponent{
     ngOnInit(){
         this.mostrar();
         this.mostrarcategoria();
+        this.mostarunidad();
         this.confirmaractualizar(this.modificarproducto);
         this.aparecermodificarcategoria(this.modificarcategoria);
-        this.llamarcate(this.llamarcategoria,this.apareceredit);
+        this.llamarcate(this.llamarcategoria,this.aparecereditcate);
     } 
     aparecerunidad(id){
         this.unidad=id;
@@ -62,13 +76,18 @@ export class ProductosComponent{
     } 
     aparecermodificarcategoria(id){
         this.modificarcategoria=id;    
-        console.log(this.modificarcategoria);
+        //console.log(this.modificarcategoria);
     }
 
     llamarcate(id,apa){
         this.llamarcategoria=id;
-        this.apareceredit=apa;
+        this.aparecereditcate=apa;
         console.log(this.llamarcategoria);
+    }
+    llamarunid(id,apa){
+        this.llamarunidad=id;
+        this.aparecereditunidad=apa;
+        console.log(this.llamarunidad);
     }
     confirmaractualizar(id){
         this.modificarproducto=id;
@@ -144,7 +163,8 @@ export class ProductosComponent{
         console.log(this.agregarpro);
         this._productoservice.addproducto(this.agregarpro).subscribe(
             result=>{
-                this.mostrar();
+                this.destruir();
+                this.reconstruir();
                 console.log(result);
 
             },
@@ -174,7 +194,13 @@ export class ProductosComponent{
     getexit(){
         this.modificarcategoria=null;
         this.llamarcategoria=null;
-        this.apareceredit=null;
+        this.aparecereditcate=null;
+        this.modificarunidad=null;
+        this.llamarunidad=null;
+        this.modificarunidad=null;
+        this.unidad=null;
+        this.aparecereditunidad=null;
+  
     }
     mostrarcategoria(){
         this._categoriaservice.getCategoria().subscribe(
@@ -188,7 +214,18 @@ export class ProductosComponent{
         );
        
     }
-    
+    mostarunidad(){
+        this._UnidadService.getunidad().subscribe(
+            result=>{
+                this.unidadmodelo=result;
+                console.log(this.unidadmodelo);
+            },
+            error=>{
+                console.log(<any>error);
+            }   
+        );
+       
+    }
     tabla(){
         this.mostrar();
         setTimeout(function(){

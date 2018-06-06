@@ -22,6 +22,7 @@ import { ProductoModule } from './productos/productos.module';
 import { InventarioModule } from './inventario/inventario.moule';
 import { AlmacenesModule } from './Almacenes/almacenes.module';
 import { AlmacenModule } from './almacen/almacen.module';
+import { UsuariosModule }from './usuarios/usuarios.module';
 
 import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
 
@@ -48,7 +49,7 @@ import { TipoDocumentoModule } from './TipoDocumento/documento.module';
     InventarioModule,
     AlmacenesModule,
     AlmacenModule,
-
+    UsuariosModule,
     OrdenDePedidoModule,
     
     TipoDocumentoModule

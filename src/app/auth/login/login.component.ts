@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class LoginComponent implements OnInit {
   public f:FormGroup;
   errorCredentials=false;
+  public user:any;
   constructor(
     private formBuilder:FormBuilder,
     private authService:AuthService,
@@ -27,9 +28,13 @@ export class LoginComponent implements OnInit {
   }
   
   onSubmit(){
+
     this.authService.login(this.f.value).subscribe(
-      (response)=>{
-        this.router.navigate(['admin']);
+      response=>{
+        this.user=response;
+        console.log(this.user.user.rol);
+        this.router.navigate([this.user.user.rol]);
+         
       },
       (errorResponse:HttpErrorResponse)=>{
         if(errorResponse.status===401){

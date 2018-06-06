@@ -1,5 +1,5 @@
 import { NgModule, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute,Params, Routes } from '@angular/router';
 import { AdminComponent } from '../admin.component';
 import { AuthGuard } from '../../guards/auth.guards';
 import { ProfileComponent } from '../../auth/profile/profile.component';
@@ -24,13 +24,14 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
 import { TipoDocumentoListComponent } from '../../TipoDocumento/components/documento-list.component';
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
-
+import { usuarioscomponent } from '../../usuarios/componentes/usuarios.component';
 import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
 
-
-
+import { AuthService } from '../../auth/services/auth.service';
+import { environment } from './../../../environments/environment';
 
 @NgModule({
+   
     imports:[
         RouterModule.forChild([
             {
@@ -38,6 +39,7 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
                 children:[
                     {
+                        
                         path:'',
                         component:AdminContentComponent
                     },
@@ -82,6 +84,7 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
                     { path:'pedido',component:OrdenDePedidoComponent},
                     { path:'inventario',component:InventarioComponent},
                     { path:'reporteInventario',component:InventarioListComponent}, 
+                    { path:'usuarios',component:usuarioscomponent}, 
                 ]
             }
         ])
@@ -90,4 +93,18 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
         RouterModule
     ]
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule { 
+    public url;
+    constructor(private auth:AuthService,
+
+        private router:Router,
+        private _route: ActivatedRoute,
+    ){
+        this.url='http://localhost:4200';
+           //console.log(this._route.snapshot.paramMap);
+        if(this.auth.check()==true && location.href==this.url+'/auth/login'){
+
+            this.router.navigate(['admin']);
+        }
+    }
+}
