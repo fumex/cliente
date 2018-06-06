@@ -3,6 +3,7 @@ import { ServicioPagoService } from '../services/servicio.service';
 import { ServicioModel } from '../models/servicio';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { ServicioAddModel } from '../models/servicio-add';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare  var $:any;
 @Component({
@@ -28,7 +29,9 @@ export class ServicioAddComponent implements OnInit{
     public compo:string;
     public id_proveedor:number;
     constructor(
-        private serviPagoService:ServicioPagoService
+        private serviPagoService:ServicioPagoService,
+        private route:ActivatedRoute,
+        private router:Router
     ){
         this.title='SERVICIOS'
         this.tabla();
@@ -105,6 +108,7 @@ export class ServicioAddComponent implements OnInit{
         this.serviPagoService.addServicio(this.servicioPago).subscribe(
             result=>{
                 console.log(result);
+                this.router.navigate(['/admin/servicio/list']);
             },
             error=>{
                 console.log(<any>error)

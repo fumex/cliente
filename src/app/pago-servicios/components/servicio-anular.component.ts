@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { ServicioPagoService } from "../services/servicio.service";
-import { ServicioAnularModel } from "../models/servicio-anular";
+import { Component, OnInit } from '@angular/core';
+import { ServicioPagoService } from '../services/servicio.service';
+import { ServicioAnularModel } from '../models/servicio-anular';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare  var $:any;
 @Component({
@@ -25,6 +26,8 @@ export class ServicioAnularComponent implements OnInit{
     public fecha:string
     constructor(
         private anularService:ServicioPagoService,
+        private route:ActivatedRoute,
+        private router:Router
     ){
         this.title='ANULAR SERVICIO';
         this.tabla();
@@ -73,6 +76,7 @@ export class ServicioAnularComponent implements OnInit{
          this.anularService.deleteServicio(this.id).subscribe(
             result=>{
                 console.log(result);
+                this.router.navigate(['/admin/transaccion/list']);
             },
             error=>{
                 console.log(<any>error);

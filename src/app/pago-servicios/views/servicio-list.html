@@ -1,0 +1,70 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary"><i class="fa fa-list-alt fa-2x"></i> <strong> {{title}}</strong></h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item active">{{title}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <strong>Exportar Información</strong>
+                        <div class="table-responsive m-t-4">
+                            <table id="mytable" class="table table-bordered table-striped" cell="0" cellspancing="0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Codigo</th>
+                                        <th>Comprobante</th>
+                                        <th>Nro</th>
+                                        <th>tipo</th>
+                                        <th>Nombre</th>
+                                        <th>Descripcion</th>
+                                        <th>Subtotal</th>
+                                        <th>IGV</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Codigo</th>
+                                        <th>Comprobante</th>
+                                        <th>Nro</th>
+                                        <th>tipo</th>
+                                        <th>Nombre</th>
+                                        <th>Descripcion</th>
+                                        <th>Subtotal</th>
+                                        <th>IGV</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr *ngFor="let servicio of servicios; let $index=index;">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{servicio.code}}</td>
+                                        <td>{{servicio.documento}}</td>
+                                        <td>{{servicio.nroBoleta}}</td>
+                                        <td>{{servicio.tipo_pago}}</td>
+                                        <td>{{servicio.nombre_proveedor}}</td>
+                                        <td>{{servicio.descripcion}}</td>
+                                        <td>{{servicio.subtotal}}</td>
+                                        <td>{{servicio.igv}}</td>
+                                        <td>{{servicio.subtotal + servicio.igv}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

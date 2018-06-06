@@ -29,6 +29,7 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
 import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
 import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
 import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
+import { ServicioListComponent } from '../../pago-servicios/components/servicio-list.component';
 
 
 
@@ -92,6 +93,10 @@ import { ServicioAnularComponent } from '../../pago-servicios/components/servici
                     {
                         path:'servicio/anular',
                         component:ServicioAnularComponent
+                    },
+                    {
+                        path:'servicio/list',
+                        component:ServicioListComponent
                     },
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
