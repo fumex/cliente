@@ -191,16 +191,18 @@ export class ProductosComponent{
     }
 
 
-    getexit(){
+    getexitcate(){
         this.modificarcategoria=null;
         this.llamarcategoria=null;
         this.aparecereditcate=null;
-        this.modificarunidad=null;
+        this.agregarpro.id_categoria=null;
+    }
+    getexituni(){
         this.llamarunidad=null;
         this.modificarunidad=null;
         this.unidad=null;
         this.aparecereditunidad=null;
-  
+        this.agregarpro.id_unidad=null;
     }
     mostrarcategoria(){
         this._categoriaservice.getCategoria().subscribe(

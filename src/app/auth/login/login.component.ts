@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   public f:FormGroup;
   errorCredentials=false;
   public user:any;
+  public rol;
   constructor(
     private formBuilder:FormBuilder,
     private authService:AuthService,
@@ -32,9 +33,9 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.f.value).subscribe(
       response=>{
         this.user=response;
-        console.log(this.user.user.rol);
+        
         this.router.navigate([this.user.user.rol]);
-         
+         this.rol=this.user.user.rol;
       },
       (errorResponse:HttpErrorResponse)=>{
         if(errorResponse.status===401){

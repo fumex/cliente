@@ -27,7 +27,7 @@ export class unidadesedit{
         this.id=this._productoscomponent.modificarcategoria;
     }
     exit(){
-        this._productoscomponent.getexit();
+        this._productoscomponent.getexituni();
     }
     ngOnInit(){
         this.getunidad();

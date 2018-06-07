@@ -6,6 +6,7 @@ import{ProductoService} from '../../productos/services/producto.service';
 import{inventario} from '../modelos/inventario';
 import{almacen}from '../../Almacenes/modelos/almacenes';
 import{ProductosfiltradoporAlmacenModel} from '../modelos/almacenproducto';
+import {AuthService} from '../../auth/services/auth.service';
 
 
 declare var jQuery:any;
@@ -15,7 +16,7 @@ declare var swal:any;
 @Component({
   selector: 'inventario',
   templateUrl: '../views/inventario.component.html',
-  providers: [InventarioService,AlmacenesService,ProductoService]
+  providers: [InventarioService,AlmacenesService,ProductoService,AuthService]
 })
 export class InventarioComponent{
     public titulo:string;
@@ -32,23 +33,27 @@ export class InventarioComponent{
     public mostrabproductos;
     public vertablaproductos;
     public input;
+    public usuario;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _InventarioService:InventarioService,
         private _almacenesService:AlmacenesService,
         private _ProductoService:ProductoService,
+        private auth:AuthService,
     ){
         this.titulo = "Ajustes de inventario";
         //this.productos=new ProductosfiltradoporAlmacenModel(0,'','',0,0,'',0,0);
-        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0);
-        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0);
+        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
         this.ident=null;
         this.tabla();
         this.almacenselec=0;
         this.mostrabproductos=0;
         this.vertablaproductos;
         this.id=0;
+        this.usuario=this.auth.getUser();;
+
     }
 
     ngOnInit(){
@@ -75,7 +80,7 @@ export class InventarioComponent{
         console.log(this.inventario);
         /*this.inventario2.id_producto=null;
         this.inventario2.cantidad=null;*/
-        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
         console.log(this.productos)
         console.log(this.movimientos);
 
@@ -96,12 +101,14 @@ export class InventarioComponent{
         console.log(this.movimientos);
     }
     guardarmoviemientos(){
+        
         while(this.id<this.movimientos.length){
             console.log(this.movimientos[this.id]);
             this.movimientos[this.id].descripcion=this.inventario.descripcion;
             this.movimientos[this.id].id_almacen=this.inventario.id_almacen;
             this.movimientos[this.id].opciones=this.inventario.opciones;
             this.movimientos[this.id].escoja=this.inventario.escoja;
+            this.movimientos[this.id].usuario=this.usuario.id;
             this.inventario2=this.movimientos[this.id];
             console.log(this.inventario2);
 
@@ -118,6 +125,7 @@ export class InventarioComponent{
             )
             this.id=this.id+1
         }
+        console.log(this.inventario2);
         this.id=0;
     }
     mostrarveralmacen(almacenselec){
@@ -178,7 +186,7 @@ export class InventarioComponent{
         );
     }
     limpiar(){
-        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0);
+        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0);
     }
 
     iralmacen(){

@@ -6,22 +6,22 @@ import { AuthService } from '../auth/services/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-
   constructor(
     private auth:AuthService,
     private router:Router
   ) { }
 
   canActivate(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Observable<boolean>|Promise<boolean>|boolean{
-    console.log(this.auth.check());
     if(this.auth.check()){
-      return true;
+       return true;
     }
     this.router.navigate(['auth/login']);
     return false;
   }
   canActivateChild(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):Observable<boolean>|Promise<boolean>|boolean{
+    
     if(this.auth.check()){
+      
       return true;
     }
     this.router.navigate(['auth/login']);

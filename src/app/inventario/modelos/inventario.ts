@@ -9,6 +9,7 @@ export class inventario{
         public cantidad: number,
         public opciones: string,
         public precio:number,
-        public escoja:number
+        public escoja:number,
+        public usuario:number,
 	){}
 }

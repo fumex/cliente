@@ -20,7 +20,7 @@ export class categoriacomponent{
         this.titulo="categoria"
     }
     exit(){
-        this._productoscomponent.getexit();
+        this._productoscomponent.getexitcate();
     }
 
     guardarcategoria(){
