@@ -7,12 +7,13 @@ import { AuthService } from '../../auth/services/auth.service';
   styleUrls: ['./admin-left-side.component.css']
 })
 export class AdminLeftSideComponent implements OnInit {
-
+  public user;
   constructor(
     private auth:AuthService
   ) { }
 
   ngOnInit() {
+
   }
 
 }

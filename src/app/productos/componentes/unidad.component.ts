@@ -25,7 +25,7 @@ export class unidadcomponent{
         this.titulo="agregar unidad";
     }
     exit(){
-        this._productoscomponent.getexit();
+        this._productoscomponent.getexituni();
     }
 
     guardarunidad(){

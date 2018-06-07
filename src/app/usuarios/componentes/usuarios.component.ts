@@ -14,23 +14,29 @@ export class usuarioscomponent{
     public usuarioarreglo:Array<UsuarioModel>=[];
     public titulo;
     public compara;
+    public cuenta;
     constructor(
         private _UsuarioService:UsuarioService,
     ){
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','');
-        this.titulo="categoria"
+        this.titulo="informacion personal"
         this.paswor=null;
         this.confirmar=null;
         this.compara=0;
+        this.cuenta=0;
     }
-    alimantarareglo(){
+    alimentarareglo(){
         this.usuarioarreglo.push(this.usuario);
+        this.titulo="informacion de cuenta";
+        this.cuenta=1;
         console.log(this.usuarioarreglo);
     }
+
     guardarusuario(){
         //this.categoria = new categoria(tipo1);
-        console.log(this.usuario);
-        this._UsuarioService.addusuario(this.usuario).subscribe(
+        this.usuarioarreglo.push(this.usuario);
+        console.log(this.usuarioarreglo[0]);
+        this._UsuarioService.addusuario(this.usuarioarreglo[0]).subscribe(
             response=>{
                 console.log(response);
                 this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','');
@@ -39,7 +45,13 @@ export class usuarioscomponent{
                 console.log(<any>error);
             }
         );
+        this.limpiar();
     }
+    limpiar(){
+        this.cuenta=0;
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','');
+        this.usuarioarreglo.slice(0,1);
+     }
     limitar(){
         this.paswor =document.getElementById('pasword');
         this.confirmar =document.getElementById('confirmar');

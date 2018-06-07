@@ -32,7 +32,7 @@ export class categoriaedit{
         this.id=this._productoscomponent.modificarcategoria;
     }
     exit(){
-        this._productoscomponent.getexit();
+        this._productoscomponent.getexitcate();
     }
     ngOnInit(){
         this.getcategoria();

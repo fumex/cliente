@@ -14,6 +14,7 @@ import{InventarioComponent} from '../../inventario/componentes/inventario.compon
 import{InventarioListComponent} from '../../inventario/componentes/inventario.list.component';
 import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 
+
 import { PagoAddComponent } from '../../pago/components/pago-add.component';
 import { PagoListComponent } from '../../pago/components/pago-list.component';
 
@@ -31,9 +32,10 @@ import { ServicioAddComponent } from '../../pago-servicios/components/servicio-a
 import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
 import { ServicioListComponent } from '../../pago-servicios/components/servicio-list.component';
 
-
+import { LoginComponent} from '../../auth/login/login.component';
 import { AuthService } from '../../auth/services/auth.service';
 import { environment } from './../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
    
@@ -47,7 +49,6 @@ import { environment } from './../../../environments/environment';
                 },
                 children:[
                     {
-                        
                         path:'',
                         component:AdminContentComponent
                     },
@@ -115,7 +116,7 @@ import { environment } from './../../../environments/environment';
                     { path:'usuarios',component:usuarioscomponent}, 
                 ]
             }
-        ])
+        ]),
     ],
     exports:[
         RouterModule
@@ -123,17 +124,29 @@ import { environment } from './../../../environments/environment';
 })
 export class AdminRoutingModule { 
     public url;
-    constructor(private auth:AuthService,
-
+    public rol;
+    public ruta;
+    constructor(
+        private aurth:AuthService,
+        private http:HttpClient,
         private router:Router,
-        private _route: ActivatedRoute,
+            private _route: ActivatedRoute,
+        //private _login:LoginComponent,
     ){
-      /*  this.url='http://localhost:4200';
-           //console.log(this._route.snapshot.paramMap);
-        if(this.auth.check()==true && location.href==this.url+'/auth/login'){
-
-            this.router.navigate(['admin']);
-        }
-        */
+        this.url='http://localhost:4200';
+        this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
+;
+            if(this.url+'/'+data.user.rol!=this.ruta){
+                if(this.aurth.check()==true && location.href==this.url+'/auth/login'){
+                    this.router.navigate([data.user.rol]);
+                }
+            }
+            const   routes :   Routes   =   [ 
+                { path:'', redirectTo:data.user.rol, pathMatch:'full' } ,  
+            ];
+        });
+       
+      
+       
     }
 }

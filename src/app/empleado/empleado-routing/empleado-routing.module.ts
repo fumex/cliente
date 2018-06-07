@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute, Routes } from '@angular/router';
 import { EmpleadoComponent } from '../empleado.component';
 import { AuthGuard } from '../../guards/auth.guards';
 import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.component';
@@ -10,6 +10,8 @@ import { ProveedorListComponent } from '../../proveedor/components/proveedor-lis
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
 import { EmpleadoContentComponent } from '../empleado-content/empleado-content.component';
 import { AuthService } from '../../auth/services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @NgModule({
     imports:[
@@ -59,8 +61,28 @@ import { AuthService } from '../../auth/services/auth.service';
     ]
 })
 export class EmpleadoRoutingModule{
-    
-    constructor(){
-        console.log('Empleado presente');
+    public url;
+    public rol;
+    public ruta;
+
+    constructor(
+        private aurth:AuthService,
+        private http:HttpClient,
+        private router:Router,
+        private _route: ActivatedRoute,
+    ){
+        this.url='http://localhost:4200';
+        this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
+;
+            if(this.url+'/'+data.user.rol!=this.ruta){
+                if(this.aurth.check()==true && location.href==this.url+'/auth/login'){
+                    this.router.navigate([data.user.rol]);
+                }
+            }
+            const   routes :   Routes   =   [ 
+                { path:'', redirectTo:data.user.rol, pathMatch:'full' } ,  
+            ];
+        });
     }
+
 }

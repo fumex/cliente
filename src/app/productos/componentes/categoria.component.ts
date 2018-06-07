@@ -26,7 +26,7 @@ export class categoriacomponent{
         
     }
     exit(){
-        this._productoscomponent.getexit();
+        this._productoscomponent.getexitcate();
     }
 
     guardarcategoria(){
