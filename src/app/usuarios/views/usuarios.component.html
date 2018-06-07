@@ -48,7 +48,10 @@
                                         <span *ngIf="!documento.valid && documento.touched" class="label label-default">El documento es obligatorio</span>
                                         <label id="rec" *ngIf="!documento.valid">*</label>
                                         </label>
-                                        <input type="text"  #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control col-md-12" required>
+                                        <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                            <option disabled="disabled" >--seleccione el documento</option>    
+                                        <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
