@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentoService } from '../services/documento.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DocumentoModel } from '../models/documento';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
 
 @Component({
     selector:'documento-edit',
@@ -12,13 +14,16 @@ export class TipoDocumentoEditComponent implements OnInit{
 
     public title;
     public documento:DocumentoModel;
+    public user:User;
     constructor(
         private documentoService:DocumentoService,
         private route:ActivatedRoute,
-        private router:Router
+        private router:Router,
+        private auth:AuthService
     ){
-        this.title='Editar Docummento'
-        this.documento= new DocumentoModel(null,'','');
+        this.user=auth.getUser();
+        this.title='Editar Documento'
+        this.documento= new DocumentoModel(null,'','',this.user.id);
     }
     ngOnInit(){
         this.getDocumento();

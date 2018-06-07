@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { UnidadesModel } from "../modelos/unidades";
 import { UnidadService } from '../services/unidad.service';
 import { ProductosComponent } from './productos.component';
+import { User } from "../../auth/interfaces/user.model";
+import { AuthService } from "../../auth/services/auth.service";
 
 
 @Component({
@@ -12,11 +14,14 @@ import { ProductosComponent } from './productos.component';
 export class unidadcomponent{
     public unidades:UnidadesModel;
     public titulo;
+    public user:User;
     constructor(
         private _UnidadService:UnidadService,
-       private _productoscomponent:ProductosComponent
+        private _productoscomponent:ProductosComponent,
+        private auth:AuthService
     ){
-        this.unidades = new UnidadesModel(null,'','');
+        this.user=this.auth.getUser();
+        this.unidades = new UnidadesModel(null,'','',this.user.id);
         this.titulo="agregar unidad";
     }
     exit(){
@@ -29,7 +34,7 @@ export class unidadcomponent{
         this._UnidadService.addunidad(this.unidades).subscribe(
             response=>{
                 console.log(response);
-                this.unidades = new UnidadesModel(null,'','');
+                this.unidades = new UnidadesModel(null,'','',this.user.id);
                 this._productoscomponent.mostarunidad();
                 this.exit();
             },

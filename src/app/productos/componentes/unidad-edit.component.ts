@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UnidadService } from "../services/unidad.service";
 import { UnidadesModel } from '../modelos/unidades';
 import { ProductosComponent } from './productos.component';
+import { User } from "../../auth/interfaces/user.model";
+import { AuthService } from "../../auth/services/auth.service";
 
 
 @Component({
@@ -15,12 +17,15 @@ export class unidadesedit{
     public unidad;
     public id;
     public titulo;
+    public user:User;
     constructor(
         private _UnidadService:UnidadService,
         private _route: ActivatedRoute,
-       private _productoscomponent:ProductosComponent
+       private _productoscomponent:ProductosComponent,
+       private auth:AuthService,
     ){
-        this.unidades = new UnidadesModel(null,'','');
+        this.user=this.auth.getUser();
+        this.unidades = new UnidadesModel(null,'','',this.user.id);
         
         this.id=0;
         this.titulo="editar unidad"

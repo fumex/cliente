@@ -28,9 +28,8 @@ export class CategoriaService{
             
     }
     actualizarcategoria(id, categoria:categoria):Observable<any>{
-        let json=JSON.stringify(categoria);
-        let params="json="+json;
-        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+        let params=JSON.stringify(categoria);
+        let headers=new HttpHeaders().set('Content-Type','application/json');
         return this._http.post(this.url+'/categorias/'+id,params,{headers:headers});
     }
     selectcategoria(id){

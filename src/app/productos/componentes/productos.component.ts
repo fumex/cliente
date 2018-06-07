@@ -6,6 +6,8 @@ import { UnidadesModel } from '../modelos/unidades';
 import{categoria} from '../../categorias/modelos/categorias';
 import {CategoriaService}from '../../categorias/services/services.categoria';
 import { UnidadService } from '../services/unidad.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
 
 declare var jQuery:any;
 declare var $:any;
@@ -34,20 +36,22 @@ export class ProductosComponent{
     public llamarunidad;
     public unidad;
     public modificarproducto;
+    public user:User;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _productoservice: ProductoService,
         private _categoriaservice:CategoriaService,
         private _UnidadService:UnidadService,
+        private auth:AuthService,
     ){
         this.titulo = "productos";
         this.tabla();
-
-        this.producto=new producto(0,'','','','',null);
-        this.editproducto=new producto(0,'','','','',null);
-        this.agregarpro=new producto(0,'','','','',null);
-        this.categorias=new categoria(0,'');
+        this.user=this.auth.getUser();
+        this.producto=new producto(0,'','','','',null,this.user.id);
+        this.editproducto=new producto(0,'','','','',null,this.user.id);
+        this.agregarpro=new producto(0,'','','','',null,this.user.id);
+        this.categorias=new categoria(0,'',this.user.id);
         //this.unidadmodelo=new UnidadesModel(0,'','');
 
         this.modificarcategoria=null;
@@ -146,7 +150,7 @@ export class ProductosComponent{
     limpiar(){
         this.ident=null;
         this.modificarproducto=null;
-        this.editproducto=new producto(0,'','','','',null);
+        this.editproducto=new producto(0,'','','','',null,this.user.id);
     }
     mostrar(){
         this._productoservice.getProductos().subscribe(

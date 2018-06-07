@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { EmpleadoComponent } from '../empleado.component';
 import { AuthGuard } from '../../guards/auth.guards';
 import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.component';
@@ -8,6 +8,8 @@ import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/docume
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
+import { EmpleadoContentComponent } from '../empleado-content/empleado-content.component';
+import { AuthService } from '../../auth/services/auth.service';
 
 @NgModule({
     imports:[
@@ -15,10 +17,13 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
             {
                 path:'empleado',
                 component:EmpleadoComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
+                data:{
+                    expectedRole: 'empleado'
+                },
                 children:[
                     {
                         path:'',
-                        component:EmpleadoComponent
+                        component:EmpleadoContentComponent
                     },
                     {
                         path:'profile',
@@ -53,4 +58,9 @@ import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edi
         RouterModule
     ]
 })
-export class EmpleadoRoutingModule{}
+export class EmpleadoRoutingModule{
+    
+    constructor(){
+        console.log('Empleado presente');
+    }
+}

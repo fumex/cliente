@@ -8,6 +8,7 @@ export class ServicioAddModel{
      public id_proveedor:number,
      public descripcion:string,
      public subtotal:number,
-     public igv:number
+     public igv:number,
+     public id_user:number
     ){}
 }

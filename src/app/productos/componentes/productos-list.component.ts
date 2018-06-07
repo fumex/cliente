@@ -4,6 +4,8 @@ import {ProductoService} from '../services/producto.service';
 import { producto } from '../modelos/productos';
 import{categoria} from '../../categorias/modelos/categorias';
 import {CategoriaService}from '../../categorias/services/services.categoria';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -23,7 +25,9 @@ export class ProductosListarComponent{
     public cate:categoria;
     public ident;
     public modificarproducto;
+    public user:User
 	constructor(
+        private auth:AuthService,
         private _route:ActivatedRoute,
         private _router:Router,
         private _productoservice: ProductoService,
@@ -32,8 +36,9 @@ export class ProductosListarComponent{
     ){
         this.titulo = "productos";
         this.tabla();
-        this.producto=new producto(0,'','','','',null);
-        this.editproducto=new producto(0,'','','','',null);
+        this.user=this.auth.getUser();
+        this.producto=new producto(0,'','','','',null,this.user.id);
+        this.editproducto=new producto(0,'','','','',null,this.user.id);
         this.modificarproducto=null;
         this.ident=null;
         
@@ -117,7 +122,7 @@ export class ProductosListarComponent{
     limpiar(){
         this.ident=null;
         this.modificarproducto=null;
-        this.editproducto=new producto(0,'','','','',null);
+        this.editproducto=new producto(0,'','','','',null,this.user.id);
     }
 
     mostrarcategoria(){

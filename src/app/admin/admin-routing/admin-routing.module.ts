@@ -42,6 +42,9 @@ import { environment } from './../../../environments/environment';
             {
                 path:'admin',
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
+                data:{
+                    expectedRole:'admin'
+                },
                 children:[
                     {
                         
@@ -52,10 +55,7 @@ import { environment } from './../../../environments/environment';
                          path:'profile',
                          component:ProfileComponent
                     },
-                    {
-                        path:'proveedor',
-                        component:ProveedorAddComponent
-                    },
+                    
                     {
                         path:'documento/list',
                         component:TipoDocumentoListComponent
@@ -67,6 +67,10 @@ import { environment } from './../../../environments/environment';
                     {
                         path:'documento/edit/:id',
                         component:TipoDocumentoEditComponent
+                    },
+                    {
+                        path:'proveedor',
+                        component:ProveedorAddComponent
                     },
                     {
                         path:'proveedor/list',
@@ -124,11 +128,12 @@ export class AdminRoutingModule {
         private router:Router,
         private _route: ActivatedRoute,
     ){
-        this.url='http://localhost:4200';
+      /*  this.url='http://localhost:4200';
            //console.log(this._route.snapshot.paramMap);
         if(this.auth.check()==true && location.href==this.url+'/auth/login'){
 
             this.router.navigate(['admin']);
         }
+        */
     }
 }

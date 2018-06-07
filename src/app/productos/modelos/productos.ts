@@ -5,6 +5,7 @@ export class producto{
 		public nombre_producto: string,
 		public descripcion: string,
 		public abreviacion: string,
-		public cantidad: number
+		public cantidad: number,
+		public id_user:number
 	){}
 }
