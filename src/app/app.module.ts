@@ -28,13 +28,15 @@ import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
 
 import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 import { ServiciosModule } from './pago-servicios/pago-servicios.module';
+import { EmpleadoComponent } from './empleado/empleado.component';
 
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EmpleadoComponent
   ],
   imports: [
     BrowserModule,

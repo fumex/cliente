@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ServicioAddComponent } from './components/servicio-add.component';
 import { ServicioPagoService } from './services/servicio.service';
 import { ServicioAnularComponent } from './components/servicio-anular.component';
+import { ServicioListComponent } from './components/servicio-list.component';
 
 @NgModule({
     imports:[
@@ -12,7 +13,8 @@ import { ServicioAnularComponent } from './components/servicio-anular.component'
     ],
     declarations:[
         ServicioAddComponent,
-        ServicioAnularComponent
+        ServicioAnularComponent,
+        ServicioListComponent
     ],
     providers:[
         ServicioPagoService

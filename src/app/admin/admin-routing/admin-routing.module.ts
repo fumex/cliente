@@ -30,6 +30,7 @@ import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDeP
 import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
 import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
 import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
+import { ServicioListComponent } from '../../pago-servicios/components/servicio-list.component';
 
 import { LoginComponent} from '../../auth/login/login.component';
 import { AuthService } from '../../auth/services/auth.service';
@@ -95,6 +96,10 @@ import { HttpClient } from '@angular/common/http';
                     {
                         path:'servicio/anular',
                         component:ServicioAnularComponent
+                    },
+                    {
+                        path:'servicio/list',
+                        component:ServicioListComponent
                     },
                     { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},

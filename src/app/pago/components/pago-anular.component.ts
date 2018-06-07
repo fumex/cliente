@@ -67,7 +67,8 @@ export class PagoAnularComponent implements OnInit{
                 this.id_compra=result;
                 console.log(this.id_compra);
                 this.anularComp(this.id_compra);
-            },  
+                this.router.navigate(['/admin/transaccion/list']);
+            }, 
             error=>{
                 console.log(<any>error);
             }
