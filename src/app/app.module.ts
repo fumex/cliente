@@ -29,6 +29,7 @@ import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
 import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 import { ServiciosModule } from './pago-servicios/pago-servicios.module';
 import { EmpleadoComponent } from './empleado/empleado.component';
+import { EmpleadoModule } from './empleado/empleado.module';
 
 
 
@@ -36,13 +37,15 @@ import { EmpleadoComponent } from './empleado/empleado.component';
 @NgModule({
   declarations: [
     AppComponent,
-    EmpleadoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    //-----Menus---
     AdminModule,
+    EmpleadoModule,
+    //-------------
     ProveedorModule,
     PagoModule,
     HttpClientModule,

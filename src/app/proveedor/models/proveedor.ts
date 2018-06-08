@@ -7,6 +7,7 @@ export class ProveedorModel{
     public direccion:string,
     public telefono:string,
     public email:string,
-    public tipo_proveedor:number
+    public tipo_proveedor:number,
+    public id_user:number
     ){}
 }

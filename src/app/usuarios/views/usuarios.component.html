@@ -89,7 +89,11 @@
                                         <span *ngIf="!rol.valid && rol.touched" class="label label-default">debe seleccionar el rol</span>                                                 
                                         <label id="rec" *ngIf="!rol.valid">*</label>
                                         </label>
-                                        <input type="text" #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control col-md-12" required/>
+                                        <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                            <option disabled="disabled" >--seleccione el rol</option>    
+                                            <option  ><b>admin</b></option>
+                                            <option  ><b>empleado</b></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +107,7 @@
         </div>
     </div>         
 </form>
-<form #formvalidacion="ngForm" (ngSubmit)="guardarusuario()">
+<form #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
      <div *ngIf="cuenta!=0"  class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -140,7 +144,7 @@
                                 </div>
                             </div>
                             <div  style="text-align: right;padding-right: 50px;">
-                                <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
+                                <button  type="submit" [disabled]="!formvalidacion.form.valid" class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
                             </div>
                         </div>
                     </div>

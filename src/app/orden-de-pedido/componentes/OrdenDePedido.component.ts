@@ -10,6 +10,7 @@ import {ProductoService} from '../../productos/services/producto.service';
 import {ProveedorService} from '../../proveedor/services/proveedor.service';
 import { DetalleOrdenDePedidoModel} from '../../detalle-orden-de-pedido/modelos/DetalleOrdendePedido';
 import {DetalleOrdenPedidosService} from '../../detalle-orden-de-pedido/services/DetalleOrdenPedido.service';
+import {AuthService} from '../../auth/services/auth.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -37,6 +38,7 @@ export class OrdenDePedidoComponent{
     public editar;
     public nombres;
     public quitar;
+    public usuario;
     constructor(
         private _almacenesService:AlmacenesService,
         private _route:ActivatedRoute,
@@ -44,7 +46,8 @@ export class OrdenDePedidoComponent{
         private _ordenPedidoService:OrdenPedidosService,
         private _ProductoService:ProductoService,
         private _detalleorden:DetalleOrdenPedidosService,
-        private _proveedorservice:ProveedorService
+        private _proveedorservice:ProveedorService,
+        private auth:AuthService,
     ){
         this.titulo="Orden De Pedido";
         
@@ -57,6 +60,7 @@ export class OrdenDePedidoComponent{
         this.id=0;
         this.editar=null;
         this.quitar=null;
+        this.usuario=this.auth.getUser();;
     }
     ngOnInit(){
         this.mostraralmacen();
@@ -65,7 +69,7 @@ export class OrdenDePedidoComponent{
         this.fechaactual();
     }  
     mostraralmacen(){
-        this._almacenesService.getAlmacenes().subscribe(
+        this._almacenesService.mostraalmacenusuario(this.usuario.id).subscribe(
             result=>{
                 this.almacenes=result;
                 console.log(result);

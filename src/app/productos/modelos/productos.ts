@@ -4,7 +4,9 @@ export class producto{
 		public id_categoria: string,
 		public nombre_producto: string,
 		public descripcion: string,
-		public id_unidad: string,
-		public cantidad: number
+		public abreviacion: string,
+		public cantidad: number,
+		public id_user:number,
+		public id_unidad: string
 	){}
 }

@@ -46,7 +46,7 @@
                                                 <option disabled="disabled">--seleccione la unidad</option>    
                                             <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
                                         </select>
-                                        <a (click)="llamarunid(agregarpro.id_categoria,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir unidad</a>
+                                        <a (click)="llamarunid(1,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir unidad</a>
                                         <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>modificar unidad</a>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                                 <option disabled="disabled">--seleccione la categoria</option>    
                                             <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
                                         </select>
-                                            <a (click)="llamarcate(agregarpro.id_categoria,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir categoria</a>
+                                            <a (click)="llamarcate(1,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir categoria</a>
                                             <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>modificar categoria</a>
                                     </div>
                                 </div>

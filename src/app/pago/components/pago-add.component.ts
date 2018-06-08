@@ -10,6 +10,8 @@ import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { DocumentoService } from '../../TipoDocumento/services/documento.service';
 import { CompraModel } from '../models/compra';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
 
 declare  var $:any;
 @Component({
@@ -31,15 +33,18 @@ export class PagoAddComponent implements OnInit{
     public total:number;
     public productos:any=[];
 
-   
+    public user:User;
+
     constructor(
         private pagoService:PagoService,
         private almacenService:AlmacenesService,
         private route:ActivatedRoute,
         private router:Router,
         private documentoService:DocumentoService,
+        private auth:AuthService
     ){
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
+        this.user=this.auth.getUser();
         this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,null);
         this.title="Compras";
         this.total=0;

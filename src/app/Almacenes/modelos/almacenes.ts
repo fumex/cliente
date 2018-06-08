@@ -4,6 +4,7 @@ export class almacen{
 		public nombre: string,
 		public descripcion: string,
 		public direccion: string,
-		public telefono: number
+		public telefono: number,
+		public id_user:number
 	){}
 }

@@ -4,6 +4,8 @@ import { ServicioModel } from '../models/servicio';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { ServicioAddModel } from '../models/servicio-add';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 declare  var $:any;
 @Component({
@@ -28,12 +30,15 @@ export class ServicioAddComponent implements OnInit{
     public igv:number;
     public compo:string;
     public id_proveedor:number;
+    public user:User;
     constructor(
         private serviPagoService:ServicioPagoService,
         private route:ActivatedRoute,
-        private router:Router
+        private router:Router,
+        private auth:AuthService
     ){
         this.title='SERVICIOS'
+        this.user=this.auth.getUser();
         this.tabla();
         this.total=null;
         this.igv=null;
@@ -104,7 +109,7 @@ export class ServicioAddComponent implements OnInit{
      }
      //---------------Guardar-----------------------------------
      onSubmit(compro, nroRecibo, tipoP, descrip, subtotal){
-        this.servicioPago=new ServicioAddModel(null,this.code,compro,nroRecibo,tipoP,this.id_proveedor,descrip,subtotal,this.igv);
+        this.servicioPago=new ServicioAddModel(null,this.code,compro,nroRecibo,tipoP,this.id_proveedor,descrip,subtotal,this.igv,this.user.id);
         this.serviPagoService.addServicio(this.servicioPago).subscribe(
             result=>{
                 console.log(result);

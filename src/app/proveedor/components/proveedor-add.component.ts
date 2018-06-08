@@ -4,6 +4,8 @@ import { ProveedorModel } from '../models/proveedor';
 import { TipoProveedorService } from '../services/tipoProveedor.service';
 import { TipoProveedorModel } from '../models/tipoProveedor';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
 
 
 @Component({
@@ -18,17 +20,20 @@ export class ProveedorAddComponent implements OnInit{
     public proveedor:ProveedorModel;
     public tipos:TipoProveedorModel[];
     public tipo:TipoProveedorModel;
+    public user:User;
    
     constructor(
         private proveedorService:ProveedorService,
         private tipoProveedor:TipoProveedorService,
+        private auth:AuthService,
         private  route:ActivatedRoute,
-        private router:Router
+        private router:Router,
     ){
-        this.proveedor= new ProveedorModel(null,'','','','','',null);
+        this.user=auth.getUser();
+        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
         this.estado=true;
-        this.tipo = new TipoProveedorModel(null,null);
-        this.title="Proveedor"
+        this.tipo = new TipoProveedorModel(null,null,null);
+        this.title="Proveedor"   
     }
     ngOnInit(){
             
@@ -66,7 +71,7 @@ export class ProveedorAddComponent implements OnInit{
         );
     }
     saveTipo(tipo1:string,operacion:string){
-        this.tipo = new TipoProveedorModel(tipo1, operacion);
+        this.tipo = new TipoProveedorModel(tipo1, operacion,this.user.id);
         console.log(this.tipo);
         this.tipoProveedor.addTipo(this.tipo).subscribe(
             response=>{
@@ -86,6 +91,6 @@ export class ProveedorAddComponent implements OnInit{
         this.clearProveedor();
     }
     clearProveedor(){
-        this.proveedor= new ProveedorModel(null,'','','','','',null);
+        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
     }  
 }

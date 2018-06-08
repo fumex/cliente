@@ -18,9 +18,8 @@ export class ProveedorService{
     }
 
     addProveedor(proveedor:ProveedorModel):Observable<any>{
-        let json=JSON.stringify(proveedor);
-        let params="json="+json;
-        let headers=new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+        let params=JSON.stringify(proveedor);
+        let headers=new HttpHeaders().set('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/auth/proveedores-add`,params,{headers:headers});
     }
 

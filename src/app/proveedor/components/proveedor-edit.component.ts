@@ -4,6 +4,8 @@ import { ProveedorModel } from '../models/proveedor';
 import { ActivatedRoute, Router,Params } from '@angular/router';
 import { TipoProveedorModel } from '../models/tipoProveedor';
 import { TipoProveedorService } from '../services/tipoProveedor.service';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
  selector:'proveedor-edit',
@@ -17,14 +19,17 @@ export class ProveedorEditComponent implements OnInit{
     public tipos:TipoProveedorModel[];
     public tipo:TipoProveedorModel;
     public estado;
+    public user:User;
     constructor(
         private proveedorService:ProveedorService,
         private route:ActivatedRoute,
         private router:Router,
-        private tipoProveedorService:TipoProveedorService
+        private tipoProveedorService:TipoProveedorService,
+        private auth:AuthService
     ){
+        this.user=this.auth.getUser()
         this.titulo='Editar Proveedor',
-        this.proveedor= new ProveedorModel(null,'','','','','',null);
+        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
         this.estado=true;
     }
     ngOnInit(){
@@ -74,7 +79,7 @@ export class ProveedorEditComponent implements OnInit{
         });
     }
     saveTipo(tipo1:string,operacion:string){
-        this.tipo = new TipoProveedorModel(tipo1,operacion);
+        this.tipo = new TipoProveedorModel(tipo1,operacion,this.user.id);
         console.log(this.tipo);
         this.tipoProveedorService.addTipo(this.tipo).subscribe(
             response=>{

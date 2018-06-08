@@ -41,11 +41,14 @@ export class usuarioscomponent{
         
     }
 
-    guardarusuario(){
+    guardarusuario(pas1,pas2){
         //this.categoria = new categoria(tipo1);
-        this.usuarioarreglo.push(this.usuario);
-        console.log(this.usuarioarreglo[0]);
-        this._UsuarioService.addusuario(this.usuarioarreglo[0]).subscribe(
+        this.paswor =document.getElementById('pasword');
+        this.confirmar =document.getElementById('confirmar');
+        if(this.paswor.value===this.confirmar.value){
+            this.usuarioarreglo.push(this.usuario);
+            console.log(this.usuarioarreglo[0]);
+            this._UsuarioService.addusuario(this.usuarioarreglo[0]).subscribe(
             response=>{
                 console.log(response);
                 this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','');
@@ -53,8 +56,13 @@ export class usuarioscomponent{
             error=>{
                 console.log(<any>error);
             }
-        );
-        this.limpiar();
+            );
+            this.limpiar();
+            
+        }else{
+            console.log('son diferentes'+pas1+'  '+pas2)
+        }
+        
     }
     mostradocuemnto(){
         this._DocumentoService.getDocumentos().subscribe(

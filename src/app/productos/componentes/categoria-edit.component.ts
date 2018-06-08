@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { CategoriaService } from "../../categorias/services/services.categoria";
 import { categoria } from '../../categorias/modelos/categorias';
 import { ProductosComponent } from './productos.component';
+import { User } from "../../auth/interfaces/user.model";
+import { AuthService } from "../../auth/services/auth.service";
 
 
 @Component({
@@ -15,12 +17,15 @@ export class categoriaedit{
     public categorias;
     public id;
     public titulo;
+    public user:User;
     constructor(
         private _categoriaservice:CategoriaService,
         private _route: ActivatedRoute,
-       private _productoscomponent:ProductosComponent
+       private _productoscomponent:ProductosComponent,
+       private auth:AuthService
     ){
-        this.categoria = new categoria(null,'');
+        this.user=this.auth.getUser();
+        this.categoria = new categoria(null,'',this.user.id);
         
         this.id=0;
         this.titulo="editar categoria"
@@ -34,7 +39,7 @@ export class categoriaedit{
     }
     actualizarcategoria(){
         console.log(this.categorias)
-        this.categorias=new categoria(null,'');
+        this.categorias=new categoria(null,'',this.user.id);
         this.categorias=this.categoria;
         console.log(this.categorias)
         this._categoriaservice.actualizarcategoria(this.id,this.categoria).subscribe(

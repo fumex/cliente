@@ -1,3 +1,12 @@
-<p>
-  empleado works!
-</p>
+<div id="main-wrapper">
+  <!--Aca Header-->
+  <app-empleado-header></app-empleado-header>
+  <!--left-sidebar-->
+ <app-empleado-left-side></app-empleado-left-side>
+  <div class="page-wrapper">
+    <!--Pagina content-->
+    <router-outlet></router-outlet>
+    <!--Footer-->
+    <app-empleado-footer></app-empleado-footer>
+  </div>
+</div>

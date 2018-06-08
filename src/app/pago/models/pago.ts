@@ -8,6 +8,6 @@ export class PagoModel{
      public id_almacen:number,
      public tipoPago:string,
      public subtotal:number,
-     public igv:number
+     public igv:number,
     ){}
 }

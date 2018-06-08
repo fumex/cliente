@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import{AlmacenesService}from '../services/almacenes.service'
 import{almacen} from '../modelos/almacenes';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
@@ -17,16 +19,19 @@ export class AlmacenesComponent{
     public almacenes:almacen[];
     public editalmacen:almacen;
     public almacen:almacen;
+    public user:User
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _almacenesService:AlmacenesService,
+        private auth:AuthService
         
     ){
         this.titulo = "Almacenes";
         this.tabla();
-        this.almacen=new almacen(0,'','','',null);
-        this.editalmacen=new almacen(0,'','','',null);
+        this.user=this.auth.getUser();
+        this.almacen=new almacen(0,'','','',null,this.user.id);
+        this.editalmacen=new almacen(0,'','','',null,this.user.id);
         this.ident=null;
         this.idalmacen=null;
         this.confirmaractualizar(this.idalmacen);
@@ -98,12 +103,14 @@ export class AlmacenesComponent{
     limpiar(){
         this.ident=null;
         this.idalmacen=null;
-        this.editalmacen=new almacen(0,'','','',null);
+        this.editalmacen=new almacen(0,'','','',null,this.user.id);
     }
     agregaralmacen(){
         this._almacenesService.addAlmacenes(this.almacen).subscribe(
             result=>{
-                this.mostrar();
+                this.destruir();
+                this.reconstruir();
+
                 console.log(result);
             },
             error=>{
@@ -175,9 +182,10 @@ export class AlmacenesComponent{
         $('#mytable').DataTable().destroy();
     }
     reconstruir(){
+        this.mostrar();
         this.tabla();
     
-        this.mostrar();
+        
     }
 
       

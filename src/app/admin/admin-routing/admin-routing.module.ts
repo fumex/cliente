@@ -44,6 +44,9 @@ import { HttpClient } from '@angular/common/http';
             {
                 path:'admin',
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
+                data:{
+                    expectedRole:'admin'
+                },
                 children:[
                     {
                         path:'',
@@ -53,10 +56,7 @@ import { HttpClient } from '@angular/common/http';
                          path:'profile',
                          component:ProfileComponent
                     },
-                    {
-                        path:'proveedor',
-                        component:ProveedorAddComponent
-                    },
+                    
                     {
                         path:'documento/list',
                         component:TipoDocumentoListComponent
@@ -68,6 +68,10 @@ import { HttpClient } from '@angular/common/http';
                     {
                         path:'documento/edit/:id',
                         component:TipoDocumentoEditComponent
+                    },
+                    {
+                        path:'proveedor',
+                        component:ProveedorAddComponent
                     },
                     {
                         path:'proveedor/list',
@@ -101,7 +105,6 @@ import { HttpClient } from '@angular/common/http';
                         path:'servicio/list',
                         component:ServicioListComponent
                     },
-                    { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},
                     { path:'almacenes',component:AlmacenesComponent},

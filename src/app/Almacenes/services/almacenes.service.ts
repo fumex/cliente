@@ -46,6 +46,9 @@ export class AlmacenesService{
         return this._http.get<any>(this.url+'/almacenes/'+id).shareReplay();
 
     }
-
+    mostraalmacenusuario(id):Observable<any>{
+        return this._http.get<any>(this.url+'/mostralamacenusuario/'+id).shareReplay();
+       
+    }
  
 }
