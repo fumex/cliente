@@ -53,7 +53,7 @@ export class ProveedorAddComponent implements OnInit{
         this.proveedorService.addProveedor(this.proveedor).subscribe(
             response=>{
                 console.log(response);
-                this.router.navigate(['/admin/proveedor/list']);
+                this.proveedoress();
             },
             error=>{
                 console.log(<any>error);
@@ -92,5 +92,8 @@ export class ProveedorAddComponent implements OnInit{
     }
     clearProveedor(){
         this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
+    }
+    proveedoress(){
+        this.router.navigate(['/'+this.user.rol+'/proveedor/list'])
     }  
 }

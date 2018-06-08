@@ -47,7 +47,7 @@ export class TipoDocumentoEditComponent implements OnInit{
             let id=params['id'];
             this.documentoService.updateDocumento(id,this.documento).subscribe(
                 result=>{
-                    this.router.navigate(['/admin/documento/list']);
+                    this.onCancel();
                 },
                 error=>{
                     console.log(<any>error);
@@ -56,6 +56,9 @@ export class TipoDocumentoEditComponent implements OnInit{
         });
     }
     onCancel(){
-        this.router.navigate(['/admin/documento/list']);
+        this.router.navigate(['/'+this.user.rol+'/documento/list']);
+    }
+    list(){
+        this.onCancel();
     }
 }

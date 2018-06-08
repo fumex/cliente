@@ -4,9 +4,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-            <li class="breadcrumb-item"><a href="">{{title}}</a></li>
-            <li class="breadcrumb-item active">Lista</li>
+            <li class="breadcrumb-item"><button class="btn btn-info" (click)="agregar()"><i class="fa fa-plus"></i>Proveedor</button></li>
         </ol>
     </div>
 </div>
@@ -18,48 +16,48 @@
                     <div class="card-body">
                         <h4 class="card-title">Exportar Información</h4>
                         <div class="table-responsive m-t-40">
-                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Ruc</th>
-                                            <th>Direccion</th>
-                                            <th>telefono</th>
-                                            <th>email</th>
-                                            <th>Tipo</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Ruc</th>
-                                            <th>Direccion</th>
-                                            <th>telefono</th>
-                                            <th>email</th>
-                                            <th>Tipo</th>
-                                            <th></th> 
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr *ngFor="let proveedor of proveedores">
-                                            <td>{{proveedor.nombre_proveedor}}</td>
-                                            <td>{{proveedor.ruc}}</td>
-                                            <td>{{proveedor.direccion}}</td>                    
-                                            <td>{{proveedor.telefono}}</td>                    
-                                            <td>{{proveedor.email}}</td> 
-                                            <td>{{proveedor.tipo}}</td>
-                                            <td *ngIf="confirmado!==proveedor.id" >
-                                                <button type="button" (click)="edit(proveedor.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
-                                                <button type="button" (click)="borrarConfirm(proveedor.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
-                                            </td>
-                                            <td *ngIf="confirmado==proveedor.id">
-                                                <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
-                                                <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
+                            <table id="provee" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Ruc</th>
+                                        <th>Direccion</th>
+                                        <th>telefono</th>
+                                        <th>email</th>
+                                        <th>Tipo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Ruc</th>
+                                        <th>Direccion</th>
+                                        <th>telefono</th>
+                                        <th>email</th>
+                                        <th>Tipo</th>
+                                        <th></th> 
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr *ngFor="let proveedor of proveedores">
+                                        <td>{{proveedor.nombre_proveedor}}</td>
+                                        <td>{{proveedor.ruc}}</td>
+                                        <td>{{proveedor.direccion}}</td>                    
+                                        <td>{{proveedor.telefono}}</td>                    
+                                        <td>{{proveedor.email}}</td> 
+                                        <td>{{proveedor.tipo}}</td>
+                                        <td *ngIf="confirmado!==proveedor.id" >
+                                            <button type="button" (click)="edit(proveedor.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
+                                            <button type="button" (click)="borrarConfirm(proveedor.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
+                                        </td>
+                                        <td *ngIf="confirmado==proveedor.id">
+                                            <a class="btn btn-sm btn-info btn-flat btn-addon btn-xs m-b-10" (click)="onDeleteProveedor(proveedor.id)"><i class="fa fa-check"></i></a>
+                                            <a class="btn btn-sm btn-warning btn-flat btn-addon btn-xs m-b-10"(click)="cancelarConfirm()"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> 
                         </div>
                     </div>
                 </div>

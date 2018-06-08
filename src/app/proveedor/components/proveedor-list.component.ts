@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ProveedorService } from "../services/proveedor.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { User } from "../../auth/interfaces/user.model";
+import { AuthService } from "../../auth/services/auth.service";
 declare var jQuery:any;
 declare var $:any;
 @Component({
@@ -13,13 +15,15 @@ export class ProveedorListComponent implements OnInit{
     title='Proveedor';
     public proveedores:any=[];
     public confirmado;
+    public user:User;
     constructor(
         private proveedorService:ProveedorService,
         private route:ActivatedRoute,
-        private router:Router
-        
+        private router:Router,
+        private auth:AuthService
     ){
         this.tabla();
+        this.user=this.auth.getUser();
         this.confirmado=null;
     }
     ngOnInit(){
@@ -28,7 +32,7 @@ export class ProveedorListComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable({
+                 $('#provee').DataTable({
                      dom: 'Bfrtip',
                      buttons: [
                          'copy', 'csv', 'excel', 'pdf', 'print'
@@ -65,6 +69,9 @@ export class ProveedorListComponent implements OnInit{
         this.confirmado=null;
     }
     edit(id){
-        this.router.navigate(['/admin/proveedor/edit',id]);
+        this.router.navigate(['/'+this.user.rol+'/proveedor/edit',id]);
+    }
+    agregar(){
+        this.router.navigate(['/'+this.user.rol+'/proveedor'])
     }
 }

@@ -5,6 +5,8 @@ import { CompraAnularModel } from '../models/anula-compra';
 import { PagoDetalleModel } from '../models/pago-detalle';
 import { PagoModel } from '../models/pago';
 import { PagoAnulaModel } from '../models/pago-anular';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 declare  var $:any;
 @Component({
@@ -29,14 +31,17 @@ export class PagoAnularComponent implements OnInit{
     public subtotal:number;
     public igv:number;
     public fecha:string;
-
+    //------------------------------------------------
+    public user:User;
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
-        private router:Router
+        private router:Router,
+        private auth:AuthService
     ){
         this.title="ANULAR COMPRA";
         this.code="";
+        this.user
         this.tabla();
     }
     ngOnInit(){
@@ -45,7 +50,7 @@ export class PagoAnularComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable();
+                 $('#pagoanu').DataTable();
             });
         },3000);
      }
@@ -67,7 +72,7 @@ export class PagoAnularComponent implements OnInit{
                 this.id_compra=result;
                 console.log(this.id_compra);
                 this.anularComp(this.id_compra);
-                this.router.navigate(['/admin/transaccion/list']);
+                this.list();
             }, 
             error=>{
                 console.log(<any>error);
@@ -127,6 +132,7 @@ export class PagoAnularComponent implements OnInit{
         this.igv=pago.igv;
         this.fecha=pago.created_at;
     }
-
-    
+    list(){
+        this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+    }
 }

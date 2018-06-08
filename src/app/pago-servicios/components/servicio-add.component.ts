@@ -51,7 +51,7 @@ export class ServicioAddComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable();
+                 $('#serviadd').DataTable();
             });
         },3000);
      }
@@ -113,12 +113,15 @@ export class ServicioAddComponent implements OnInit{
         this.serviPagoService.addServicio(this.servicioPago).subscribe(
             result=>{
                 console.log(result);
-                this.router.navigate(['/admin/servicio/list']);
+                this.list();
             },
             error=>{
                 console.log(<any>error)
             }
         )
      }
+     list(){
+        this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+    }
 
 }

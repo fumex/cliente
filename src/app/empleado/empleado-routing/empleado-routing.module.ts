@@ -71,7 +71,7 @@ export class EmpleadoRoutingModule{
         private router:Router,
         private _route: ActivatedRoute,
     ){
-        this.url='http://localhost:4200';
+       this.url='http://localhost:4200';
         this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
 ;
             if(this.url+'/'+data.user.rol!=this.ruta){

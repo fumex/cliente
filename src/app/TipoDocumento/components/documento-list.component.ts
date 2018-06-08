@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentoService } from '../services/documento.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentoModel } from '../models/documento';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -14,12 +16,15 @@ export class TipoDocumentoListComponent implements OnInit{
     title='Documentos';
     public documentos:DocumentoModel[];
     public confirmado;
+    public user:User;
     constructor(
         private documentoService:DocumentoService,
         private route:ActivatedRoute,
         private router:Router,
+        private auth:AuthService
     ){
         this.tabla();
+        this.user=this.auth.getUser();
         this.confirmado=null;
     }
     ngOnInit(){
@@ -28,14 +33,14 @@ export class TipoDocumentoListComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable({
+                 $('#docu').DataTable({
                      dom: 'Bfrtip',
                      buttons: [
                          'copy', 'csv', 'excel', 'pdf', 'print'
                      ]
                  });
             });
-        },1200);
+        },2000);
     }
     getDocumentos(){
         this.documentoService.getDocumentos().subscribe(
@@ -64,6 +69,9 @@ export class TipoDocumentoListComponent implements OnInit{
         this.confirmado=null;
     }
     edit(id){
-        this.router.navigate(['/admin/documento/edit',id]);
+        this.router.navigate(['/'+this.user.rol+'/documento/edit',id]);
+    }
+    agregar(){
+        this.router.navigate(['/'+this.user.rol+'/documento']);
     }
 }
