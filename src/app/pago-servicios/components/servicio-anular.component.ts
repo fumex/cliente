@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ServicioPagoService } from '../services/servicio.service';
 import { ServicioAnularModel } from '../models/servicio-anular';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 declare  var $:any;
 @Component({
@@ -23,13 +25,16 @@ export class ServicioAnularComponent implements OnInit{
     public descripcion:string;
     public subtotal:number;
     public igv:number;
-    public fecha:string
+    public fecha:string;
+    public user:User;
     constructor(
         private anularService:ServicioPagoService,
         private route:ActivatedRoute,
-        private router:Router
+        private router:Router,
+        private auth:AuthService
     ){
         this.title='ANULAR SERVICIO';
+        this.user=this.auth.getUser();
         this.tabla();
     }
     ngOnInit(){
@@ -38,7 +43,7 @@ export class ServicioAnularComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable();
+                 $('#servianu').DataTable();
             });
         },3000);
      }
@@ -76,12 +81,15 @@ export class ServicioAnularComponent implements OnInit{
          this.anularService.deleteServicio(this.id).subscribe(
             result=>{
                 console.log(result);
-                this.router.navigate(['/admin/transaccion/list']);
+                this.list();
             },
             error=>{
                 console.log(<any>error);
             }         
         );
      }
+     list(){
+        this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+    }
 
 }

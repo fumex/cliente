@@ -82,7 +82,7 @@ export class PagoAddComponent implements OnInit{
     tabla(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable();
+                 $('#pagoadd').DataTable();
             });
         },3000);
      }
@@ -95,7 +95,7 @@ export class PagoAddComponent implements OnInit{
             result=>{
                 console.log(result);
                 this.addDetalles();
-                this.router.navigate(['/admin/transaccion/list']);
+                this.list();
             },
             error=>{
                 console.log(<any>error);
@@ -180,5 +180,8 @@ export class PagoAddComponent implements OnInit{
             );   
             }   
         );
+    }
+    list(){
+        this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
     }
 }

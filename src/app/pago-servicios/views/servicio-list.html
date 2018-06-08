@@ -4,8 +4,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-            <li class="breadcrumb-item active">{{title}}</li>
+            <li class="breadcrumb-item"><button class="btn btn-info" (click)="agregar()"><i class="fa fa-plus"></i>Agregar</button></li>
         </ol>
     </div>
 </div>
@@ -17,7 +16,7 @@
                     <div class="card-body">
                         <strong>Exportar Información</strong>
                         <div class="table-responsive m-t-4">
-                            <table id="mytable" class="table table-bordered table-striped" cell="0" cellspancing="0">
+                            <table id="example" class="table table-bordered table-striped" cell="0" cellspancing="0">
                                 <thead>
                                     <tr>
                                         <th>#</th>

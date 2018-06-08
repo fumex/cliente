@@ -70,7 +70,7 @@ export class ProveedorEditComponent implements OnInit{
             let id=params['id'];
             this.proveedorService.updateProveedor(id,this.proveedor).subscribe(
                 result=>{
-                    this.router.navigate(['/admin/proveedor/list']);
+                   this.onCancel();
                 },
                 error=>{
                     console.log(<any>error);
@@ -96,6 +96,6 @@ export class ProveedorEditComponent implements OnInit{
         this.estado=true;
     }
     onCancel(){
-        this.router.navigate(['/admin/proveedor/list']);
+        this.router.navigate(['/'+this.user.rol+'/proveedor/list'])
     }
 }

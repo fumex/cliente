@@ -33,7 +33,7 @@ export class TipoDocumentoAddComponent implements OnInit{
         this.documentoService.addDocumento(this.documento).subscribe(
             result=>{
                 console.log(result);
-                this.router.navigate(['/admin/documento/list']);
+                this.list();
             },
             error=>{
                 console.log(<any>error);
@@ -45,5 +45,8 @@ export class TipoDocumentoAddComponent implements OnInit{
     }
     clearDocumento(){
         this.documento=new DocumentoModel(null,'','',this.user.id);
+    }
+    list(){
+        this.router.navigate(['/'+this.user.rol+'/documento/list']);
     }
 }

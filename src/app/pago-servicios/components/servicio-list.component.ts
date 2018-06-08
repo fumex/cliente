@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServicioPagoService } from '../services/servicio.service';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var jQuery:any;
 declare var $:any;
@@ -12,9 +15,14 @@ declare var $:any;
 export class ServicioListComponent implements OnInit{
     public title:string;
     public servicios:any[];
+    public user:User;
     constructor(
-        private servicioPago:ServicioPagoService
+        private servicioPago:ServicioPagoService,
+        private auth:AuthService,
+        private route:ActivatedRoute,
+        private router:Router
     ){
+        this.user=this.auth.getUser();
         this.title='LISTA SERVICIOS';
         this.tabla();
     }
@@ -22,18 +30,16 @@ export class ServicioListComponent implements OnInit{
        this.listServicios();
     }
     tabla(){
-        var dataSet=this.listServicios();
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable({
+                 $('#example').DataTable({
                      dom: 'Bfrtip',
                      buttons: [
                          'copy', 'csv', 'excel', 'pdf', 'print'
                      ],
-                     data:dataSet
                  });
             });
-        },300);
+        },3000);
      }
      listServicios(){
         this.servicioPago.listServicios().subscribe(
@@ -41,5 +47,8 @@ export class ServicioListComponent implements OnInit{
                 this.servicios=result;
             }
         );
+     }
+     agregar(){
+         this.router.navigate(['/'+this.user.rol+'/servicio']);
      }
 }
