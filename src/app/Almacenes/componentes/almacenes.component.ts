@@ -108,7 +108,9 @@ export class AlmacenesComponent{
     agregaralmacen(){
         this._almacenesService.addAlmacenes(this.almacen).subscribe(
             result=>{
-                this.mostrar();
+                this.destruir();
+                this.reconstruir();
+
                 console.log(result);
             },
             error=>{
@@ -180,9 +182,10 @@ export class AlmacenesComponent{
         $('#mytable').DataTable().destroy();
     }
     reconstruir(){
+        this.mostrar();
         this.tabla();
     
-        this.mostrar();
+        
     }
 
       

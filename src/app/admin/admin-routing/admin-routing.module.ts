@@ -26,6 +26,7 @@ import { TipoDocumentoListComponent } from '../../TipoDocumento/components/docum
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 import { usuarioscomponent } from '../../usuarios/componentes/usuarios.component';
+import { EditUsuariosp } from '../../usuarios/componentes/EditUserAutenticacion.component';
 import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
 import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
 import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
@@ -105,7 +106,6 @@ import { HttpClient } from '@angular/common/http';
                         path:'servicio/list',
                         component:ServicioListComponent
                     },
-                    { path:'profile',component:ProfileComponent},
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},
                     { path:'almacenes',component:AlmacenesComponent},
@@ -114,6 +114,7 @@ import { HttpClient } from '@angular/common/http';
                     { path:'inventario',component:InventarioComponent},
                     { path:'reporteInventario',component:InventarioListComponent}, 
                     { path:'usuarios',component:usuarioscomponent}, 
+                    { path:'editarusuario',component:EditUsuariosp}
                 ]
             }
         ]),

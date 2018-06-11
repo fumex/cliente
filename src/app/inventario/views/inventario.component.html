@@ -105,7 +105,7 @@
                                                                     <div *ngIf="producto.id==null" ><button (click)="quitarcantidad($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
                                                                 </td>
                                                                 <td >{{producto.nombre_producto}}</td>
-                                                                <td style="text-align: center">{{producto.cantidad}}<strong>{{producto.unidad_de_medida}}</strong></td>
+                                                                <td style="text-align: center">{{producto.cantidad}}<strong> {{producto.abreviacion}}</strong></td>
                                                                 <td style="text-align: center">{{producto.nombre}}</td>
                                                                 <td style="text-align: center">{{producto.descripcion}}</td>
                                                                 <th style="text-align: center">{{producto.stock}}</th>

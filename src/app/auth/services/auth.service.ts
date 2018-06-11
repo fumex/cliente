@@ -22,7 +22,12 @@ export class AuthService {
   check():boolean{
     return localStorage.getItem('user')?true:false;
   }
-
+  modificar(credentials:{email:string, password:string}): Observable<boolean>{
+    return this.http.post<any>(`${environment.api_url}/auth/login`,credentials)
+      .do(data=>{
+          console.log('es correcto'+data);
+      });
+  }
   login(credentials:{email:string, password:string}): Observable<boolean>{
     return this.http.post<any>(`${environment.api_url}/auth/login`,credentials)
       .do(data=>{

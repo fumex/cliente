@@ -5,15 +5,15 @@
         </div>
     </div>
 </div>
-<form #fordatos="ngForm" (ngSubmit)="alimentarareglo()">
-    <div *ngIf="cuenta==0" class="container-fluid">
+<form #fordatos="ngForm" (ngSubmit)="alimentarareglodp()">
+    <div *ngIf="cuenta==0 && ap==0" class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card card-outline-primary">
                     <div class="card-body">
                         <div class="form-body">
-                            <div class="row p-t-20">
-                                <div class="col-md-4">
+                            <div style="padding-left: 200px;padding-right: 200px" class="row p-t-20">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">nombre
                                         <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
@@ -22,7 +22,7 @@
                                         <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control col-md-12" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">apellidos
                                         <span *ngIf="!apellidos.valid && apellidos.touched" class="label label-default">El nombre es obligatorio</span>
@@ -31,6 +31,8 @@
                                         <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control col-md-12"required/>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row p-t-20">
                                 <div class="col-md-4">
                                     <div class="form-group has-danger">           
                                         <label class="control-label">direccion
@@ -40,28 +42,6 @@
                                         <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="usuario.direccion" class="form-control col-md-12" required />
                                     </div>
                                 </div>
-                            </div>
-                            <div style="padding-left: 200px;padding-right: 200px"  class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">documento
-                                        <span *ngIf="!documento.valid && documento.touched" class="label label-default">El documento es obligatorio</span>
-                                        <label id="rec" *ngIf="!documento.valid">*</label>
-                                        </label>
-                                        <input type="text"  #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control col-md-12" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">documento(numero)
-                                        <span *ngIf="!numero.valid && numero.touched" class="label label-default">El precio no es correcto</span>                                                 
-                                        <label id="rec" *ngIf="!numero.valid">*</label>
-                                        </label>
-                                        <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control col-md-12" required pattern="[0-9]+"/>
-                                    </div>
-                                </div>                
-                            </div>
-                            <div class="row p-t-20">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">telefono
@@ -80,15 +60,29 @@
                                         <input type="date" #nacimiento="ngModel" name="nacimiento" [(ngModel)]="usuario.nacimiento" class="form-control col-md-12" required/>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">rol
-                                        <span *ngIf="!rol.valid && rol.touched" class="label label-default">debe seleccionar el rol</span>                                                 
-                                        <label id="rec" *ngIf="!rol.valid">*</label>
+                            </div>
+                            <div style="padding-left: 200px;padding-right: 200px"  class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">documento
+                                        <span *ngIf="!documento.valid && documento.touched" class="label label-default">El documento es obligatorio</span>
+                                        <label id="rec" *ngIf="!documento.valid">*</label>
                                         </label>
-                                        <input type="text" #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control col-md-12" required/>
+                                        <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                            <option disabled="disabled" >--seleccione el documento</option>    
+                                        <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group has-danger">           
+                                        <label class="control-label">documento(numero)
+                                        <span *ngIf="!numero.valid && numero.touched" class="label label-default">El precio no es correcto</span>                                                 
+                                        <label id="rec" *ngIf="!numero.valid">*</label>
+                                        </label>
+                                        <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control col-md-12" required pattern="[0-9]+"/>
+                                    </div>
+                                </div>                
                             </div>
                             <div  style="text-align: right;padding-right: 50px;">
                                 <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>
@@ -100,8 +94,90 @@
         </div>
     </div>         
 </form>
-<form #formvalidacion="ngForm" (ngSubmit)="guardarusuario()">
-     <div *ngIf="cuenta!=0"  class="container-fluid">
+<form #formap="ngForm" >
+     <div *ngIf="cuenta==0 && ap!=0"  class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-primary">
+                    <div class="card-body">
+                        <div class="form-body">
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group has-danger">           
+                                        <label class="control-label">rol
+                                        <span *ngIf="!rol.valid && rol.touched" class="label label-default">debe seleccionar el rol</span>                                                 
+                                        <label id="rec" *ngIf="!rol.valid">*</label>
+                                        </label>
+                                        <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                            <option disabled="disabled" >--seleccione el rol</option>    
+                                            <option  ><b>admin</b></option>
+                                            <option  ><b>empleado</b></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive m-t-40">
+                                                    <p class="card-title">seleccione las sucursales permitidas para el usuario</p>
+                                                    <div *ngIf="!sucursales">
+                                                        cargando listado de sucursales...
+                                                    </div>
+                                                    <div *ngIf="sucursales">
+                                                        <table style="text-align: center" id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>nombre</th>
+                                                                <th>almacen</th>
+                                                                <th>descripcion</th>
+                                                                <th style="text-align: center">direccion</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr>
+                                                                <th></th>
+                                                                <th>nombre</th>
+                                                                <th>almacen</th>
+                                                                <th>descripcion</th>
+                                                                <th style="text-align: center">direccion</th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>  
+                                                            <tr style="text-align: center" *ngFor="let sucursal of sucursales; let $index=index">
+                                                                <td style="width : 50px;">
+                                                                    <div *ngIf="sucursal.id!=null"><button (click)="addsucursal($index,sucursal.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i></button></div>
+                                                                    <div *ngIf="sucursal.id==null" ><button (click)="quitarsucursal($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                                </td>
+                                                                <td >{{sucursal.nombre_sucursal}}</td>
+                                                                <td >{{sucursal.nombre}}</td>
+                                                                <td >{{sucursal.direccion}}</td>
+                                                                <td style="text-align: center">{{sucursal.descripcion}}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  *ngIf="siguiente!=0" style="text-align: right;padding-right: 50px;">
+                                <button  [disabled]="!formap.form.valid " (click)="alimentararegloap()" class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>                  
+</form>
+<form #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
+     <div *ngIf="cuenta!=0 && ap==0"  class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card card-outline-primary">
@@ -137,7 +213,7 @@
                                 </div>
                             </div>
                             <div  style="text-align: right;padding-right: 50px;">
-                                <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
+                                <button  type="submit" [disabled]="!formvalidacion.form.valid" class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
                             </div>
                         </div>
                     </div>

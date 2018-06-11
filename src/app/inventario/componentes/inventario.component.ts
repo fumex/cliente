@@ -34,6 +34,7 @@ export class InventarioComponent{
     public vertablaproductos;
     public input;
     public usuario;
+
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
@@ -159,7 +160,8 @@ export class InventarioComponent{
 
     }
     mostraralmacen(){
-        this._almacenesService.getAlmacenes().subscribe(
+        
+        this._almacenesService.mostraalmacenusuario(this.usuario.id).subscribe(
             result=>{
                 this.almacenes=result;
                 console.log(result);
@@ -203,10 +205,8 @@ export class InventarioComponent{
             this.input.value = stock-1;
             this.input.style="border: 0.3px solid red;";
            this.alerta();  
-            console.log("se paso");
           
         }else{
-            console.log(numero,stock);
             this.input.style="border: 0.3px solid #3bc1ff;";
         }
        
