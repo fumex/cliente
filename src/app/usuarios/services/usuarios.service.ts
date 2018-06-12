@@ -31,4 +31,12 @@ export class UsuarioService{
        
         return this._http.post(this.url+'/mantenimientousuario/'+id,params,{headers:headers});
     }
+    updateusuariocalve(id,usuario:any){
+        let json = JSON.stringify(usuario);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/modificarpas/'+id,params,{headers:headers});
+    }
 }

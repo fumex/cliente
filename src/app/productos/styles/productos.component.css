@@ -35,4 +35,12 @@ boton{
     float: right;
     padding-top: 200px;
 }
-
+form input[type="text"]:required:valid{
+ border:2px solid green;
+ /* otras propiedades */
+}
+/*caso contrario, el color sera rojo*/
+form input[type="text"]:focus:required:invalid{
+ border:2px solid red;
+ /* otras propiedades */
+}

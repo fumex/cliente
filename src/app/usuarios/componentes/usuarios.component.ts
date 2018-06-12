@@ -38,7 +38,7 @@ export class usuarioscomponent{
         private auth:AuthService,
     ){
         this.user=this.auth.getUser();
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,this.user.id,0,0);
         //this.documentos=new DocumentoModel(null,null,null);
         this.titulo="Datos Personales"
@@ -102,7 +102,7 @@ export class usuarioscomponent{
             this._UsuarioService.addusuario(this.usuario).subscribe(
             response=>{
                 console.log(response);
-                this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','');
+                this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','');
             },
             error=>{
                 console.log(<any>error);
@@ -152,7 +152,7 @@ export class usuarioscomponent{
     }
     limpiar(){
         this.cuenta=0;
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
         while(this.id<this.DetalleUsuario.length){
             this.DetalleUsuario.splice(this.id,1);
