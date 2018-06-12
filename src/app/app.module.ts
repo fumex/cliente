@@ -30,6 +30,7 @@ import { TipoDocumentoModule } from './TipoDocumento/documento.module';
 import { ServiciosModule } from './pago-servicios/pago-servicios.module';
 import { EmpleadoComponent } from './empleado/empleado.component';
 import { EmpleadoModule } from './empleado/empleado.module';
+import { SucursalModule } from './sucursales/sucursal.module';
 
 
 
@@ -57,11 +58,9 @@ import { EmpleadoModule } from './empleado/empleado.module';
     AlmacenModule,
     UsuariosModule,
     OrdenDePedidoModule,
-
-
     TipoDocumentoModule,
-    ServiciosModule
-
+    ServiciosModule,
+    SucursalModule
   ],
   providers: [
     AuthGuard,

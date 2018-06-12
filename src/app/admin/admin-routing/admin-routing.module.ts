@@ -20,9 +20,7 @@ import { PagoListComponent } from '../../pago/components/pago-list.component';
 
 import {ProductosListarComponent} from '../../productos/componentes/productos-list.component';
 
-import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
-import { TipoDocumentoListComponent } from '../../TipoDocumento/components/documento-list.component';
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
 import { usuarioscomponent } from '../../usuarios/componentes/usuarios.component';
@@ -37,6 +35,8 @@ import { LoginComponent} from '../../auth/login/login.component';
 import { AuthService } from '../../auth/services/auth.service';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { SucursalAddComponent } from '../../sucursales/components/sucursal-add.component';
+import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit.component';
 
 @NgModule({
    
@@ -57,11 +57,6 @@ import { HttpClient } from '@angular/common/http';
                          path:'profile',
                          component:ProfileComponent
                     },
-                    
-                    {
-                        path:'documento/list',
-                        component:TipoDocumentoListComponent
-                    },
                     {
                         path:'documento',
                         component:TipoDocumentoAddComponent
@@ -73,10 +68,6 @@ import { HttpClient } from '@angular/common/http';
                     {
                         path:'proveedor',
                         component:ProveedorAddComponent
-                    },
-                    {
-                        path:'proveedor/list',
-                        component:ProveedorListComponent
                     },
                     {
                         path:'proveedor/edit/:id',
@@ -105,6 +96,14 @@ import { HttpClient } from '@angular/common/http';
                     {
                         path:'servicio/list',
                         component:ServicioListComponent
+                    },
+                    {
+                        path:'sucursal',
+                        component:SucursalAddComponent
+                    },
+                    {
+                        path:'sucursal/list',
+                        component:SucursalEditComponent
                     },
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},

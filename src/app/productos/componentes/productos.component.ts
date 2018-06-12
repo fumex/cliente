@@ -273,7 +273,6 @@ export class ProductosComponent{
     }
     reconstruir(){
         this.tabla();
-    
         this.mostrar();
     }
 
