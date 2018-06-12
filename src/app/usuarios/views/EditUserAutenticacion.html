@@ -1,0 +1,60 @@
+<div class="main-wrapper">
+    <div class="unix-login">
+      <div class="row justify-content-center">
+        <div class="col-lg-4">
+          <div class="login-content card">
+            <div class="login-form">
+                <h4>{{titulo}}</h4>   
+                <form #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
+                <div *ngIf="cuenta!=0 && ap==0"  class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-outline-primary">
+                                <div class="card-body">
+                                    <div class="form-body">
+                                        <div class="row p-t-20">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">contraseña
+                                                    <span *ngIf="!email.valid && email.touched" class="label label-default">El documento es obligatorio</span>
+                                                    <label id="rec" *ngIf="!email.valid">*</label>
+                                                    </label>
+                                                    <input type="text"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control col-md-12" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group has-danger">           
+                                                    <label class="control-label">nueva contraseña
+                                                    <span *ngIf="!password.valid && password.touched" class="label label-default">El precio no es correcto</span>                                                 
+                                                    <label id="rec" *ngIf="!password.valid">*</label>
+                                                    </label>
+                                                    <input id="pasword" type="password" #password="ngModel" name="password" [(ngModel)]="usuario.password" class="form-control col-md-12" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group has-danger">           
+                                                    <label class="control-label">confime la contraseña
+                                                    <span *ngIf="confime.valid && compara!=1" class="label label-default">contraseña incorecta</span>                                                 
+                                                    <label id="rec" *ngIf="!confime.valid">*</label>
+                                                    </label>
+                                                    <input  id="confirmar" (keyup)="limitar()" type="password" #confime="ngModel" name="confime" [(ngModel)]="usuario.confirme" class="form-control col-md-12" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div  style="text-align: right;padding-right: 50px;">
+                                            <button  type="submit" [disabled]="!formvalidacion.form.valid" class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                  
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+      

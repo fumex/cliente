@@ -1,44 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/services/auth.service';
+import { UsuarioModel} from '../modelos/usuarios'
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'modificar-usuariopersonal',
   templateUrl: '../views/EditUserAutenticacion.html',
+  styleUrls: ['../styles/edituser.css']
 })
 export class EditUsuariosp implements OnInit {
-  public f:FormGroup;
-  errorCredentials=false;
-  public user:any;
-  public rol;
-  constructor(
-    private formBuilder:FormBuilder,
-    private authService:AuthService,
-    private router:Router
-  ) { }
+    public titulo;
+    public error=false;
+    public user:any;
+    public rol;
+    public usuario:UsuarioModel;
+    constructor(
+        private authService:AuthService,
+        private router:Router
+    ) { 
+        this.user=this.authService.getUser();
+        this.titulo=this.user.email;
+    }
 
-  ngOnInit() {
-
-    this.f=this.formBuilder.group({
-      email: [null,[Validators.required, Validators.email]],
-      password:[null, [Validators.required]]
-    });
-  }
+    ngOnInit() {
+    console.log(this.user);
+    }
   
-  onSubmit(){
+    onSubmit(){
 
-    this.authService.modificar(this.f.value).subscribe(
-      response=>{
-        console.log(response);
-      },
-      (errorResponse:HttpErrorResponse)=>{
-        if(errorResponse.status===401){
-          this.errorCredentials=true;
-        }
-      }
-    );
-  }
+    
+    }
 
 }

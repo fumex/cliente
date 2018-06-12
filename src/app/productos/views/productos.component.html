@@ -1,15 +1,12 @@
-
-<div class="col-lg-12">
-    <div class="card card-outline-primary">
-        <div class="card-body">
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
             <h2>{{titulo}}</h2>
-        </div>
     </div>
 </div>
-<div class="container-fluid">
+<div  class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card card-outline-primary">
+            <div  class="card card-outline-primary" id="principal">
                 <div class="card-body">
                     <form #formProducto="ngForm" (ngSubmit)="agregarproducto()" action="#">
                        <span *ngIf="!formProducto.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
@@ -21,7 +18,7 @@
                                             <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
                                             <label id="rec" *ngIf="!nombre.valid">*</label>
                                         </label>
-                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control"required/>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" required pattern="[a-zA-Z ]*"/>
                                     </div>
                                 </div>
                                 
@@ -31,7 +28,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">                                             
                                         <label>Descripción</label>
-                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control">
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
