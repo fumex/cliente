@@ -6,7 +6,6 @@ import { ProveedorAddComponent } from '../../proveedor/components/proveedor-add.
 import { ProfileComponent } from '../../auth/profile/profile.component';
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
 import { TipoDocumentoEditComponent } from '../../TipoDocumento/components/documento-edit.component';
-import { ProveedorListComponent } from '../../proveedor/components/proveedor-list.component';
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
 import { EmpleadoContentComponent } from '../empleado-content/empleado-content.component';
 import { AuthService } from '../../auth/services/auth.service';
@@ -43,10 +42,7 @@ import { environment } from '../../../environments/environment';
                         path:'documento/edit/:id',
                         component:TipoDocumentoEditComponent
                     },
-                    {
-                        path:'proveedor/list',
-                        component:ProveedorListComponent
-                    },
+
                     {
                         path:'proveedor/edit/:id',
                         component:ProveedorEditComponent

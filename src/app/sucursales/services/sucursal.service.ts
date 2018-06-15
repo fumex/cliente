@@ -17,21 +17,20 @@ export class SucursalService{
     getsucursal(){
         return this._http.get<any>(this.url+'/sucursales').shareReplay();
     }
-    addsucursal(sucursal:SucursalModel):Observable<any>{
-        let json = JSON.stringify(sucursal);
-        
-        let params = "json="+json;
-        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
-       
-        return this._http.post(this.url+'/sucursales',params,{headers:headers});
-            
+    addSucursal(sucursal:SucursalModel):Observable<any>{
+        let params = JSON.stringify(sucursal);
+        let headers = new HttpHeaders().set('Content-Type','application/json');
+        return this._http.post(this.url+'/sucursal-add',params,{headers:headers});    
     }
-    UpdateSucursal(id,sucursal:SucursalModel):Observable<any>{
-        let json = JSON.stringify(sucursal);
-        
-        let params = "json="+json;
-        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
-       
-        return this._http.post(this.url+'/sucursales/'+id,params,{headers:headers});
+    updateSucursal(id,sucursal:SucursalModel):Observable<any>{
+        let params  = JSON.stringify(sucursal);
+        let headers = new HttpHeaders().set('Content-Type','application/json');
+        return this._http.post(this.url+'/sucursal-update/'+id,params,{headers:headers});
+    }
+    deleteSucusal(id):Observable<any>{
+        return this._http.get(this.url+'/sucursal-delete/'+id).shareReplay();
+    }
+    findSucursal(id):Observable<any>{
+        return this._http.get(this.url+'/sucursal/'+id).shareReplay();
     }
 }
