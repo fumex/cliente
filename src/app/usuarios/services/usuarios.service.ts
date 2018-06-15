@@ -31,12 +31,24 @@ export class UsuarioService{
        
         return this._http.post(this.url+'/mantenimientousuario/'+id,params,{headers:headers});
     }
-    updateusuariocalve(id,usuario:any){
+    updateusuarioclave(id,usuario:any){
         let json = JSON.stringify(usuario);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
         return this._http.post(this.url+'/modificarpas/'+id,params,{headers:headers});
+    }
+    getusuario(id){
+        return this._http.get<any>(this.url+'/usuario/'+id).shareReplay();
+        
+    }
+    usuarios(){
+        return this._http.get<any>(this.url+'/usuario').shareReplay();
+        
+    }
+    deshabilitarusuario(id){
+        return this._http.get<any>(this.url+'/eliminarusuario/'+id).shareReplay();
+        
     }
 }

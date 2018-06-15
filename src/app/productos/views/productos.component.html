@@ -6,7 +6,7 @@
 <div  class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <div  class="card card-outline-primary" id="principal">
+            <div  class="card card-outline-primary">
                 <div class="card-body">
                     <form #formProducto="ngForm" (ngSubmit)="agregarproducto()" action="#">
                        <span *ngIf="!formProducto.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
@@ -18,80 +18,21 @@
                                             <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
                                             <label id="rec" *ngIf="!nombre.valid">*</label>
                                         </label>
-                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" required pattern="[a-zA-Z ]*"/>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" required/>
                                     </div>
                                 </div>
-                                
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 ">
-                                    <div class="form-group">                                             
-                                        <label>Descripción</label>
-                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row p-t-20">    
-                                <div *ngIf="llamarunidad==null" class="col-md-6">
-                                    <div class="form-group">
-                                    <label class="control-label col-md-8">Unidad de media
-                                    <span *ngIf="!unidadmedida.valid" class="label label-default">SELECCIONE</span>                                                        
-                                   <label id="rec" *ngIf="!unidadmedida.valid"> *</label> </label>
-                                         <select #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select col-md-8" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                <option disabled="disabled">--seleccione la unidad</option>    
-                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                        </select>
-                                        <a (click)="llamarunid(1,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir unidad</a>
-                                        <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>modificar unidad</a>
-                                    </div>
-                                </div>
-                                <div *ngIf="llamarunidad!=null" class="col-md-6">
-                                    <label class="control-label col-md-8">Unidad de media</label>
-                                    <div class="form-group">
-                                         <select #unidadmedida="ngModel" disabled="disabled" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select col-md-8" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">cantidad
-                                            <span *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" class="label label-default">la cantidad es obligatoria
-                                            </span>
-                                        </label>
-                                        <input style="height: 36px;" type="number" text="1" min="1" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control col-md-6" required/>                            
-                                    </div>
-                                </div>
-                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-md-6" >
-                                        <unidades></unidades>
-                                </div>
-                                <div *ngIf="aparecereditunidad==2" class="col-md-6" >
-                                        <unidades-edit></unidades-edit>
-                                </div> 
-                            </div>
-                            <div class="row p-t-20">
                                 <div  *ngIf="llamarcategoria==null" class="col-md-6"  >
                                     <div class="form-group">
                                     <label class="control-label col-md-8">Categoria
                                     <span *ngIf="!cates.valid "  class="label label-default">seleccione categoria</span>                                                        
                                        <label id="rec" *ngIf="!cates.valid"> *</label>  </label>
-                                        <select #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select col-md-8" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                        <select #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select col-md-9" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
                                                 <option disabled="disabled">--seleccione la categoria</option>    
                                             <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
                                         </select>
-                                            <a (click)="llamarcate(1,null)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir categoria</a>
-                                            <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>modificar categoria</a>
+                                            <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
+                                            <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>
                                     </div>
-                                </div>
-                                <div  *ngIf="llamarcategoria!=null" class="col-md-6"  >
-                                    <div class="form-group">
-                                    <label class="control-label col-md-8">Categoria</label>
-                                        <select #cates="ngModel"  disabled="disabled" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select col-md-8" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required> 
-                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
-                                        </select>
-                                     </div>
                                 </div>
                                 <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-md-6" >
                                      <categoria></categoria>
@@ -100,26 +41,53 @@
                                         <categoria-edit></categoria-edit>
                                 </div>       
                             </div>
+                            <div class="row p-t-20">
+                                <div class="col-md-6 ">
+                                    <div class="form-group">                                             
+                                        <label>Descripción
+                                        <label id="rec" *ngIf="!Descripcion.valid"> *</label> </label>
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" required>
+                                    </div>
+                                </div>    
+                                <div *ngIf="llamarunidad==null" class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label col-md-8">Unidad de media                                                     
+                                   <label id="rec" *ngIf="!unidadmedida.valid"> *</label> </label>
+                                         <select #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select col-md-8" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                        <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
+                                        <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                    </div>
+                                </div>
+                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">cantidad
+                                        </label>
+                                        <input style="height: 36px;" type="number" text="1" min="1" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control col-md-6" required/>                            
+                                    </div>
+                                </div>
+                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-md-6" >
+                                    <div class="form-group">
+                                        <unidades></unidades>
+                                    </div>
+                                </div>
+                                <div *ngIf="aparecereditunidad==2" class="col-md-6" >
+                                        <unidades-edit></unidades-edit>
+                                </div> 
+                            </div>
                             <div class="form-actions">
                                 <button type="submit" [disabled]="!formProducto.form.valid "  class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Exportar Información</h4>
-                        <div class="table-responsive m-t-40">
-                            <div *ngIf="!productos">
+                    <hr>
+                    <h4 class="card-title">Exportar Información</h4>
+                    <div class="table-responsive m-t-40">
+                        <div *ngIf="!productos">
                                 cargando listado de productos....
-                            </div>
+                        </div>
                             <div *ngIf="productos">
                             <form #formagregarProducto="ngForm" (ngSubmit)="editarproduto(productos.id)">
                                 <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">

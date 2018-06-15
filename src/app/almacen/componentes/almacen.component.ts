@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import{AlmaceneService}from '../services/almacen.services';
 import{almacenstock} from '../modelos/almacen';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
@@ -18,17 +20,19 @@ export class AlmacenComponent{
     public stok:almacenstock;
     public idalmacen;
     public editalmecen:almacenstock;
+    public usuario;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _almacenService:AlmaceneService,
-        
+        private auth:AuthService,
     ){
         this.titulo = "resumen de almacenes";
         this.stok=new almacenstock(0,0,'',0,'',0,0);
         this.editalmecen=new almacenstock(0,0,'',0,'',0,0);
         this.ident=null;
         this.idalmacen=null;
+        this.usuario=this.auth.getUser();;
         this.tabla();
     }
     ngOnInit(){
@@ -41,7 +45,7 @@ export class AlmacenComponent{
     }
     mostrar(){
         this.limpiar();
-        this._almacenService.getAlmacen().subscribe(
+        this._almacenService.getAlmacen(this.usuario.id).subscribe(
             result=>{
                 this.stoks=result;
                 console.log(result);

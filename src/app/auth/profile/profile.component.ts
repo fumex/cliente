@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../interfaces/user.model';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';3
+import { LoginComponent} from '../login/login.component';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import { environment } from '../../../environments/environment';
 export class ProfileComponent implements OnInit {
 
   user:User;
+  public login:LoginComponent;
   constructor(
     private auth:AuthService,
     private http:HttpClient
@@ -20,6 +22,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
       this.user=data.user;
+      console.log(this.login.respuesta()); 
     });
   }
 
