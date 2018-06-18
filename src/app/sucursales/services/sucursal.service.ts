@@ -33,4 +33,7 @@ export class SucursalService{
     findSucursal(id):Observable<any>{
         return this._http.get(this.url+'/sucursal/'+id).shareReplay();
     }
+    listSucursales():Observable<any[]>{
+        return this._http.get<any>(this.url+'/sucursales-list').shareReplay();
+    }
 }

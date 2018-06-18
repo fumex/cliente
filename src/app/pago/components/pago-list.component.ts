@@ -34,6 +34,7 @@ export class PagoListComponent implements OnInit{
         setTimeout(function(){
             $(function(){
                  $('#pago').DataTable({
+                    
                      dom: 'Bfrtip',
                      buttons: [
                          'copy', 'csv', 'excel', 'pdf', 'print'

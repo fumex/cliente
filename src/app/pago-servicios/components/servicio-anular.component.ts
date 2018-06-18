@@ -33,6 +33,7 @@ export class ServicioAnularComponent implements OnInit{
         private router:Router,
         private auth:AuthService
     ){
+        this.user=this.auth.getUser();
         this.title='ANULAR SERVICIO';
         this.user=this.auth.getUser();
         this.tabla();

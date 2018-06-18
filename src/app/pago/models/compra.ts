@@ -1,5 +1,6 @@
 export class CompraModel{
     constructor(
+     public ind:number,
      public id:number,
      public nombre:string,
      public unidad_medida:string,

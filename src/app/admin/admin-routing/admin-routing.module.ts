@@ -46,7 +46,8 @@ import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit
                 path:'admin',
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
                 data:{
-                    expectedRole:'admin'
+                    expectedRole:'admin',
+                    id:1305,
                 },
                 children:[
                     {
@@ -102,7 +103,7 @@ import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit
                         component:SucursalAddComponent
                     },
                     {
-                        path:'sucursal/list',
+                        path:'sucursal/edit/:id',
                         component:SucursalEditComponent
                     },
                     { path:'productos',component:ProductosComponent},

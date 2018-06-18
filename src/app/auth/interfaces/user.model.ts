@@ -10,6 +10,7 @@ export interface User{
     rol:string;
     direccion:string;
     estado:string;
+    strd:number;
     created_ad:string;
     updated_ad:string;
     telefono:number;

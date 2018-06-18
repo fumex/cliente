@@ -66,7 +66,7 @@ export class TipoDocumentoAddComponent implements OnInit{
                      ]
                  });
             });
-        },2000);
+        },3000);
     }
     getDocumentos(){
         this.documentoService.getDocumentos().subscribe(

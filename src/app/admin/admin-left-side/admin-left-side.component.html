@@ -8,7 +8,7 @@
                 <li class="nav-label">Home</li>
                 <li> <a [routerLink]="['']" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Inicio</span></a>
                 </li>
-                <li> <a class="has-arrow" href="#"  aria-expanded="false"><i class="fa fa-columns"></i><span class="hide-menu">Ventas</span></a>
+                <li> <a class="has-arrow"   aria-expanded="false"><i class="fa fa-columns"></i><span class="hide-menu">Ventas</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a >Ventas</a></li>
                         <li><a >Ventas Recurretes</a></li>
@@ -17,16 +17,16 @@
                     </ul>
                 </li>
                 <li class="nav-label">Procesos</li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Gastos</span></a>
+                <li> <a class="has-arrow" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Gastos</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a [routerLink]="['/admin/transaccion/list']">Pagos Proveedores</a></li>
+                        <li><a [routerLink]="['/admin/transaccion/list']">Compras</a></li>
                         <li><a [routerLink]="['/admin/servicio/list']">Pagos Servicios</a></li>
                         <li><a [routerLink]="['/admin/transaccion/anular']">Anular Pago Proveedor</a></li>
                         <li><a [routerLink]="['/admin/servicio/anular']">Anular Pago Servicio</a></li>
                         <li><a [routerLink]="['/admin/pedido']">Orden Compra</a></li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Contactos</span></a>
+                <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Contactos</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a [routerLink]="['/admin/proveedor']">Proveedores</a></li>
                         <li><a >Clientes</a></li>
@@ -34,7 +34,7 @@
                 </li>
                 <li> <a [routerLink]="['profile']" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Profile</span></a></li>
                 <li class="nav-label">Almacen</li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Inventarios</span></a>
+                <li> <a class="has-arrow" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Inventarios</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a [routerLink]="['/admin/reporteInventario']">Valor de inventario</a></li>
                         <li><a [routerLink]="['/admin/inventario']">Ajustes inventario</a></li>
@@ -43,13 +43,14 @@
                     </ul>
                 </li>
                 <li class="nav-label">GENERALES</li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-book"></i><span class="hide-menu">AJUSTES GENERALES</span></a>
+                <li> <a class="has-arrow  " aria-expanded="false"><i class="fa fa-book"></i><span class="hide-menu">AJUSTES GENERALES</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a [routerLink]="['/admin/documento']" >Documentos</a></li>
                         <li><a [routerLink]="['/admin/productos']" >Productos</a></li>
+                        <li><a [routerLink]="['/admin/sucursal']" >Sucursal</a></li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-map-marker"></i><span class="hide-menu">Usuarios</span></a>
+                <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-map-marker"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a [routerLink]="['/admin/usuarios']" > Crear Usuarios</a></li>
                         <li><a> Cambiar Usuarios</a></li>
