@@ -12,6 +12,7 @@ import { CompraModel } from '../models/compra';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
+import { ProductoModule } from '../../productos/productos.module';
 
 declare  var $:any;
 @Component({
@@ -27,12 +28,12 @@ export class PagoAddComponent implements OnInit{
     public documentos:DocumentoModel[];
     public proveedores:ProveedorModel[];
     public compra:CompraModel;
-   
+    public id_pro:number;
     public compras:Array<CompraModel>=[];
     public almacenes:almacen[];
     public total:number;
     public productos:any=[];
-
+    public confirmado:any=[];
     public user:User;
 
     constructor(
@@ -130,20 +131,44 @@ export class PagoAddComponent implements OnInit{
         this.pagoService.ListProductos().subscribe(
             result=>{
                 this.productos=result;
+                this.indexPro(this.confirmado,this.productos);
             }
         );
     }
-    //detalles
-    addCompra(id,categoria,unidad_medida,articulo,descripcion){
-        this.compra= new CompraModel(id,categoria,unidad_medida,null,articulo,descripcion,null,null);
-        this.compras.push(this.compra);
-        console.log(this.compras)
+    indexPro(_confirmado:any[],_productos:ProductoModule[]){
+        for(let i=0; i<_productos.length;i++){
+         _confirmado[i]=true;
+        }
     }
-    exitCompra(index){
+    marcar(index){
+        this.confirmado[index]=false;
+    }
+    //detalles
+    addCompra(index,id,categoria,unidad_medida,articulo,descripcion){
+        this.confirmado[index]=false;
+        this.compra= new CompraModel(index,id,categoria,unidad_medida,null,articulo,descripcion,null,null);
+        if(!this.existeCompra(id,this.compras)){
+            this.compras.push(this.compra);
+            console.log(this.compras);
+        }
+        else{
+            console.log('ya esta agregado');
+        }
+    }
+    existeCompra( id,_compras:CompraModel[]){
+        for(let i=0; i<_compras.length;i++){
+            if(_compras[i].id===id){
+                return true;
+            }
+        }
+    }
+    exitCompra(ind,index){
         this.compras.splice(index,1);
         console.log(this.compras);
         this.sumaTotal();
+        this.confirmado[ind]=true;        
     }
+    
     //suma detalle
     sumaTotal(){
         let total=0;
@@ -159,7 +184,6 @@ export class PagoAddComponent implements OnInit{
         let pago=this.pagoService;
         let cod= this.codigo;
         this.compras.forEach(function(value){
-            
             let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
             let d_almacen=new almacenstock(null,null,value.codigo,value.id,null,value.cantidad,null);
             pago.addPagoDetalle(pagoD).subscribe(

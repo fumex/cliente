@@ -24,24 +24,12 @@
                                         <th>Documento</th>
                                         <th>Nro</th>
                                         <th>Pago</th>
+                                        <th>Almacen</th>
                                         <th>SubTotal</th>
                                         <th>IGV</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Codigo</th>
-                                        <th>Proveedor</th>
-                                        <th>Documento</th>
-                                        <th>Nro</th>
-                                        <th>Pago</th>
-                                        <th>SubTotal</th>
-                                        <th>IGV</th>
-                                        <th>Total</th>
-                                       
-                                    </tr>
-                                </tfoot>
                                 <tbody>
                                     <tr *ngFor="let pago of pagos">
                                         <td>{{pago.code}}</td>
@@ -49,6 +37,7 @@
                                         <td>{{pago.documento}}</td>
                                         <td>{{pago.nroBoleta}}</td>
                                         <td>{{pago.tipoPago}}</td>
+                                        <td>{{pago.nombre}}</td>
                                         <td>{{pago.subtotal}}</td>
                                         <td>{{pago.igv}}</td>
                                         <td>{{pago.subtotal + pago.igv}}</td>

@@ -10,226 +10,238 @@
 </div>
 <div class="container">
     <div class="fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-title">
-                        <label class="control-label" >
-                            <i class="fa fa-archive"></i>
-                            Registro de {{title}}
-                        </label>
-                    </div>
-                    <ul class="nav nav-tabs profile-tab" role="tablist">
-                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#comprobante" role="tab">Comprobante</a> </li>
-                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
-                    </ul>
-                    <br>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="comprobante" role="tabpanel">
-                            <div class="card-body">
-                                <form class="form-horizonta">
-                                    <div class="col-lg-12 row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Codigo:</label>    
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label">{{codigo}}</label>   
-                                                </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-title">
+                    <label class="control-label" >
+                        <i class="fa fa-archive"></i>
+                        Registro de {{title}}
+                    </label>
+                </div>
+                <ul class="nav nav-tabs profile-tab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#comprobante" role="tab">Comprobante</a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="comprobante" role="tabpanel">
+                        <div class="card-body">
+                            <form class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Codigo:</label>    
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Comprobante</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control custom-select" #idDocumento name="idDocumento">
-                                                        <option *ngFor="let documento of documentos" [value]="documento.id">
-                                                            {{ documento.documento}}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Nro </label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo">
-                                                </div>
+                                            <div class="col-sm-8">
+                                                <label class="control-label">{{codigo}}</label>   
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Proveedor</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control custom-select" #idProveedor name="idProveedor">
-                                                        <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">
-                                                            {{ proveedor.nombre_proveedor}}
-                                                        </option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Comprobante</label>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Almacen</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control custom-select" #idAlmacen name="idAlmacen">
-                                                        <option *ngFor="let almacen of almacenes" [value]="almacen.id">
-                                                            {{almacen.nombre}}
-                                                        </option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #idDocumento name="idDocumento">
+                                                    <option *ngFor="let documento of documentos" [value]="documento.id">
+                                                        {{ documento.documento}}
+                                                    </option>
+                                                </select>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label">Tipo Pago</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control custom-select" #tipo>
-                                                        <option>Efectivo</option>
-                                                        <option>Bancario</option>
-                                                    </select>
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Nro </label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo">
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Proveedor</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #idProveedor name="idProveedor">
+                                                    <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">
+                                                        {{ proveedor.nombre_proveedor}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Almacen</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #idAlmacen name="idAlmacen">
+                                                    <option *ngFor="let almacen of almacenes" [value]="almacen.id">
+                                                        {{almacen.nombre}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Tipo Pago</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select class="form-control custom-select" #tipo>
+                                                    <option>Efectivo</option>
+                                                    <option>Bancario</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="tab-pane" id="producto" role="tabpanel">
-                            <div class="card-body">
-                                <div class="col-lg-12">
-                                    <strong>Lista de productos</strong>
-                                    <div class="table-responsive m-t-4">
-                                        <table id="pagoadd" class="table table-bordered table-striped" cell="0" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>#</th>
-                                                    <th>Categori</th>
-                                                    <th>U.Medida</th>
-                                                    <th>Articulo</th>
-                                                    <th>Descripcion</th>
-                                                </tr>
-                                            </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>#</th>
-                                                    <th>Categori</th>
-                                                    <th>U.Medida</th>
-                                                    <th>Articulo</th>
-                                                    <th>Descripcion</th>
-                                                </tr>
-                                            </tfoot>
-                                            <tbody>
-                                                <tr *ngFor="let producto of productos">
-                                                    <th><button class="btn btn-info" (click)="addCompra(producto.id,producto.nombre,producto.unidad_de_medida,producto.nombre_producto,producto.descripcion)"><i class="fa fa-check"></i></button></th>
-                                                    <th>{{ producto.id}}</th>
-                                                    <th>{{producto.nombre}}</th>
-                                                    <th>{{producto.unidad_de_medida}}</th>
-                                                    <th>{{producto.nombre_producto}}</th>
-                                                    <th>{{producto.descripcion}}</th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    </div>
+                    <div class="tab-pane" id="producto" role="tabpanel">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <strong>Lista de productos</strong>
+                                <div class="table-responsive m-t-4">
+                                    <table id="pagoadd" class="table table-bordered table-striped" cell="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>#</th>
+                                                <th>Categori</th>
+                                                <th>U.Medida</th>
+                                                <th>Articulo</th>
+                                                <th>Descripcion</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th>#</th>
+                                                <th>Categori</th>
+                                                <th>U.Medida</th>
+                                                <th>Articulo</th>
+                                                <th>Descripcion</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            <tr *ngFor="let producto of productos; let $index=index;">
+                                                <th *ngIf="confirmado[$index]==true"><button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="addCompra($index,producto.id,producto.nombre,producto.unidad,producto.nombre_producto,producto.descripcion)"><i class="fa fa-cloud-download"></i></button></th>
+                                                <th *ngIf="confirmado[$index]==false"><button class="btn btn-success btn-flat btn-addon btn-xs m-b-10" (click)="marcar($index)"><i class="fa fa-check"></i></button></th>
+                                                <th>{{ $index+1 }}</th>
+                                                <th>{{producto.nombre}}</th>
+                                                <th>{{producto.unidad}}</th>
+                                                <th>{{producto.nombre_producto}}</th>
+                                                <th>{{producto.descripcion}}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-title">
-                        <label class="control-label">
-                            <i class="fa fa-shopping-cart"></i>
-                            Registro de Compras
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="card-title">
+                                <i class="fa fa-shopping-cart"></i>
+                                <strong>Detalle de Compras</strong>   
                         </label>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <form #formProveedor="ngForm">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>categoria</th>
-                                            <th>Codigo</th>
-                                            <th>Unidad</th>
-                                            <th>Nombre Producto</th>
-                                            <th>Descripcion</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio</th>
-                                            <th>total</th>
-                                            <th>accion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let comp of compras; let $index=index">
-                                            <td>{{comp.nombre}}</td>
-                                            <td><input type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo"></td>
-                                            <td>{{comp.unidad_medida}}</td>
-                                            <td>{{comp.nombre_producto}}</td>
-                                            <td>{{comp.descripcion}}</td>
-                                            <td (change)="sumaTotal()"><input #can="ngModel"  name="can" [(ngModel)]="compras[$index].cantidad" type="text"></td>
-                                            <td (change)="sumaTotal()"><input #precio="ngModel" name="precio" [(ngModel)]="compras[$index].precio" type="text"></td>
-                                            <td>{{comp.cantidad * comp.precio}}</td>
-                                            <td><button class="btn btn-danger" (click)="exitCompra($index)">eliminar</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </form>         
+                </div>
+                <br>
+                <div class="row">
+                    <div class="container">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form #formProveedor="ngForm">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>categoria</th>
+                                                <th>Codigo</th>
+                                                <th>Unidad</th>
+                                                <th>Nombre Producto</th>
+                                                <th>Descripcion</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                                <th>total</th>
+                                                <th>accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let comp of compras; let $index=index">
+                                                <td>{{comp.nombre}}</td>
+                                                <td>
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input class="form-control" type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{comp.unidad_medida}}</td>
+                                                <td>{{comp.nombre_producto}}</td>
+                                                <td>{{comp.descripcion}}</td>
+                                                <td (change)="sumaTotal()">
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input class="form-control" #can="ngModel"  name="can" [(ngModel)]="compras[$index].cantidad" type="text">        
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td (change)="sumaTotal()">
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input class="form-control" #precio="ngModel" name="precio" [(ngModel)]="compras[$index].precio" type="text">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{comp.cantidad * comp.precio}}</td>
+                                                <td><button class="btn btn-danger btn-flat btn-addon btn-xs m-b-10" (click)="exitCompra(comp.ind,$index)"><i class="fa fa-trash-o"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>         
+                            </div>
                         </div>
                     </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card-title">
+                            <label class="label-control">
+                                <i class="fa fa-money "></i>
+                                    <strong>Pago</strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-3 row">
+                        <div class="form-goup col-lg-4 ">
+                            <label >Subtotal :</label>
+                            <label>{{total}}</label>
+                        </div>
+                        <div class="form-goup col-lg-5">
+                            <label > IGV 18% :</label>
+                            <label>{{total * 0.18}}</label>
+                        </div>
+                        <div class="form-goup col-lg-3">
+                            <label> TOTAL:</label>
+                            <label>{{total + total*0.18}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-lg-offset-2">
+                        <div class="form-goup">
+                            <input type="button" (click)="onSubmit(idProveedor.value,idDocumento.value,recibo.value,idAlmacen.value,tipo.value)" class="btn btn-info btn-responsive" value="Guardar">
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
     </div>
-    <div class="container fluid">
-        <div class="row">
-            <div class="col-lg-12 col-lg-offset-3">
-                <div class="card">
-                    <div class="card-title">
-                        <label class="label-control">
-                            <i class="fa fa-money "></i>
-                                <strong>Pago</strong>
-                        </label>
-                    </div>
-                    <div class="card-body row">
-                        <div class="col-lg-10 col-lg-offset-3 row">
-                            <div class="form-goup col-lg-4 ">
-                                <label >Subtotal :</label>
-                                <label>{{total}}</label>
-                            </div>
-                            <div class="form-goup col-lg-5">
-                                <label > IGV 18% :</label>
-                                <label>{{total * 0.18}}</label>
-                            </div>
-                            <div class="form-goup col-lg-3">
-                                <label> TOTAL:</label>
-                                <label>{{total + total*0.18}}</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-lg-offset-2">
-                            <div class="form-goup">
-                                <input type="button" (click)="onSubmit(idProveedor.value,idDocumento.value,recibo.value,idAlmacen.value,tipo.value)" class="btn btn-info btn-responsive" value="Guardar">
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-

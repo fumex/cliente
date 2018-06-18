@@ -36,5 +36,4 @@ export class ProveedorService{
     deleteProveedor(id):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/proveedores-delete/`+id).shareReplay();
     }
-  
 }

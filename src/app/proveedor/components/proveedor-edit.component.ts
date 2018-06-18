@@ -32,7 +32,7 @@ export class ProveedorEditComponent implements OnInit{
         private tipoProveedorService:TipoProveedorService,
         private auth:AuthService
     ){
-        this.user=this.auth.getUser()
+        this.user=this.auth.getUser();
         this.title='Editar Proveedor',
         this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
         this.estado=true;

@@ -77,7 +77,7 @@ export class TipoDocumentoEditComponent implements OnInit{
          setTimeout(function(){
              
              $(function(){
-                  $('#provee').DataTable({
+                  $('#docu').DataTable({
                       dom: 'Bfrtip',
                       buttons: [
                           'copy', 'csv', 'excel', 'pdf', 'print'

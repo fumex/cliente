@@ -39,6 +39,7 @@ export class PagoAnularComponent implements OnInit{
         private router:Router,
         private auth:AuthService
     ){
+        this.user=auth.getUser();
         this.title="ANULAR COMPRA";
         this.code="";
         this.user
@@ -133,6 +134,6 @@ export class PagoAnularComponent implements OnInit{
         this.fecha=pago.created_at;
     }
     list(){
-        this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+        this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
     }
 }

@@ -14,189 +14,186 @@
 </div>
 <div class="container">
     <div class="fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-title">
-                    </div>
-                    <div class="card-body">
-                        <div class="col-lg-12">
-                            <strong>Lista Servicios</strong>
-                            <div class="table-responsive m-t-4">
-                                <table id="servianu" class="table table-bordered table-striped" cell="0" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Codigo</th>
-                                            <th>tipo Documento</th>
-                                            <th>Comprobante</th>
-                                            <th>Tipo Pago</th>
-                                            <th>Nombre</th>
-                                            <th>Fecha</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th>Codigo</th>
-                                            <th>tipo Documento</th>
-                                            <th>Comprobante</th>
-                                            <th>Tipo Pago</th>
-                                            <th>Nombre</th>
-                                            <th>Fecha</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr *ngFor="let servicio of servicios">
-                                            <td>
-                                                <button class="btn btn-info" (click)="getServicio(servicio.id,servicio.code,
-                                                                                             servicio.documento,servicio.nroBoleta,
-                                                                                             servicio.tipo_pago,servicio.nombre_proveedor,
-                                                                                             servicio.descripcion,servicio.subtotal,
-                                                                                             servicio.igv,servicio.created_at)">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            </td>
-                                            <td>{{servicio.code}}</td>
-                                            <td>{{servicio.documento}}</td>
-                                            <td>{{servicio.nroBoleta}}</td>
-                                            <td>{{servicio.tipo_pago}}</td>
-                                            <td>{{servicio.nombre_proveedor}}</td>
-                                            <td>{{servicio.created_at}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-title">
+                    <ul class="nav nav-tabs profile-tab" role="tablist">
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a> </li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#comprobantes" role="tab">Comprobantes</a> </li>
+                    </ul>
+                    <br>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="datos" role="tabpanel">
+                            <div class="card-title">
+                                <h4>DATOS DE PAGO</h4>
                             </div>
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <strong>Fecha:</strong> 
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{fecha}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <strong>Codigo:</strong> 
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        {{code}}
+                                                    </div>
+                                                </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <strong>{{documento}}:</strong> 
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{nroBoleta}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <strong>Nombre :</strong> 
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{nombre_proveedor}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <strong>Tipo de Pago:</strong>  
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{tipo_pago}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <strong>Descripcion:</strong>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{descripcion}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="comprobantes" role="tabpanel">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <strong>Lista Servicios</strong>
+                                    <div class="table-responsive m-t-40">
+                                        <table id="servianu" class="table table-bordered table-striped" cell="0" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Codigo</th>
+                                                    <th>tipo Documento</th>
+                                                    <th>Comprobante</th>
+                                                    <th>Tipo Pago</th>
+                                                    <th>Nombre</th>
+                                                    <th>Fecha</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Codigo</th>
+                                                    <th>tipo Documento</th>
+                                                    <th>Comprobante</th>
+                                                    <th>Tipo Pago</th>
+                                                    <th>Nombre</th>
+                                                    <th>Fecha</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr *ngFor="let servicio of servicios">
+                                                    <td>
+                                                        <button class="btn btn-info" (click)="getServicio(servicio.id,servicio.code,
+                                                                                                        servicio.documento,servicio.nroBoleta,
+                                                                                                        servicio.tipo_pago,servicio.nombre_proveedor,
+                                                                                                        servicio.descripcion,servicio.subtotal,
+                                                                                                        servicio.igv,servicio.created_at)">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>{{servicio.code}}</td>
+                                                    <td>{{servicio.documento}}</td>
+                                                    <td>{{servicio.nroBoleta}}</td>
+                                                    <td>{{servicio.tipo_pago}}</td>
+                                                    <td>{{servicio.nombre_proveedor}}</td>
+                                                    <td>{{servicio.created_at}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="card-title">
+                            <h3>Monto</h3> 
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-title">
-                        <h3>DATOS DE PAGO:</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                           <strong>Fecha:</strong> 
-                                        </div>
-                                        <div class="col-sm-8">
-                                            {{fecha}}
+                <div class="row">
+                    <div class="container">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <strong>SUBTOTAL:</strong> 
+                                            </div>
+                                            <div class="col-sm-7">
+                                                s/.{{subtotal}}
+                                            </div>
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row">
                                             <div class="col-sm-4">
-                                               <strong>Codigo:</strong> 
+                                                <strong>IGV:</strong> 
                                             </div>
                                             <div class="col-sm-8">
-                                                {{code}}
+                                                s/.{{igv}}
                                             </div>
                                         </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                           <strong>{{documento}}:</strong> 
-                                        </div>
-                                        <div class="col-sm-8">
-                                            {{nroBoleta}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <strong>TOTAL:</strong> 
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <strong>s/.{{subtotal + igv}}</strong>  
+                                            </div>
                                         </div>
                                     </div>
-                                    <br>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <strong>Nombre :</strong> 
-                                        </div>
-                                        <div class="col-sm-8">
-                                            {{nombre_proveedor}}
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <strong>Tipo de Pago:</strong>  
-                                        </div>
-                                        <div class="col-sm-8">
-                                            {{tipo_pago}}
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <strong>Descripcion:</strong>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            {{descripcion}}
-                                        </div>
-                                    </div>
+                                <br>
+                                <div class="row">
+                                    <button class="btn btn-danger" (click)="anular()">Anular</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-title">
-                        <h3>Monto</h3> 
-                    </div>
-                    <div class="card-body">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                           <strong>SUBTOTAL:</strong> 
-                                        </div>
-                                        <div class="col-sm-7">
-                                            s/.{{subtotal}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                           <strong>IGV:</strong> 
-                                        </div>
-                                        <div class="col-sm-8">
-                                            s/.{{igv}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                           <strong>TOTAL:</strong> 
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <strong>s/.{{subtotal + igv}}</strong>  
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <button class="btn btn-danger" (click)="anular()">Anular</button>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

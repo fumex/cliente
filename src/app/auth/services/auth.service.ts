@@ -13,7 +13,6 @@ import { User } from './../interfaces/user.model';
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private http:HttpClient,
     private router:Router
@@ -32,8 +31,13 @@ export class AuthService {
     return this.http.post<any>(`${environment.api_url}/auth/login`,credentials)
       .do(data=>{
           localStorage.setItem('token',data.token);
+          this.usuario(data.user);
           localStorage.setItem('user',btoa(JSON.stringify(data.user)));
       });
+  }
+
+  usuario(_user:any){
+ 
   }
 
   logout():void{
