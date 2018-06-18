@@ -14,7 +14,7 @@
                         cargando listado de usuarios...
                     </div>
                     <div *ngIf="usuarios">
-                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                        <table id="tablausuarios" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -37,8 +37,8 @@
                                 <tr *ngFor="let users of usuarios">
                                     <td style=" padding: 0px;width: 75px">
                                         <div style="text-align: center" >
-                                            <a class="btn btn-sm btn-warning " (click)="confirmaractualizar(users.id)"><i class="fa fa-edit"></i></a>                                            
-                                            <a class="btn btn-sm btn-danger "(click)="borraralerta(users.id)" ><i class="fa fa-trash"></i></a>
+                                            <a style="color: white" class="btn btn-sm btn-primary  " (click)="confirmaractualizar(users.id)"><i class="fa fa-edit"></i></a>                                            
+                                            <a style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(users.id)" ><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                     <td>{{users.name}} {{users.apellidos}}</td>
@@ -172,12 +172,12 @@
                                     cargando listado de sucursales...
                                 </div>
                                 <div *ngIf="sucursales">
-                                    <table style="text-align: center" id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                    <table style="text-align: center" id="tablasucursales" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th>nombre</th>
-                                                <th>almacen</th>
+                                                <th>telefono</th>
                                                 <th>descripcion</th>
                                                 <th style="text-align: center">direccion</th>
                                             </tr>
@@ -186,7 +186,7 @@
                                             <tr>
                                                 <th></th>
                                                 <th>nombre</th>
-                                                <th>almacen</th>
+                                                <th>telefono</th>
                                                 <th>descripcion</th>
                                                 <th style="text-align: center">direccion</th>
                                             </tr>
@@ -198,7 +198,7 @@
                                                     <div *ngIf="sucursal.id==null" ><button (click)="quitarsucursal($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
                                                 </td>
                                                 <td >{{sucursal.nombre_sucursal}}</td>
-                                                <td >{{sucursal.nombre}}</td>
+                                                <td >{{sucursal.telefono}}</td>
                                                 <td >{{sucursal.direccion}}</td>
                                                 <td style="text-align: center">{{sucursal.descripcion}}</td>
                                             </tr>
@@ -208,14 +208,18 @@
                             </div>
                             <br>
                             <br>
-                            <div  *ngIf="siguiente!=0 && titulo!='Mantenimiento de Usuarios'" style="text-align: right;padding-right: 50px;">
-                                <button style="margin-right: 10px"  (click)="atras()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                <button  [disabled]="!formap.form.valid " (click)="alimentararegloap()" class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>
+                            <div  *ngIf="titulo!='Mantenimiento de Usuarios'" style="text-align: right;padding-right: 50px;">
+                                <button style="margin-right: 10px"  (click)="atras()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">
+                                    <i class="fa fa-arrow-circle-left"> volver atras</i></button>
+                                <button *ngIf="siguiente!=0" [disabled]="!formap.form.valid " (click)="alimentararegloap()" class="btn btn-success btn-flat btn-addon ">
+                                    siguiente <i class="fa fa-arrow-circle-right"></i></button>
                             </div>
 
-                            <div  *ngIf="siguiente!=0 && titulo=='Mantenimiento de Usuarios'" style="text-align: right;padding-right: 50px;">
-                                <button style="margin-right: 10px"  [disabled]="!fordatos.form.valid " (click)="atras()" class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                <button  [disabled]="!formap.form.valid " (click)="guardarcambios()" class="btn btn-primary btn-flat btn-addon ">guardar <i class="fa fa-edit"></i></button>
+                            <div  *ngIf="titulo=='Mantenimiento de Usuarios'" style="text-align: right;padding-right: 50px;">
+                                <button style="margin-right: 10px"  [disabled]="!fordatos.form.valid " (click)="atras()" class="btn btn-success btn-flat btn-addon ">
+                                    <i class="fa fa-arrow-circle-left"> volver atras</i></button>
+                                <button  *ngIf="siguiente!=0" [disabled]="!formap.form.valid " (click)="guardarcambios()" class="btn btn-primary btn-flat btn-addon ">
+                                    guardar <i class="fa fa-edit"></i></button>
                             </div>
                         </div>
                     </div>

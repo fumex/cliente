@@ -41,6 +41,7 @@ export class EditarUsuarioPersonal{
         private _DettaleUsuarioService:DettaleUsuarioService,
         private _DocumentoService:DocumentoService,
     ){
+
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
 
@@ -54,17 +55,16 @@ export class EditarUsuarioPersonal{
         this.id2=0;
         this.count=0;
         this.idusuario=0
-        
+     
     }
     ngOnInit(){
         this.mostrarsucursal();
         this.mostradocuemnto();
         this.mostrarusuarios();
-                                                           
+        console.log(this.DetalleUsuario.length);  
     }
     confirmaractualizar(id){
         this.idusuario=id;
-        console.log(id);
         this.cuenta=0;
         this.ap=0;
         this.mostraruduario(id);
@@ -84,22 +84,29 @@ export class EditarUsuarioPersonal{
     atras(){
         this.cuenta=0;
         this.ap=0;
+        this.id=0;
+        
     }
     volvertablausuarios(){
-        this.usuario= new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
+        this.limpiar();
+        console.log(this.sucursales);
+        console.log(this.DetalleUsuario); 
         this.cuenta=1;
         this.ap=1;
+        this.destruirtablaus();
+        this.recontablaus();
+
     }
     alimentarareglodp(){
         this.ap=1;
-        console.log(this.usuario);
-        console.log(this.ap+' '+this.cuenta)
+        this.destruirtablasuc();
+        this.reconsttablasuc();
         
     }
     mostraruduario(id){
         this._UsuarioService.getusuario(id).subscribe(
             response=>{
-                this.tabla2();          
+                
                 this.usuario=response;
             },
             error=>{
@@ -111,7 +118,7 @@ export class EditarUsuarioPersonal{
         this._UsuarioService.usuarios().subscribe(
             response=>{
                 this.usuarios=response;
-                console.log(this.usuarios);
+                this.tablausuarios();
             },
             error=>{
                 console.log(<any>error);
@@ -125,7 +132,7 @@ export class EditarUsuarioPersonal{
                 while(this.id<respuesta.length){
                     
                     
-                    if(respuesta[this.id].permiso!=2){
+                    if(respuesta[this.id].permiso===1){
                         
                         
                         while(this.id2 < this.sucursales.length){
@@ -133,17 +140,19 @@ export class EditarUsuarioPersonal{
 
                             if(this.detalleusu[this.id].id_sucursal==this.sucursales[this.id2].id){
                                 this.sucursales[this.id2].id=null;
-                                
+                                this.detalleusu[this.id].id=this.id2;
+                                this.DetalleUsuario.push(this.detalleusu[this.id]);  
                             }
                             this.id2=this.id2+1;
                         }
                         this.siguiente=this.siguiente+1;
-                        this.detalleusu[this.id].id=this.id;
-                        this.DetalleUsuario.push(this.detalleusu[this.id]);                        
+                                              
                         this.id2=0;
-                    }                   
+                    }
+                    
                     this.id=this.id+1;
                 }
+                console.log(this.sucursales);
                 console.log(this.DetalleUsuario);
             },
             error=>{
@@ -154,7 +163,7 @@ export class EditarUsuarioPersonal{
         
     }
     mostradocuemnto(){
-        this._DocumentoService.getDocumentos().subscribe(
+        this._DocumentoService.getDocumPersona().subscribe(
             response=>{
                 
                 this.documentos=response;
@@ -165,6 +174,8 @@ export class EditarUsuarioPersonal{
         );
     }
     addsucursal(index,id){
+        console.log(this.sucursales);
+        console.log(this.DetalleUsuario);   
         this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
         this.siguiente=this.siguiente+1;
         this.id=0;
@@ -182,7 +193,7 @@ export class EditarUsuarioPersonal{
             this.detalleusu.permiso=1;
             this.DetalleUsuario.push(this.detalleusu);
             this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
-            console.log(this.DetalleUsuario);
+
             console.log("entro")
         }
         this.count=0;
@@ -191,27 +202,27 @@ export class EditarUsuarioPersonal{
     }
 
     quitarsucursal(index){
+
         this.id=0;
         this.siguiente=this.siguiente-1;
         while(this.id<this.DetalleUsuario.length){
             if(this.DetalleUsuario[this.id].id===index)
             {
                 this.sucursales[index].id=this.DetalleUsuario[this.id].id_sucursal;
-                this.DetalleUsuario[this.id].permiso=2;
+                this.DetalleUsuario[this.id].permiso=0;
                 //this.DetalleUsuario.splice(this.id,1);
             }
             this.id=this.id+1;
         }
         this.id=0;
-        console.log(this.DetalleUsuario);
+        console.log(this.sucursales);
+        console.log(this.DetalleUsuario); 
     }
    
     mostrarsucursal(){
         this._SucursalService.getsucursal().subscribe(
             response=>{
-
                 this.sucursales=response;
-
             },
             error=>{
                 console.log(<any>error);
@@ -221,13 +232,31 @@ export class EditarUsuarioPersonal{
     }
     limpiar(){
         this.cuenta=0;
+        this.id=0;
+        this.id2=0;
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
-        while(this.id<this.DetalleUsuario.length){
-            this.DetalleUsuario.splice(this.id,1);
+        let numero=this.DetalleUsuario.length;
+        while(this.id<numero){
+            while(this.id2<this.sucursales.length){
+                if(this.DetalleUsuario[this.id].id===this.id2)
+                {
+                    this.sucursales[this.id2].id=this.DetalleUsuario[this.id].id_sucursal;
+                }
+                this.id2=this.id2+1;
+            }
+            this.id2=0;
+            this.id=this.id+1;
+            console.log(this.id2)
+        } 
+        this.id=0;      
+        while(this.id<numero){
+            this.DetalleUsuario.splice(0,1);
+
             this.id=this.id+1;
         }
         this.id=0;
+       
      }
      guardarcambios(){
          this.id=0;
@@ -255,11 +284,33 @@ export class EditarUsuarioPersonal{
          }
          this.id=0;
      }
-     tabla2(){
+     tablausuarios(){
         setTimeout(function(){
             $(function(){
-                 $('#mytable').DataTable();
+                 $('#tablausuarios').DataTable();
             });
         },500);
+    }
+    tablasucursales(){
+        setTimeout(function(){
+            $(function(){
+                 $('#tablasucursales').DataTable();
+            });
+        },500);
+    }
+    destruirtablaus(){
+        var table = $('#tablausuarios').DataTable(); table .clear() ;
+        $('#tablausuarios').DataTable().destroy();
+    }
+    recontablaus(){
+        this.tablausuarios()
+        this.mostrarusuarios();
+    }
+    destruirtablasuc(){
+        var table = $('#tablasucursales').DataTable(); table .clear() ;
+        $('#tablasucursales').DataTable().destroy();
+    }
+    reconsttablasuc(){
+        this.tablasucursales();
     }
 }

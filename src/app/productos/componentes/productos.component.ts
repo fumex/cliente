@@ -124,7 +124,6 @@ export class ProductosComponent{
         console.log(this.editproducto);
         this._productoservice.Productosupdate(id,this.editproducto).subscribe(
             result=>{
-                this.mostrar();
                 this.limpiar();
                 this.destruir();
                 this.reconstruir();
