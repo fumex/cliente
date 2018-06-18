@@ -26,12 +26,15 @@ export class DettaleUsuarioService{
         return this._http.post(this.url+'/detalleusuario',params,{headers:headers});
             
     }
-    updatedetalleusuario(id,usuario:DetalleUsuarioModel):Observable<any>{
+    updatedetalleusuario(usuario:DetalleUsuarioModel):Observable<any>{
         let json = JSON.stringify(usuario);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/detalleusuario/'+id,params,{headers:headers});
+        return this._http.post(this.url+'/modificardetalleusuario',params,{headers:headers});
+    }
+    seleccionardetalleusuario(id){
+        return this._http.get<any>(this.url+'/detalleusuario/'+id).shareReplay();
     }
 }

@@ -18,8 +18,13 @@ export class LoginComponent implements OnInit {
     private formBuilder:FormBuilder,
     private authService:AuthService,
     private router:Router
-  ) { }
 
+  ) {
+    
+   }
+   respuesta(){
+     return this.rol=this.user.user.rol;
+   }
   ngOnInit() {
 
     this.f=this.formBuilder.group({
@@ -33,7 +38,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.f.value).subscribe(
       response=>{
         this.user=response;
-        
         this.router.navigate([this.user.user.rol]);
          this.rol=this.user.user.rol;
       },

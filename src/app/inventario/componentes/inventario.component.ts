@@ -31,6 +31,7 @@ export class InventarioComponent{
     public almacene:almacen;
     public productos:ProductosfiltradoporAlmacenModel;
     public mostrabproductos;
+    public mostarguardar;
     public vertablaproductos;
     public input;
     public usuario;
@@ -51,6 +52,7 @@ export class InventarioComponent{
         this.tabla();
         this.almacenselec=0;
         this.mostrabproductos=0;
+        this.mostarguardar=0;
         this.vertablaproductos;
         this.id=0;
         this.usuario=this.auth.getUser();;
@@ -72,6 +74,7 @@ export class InventarioComponent{
         this.mostrarveralmacen(this.almacenselec);
     }
     addcantidad(idente,idpro,cantida){
+        this.mostarguardar=this.mostarguardar+1;
         this.productos[idente].id=null;
         this.inventario2.id=idente;
         this.inventario2.id_producto=idpro;
@@ -87,6 +90,7 @@ export class InventarioComponent{
 
     }
     quitarcantidad(idindice){
+        this.mostarguardar=this.mostarguardar-1;
         this.productos[idindice].canti=0;
         //this.pedidos.splice(index,1);
         while(this.id<this.movimientos.length){
@@ -198,16 +202,23 @@ export class InventarioComponent{
         this._router.navigate(['/admin/productos']);
     }
     limitar(numero,stock,id){
-         this.input =document.getElementById('numero');
+       
+        this.input =document.activeElement;
+        console.log(stock);
         console.log(this.input.value);
-        if(numero>stock)
+        if(numero>stock )
         {
-            this.input.value = stock-1;
-            this.input.style="border: 0.3px solid red;";
-           this.alerta();  
-          
+            this.input.value = stock;
+
+            this.alerta(); 
         }else{
-            this.input.style="border: 0.3px solid #3bc1ff;";
+            if(numero<1){
+                this.input.value = 1;
+                this.alertanegativa();  
+            }else{
+                this.input.style="border: 0.3px solid #3bc1ff;";
+            }
+           
         }
        
        
@@ -218,7 +229,12 @@ export class InventarioComponent{
         timer: 1000,
        })
     }
-
+    alertanegativa(){
+        swal({
+            title: 'deve ingresar un valor mayor a 0',
+            timer: 1000,
+           })
+    }
     tabla(){
         setTimeout(function(){
             $(document).ready(function() {

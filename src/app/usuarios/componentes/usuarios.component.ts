@@ -38,8 +38,8 @@ export class usuarioscomponent{
         private auth:AuthService,
     ){
         this.user=this.auth.getUser();
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
-        this.detalleusu=new DetalleUsuarioModel(null,this.user.id,0,0);
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
         //this.documentos=new DocumentoModel(null,null,null);
         this.titulo="Datos Personales"
         this.paswor=null;
@@ -54,6 +54,7 @@ export class usuarioscomponent{
         this.mostradocuemnto();
         this.mostrarsucursal();
     }
+
     alimentarareglodp(){
         this.titulo="Asiganacion de Permisos";
         this.ap=1;
@@ -76,7 +77,7 @@ export class usuarioscomponent{
         this.detalleusu.id_sucursal=id;
         this.detalleusu.permiso=1;
         this.DetalleUsuario.push(this.detalleusu);
-        this.detalleusu=new DetalleUsuarioModel(null,this.user.id,0,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
         console.log(this.DetalleUsuario);
         console.log(this.ap+' '+this.cuenta)
     }
@@ -150,6 +151,10 @@ export class usuarioscomponent{
             }
         );
     }
+    volverapermisos(){
+        this.ap=1;
+        this.cuenta=0;
+    }
     limpiar(){
         this.cuenta=0;
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
@@ -160,7 +165,11 @@ export class usuarioscomponent{
         }
         this.id=0;
      }
-
+    atras(){
+        this.cuenta=0;
+        this.ap=0;
+        console.log("es atras");
+    }
     limitar(){
         this.paswor =document.getElementById('pasword');
         this.confirmar =document.getElementById('confirmar');

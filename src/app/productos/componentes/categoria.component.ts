@@ -20,7 +20,7 @@ export class categoriacomponent{
        private _productoscomponent:ProductosComponent,
        private auth:AuthService
     ){
-        this.titulo="categoria"
+        this.titulo="añadir categoria"
         this.user=auth.getUser();
         this.categoria = new categoria(null,'',this.user.id);
         

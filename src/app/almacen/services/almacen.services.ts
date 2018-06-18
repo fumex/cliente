@@ -15,8 +15,8 @@ export class AlmaceneService{
      this.url=environment.api_url;   
     }
 
-    getAlmacen(){
-        return this._http.get<any>(this.url+'/almacen').shareReplay();
+    getAlmacen(id){
+        return this._http.get<any>(this.url+'/mostrarlamacen/'+id).shareReplay();
     }
     addAlmacen(almacen:almacenstock):Observable<any>{
         let json = JSON.stringify(almacen);
@@ -40,6 +40,7 @@ export class AlmaceneService{
         return this._http.get<any>(this.url+'/almacen/'+id).shareReplay();
 
     }
+
 
  
 }

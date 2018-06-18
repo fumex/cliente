@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../interfaces/user.model';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';3
+import { LoginComponent} from '../login/login.component';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import { environment } from '../../../environments/environment';
 export class ProfileComponent implements OnInit {
 
   user:User;
+  public login:LoginComponent;
   constructor(
     private authService:AuthService
   ) { 
