@@ -16,6 +16,7 @@ export class AlmacenesComponent{
     public titulo:string;
     public ident;
     public idalmacen;
+    public boraralmacen;
     public almacenes:almacen[];
     public editalmacen:almacen;
     public almacen:almacen;
@@ -34,6 +35,7 @@ export class AlmacenesComponent{
         this.editalmacen=new almacen(0,'','','',null,this.user.id);
         this.ident=null;
         this.idalmacen=null;
+        this.boraralmacen=null;
         this.confirmaractualizar(this.idalmacen);
     }
     ngOnInit(){
@@ -72,7 +74,6 @@ export class AlmacenesComponent{
             this._almacenesService.SeleccionarAlmacen(this.idalmacen).subscribe(
                 result=>{
                     this.editalmacen=result;
-                    console.log(result);
                 },
                 error=>{
                     console.log(<any>error);
@@ -104,14 +105,20 @@ export class AlmacenesComponent{
         this.ident=null;
         this.idalmacen=null;
         this.editalmacen=new almacen(0,'','','',null,this.user.id);
+        this.almacen=new almacen(0,'','','',null,this.user.id);
     }
     agregaralmacen(){
         this._almacenesService.addAlmacenes(this.almacen).subscribe(
             result=>{
-                this.destruir();
-                this.reconstruir();
-
                 console.log(result);
+                if(result.code===300){
+                    this.alertarepetido();
+                }else{
+                    this.limpiar();
+                    this.destruir();
+                    this.reconstruir();
+                    this.modificaralerta();
+                }
             },
             error=>{
                 console.log(<any>error);
@@ -121,12 +128,19 @@ export class AlmacenesComponent{
 
     }
 
-
+    alertarepetido(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'el nombre del almacen ya existe',
+          })
+    }
     EliminarAlmacen(){
-        this._almacenesService.EliminarAlmacen(this.idalmacen).subscribe(
+        this._almacenesService.EliminarAlmacen(this.boraralmacen).subscribe(
             result=>{
-                this.mostrar();
-                
+                this.destruir();
+                this.reconstruir();
+                console.log(result)
             },
             error=>{
                 console.log(<any>error);
@@ -155,8 +169,10 @@ export class AlmacenesComponent{
             timer: 3000
           })
     }
+
     borraralerta(id){
-        this.idalmacen=id;
+        this.boraralmacen=id;
+        console.log(this.boraralmacen);
         swal({
             title: "esta seguro",
             text: "despúes de borrar, no se pude recuperar",
@@ -166,7 +182,7 @@ export class AlmacenesComponent{
           })
           .then((willDelete) => {
             if (willDelete) {
-                console.log(this.idalmacen);
+                
                 this.limpiar();
                this.EliminarAlmacen();
               swal("su producto se borro satisfactoriamente", {

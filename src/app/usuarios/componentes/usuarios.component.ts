@@ -10,6 +10,10 @@ import { DetalleUsuarioModel } from '../../usuarios/modelos/DetalleUsuario';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 
+declare var jQuery:any;
+declare var $:any;
+declare var swal:any;
+
 @Component({
     selector:'add-usuario',
     templateUrl:'../views/usuarios.component.html',
@@ -59,7 +63,9 @@ export class usuarioscomponent{
         this.titulo="Asiganacion de Permisos";
         this.ap=1;
         console.log(this.usuario);
-        console.log(this.ap+' '+this.cuenta)
+        console.log(this.ap+' '+this.cuenta);
+        this.destruirtablasuc();
+        this.reconsttablasuc();
         
     }
     alimentararegloap(){
@@ -122,15 +128,34 @@ export class usuarioscomponent{
             }
             this.limpiar();
             this.titulo="Datos Personales";
+            this.guardaralerta();
             
         }else{
-            console.log('son diferentes'+pas1+'  '+pas2)
+            this.contraseñadifrerente();
         }
         this.id=0;
         
     }
+    guardaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo el usuario',
+            buttons: false,
+            timer: 1000
+          })
+    }
+    contraseñadifrerente(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'la contraseña es incorecta',
+            buttons: false,
+            timer: 1000
+          })
+    }
     mostradocuemnto(){
-        this._DocumentoService.getDocumentos().subscribe(
+        this._DocumentoService.getDocumPersona().subscribe(
             response=>{
                 console.log(response);
                 this.documentos=response;
@@ -159,8 +184,9 @@ export class usuarioscomponent{
         this.cuenta=0;
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
-        while(this.id<this.DetalleUsuario.length){
-            this.DetalleUsuario.splice(this.id,1);
+        let numero=this.DetalleUsuario.length;
+        while(this.id<numero){
+            this.DetalleUsuario.splice(0,1);
             this.id=this.id+1;
         }
         this.id=0;
@@ -184,18 +210,19 @@ export class usuarioscomponent{
             this.confirmar.style="border: 0.3px solid red;";
             console.log('diferentes'+this.compara);
         }
-       /*if(numero>stock)
-       {
-           this.input.value = stock-1;
-           this.input.style="border: 0.3px solid red;";
-          this.alerta();  
-           console.log("se paso");
-         
-       }else{
-           console.log(numero,stock);
-           this.input.style="border: 0.3px solid #3bc1ff;";
-       }*/
-      
-      
    }
+    tablasucursales(){
+        setTimeout(function(){
+            $(function(){
+                 $('#tablasucursales').DataTable();
+            });
+        },500);
+    }
+    destruirtablasuc(){
+        var table = $('#tablasucursales').DataTable(); table .clear() ;
+        $('#tablasucursales').DataTable().destroy();
+    }
+    reconsttablasuc(){
+        this.tablasucursales();
+    }
 }

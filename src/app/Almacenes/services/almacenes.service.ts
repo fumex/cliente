@@ -40,7 +40,7 @@ export class AlmacenesService{
         return this._http.post(this.url+'/almacenes/'+id,params,{headers:headers});
     }
     EliminarAlmacen(id){
-        return this._http.get<any>(this.url+'/almacen/eliminar/'+id).shareReplay();
+        return this._http.get<any>(this.url+'/almacenes/eliminar/'+id).shareReplay();
     }
     SeleccionarAlmacen(id){
         return this._http.get<any>(this.url+'/almacenes/'+id).shareReplay();
