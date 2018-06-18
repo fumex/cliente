@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const expectedRole= route.data.expectedRole;
     const dato=route.data.id;
     let user=this.auth.getUser();
+  
     if(!this.auth.check() || user.strd!==dato){ 
         this.router.navigate(['/'+user.rol]);
         return false;

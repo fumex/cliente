@@ -117,9 +117,10 @@ export class PagoAddComponent implements OnInit{
     }
     //almacen
     getAlmacenes(){
-        this.almacenService.getAlmacenes().subscribe(
+        this.almacenService.mostraalmacenusuario(this.user.id).subscribe(
             result=>{
                 this.almacenes=result;
+                console.log(this.almacenes);
             },
             error=>{
                 console.log(<any>error);
