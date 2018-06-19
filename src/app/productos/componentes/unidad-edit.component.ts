@@ -6,6 +6,9 @@ import { ProductosComponent } from './productos.component';
 import { User } from "../../auth/interfaces/user.model";
 import { AuthService } from "../../auth/services/auth.service";
 
+declare var jQuery:any;
+declare var $:any;
+declare var swal:any;
 
 @Component({
     selector:'unidades-edit',
@@ -47,8 +50,10 @@ export class unidadesedit{
                 console.log(response);
                 this._productoscomponent.mostarunidad();
                 this.exit();
+               
             },
             error=>{
+                this.alertaerror();
                 console.log(<any>error);
             }
         );
@@ -64,5 +69,15 @@ export class unidadesedit{
 			}
 		);
 	
-	}
+    }
+    alertaerror(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'ocurio un error ',
+            text:'intentelo de nuevo mas tarde',
+            buttons: true,
+            timer: 3000
+          })
+    }
 }

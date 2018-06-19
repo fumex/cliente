@@ -24,7 +24,7 @@ export class usuarioscomponent{
     public confirmar;
     public usuario:UsuarioModel;
     public documentos:DocumentoModel;
-    public sucursales:SucursalModel;
+    public sucursales:Array<SucursalModel>=[];
     public DetalleUsuario:Array<DetalleUsuarioModel>=[];
     public detalleusu:DetalleUsuarioModel;
     public titulo;
@@ -102,6 +102,7 @@ export class usuarioscomponent{
     }
     guardarusuario(pas1,pas2){
         //this.categoria = new categoria(tipo1);
+        this.id=0;
         this.paswor =document.getElementById('pasword');
         this.confirmar =document.getElementById('confirmar');
         if(this.paswor.value===this.confirmar.value){
@@ -110,50 +111,48 @@ export class usuarioscomponent{
             response=>{
                 console.log(response);
                 this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','');
+                if(response.code===200){
+                    console.log("entro al if");
+                   this.guardardetalle();
+                }else{
+                    if(response.code===408){
+                        this.emailregistrado();
+                    }
+                }
+              
             },
             error=>{
                 console.log(<any>error);
             }
             );
-            while(this.id<this.DetalleUsuario.length){
-                this._DettaleUsuarioService.adddetalleusuario(this.DetalleUsuario[this.id]).subscribe(
-                    response=>{
-                        console.log(response);
-                    },
-                    error=>{
-                        console.log(<any>error);
-                    }
-                )
-                this.id=this.id+1;
-            }
-            this.limpiar();
             this.titulo="Datos Personales";
-            this.guardaralerta();
-            
         }else{
             this.contraseñadifrerente();
         }
-        this.id=0;
+        
         
     }
-    guardaralerta(){
-        swal({
-            position: 'center',
-            icon: "success",
-            title: 'se guardo el usuario',
-            buttons: false,
-            timer: 1000
-          })
+    guardardetalle(){
+        this.id=0;
+       
+        while(this.id<this.DetalleUsuario.length){
+            console.log(this.id);
+            this._DettaleUsuarioService.adddetalleusuario(this.DetalleUsuario[this.id]).subscribe(
+                respuesta=>{
+                    console.log(respuesta);
+                    this.limpiar();
+                    this.guardaralerta();
+                    console.log(this.DetalleUsuario);
+                },
+                error=>{
+                    console.log(<any>error);
+                }
+            )
+            this.id=this.id+1;
+        }
+        this.id=0;
     }
-    contraseñadifrerente(){
-        swal({
-            position: 'center',
-            icon: "warning",
-            title: 'la contraseña es incorecta',
-            buttons: false,
-            timer: 1000
-          })
-    }
+   
     mostradocuemnto(){
         this._DocumentoService.getDocumPersona().subscribe(
             response=>{
@@ -182,9 +181,20 @@ export class usuarioscomponent{
     }
     limpiar(){
         this.cuenta=0;
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
         let numero=this.DetalleUsuario.length;
+        let indice=0;
+        while(this.id<numero){
+            while(indice<this.sucursales.length){
+                if(this.DetalleUsuario[this.id].id===indice){
+                    this.sucursales[indice].id=this.DetalleUsuario[this.id].id_sucursal;
+                }
+            indice=indice+1;
+            }
+            this.id=this.id+1;
+        }
+        this.id=0;
         while(this.id<numero){
             this.DetalleUsuario.splice(0,1);
             this.id=this.id+1;
@@ -224,5 +234,32 @@ export class usuarioscomponent{
     }
     reconsttablasuc(){
         this.tablasucursales();
+    }
+    guardaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo el usuario',
+            buttons: false,
+            timer: 1000
+          })
+    }
+    contraseñadifrerente(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'la contraseña es incorecta',
+            buttons: false,
+            timer: 1000
+          })
+    }
+    emailregistrado(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'el email ya existe',
+            buttons: false,
+            timer: 2000
+          })
     }
 }

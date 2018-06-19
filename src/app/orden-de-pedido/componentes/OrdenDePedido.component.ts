@@ -35,6 +35,7 @@ export class OrdenDePedidoComponent{
     public mostrar;
     public mostrarguardar;
     public id;
+    public texto;
     public editar;
     public nombres;
     public quitar;
@@ -61,6 +62,7 @@ export class OrdenDePedidoComponent{
         this.editar=null;
         this.quitar=null;
         this.usuario=this.auth.getUser();;
+        this.texto=null;
     }
     ngOnInit(){
         this.mostraralmacen();
@@ -138,6 +140,9 @@ export class OrdenDePedidoComponent{
     }
     addpedido(nombre,idente,idpro){
         console.log(idpro);
+        if(this.pedidos.length>1){
+            this.texto=this.pedidos.length-1;
+        }
         this.mostrarguardar=this.mostrarguardar+1;
         this.productos[idente].id=this.quitar;
         this.agregarDetalleOrden.id=idente;
@@ -147,33 +152,12 @@ export class OrdenDePedidoComponent{
         this.agregarDetalleOrden=new DetalleOrdenDePedidoModel(null,null,null,null);
         console.log(this.pedidos);
         console.log(this.productos);
-       /* this.id=0;
-        this.sielnombreesigual=0;
+
         
-        this.nombres=nombre;
-        if(this.pedidos.length>=1){
-            while(this.id<this.pedidos.length){
-            this.id=this.id+1;
-            console.log(this.pedidos[this.id-1].id_producto,this.id);
-                if(this.nombres===this.pedidos[this.id-1].id_producto.toString())
-                {
-                   this.sielnombreesigual=this.id-1;
-                }else{
-                    
-                }
-            }
-        }
-        
-        if(this.sielnombreesigual>0){
-            //this.agregarDetalleOrden.cantidad=this.pedidos[this.sielnombreesigual].cantidad+c;
-            console.log(this.sielnombreesigual);
-            this.agregarDetalleOrden.id_producto=nombre;
-            this.agregarDetalleOrden.cantidad=parseInt(this.pedidos[this.sielnombreesigual].cantidad.toString()) +parseInt(c);
-            this.pedidos.splice(this.sielnombreesigual-1,1);
-            this.pedidos.push(this.agregarDetalleOrden);
-            console.log(this.pedidos);
-            this.sielnombreesigual=0;*/
-        
+    }
+    vercuadrotexto(id){
+        console.log(id)
+        this.texto=id;
     }
     limpiar(){
         while(this.id<this.pedidos.length){

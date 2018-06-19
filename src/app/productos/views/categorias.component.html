@@ -6,7 +6,7 @@
                 <span *ngIf="!caterias.valid && caterias.touched" class="label label-default">El nombre es obligatorio</span>
                 <label id="rec" *ngIf="!caterias.valid">*</label>
                 </label>
-                <input type="caterias"  #caterias="ngModel" name="caterias" [(ngModel)]="categoria.nombre" class="form-control col-md-12"required>
+                <input type="caterias"  #caterias="ngModel" name="caterias" [(ngModel)]="categoria.nombre" class="form-control col-md-12" placeholder="{{titulo}}" required>
             </div>
         </div>
         <div class="col-md-3">  

@@ -137,19 +137,12 @@ export class ProductosComponent{
             }
         );
     }
-    modificaralerta(){
-        swal({
-            position: 'center',
-            icon: "success",
-            title: 'se guardo el almacen',
-            buttons: false,
-            timer: 3000
-          })
-    }
+   
     limpiar(){
         this.ident=null;
         this.modificarproducto=null;
         this.editproducto=new producto(0,'','','','',null,this.user.id,null);
+        this.agregarpro=new producto(0,'','','','',null,this.user.id,null);
     }
     mostrar(){
         this._productoservice.getProductos().subscribe(
@@ -166,9 +159,12 @@ export class ProductosComponent{
         console.log(this.agregarpro);
         this._productoservice.addproducto(this.agregarpro).subscribe(
             result=>{
+                this.limpiar();
+                this.modificaralerta();
                 this.destruir();
                 this.reconstruir();
                 console.log(result);
+                
 
             },
             error=>{
@@ -181,7 +177,8 @@ export class ProductosComponent{
     eliminarproducto(){
         this._productoservice.borrarproducto(this.ident).subscribe(
             result=>{
-                this.mostrar();
+                this.destruir();
+                this.reconstruir();
             },
             error=>{
                 console.log(<any>error);
@@ -260,6 +257,8 @@ export class ProductosComponent{
                 this.eliminarproducto();
               swal("su producto se borro satisfactoriamente", {
                 icon: "success",
+                buttons: false,
+                timer: 3000
               });
             } else {
               
@@ -274,5 +273,22 @@ export class ProductosComponent{
         this.tabla();
         this.mostrar();
     }
-
+    modificaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo el almacen',
+            buttons: false,
+            timer: 3000
+          })
+    }
+    agregaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo el almacen',
+            buttons: false,
+            timer: 3000
+          })
+    }
 }

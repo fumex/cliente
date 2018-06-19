@@ -5,6 +5,8 @@ import{inventario} from '../modelos/inventario';
 import{AlmacenesService}from '../../Almacenes/services/almacenes.service';
 import{almacen}from '../../Almacenes/modelos/almacenes';
 import{ProductosfiltradoporAlmacenModel} from '../modelos/almacenproducto';
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 
 declare var jQuery:any;
@@ -19,6 +21,7 @@ declare var swal:any;
   export class InventarioListComponent{
     public titulo:string;
     public cantotal:number;
+    public multi:number;
     public mostrareporte;
     public total:number;
     public ident;
@@ -34,12 +37,15 @@ declare var swal:any;
     public idalmacen;
     public idproducto;
     public ocutarformulario;
+    public user:User
       constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _InventarioService:InventarioService,
         private _almacenesService:AlmacenesService,
+        private auth:AuthService,
       ){
+        this.user=this.auth.getUser();
         this.titulo = "reporte de almacen";
         this.tabla();
         //this.tabla2();
@@ -53,6 +59,7 @@ declare var swal:any;
         this.idalmacen=0;
         this.idproducto=0;
         this.ocutarformulario=null;
+        
       }
         ngOnInit(){
         this.mostraralmacen();
@@ -92,15 +99,19 @@ declare var swal:any;
                             {
                                 this.cantotal=this.inventarios[this.id].cantidad+this.movimientos[this.id-1].id_almacen;
                                 this.total=(this.inventarios[this.id].cantidad*this.inventarios[this.id].precio)+this.movimientos[this.id-1].id;
+                                
                                 this.movimientos[this.id].id_almacen=this.cantotal;
                                 this.movimientos[this.id].id=this.total;
+                                this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
+                                this.movimientos[this.id].descripcion=this.multi.toFixed(2);;
 
                             }else{
                                 this.cantotal=this.movimientos[this.id-1].id_almacen-this.inventarios[this.id].cantidad;
                                 this.total=this.movimientos[this.id-1].id-this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
                                 this.movimientos[this.id].id_almacen=this.cantotal;
                                 this.movimientos[this.id].id=this.total;
-
+                                this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
+                                this.movimientos[this.id].descripcion=this.multi.toFixed(2);;
                             }
                         }else{
                             if(this.inventarios[this.id].tipo_movimiento!=1)
@@ -109,12 +120,16 @@ declare var swal:any;
                                 this.total=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
                                 this.movimientos[this.id].id_almacen=this.cantotal;
                                this.movimientos[this.id].id=this.total;
+                               this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
+                                this.movimientos[this.id].descripcion=this.multi.toFixed(2);
 
                             }else{
                                 this.cantotal=0-this.inventarios[this.id].cantidad;
                                 this.total=0-this.inventarios[this.id].cantidad * this.inventarios[this.id].precio;
                                 this.movimientos[this.id].id_almacen=this.cantotal;
                                 this.movimientos[this.id].id=this.total;
+                                this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
+                                this.movimientos[this.id].descripcion=this.multi.toFixed(2);
                             }
                             
                         }
@@ -153,7 +168,7 @@ declare var swal:any;
             this.cojeinventarioi.id_almacen=0;
         }
         mostraralmacen(){
-            this._almacenesService.getAlmacenes().subscribe(
+            this._almacenesService.mostraalmacenusuario(this.user.id).subscribe(
                 result=>{
                     this.almacenes=result;
                     //console.log(result);
@@ -173,7 +188,7 @@ declare var swal:any;
                 this.productos=result;
                 this.destruirtablaproductos();
                 this.reconstruirtablaproductos();
-                //console.log(result);
+                console.log(result);
              },
              error=>{
                  //console.log(<any>error);

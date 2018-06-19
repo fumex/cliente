@@ -14,11 +14,14 @@ import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 import { ProductoModule } from '../../productos/productos.module';
 
+import {InventarioService} from '../../inventario/services/inventario.service';
+import {inventario} from '../../inventario/modelos/inventario';
+ 
 declare  var $:any;
 @Component({
     selector:'pago-add',
     templateUrl:'../views/pago-add.html',
-    providers:[PagoService]
+    providers:[PagoService,InventarioService]
 })
 export class PagoAddComponent implements OnInit{
 
@@ -36,17 +39,22 @@ export class PagoAddComponent implements OnInit{
     public confirmado:any=[];
     public user:User;
 
+    public inventario:inventario;
+    public inventarios:Array<inventario>=[];
     constructor(
         private pagoService:PagoService,
         private almacenService:AlmacenesService,
         private route:ActivatedRoute,
         private router:Router,
         private documentoService:DocumentoService,
-        private auth:AuthService
+        private auth:AuthService,
+
+        private _inventarioservice:InventarioService,
     ){
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.user=this.auth.getUser();
         this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,null);
+
         this.title="Compras";
         this.total=0;
         this.tabla();
@@ -103,6 +111,7 @@ export class PagoAddComponent implements OnInit{
             }
         );
     }
+
     //Tipo de Documento
     getDocumentos(){
         this.documentoService.getDocumComprobante().subscribe(
@@ -146,6 +155,7 @@ export class PagoAddComponent implements OnInit{
     }
     //detalles
     addCompra(index,id,categoria,unidad_medida,articulo,descripcion){
+        
         this.confirmado[index]=false;
         this.compra= new CompraModel(index,id,categoria,unidad_medida,null,articulo,descripcion,null,null);
         if(!this.existeCompra(id,this.compras)){
@@ -184,10 +194,13 @@ export class PagoAddComponent implements OnInit{
     addDetalles(){
         let pago=this.pagoService;
         let cod= this.codigo;
+        let inventa=this._inventarioservice;
+        let us=this.user.id;
         this.compras.forEach(function(value){
             let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
-            let d_almacen=new almacenstock(null,null,value.codigo,value.id,null,value.cantidad,null);
-            pago.addPagoDetalle(pagoD).subscribe(
+            let d_almacen=new almacenstock(null,null,value.codigo,value.id,value.cantidad,value.precio,null);
+            let inven=new inventario(null,null,null,value.id,null,null,value.cantidad,null,value.precio,null,us);
+                pago.addPagoDetalle(pagoD).subscribe(
                     result=>{
                         console.log(result);
                     },
@@ -195,17 +208,26 @@ export class PagoAddComponent implements OnInit{
                         console.log(<any>error);
                     }
                 );
-            pago.creUpDetalleAlmacen(d_almacen).subscribe(
-                result=>{
-                    console.log(result);
-                },
-                error=>{
-                    console.log(<any>error);
-                }
-            );   
+                inventa.addinventariopago(inven).subscribe(
+                    result=>{
+                        console.log(result);
+                    },
+                    error=>{
+                        console.log(<any>error);
+                    }
+                );
+                pago.creUpDetalleAlmacen(d_almacen).subscribe(
+                    result=>{
+                        console.log(result);
+                    },
+                    error=>{
+                        console.log(<any>error);
+                    }
+                );  
             }   
         );
     }
+    
     list(){
         this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
     }

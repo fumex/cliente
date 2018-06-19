@@ -53,7 +53,7 @@
                                             <td><button (click)="buscarreporte(producto.id,cojeinventarioi.id_almacen)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i></button></td>
                                             <td >{{producto.nombre_producto}}</td>
                                             <td style="text-align: center">{{producto.cantidad}}</td>
-                                            <td style="text-align: center"><strong>{{producto.unidad_de_medida}}</strong></td>
+                                            <td style="text-align: center"><strong>{{producto.abreviacion}}</strong></td>
                                             <td style="text-align: center">{{producto.nombre}}</td>
                                             <td style="text-align: center">{{producto.descripcion}}</td>
                                         </tr>
@@ -114,16 +114,14 @@
                                     <td style="text-align:right;width: 78px;padding-right: 10px" >
                                         <a *ngIf="inventario.tipo_movimiento==2" style="color: green"> {{inventario.precio}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
-                                        <a *ngIf="inventario.tipo_movimiento==2" style="color: green">{{inventario.cantidad * inventario.precio}} </a></td>
+                                        <a *ngIf="inventario.tipo_movimiento==2" style="color: green">{{total.descripcion}} </a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
                                         <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.cantidad}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
                                         <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.precio}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
-                                        <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.cantidad * inventario.precio}}</a></td>
-                                    <td style="text-align:right;width: 70px;padding-right: 10px">
-                                        <a>{{total.id_almacen}}</a>
-                                    </td>
+                                        <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{total.descripcion}}</a></td>
+                                    <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id_almacen}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id/total.id_almacen}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id}}</a></td>
                                 </tr>

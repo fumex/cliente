@@ -24,7 +24,6 @@
                                                 <option disabled="disabled">--seleccione el almacen</option>    
                                                 <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
                                             </select>
-                                        <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir almacen</a>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -48,7 +47,6 @@
                                                 <option disabled="disabled">--seleccione producto</option>    
                                                 <option *ngFor="let provedor of provedores" value="{{provedor.id}}"><b>{{provedor.nombre_proveedor}}</b></option>
                                             </select>
-                                        <a (click)="iralmacen()" class="btn btn-link col-md-2"> <i class="fa fa-check"></i>añadir proveedor</a>
                                     </div>
                                 </div>
                                 <div *ngIf="mostrar!=1" class="col-md-6">
@@ -143,10 +141,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let pedido of pedidos; let $index=index">
+                                    <tr (click)="vercuadrotexto($index)" *ngFor="let pedido of pedidos; let $index=index">
                                         <td>producto n°{{$index + 1}}</td>
                                         <td>{{pedido.id_producto}}</td>
-                                        <td >
+                                        <td *ngIf="texto!=$index">{{pedido.cantidad}}</td>
+                                        <td *ngIf="texto==$index">
                                             <div style="margin-right: 0px;">
                                                 <div style="padding-right: 0px;">
                                                     <input type="number" min="1" #cantidad="ngModel" name="cantidad" [(ngModel)]="pedido.cantidad"  class="form-control"/>
