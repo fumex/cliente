@@ -6,6 +6,9 @@ import { ProductosComponent } from './productos.component';
 import { User } from "../../auth/interfaces/user.model";
 import { AuthService } from "../../auth/services/auth.service";
 
+declare var jQuery:any;
+declare var $:any;
+declare var swal:any;
 
 @Component({
     selector:'categoria-edit',
@@ -50,6 +53,7 @@ export class categoriaedit{
             },
             error=>{
                 console.log(<any>error);
+                this.alertaerror();
             }
         );
     }
@@ -64,5 +68,15 @@ export class categoriaedit{
 			}
 		);
 	
-	}
+    }
+    alertaerror(){
+        swal({
+            position: 'center',
+            icon: "warning",
+            title: 'ocurio un error ',
+            text:'intentelo de nuevo mas tarde',
+            buttons: true,
+            timer: 3000
+          })
+    }
 }

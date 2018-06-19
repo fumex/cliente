@@ -8,7 +8,7 @@
         <div class="col-lg-12">
             <div  class="card card-outline-primary">
                 <div class="card-body">
-                    <form #formProducto="ngForm" (ngSubmit)="agregarproducto()" action="#">
+                    <form #formProducto="ngForm"  action="#">
                        <span *ngIf="!formProducto.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
                         <div class="form-body">
                             <div class="row p-t-20">
@@ -18,7 +18,7 @@
                                             <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
                                             <label id="rec" *ngIf="!nombre.valid">*</label>
                                         </label>
-                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" required/>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
                                     </div>
                                 </div>
                                 <div  *ngIf="llamarcategoria==null" class="col-md-6"  >
@@ -26,7 +26,7 @@
                                     <label class="control-label col-md-8">Categoria
                                     <span *ngIf="!cates.valid "  class="label label-default">seleccione categoria</span>                                                        
                                        <label id="rec" *ngIf="!cates.valid"> *</label>  </label>
-                                        <select #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select col-md-9" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                        <select #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select col-md-9" required>
                                                 <option disabled="disabled">--seleccione la categoria</option>    
                                             <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
                                         </select>
@@ -46,7 +46,7 @@
                                     <div class="form-group">                                             
                                         <label>Descripción
                                         <label id="rec" *ngIf="!Descripcion.valid"> *</label> </label>
-                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" required>
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" placeholder="escriba una descripcion" required>
                                     </div>
                                 </div>    
                                 <div *ngIf="llamarunidad==null" class="col-md-3">
@@ -77,8 +77,9 @@
                                         <unidades-edit></unidades-edit>
                                 </div> 
                             </div>
-                            <div class="form-actions">
-                                <button type="submit" [disabled]="!formProducto.form.valid "  class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                            <div style="text-align: center" >
+                                <button (click)="agregarproducto()" [disabled]="!formProducto.form.valid "  class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
+                                <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-window-close"></i> Cancelar</button>
                             </div>
                         </div>
                     </form>
@@ -91,7 +92,7 @@
                             <div *ngIf="productos">
                             <form #formagregarProducto="ngForm" (ngSubmit)="editarproduto(productos.id)">
                                 <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                    <thead>
+                                    <thead style="text-align: center">
                                         <tr>
                                             <th>Nombre</th>
                                             <th>cantidad</th>
@@ -101,7 +102,7 @@
                                             <th ><a *ngIf="modificarproducto!=null">Guardar?</a></th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
+                                    <tfoot style="text-align: center">
                                         <tr>
                                             <th>Nombre</th>
                                             <th>cantidad</th>
@@ -111,7 +112,7 @@
                                         <th></th> 
                                     </tr>
                                     </tfoot>
-                                    <tbody>  
+                                    <tbody style="text-align: center" > 
                                     <tr *ngFor="let producto of productos">
                                         <td *ngIf="modificarproducto!=producto.id">{{producto.nombre_producto}}</td>
                                         <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
@@ -156,7 +157,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td  style="width: 80px;">
                                         <div *ngIf="modificarproducto!=producto.id">
                                             <a class="btn btn-sm btn-warning " (click)="confirmaractualizar(producto.id)"><i class="fa fa-edit"></i></a>                                            
                                             <a class="btn btn-sm btn-danger "(click)="borraralerta(producto.id)" ><i class="fa fa-trash"></i></a>

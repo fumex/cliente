@@ -60,7 +60,6 @@ export class InventarioComponent{
     }
 
     ngOnInit(){
-        this.mostrar();
         this.mostraralmacen();
         //this.mostrarProducto(this.almacenselec);
         this.mostrarveralmacen(this.almacenselec);
@@ -119,7 +118,7 @@ export class InventarioComponent{
 
             this._InventarioService.addInventario(this.inventario2).subscribe(
                 result=>{
-                    this.mostrar();
+                    this.limpiar();
                     console.log(result);
                     this.almacenselec=null;
                 },
@@ -150,19 +149,7 @@ export class InventarioComponent{
         
     }
 
-    mostrar(){
-        this.limpiar();
-        this._InventarioService.getInventario().subscribe(
-            result=>{
-                this.inventarios=result;
-                //console.log(result);
-            },
-            error=>{
-                console.log(<any>error);
-            }   
-        );
-
-    }
+  
     mostraralmacen(){
         
         this._almacenesService.mostraalmacenusuario(this.usuario.id).subscribe(
@@ -192,7 +179,16 @@ export class InventarioComponent{
         );
     }
     limpiar(){
+        this.almacenselec=0;
+        this.mostarguardar=0;
+        this.mostrabproductos=0;
         this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        let indice=0;
+        while(indice<this.movimientos.length){
+            this.movimientos.splice(0,1);
+            indice=indice+1;
+        }
     }
 
     iralmacen(){
@@ -249,8 +245,8 @@ export class InventarioComponent{
     reconstruir(){
         this.tabla();
     }
-    alertamodificar(id){
-        this.ident=id;
+    alertamodificar(){
+
         //this.modificarproducto=null;
         //console.log(this.ident + '' + this.modificarproducto);
         swal({

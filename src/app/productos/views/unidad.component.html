@@ -5,7 +5,7 @@
                 <label >Nombre
                 <label style="color:red;" *ngIf="!unidad.valid">*</label>
                 </label>
-                <input type="text"  #unidad="ngModel" name="unidad" [(ngModel)]="unidades.unidad" class="form-control col-md-12"required>
+                <input type="text"  #unidad="ngModel" name="unidad" [(ngModel)]="unidades.unidad" class="form-control col-md-12" placeholder="{{titulo}}" required>
             </div>
         </div>
         <div class="col-md-4">
@@ -13,7 +13,7 @@
                 <label >Abreviación
                 <label style="color:red;" *ngIf="!abreviacion.valid">*</label>
                 </label>
-                <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control col-md-"required>
+                <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control col-md-" placeholder="abreviacion" required>
             </div>                  
         </div>
         <div class="col-md-2">  

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import{environment} from '../../../environments/environment'
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
     private formBuilder:FormBuilder,
     private authService:AuthService,
     private router:Router
+    
 
   ) {
     
@@ -34,11 +36,11 @@ export class LoginComponent implements OnInit {
   }
   
   onSubmit(){
-
+   
     this.authService.login(this.f.value).subscribe(
       response=>{
         this.user=response;
-        this.router.navigate([this.user.user.rol]);
+        location.href=`${environment.url}`+this.user.user.rol;
          this.rol=this.user.user.rol;
       },
       (errorResponse:HttpErrorResponse)=>{

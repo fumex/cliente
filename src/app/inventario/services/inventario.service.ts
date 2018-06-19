@@ -40,5 +40,13 @@ export class InventarioService{
         return this._http.get<any>(this.url+'/productosalmacen/'+id).shareReplay();
 
     }
- 
+    addinventariopago(inventario:inventario):Observable<any>{
+        let json = JSON.stringify(inventario);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/inventariopagos',params,{headers:headers});
+            
+    }
 }

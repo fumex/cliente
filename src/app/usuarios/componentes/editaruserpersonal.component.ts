@@ -70,17 +70,19 @@ export class EditarUsuarioPersonal{
         this.mostraruduario(id);
         this.mostrardetalleusuario(id); 
     }
-    borraralerta(id){
+    borrar(id){
         this._UsuarioService.deshabilitarusuario(id).subscribe(
             response=>{
                 console.log(response);
-                this.mostrarusuarios();
+                this.destruirtablaus();
+                this.recontablaus();
             },
             error=>{
                 console.log(<any>error);
             }
         );
     }
+   
     atras(){
         this.cuenta=0;
         this.ap=0;
@@ -283,13 +285,15 @@ export class EditarUsuarioPersonal{
             this.id=this.id+1;
          }
          this.id=0;
+         this.volvertablausuarios();
+         this.actualizaralerta();
      }
      tablausuarios(){
         setTimeout(function(){
             $(function(){
                  $('#tablausuarios').DataTable();
             });
-        },500);
+        },2500);
     }
     tablasucursales(){
         setTimeout(function(){
@@ -313,4 +317,39 @@ export class EditarUsuarioPersonal{
     reconsttablasuc(){
         this.tablasucursales();
     }
+    actualizaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se edito el usuario',
+            buttons: false,
+            timer: 1000
+          })
+    }
+    borraralerta(id){
+        swal({
+            title: "esta seguro",
+            text: "despúes de borrar, no se pude recuperar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+               this.borrar(id);
+
+              swal("el usuario se borro satisfactoriamente", {
+                icon: "success",
+                buttons: false,
+                timer: 3000
+              });
+            } else {
+              
+            }
+          });
+    }
+    guardarusuario(){
+        
+    }
+  
 }
