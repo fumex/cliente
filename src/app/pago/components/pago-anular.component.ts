@@ -106,7 +106,7 @@ export class PagoAnularComponent implements OnInit{
     }
 
     listaPagos(){
-        this.pagoService.listPago().subscribe(
+        this.pagoService.listPago(this.user.id).subscribe(
             result=>{
                 this.pagos=result;
                 console.log(this.pagos)

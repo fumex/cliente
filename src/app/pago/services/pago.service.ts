@@ -54,8 +54,8 @@ export class PagoService{
         return this.http.get<any>(`${environment.api_url}/auth/productos-listas`).shareReplay();
     }
     //lista de pagos
-    listPago():Observable<any[]>{
-        return this.http.get<any>(`${environment.api_url}/auth/pagos-list`).shareReplay();
+    listPago(id):Observable<any[]>{
+        return this.http.get<any>(`${environment.api_url}/auth/pagos-list/`+id).shareReplay();
     }
 
     //------------------------DEtalles PAgos-------------------------------------------------------------------
