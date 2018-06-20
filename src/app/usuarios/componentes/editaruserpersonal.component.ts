@@ -348,7 +348,7 @@ export class EditarUsuarioPersonal{
             }
           });
     }
-    guardarusuario(){
+    guardarusuario(pas1,pas2){
         
     }
   
