@@ -17,7 +17,7 @@ declare var swal:any;
 @Component({
     selector:'add-usuario',
     templateUrl:'../views/usuarios.component.html',
-    providers:[UsuarioService,,SucursalService,DettaleUsuarioService,AuthService]
+    providers:[UsuarioService,SucursalService,DettaleUsuarioService,AuthService]
 })
 export class EditarUsuarioPersonal{
     public usuario:UsuarioModel;

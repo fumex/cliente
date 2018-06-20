@@ -96,7 +96,7 @@ export class PagoAddComponent implements OnInit{
         },3000);
      }
 
-    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string,cantidad,precio){
+    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
         let subtotal=this.sumaTotal();
         let igv=this.total*0.18;
         this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,igv);

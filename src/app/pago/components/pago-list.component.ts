@@ -44,7 +44,7 @@ export class PagoListComponent implements OnInit{
         },3000);
      }
      getPagos(){
-         this.pagoService.listPago().subscribe(
+         this.pagoService.listPago(this.user.id).subscribe(
              result=>{
                 this.pagos=result;
              },
