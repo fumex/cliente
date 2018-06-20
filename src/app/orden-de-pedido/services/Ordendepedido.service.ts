@@ -15,7 +15,7 @@ export class OrdenPedidosService{
      this.url=environment.api_url;   
     }
 
-    getProductos(){
+    getpedidos(){
         return this._http.get<any>(this.url+'/OrdenPedidos').shareReplay();
     }
     addOrdenPedido(orden:OrdenDePedidoModel):Observable<any>{

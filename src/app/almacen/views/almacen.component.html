@@ -3,8 +3,58 @@
             <h2>{{titulo}}</h2>
     </div>
 </div>
-
-<div class="container-fluid">
+<div *ngIf="ocuataralmacenes==null" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div class="form-body">
+                        <div *ngIf="almacenselec!=0" class="container-fluid">
+                            <div class="table-responsive m-t-40">
+                                <p class="card-title">seleccione el almacen</p>
+                                <div *ngIf="!almacenes">
+                                    cargando listado de almacenes....
+                                </div>
+                                <div *ngIf="almacenes">
+                                <table id="tablalmacenes" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>almacen</th>
+                                            <th>descripcion</th>
+                                            <th>direccion</th>
+                                            <th style="text-align: left;">telefono</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th>almacen</th>
+                                            <th>descripcion</th>
+                                            <th>direccion</th>
+                                            <th style="text-align: left;">telefono</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>  
+                                        <tr (click)="buscardetalle(almacen.id)" *ngFor="let almacen of almacenes; let $index=index">
+                                            <td style="text-align: center"><button (click)="buscardetalle(almacen.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle-o"></i></button></td>
+                                            <td style="text-align: center">{{almacen.nombre}}</td>
+                                            <td style="text-align: center"><strong>{{almacen.descripcion}}</strong></td>
+                                            <td style="text-align: center">{{almacen.direccion}}</td>
+                                            <td style="text-align: center">{{almacen.telefono}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="ocuataralmacenes!=null" class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -15,6 +65,11 @@
                             cargando listado de almacenes....
                         </div>
                         <div *ngIf="stoks">
+                         <div style="text-align:right">
+                            <button (click)="cerrar()" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-angle-double-up"></i>
+                               almacenes
+                            </button>
+                        </div>     
                         <form #formeditaralmacen="ngForm" (ngSubmit)="editardetallealmacen()">
                             <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                 <thead>

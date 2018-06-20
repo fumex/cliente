@@ -15,8 +15,8 @@ export class DetalleOrdenPedidosService{
      this.url=environment.api_url;   
     }
 
-    getdetalle(){
-        return this._http.get<any>(this.url+'/OrdenPedidos').shareReplay();
+    getdetalle(id){
+        return this._http.get<any>(this.url+'/detalleordenselect/'+id).shareReplay();
     }
     adddetalleOrdenPedido(detalle:DetalleOrdenDePedidoModel):Observable<any>{
         let json = JSON.stringify(detalle);

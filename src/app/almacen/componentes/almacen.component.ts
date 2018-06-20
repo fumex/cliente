@@ -4,6 +4,9 @@ import{AlmaceneService}from '../services/almacen.services';
 import{almacenstock} from '../modelos/almacen';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import{AlmacenesService} from'../../Almacenes/services/almacenes.service';
+import{almacen} from'../../Almacenes/modelos/almacenes';
+
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
@@ -11,7 +14,7 @@ declare var swal:any;
 @Component({
   selector: 'productos-list',
   templateUrl: '../views/almacen.component.html',
-  providers: [AlmaceneService]
+  providers: [AlmaceneService,AlmacenesService]
 })
 export class AlmacenComponent{
     public titulo:string;
@@ -21,11 +24,14 @@ export class AlmacenComponent{
     public idalmacen;
     public editalmecen:almacenstock;
     public usuario;
+    public ocuataralmacenes;
+    public almacenes:almacen;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _almacenService:AlmaceneService,
         private auth:AuthService,
+        private _almacenesservice:AlmacenesService,
     ){
         this.titulo = "resumen de almacenes";
         this.stok=new almacenstock(0,0,'',0,0,0,0);
@@ -33,19 +39,36 @@ export class AlmacenComponent{
         this.ident=null;
         this.idalmacen=null;
         this.usuario=this.auth.getUser();;
-        this.tabla();
+        this.ocuataralmacenes=null;
+        this.tablalmacenes();
     }
     ngOnInit(){
-        this.mostrar();
+        //this.mostrar();
+        this.mostraralmacenes();
         this.actualizar(this.ident);
-    }  
+    } 
+    mostraralmacenes(){
+        this._almacenesservice.mostraalmacenusuario(this.usuario.id).subscribe(
+            result=>{
+                this.almacenes=result;
+                console.log(result);
+            },
+            error=>{
+                console.log(<any>error);
+            }   
+        );
+    }
+    buscardetalle(id){
+        this.ocuataralmacenes=id;
+        this.reconstruir();
+    } 
     actualizar(id){
         this.ident=id;
         console.log(this.ident);
     }
-    mostrar(){
+    mostrar(id){
         this.limpiar();
-        this._almacenService.getAlmacen(this.usuario.id).subscribe(
+        this._almacenService.getAlmacen(id).subscribe(
             result=>{
                 this.stoks=result;
                 console.log(result);
@@ -81,7 +104,6 @@ export class AlmacenComponent{
         console.log(this.idalmacen);
         this._almacenService.ActualizarAlmacen(this.idalmacen,this.editalmecen).subscribe(
             result=>{
-                this.mostrar();
                 this.limpiar();
                 this.destruir();
                 this.reconstruir();
@@ -94,6 +116,9 @@ export class AlmacenComponent{
             }
         );
     }
+    cerrar(){
+        this.ocuataralmacenes=null;
+    }
     cancelar(){
         this.limpiar();
     }
@@ -105,7 +130,6 @@ export class AlmacenComponent{
     agregaralmacen(){
         this._almacenService.addAlmacen(this.stok).subscribe(
             result=>{
-                this.mostrar();
                 console.log(result);
             },
             error=>{
@@ -119,13 +143,13 @@ export class AlmacenComponent{
         swal({
             position: 'center',
             icon: "success",
-            title: 'se guardo el almacen',
+            title: 'se guardo el precio',
             buttons: false,
             timer: 3000
           })
     }
     tabla(){
-        this.mostrar();
+
         setTimeout(function(){
             $(function(){
                  $('#mytable').DataTable({
@@ -137,14 +161,23 @@ export class AlmacenComponent{
             });
         },3000);
     }
+    tablalmacenes(){
+        setTimeout(function(){
+            $(document).ready(function() {
+                 $('#tablalmacenes').DataTable();
+            });
+        },1500);
+    }
+
     destruir(){	
         var table = $('#mytable').DataTable(); table .clear() ;
         $('#mytable').DataTable().destroy();
     }
     reconstruir(){
+        
+        this.mostrar(this.ocuataralmacenes);
         this.tabla();
-    
-        this.mostrar();
     }
+    
       
 }

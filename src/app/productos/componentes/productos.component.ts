@@ -48,9 +48,9 @@ export class ProductosComponent{
         this.titulo = "productos";
         this.tabla();
         this.user=this.auth.getUser();
-        this.producto=new producto(0,'','','','',null,this.user.id,null);
-        this.editproducto=new producto(0,'','','','',null,this.user.id,null);
-        this.agregarpro=new producto(0,'','','','',null,this.user.id,null);
+        this.producto=new producto(0,null,'','','',null,this.user.id,null);
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null);
+        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null);
         this.categorias=new categoria(0,'',this.user.id);
         //this.unidadmodelo=new UnidadesModel(0,'','');
 
@@ -141,8 +141,8 @@ export class ProductosComponent{
     limpiar(){
         this.ident=null;
         this.modificarproducto=null;
-        this.editproducto=new producto(0,'','','','',null,this.user.id,null);
-        this.agregarpro=new producto(0,'','','','',null,this.user.id,null);
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null);
+        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null);
     }
     mostrar(){
         this._productoservice.getProductos().subscribe(

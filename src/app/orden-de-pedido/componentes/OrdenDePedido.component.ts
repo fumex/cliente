@@ -40,6 +40,8 @@ export class OrdenDePedidoComponent{
     public nombres;
     public quitar;
     public usuario;
+    public almacenvalid;
+    public provedorvalid;
     constructor(
         private _almacenesService:AlmacenesService,
         private _route:ActivatedRoute,
@@ -63,6 +65,8 @@ export class OrdenDePedidoComponent{
         this.quitar=null;
         this.usuario=this.auth.getUser();;
         this.texto=null;
+        this.almacenvalid=false;
+        this.provedorvalid=false;
     }
     ngOnInit(){
         this.mostraralmacen();
@@ -81,6 +85,14 @@ export class OrdenDePedidoComponent{
             }   
         );
 
+    }
+    almacenvalidacion(){
+        this.almacenvalid=true;
+        console.log(this.almacenvalid);
+    }
+    proveedorvalidacion(){
+        this.provedorvalid=true;
+        console.log(this.provedorvalid);
     }
     mostrarproveedor(){
         this._proveedorservice.getTable().subscribe(
@@ -105,10 +117,14 @@ export class OrdenDePedidoComponent{
             }   
         );
     }
+    volver(){
+        this._router.navigate(['/'+this.usuario.rol+'/pedido/listar']);
+   }
     fechaactual(){
         this._ordenPedidoService.getfecha().subscribe(
             result=>{
                 this.fecha2=result.res;
+                this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,result.res);
             },
             error=>{
                 console.log(<any>error);
@@ -173,12 +189,18 @@ export class OrdenDePedidoComponent{
         this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
             result=>{
                 console.log(result);
+                if(result.code===200){
+                    this.guardardetalleorden();
+                }
             },
             error=>{
                 console.log(<any>error);
             }
 
         ) 
+       
+    }
+    guardardetalleorden(){
         while(this.id<this.pedidos.length){
             console.log(this.pedidos[this.id]);
             this.agregarDetalleOrden=this.pedidos[this.id];

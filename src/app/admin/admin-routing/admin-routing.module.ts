@@ -27,6 +27,9 @@ import { usuarioscomponent } from '../../usuarios/componentes/usuarios.component
 import { EditarUsuarioPersonal } from '../../usuarios/componentes/editaruserpersonal.component';
 import { EditUsuariosp } from '../../usuarios/componentes/EditUserAutenticacion.component';
 import{ OrdenDePedidoComponent} from '../../orden-de-pedido/componentes/OrdenDePedido.component';
+import { pedidolistarcomponent} from '../../orden-de-pedido/componentes/ordendepedidolistar.component';
+
+
 import { PagoAnularComponent } from '../../pago/components/pago-anular.component';
 import { ServicioAddComponent } from '../../pago-servicios/components/servicio-add.component';
 import { ServicioAnularComponent } from '../../pago-servicios/components/servicio-anular.component';
@@ -112,6 +115,7 @@ import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
                     { path:'pedido',component:OrdenDePedidoComponent},
+                    { path:'pedido/listar',component:pedidolistarcomponent},
                     { path:'inventario',component:InventarioComponent},
                     { path:'reporteInventario',component:InventarioListComponent}, 
                     { path:'usuarios',component:usuarioscomponent}, 
