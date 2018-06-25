@@ -5,9 +5,14 @@ import { DetalleOrdenPedidosService } from '../../detalle-orden-de-pedido/servic
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import{almacen} from '../../Almacenes/modelos/almacenes';
+import {AlmacenesService}from '../../Almacenes/services/almacenes.service';
+import { ProveedorService } from '../../proveedor/services/proveedor.service';
 
 declare var jQuery:any;
 declare var $:any;
+declare var swal:any;
+
 @Component({
     selector:'pedido-list',
     templateUrl:'../views/ordendepedidolistar.html',
@@ -17,25 +22,147 @@ export class pedidolistarcomponent {
     public title:string;
     public mostrapedido:any=[];
     public mostrapedidodetalle:any=[];
+    public editarpedido:OrdenDePedidoModel;
     public confirmado;
     public user:User;
+    public mostareditar;
+    public mostrarformedit;
+    public idpedido;
+    public provedores:any=[];;
+    public almacenes:almacen;
     constructor(
         private _pedidoservice:OrdenPedidosService,
         private _detallepdidoservice:DetalleOrdenPedidosService,
+        private _almacenesService:AlmacenesService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private _proveedorservice:ProveedorService,
     ){
+        this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null)
         this.user=this.auth.getUser();
         this.title='Lista de Compras';
         this.destruir();
         this.reconstruir();
+        this.idpedido=0;
+        this.mostareditar=null;
+        this.mostrarformedit=null;
     }
     ngOnInit(){
         console.log("asdasd"); 
+        this.mostraralmacen();
+        this.mostrarproveedor();
         this.getpedidos(); 
     }
-   
+    activarmodificar(){
+        this.mostareditar=1;
+    }
+    volvertablapedido(){
+        this.mostrarformedit=null;
+        this.mostareditar=null;
+        this.destruir();
+        this.reconstruir();
+    }
+    guardarpedido(){
+        this._pedidoservice.modificarpedido(this.idpedido,this.editarpedido).subscribe(
+            result=>{
+                console.log(result);
+                this.selectorden(this.idpedido);
+                this.alertapedidoguardado();
+                this.mostareditar=null;
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    cancelarmodificar(){
+        this.mostareditar=null;
+        
+    }
+
+
+
+
+
+
+    alertaeliminarpedido(id){
+
+        swal({
+            title: "esta seguro",
+            text: "despúes de borrar, no se pude recuperar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                this.eliminarpedido(id);
+              swal("su pedido se borro satisfactoriamente", {
+                icon: "success",
+                buttons: false,
+                timer: 3000
+              });
+            } else {
+              
+            }
+          });
+    }
+    eliminarpedido(id){
+        this._pedidoservice.borrarpedido(id).subscribe(
+            result=>{
+                console.log(result);
+                this.destruir();
+                this.reconstruir();
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+
+
+
+    alertaeliminardetalle(id){
+        swal({
+            title: "esta seguro",
+            text: "despúes de borrar, no se pude recuperar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                this.eliminardetalle(id);
+              swal("ese producto se elimino de su pedido", {
+                icon: "success",
+                buttons: false,
+                timer: 3000
+              });
+            } else {
+              
+            }
+          });
+    }
+    eliminardetalle(id){
+        this._detallepdidoservice.borrardetalle(id).subscribe(
+            result=>{
+                console.log(result);
+                this.destruirdetalle();
+                this.reconstruirdetalle(this.idpedido);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+
+
+
+
+
+
+
     getpedidos(){
         this._pedidoservice.getpedidos().subscribe(
             result=>{
@@ -48,15 +175,40 @@ export class pedidolistarcomponent {
         );
     }
     mostrardetalle(id,index){
-        this.detalleorden(id,index);
+        this.mostrarformedit=1;
+        this.idpedido=id;
+        this.destruirdetalle();
+        this.reconstruirdetalle(id);
+        this.selectorden(id);
+    }
+    mostrarproveedor(){
+        this._proveedorservice.getTable().subscribe(
+            result=>{
+                this.provedores=result;
+                console.log(result);
+            },
+            error=>{
+                console.log(<any>error);
+            }   
+        );
 
     }
-    detalleorden(id,index){
+    detalleorden(id){
         this._detallepdidoservice.getdetalle(id).subscribe(
             result=>{
                 this.mostrapedidodetalle=result;
-                console.log(index);
                 console.log(this.mostrapedidodetalle);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    selectorden(id){
+        this._pedidoservice.seleccionarpedido(id).subscribe(
+            result=>{
+                this.editarpedido=result;
+                console.log(this.editarpedido);
             },
             error=>{
                 console.log(<any>error);
@@ -79,6 +231,18 @@ export class pedidolistarcomponent {
             });
         },3000);
     }
+    mostraralmacen(){
+        this._almacenesService.mostraalmacenusuario(this.user.id).subscribe(
+            result=>{
+                this.almacenes=result;
+                console.log(result);
+            },
+            error=>{
+                console.log(<any>error);
+            }   
+        );
+
+    }
     destruir(){	
         var table = $('#pedido').DataTable(); table .clear() ;
         $('#pedido').DataTable().destroy();
@@ -86,6 +250,30 @@ export class pedidolistarcomponent {
     reconstruir(){
         this.getpedidos();
         this.tabla();
+    }
+    tabladetalle(){
+        setTimeout(function(){
+            $(function(){
+                 $('#detalle').DataTable();
+            });
+        },1500);
+    }
+    destruirdetalle(){	
+        var table = $('#detalle').DataTable(); table .clear() ;
+        $('#detalle').DataTable().destroy();
+    }
+    reconstruirdetalle(id){
+        this.detalleorden(id)
+        this.tabladetalle();
+    }
+    alertapedidoguardado(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'el pedido se modifico con exito',
+            buttons: false,
+            timer: 1500
+          })
     }
 
 }

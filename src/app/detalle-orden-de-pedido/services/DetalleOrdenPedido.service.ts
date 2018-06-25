@@ -3,7 +3,7 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
-import {Observable}from'rxjs/observable';
+import {Observable}from'rxjs/Observable';
 import {DetalleOrdenDePedidoModel}from '../modelos/DetalleOrdendePedido';
 
 @Injectable()
@@ -28,11 +28,11 @@ export class DetalleOrdenPedidosService{
             
     }
     seleccionardcetalle(id){
-        return this._http.get<any>(this.url+'/OrdenPedidos/'+id).shareReplay();
+        return this._http.get<any>(this.url+'/DetalleOrdenPedidos/'+id).shareReplay();
     }
 
     borrardetalle(id){
-        return this._http.get<any>(this.url+'/OrdenPedidos/eliminar/'+id).shareReplay();
+        return this._http.get<any>(this.url+'/DetalleOrdenPedidos/eliminar/'+id).shareReplay();
     }
     detalleupdate(id,orden:DetalleOrdenDePedidoModel):Observable<any>{
         let json = JSON.stringify(orden);

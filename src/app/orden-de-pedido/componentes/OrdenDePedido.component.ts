@@ -190,7 +190,10 @@ export class OrdenDePedidoComponent{
             result=>{
                 console.log(result);
                 if(result.code===200){
+
                     this.guardardetalleorden();
+                    this.guardaralerta();
+                    
                 }
             },
             error=>{
@@ -208,6 +211,7 @@ export class OrdenDePedidoComponent{
             this._detalleorden.adddetalleOrdenPedido(this.agregarDetalleOrden).subscribe(
                 result=>{
                     console.log(result);
+                        
                 },
                 error=>{
                     console.log(<any>error);
@@ -215,6 +219,9 @@ export class OrdenDePedidoComponent{
     
             ) 
             this.id=this.id+1
+            if(this.id==this.pedidos.length){
+                this._router.navigate(['/'+this.usuario.rol+'/pedido/listar']);
+            }
         }
         this.id=0;
     }
@@ -249,5 +256,14 @@ export class OrdenDePedidoComponent{
                  });
             });
         },500);
+    }
+    guardaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se genero el pedido',
+            buttons: false,
+            timer: 1500
+          })
     }
 }

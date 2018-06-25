@@ -2,11 +2,12 @@
     <div class="row p-t-1">
         <div class="col-md-9">
             <div class="form-group">
-                <label class="control-label">{{titulo}}
-                <span *ngIf="!caterias.valid && caterias.touched" class="label label-default">El nombre es obligatorio</span>
-                <label id="rec" *ngIf="!caterias.valid">*</label>
-                </label>
-                <input type="caterias"  #caterias="ngModel" name="caterias" [(ngModel)]="categoria.nombre" class="form-control col-md-12" placeholder="{{titulo}}" required>
+                <label class="control-label">{{titulo}}</label>
+                <div class="inner-addon left-addon">
+                    <i *ngIf="caterias.valid" style="color: green" class="fa fa-check"></i>
+                    <i *ngIf="!caterias.valid && caterias.touched" style="color: red" class="fa fa-times"></i>
+                    <input type="caterias"  #caterias="ngModel"  id="cteria" name="caterias" [(ngModel)]="categoria.nombre" class="form-control " placeholder="{{titulo}}" required>
+                </div> 
             </div>
         </div>
         <div class="col-md-3">  

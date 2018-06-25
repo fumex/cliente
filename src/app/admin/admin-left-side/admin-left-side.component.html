@@ -23,7 +23,7 @@
                         <li><a [routerLink]="['/admin/servicio/list']">Pagos Servicios</a></li>
                         <li><a [routerLink]="['/admin/transaccion/anular']">Anular Pago Proveedor</a></li>
                         <li><a [routerLink]="['/admin/servicio/anular']">Anular Pago Servicio</a></li>
-                        <li><a [routerLink]="['/admin/pedido']">Orden Compra</a></li>
+                        <li><a [routerLink]="['/admin/pedido/listar']">Orden Compra</a></li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Contactos</span></a>
@@ -53,7 +53,7 @@
                 <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-map-marker"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a [routerLink]="['/admin/usuarios']" > Crear Usuarios</a></li>
-                        <li><a> Cambiar Usuarios</a></li>
+                        <li><a [routerLink]="['/admin/editarusuario']"> Editar Usuarios</a></li>
                         <li><a>inhabilitar Usuario</a></li>
                     </ul>
                 </li>

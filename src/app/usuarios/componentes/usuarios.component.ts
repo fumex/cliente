@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component,ViewContainerRef } from "@angular/core";
 import { UsuarioService } from "../../usuarios/services/usuarios.service";
 import { UsuarioModel } from '../../usuarios/modelos/usuarios';
 import {DocumentoModel} from '../../TipoDocumento/models/documento';
@@ -9,6 +9,11 @@ import { DettaleUsuarioService } from "../../usuarios/services/DetalleUsuario.se
 import { DetalleUsuarioModel } from '../../usuarios/modelos/DetalleUsuario';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
+import {OrdenPedidosService} from '../../orden-de-pedido/services/Ordendepedido.service';
+
+
+import {ToastService} from '../../toastalert/service/toasts.service'
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var jQuery:any;
 declare var $:any;
@@ -17,7 +22,7 @@ declare var swal:any;
 @Component({
     selector:'add-usuario',
     templateUrl:'../views/usuarios.component.html',
-    providers:[UsuarioService,DocumentoService,SucursalService,DettaleUsuarioService]
+    providers:[UsuarioService,DocumentoService,SucursalService,DettaleUsuarioService,ToastService,OrdenPedidosService]
 })
 export class usuarioscomponent{
     public paswor;
@@ -34,13 +39,21 @@ export class usuarioscomponent{
     public id;
     public siguiente;
     public user:User;
+    public nombre;
+    public fecha;
+    public iguales;
     constructor(
         private _UsuarioService:UsuarioService,
         private _DocumentoService:DocumentoService,
         private _SucursalService:SucursalService,
+        private _OrdenPedidosService:OrdenPedidosService,
         private _DettaleUsuarioService:DettaleUsuarioService,
         private auth:AuthService,
+        private toaste:ToastService,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
         this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
@@ -53,12 +66,25 @@ export class usuarioscomponent{
         this.ap=0;
         this.siguiente=0;
         this.id=0;
+        this.fecha=null;
+        this.iguales=false;
     }
     ngOnInit(){
         this.mostradocuemnto();
         this.mostrarsucursal();
+        this.fechaactual();
     }
-
+    fechaactual(){
+        this._OrdenPedidosService.getfecha().subscribe(
+            respuesta=>{
+                this.fecha=respuesta.res;
+                console.log(this.fecha);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
     alimentarareglodp(){
         this.titulo="Asiganacion de Permisos";
         this.ap=1;
@@ -101,7 +127,7 @@ export class usuarioscomponent{
         console.log(this.DetalleUsuario);
     }
     guardarusuario(pas1,pas2){
-        //this.categoria = new categoria(tipo1);
+        this.nombre =document.getElementById('emailunico');
         this.id=0;
         this.paswor =document.getElementById('pasword');
         this.confirmar =document.getElementById('confirmar');
@@ -114,15 +140,16 @@ export class usuarioscomponent{
                 if(response.code===200){
                     console.log("entro al if");
                    this.guardardetalle();
-                }else{
-                    if(response.code===408){
-                        this.emailregistrado();
-                    }
                 }
-              
             },
             error=>{
                 console.log(<any>error);
+                if(error.status==500){
+                    let text="Ese Email ya se encuentra registrado";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.focus();
+                    this.nombre.select();
+                }
             }
             );
             this.titulo="Datos Personales";
@@ -211,10 +238,12 @@ export class usuarioscomponent{
         this.confirmar =document.getElementById('confirmar');
        //console.log(this.input.value);
         if(this.paswor.value===this.confirmar.value){
+            this.iguales=true;
             console.log('iguales'+this.compara);
             this.confirmar.style="border: 0.3px solid #3bc1ff;";
            this.compara=1;
         }else{
+            this.iguales=false;
             this.compara=0
             
             this.confirmar.style="border: 0.3px solid red;";

@@ -3,7 +3,7 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
-import {Observable}from'rxjs/observable';
+import {Observable}from'rxjs/Observable';
 import {OrdenDePedidoModel}from '../modelos/OrdendePedido';
 
 @Injectable()
@@ -27,11 +27,20 @@ export class OrdenPedidosService{
         return this._http.post(this.url+'/OrdenPedidos',params,{headers:headers});
             
     }
-    SeleccionarProducto(id){
+    modificarpedido(id,orden:OrdenDePedidoModel):Observable<any>{
+        let json = JSON.stringify(orden);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/OrdenPedidos/'+id,params,{headers:headers});
+            
+    }
+    seleccionarpedido(id){
         return this._http.get<any>(this.url+'/OrdenPedidos/'+id).shareReplay();
     }
 
-    borrarproducto(id){
+    borrarpedido(id){
         return this._http.get<any>(this.url+'/OrdenPedidos/eliminar/'+id).shareReplay();
     }
     Productosupdate(id,orden:OrdenDePedidoModel):Observable<any>{

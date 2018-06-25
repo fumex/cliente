@@ -3,7 +3,7 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
-import {Observable}from'rxjs/observable';
+import {Observable}from'rxjs/Observable';
 import {UsuarioModel}from '../modelos/usuarios';
 
 @Injectable()

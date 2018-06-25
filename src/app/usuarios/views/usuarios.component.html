@@ -64,72 +64,79 @@
                             <div class="row p-t-20">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">nombre
-                                        <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
-                                        <label id="rec" *ngIf="!nombre.valid">*</label>
-                                        </label>
-                                        <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control col-md-12" required>
+                                        <label class="control-label">nombre</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control" required>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">apellidos
-                                        <span *ngIf="!apellidos.valid && apellidos.touched" class="label label-default">El nombre es obligatorio</span>
-                                        <label id="rec" *ngIf="!apellidos.valid">*</label>
-                                        </label>
-                                        <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control col-md-12"required/>
+                                        <label class="control-label">apellidos</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="apellidos.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!apellidos.valid && apellidos.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control"required/>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">nacimiento
-                                        <span *ngIf="!nacimiento.valid && nacimiento.touched" class="label label-default">El precio no es correcto</span>                                                 
-                                        <label id="rec" *ngIf="!nacimiento.valid">*</label>
-                                        </label>
-                                        <input type="date" #nacimiento="ngModel" name="nacimiento"  [(ngModel)]="usuario.nacimiento" class="form-control col-md-12" required/>
+                                        <label class="control-label">nacimiento </label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="nacimiento.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!nacimiento.valid && nacimiento.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="date" #nacimiento="ngModel" name="nacimiento" max="{{fecha}}" [(ngModel)]="usuario.nacimiento" class="form-control" required/>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
                             <div class="row p-t-20">
                                 <div class="col-md-6">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">direccion
-                                        <span *ngIf="!direccion.valid && direccion.touched" class="label label-default">la direccion es obligatoria</span>                                                 
-                                        <label id="rec" *ngIf="!direccion.valid">*</label>
-                                        </label>
-                                        <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="usuario.direccion" class="form-control col-md-12" required />
+                                        <label class="control-label">direccion </label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="usuario.direccion" class="form-control" required />
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">telefono
-                                        <span *ngIf="!telefono.valid && telefono.touched" class="label label-default">El documento es obligatorio</span>
-                                        <label id="rec" *ngIf="!telefono.valid">*</label>
-                                        </label>
-                                        <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control col-md-12" required>
+                                        <label class="control-label">telefono</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}">
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
                             <div class="row p-t-20">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">documento
-                                        <span *ngIf="!documento.valid && documento.touched" class="label label-default">El documento es obligatorio</span>
-                                        <label id="rec" *ngIf="!documento.valid">*</label>
-                                        </label>
-                                        <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                            <option disabled="disabled" >--seleccione el documento</option>    
-                                        <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
-                                        </select>
+                                        <label class="control-label">documento</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="documento.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!documento.valid && documento.touched" style="color: red" class="fa fa-times"></i>
+                                            <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                    <option disabled="disabled" >--seleccione el documento</option>    
+                                                <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
+                                            </select>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">documento(numero)
-                                        <span *ngIf="!numero.valid && numero.touched" class="label label-default">El precio no es correcto</span>                                                 
-                                        <label id="rec" *ngIf="!numero.valid">*</label>
-                                        </label>
-                                        <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control col-md-12" required pattern="[0-9]+"/>
+                                        <label class="control-label">documento(numero)</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="numero.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!numero.valid && numero.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control " required pattern="[0-9]+"/>
+                                        </div> 
                                     </div>
                                 </div>                
                             </div>
@@ -154,15 +161,16 @@
                             <div class="row p-t-20">
                                 <div class="col-md-6">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">rol
-                                        <span *ngIf="!rol.valid && rol.touched" class="label label-default">debe seleccionar el rol</span>                                                 
-                                        <label id="rec" *ngIf="!rol.valid">*</label>
-                                        </label>
-                                        <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select col-md-12" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                            <option disabled="disabled" >--seleccione el rol</option>    
-                                            <option  ><b>admin</b></option>
-                                            <option  ><b>empleado</b></option>
-                                        </select>
+                                        <label class="control-label">rol</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="rol.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!rol.valid && rol.touched" style="color: red" class="fa fa-times"></i>
+                                            <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select" required>
+                                                <option disabled="disabled" >--seleccione el rol</option>    
+                                                <option  ><b>admin</b></option>
+                                                <option  ><b>empleado</b></option>
+                                            </select>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -238,29 +246,33 @@
                             <div class="row p-t-20">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">email
-                                        <span *ngIf="!email.valid && email.touched" class="label label-default">El documento es obligatorio</span>
-                                        <label id="rec" *ngIf="!email.valid">*</label>
-                                        </label>
-                                        <input type="text"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control col-md-12" required>
+                                        <label class="control-label">email</label>
+                                        <div class="inner-addon left-addon">
+                                            <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
+                                            <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
+                                            <input type="text" id="emailunico"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control" required>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">password
-                                        <span *ngIf="!password.valid && password.touched" class="label label-default">El precio no es correcto</span>                                                 
-                                        <label id="rec" *ngIf="!password.valid">*</label>
-                                        </label>
-                                        <input id="pasword" type="password" #password="ngModel" name="password" [(ngModel)]="usuario.password" class="form-control col-md-12" required/>
+                                        <label class="control-label">password (8 digitos)</label>
+                                        <div class="inner-addon right-addon">
+                                            <i *ngIf="password.valid" style="color: green" class="fa fa-check-circle"></i>
+                                            <i *ngIf="!password.valid && password.touched" style="color: red" class="fa fa-times-circle"></i>
+                                            <input id="pasword" type="password" #password="ngModel" name="password" [(ngModel)]="usuario.password" 
+                                            class="form-control"  required pattern="[A-Za-z0-9]{8,20}"/>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group has-danger">           
-                                        <label class="control-label">confime la contraseña
-                                        <span *ngIf="confime.valid && compara!=1" class="label label-default">contraseña incorecta</span>                                                 
-                                        <label id="rec" *ngIf="!confime.valid">*</label>
-                                        </label>
-                                        <input  id="confirmar" (keyup)="limitar()" type="password" #confime="ngModel" name="confime" [(ngModel)]="usuario.confirme" class="form-control col-md-12" required />
+                                        <label class="control-label">confime la contraseña</label>
+                                        <div class="inner-addon right-addon">
+                                            <i *ngIf="confime.valid && iguales==true" style="color: green" class="fa fa-check-circle"></i>
+                                            <i *ngIf="confime.valid && iguales==false" style="color: red" class="fa fa-times-circle"></i>
+                                            <input  id="confirmar" (keyup)="limitar()" type="password" #confime="ngModel" name="confime" [(ngModel)]="usuario.confirme" class="form-control" required />
+                                        </div> 
                                     </div>
                                 </div>
                             </div>

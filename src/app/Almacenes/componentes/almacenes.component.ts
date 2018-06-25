@@ -1,16 +1,20 @@
-import { Component } from '@angular/core';
+import { Component ,ViewContainerRef} from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import{AlmacenesService}from '../services/almacenes.service'
 import{almacen} from '../modelos/almacenes';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
+
+import {ToastService} from '../../toastalert/service/toasts.service'
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
 @Component({
   selector: 'almacenes',
   templateUrl: '../views/almacenes.component.html',
-  providers: [AlmacenesService]
+  providers: [AlmacenesService,ToastService]
 })
 export class AlmacenesComponent{
     public titulo:string;
@@ -21,13 +25,18 @@ export class AlmacenesComponent{
     public editalmacen:almacen;
     public almacen:almacen;
     public user:User
+    public nombre;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _almacenesService:AlmacenesService,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
         
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.titulo = "Almacenes";
         this.tabla();
         this.user=this.auth.getUser();
@@ -48,7 +57,7 @@ export class AlmacenesComponent{
     }
     editarAlmacen(){
         //this.productos=new producto(0,'','','','',null);
-        
+        this.nombre=document.getElementById('editalmacenaje');
         console.log(this.editalmacen.id);
         console.log(this.editalmacen);
         this._almacenesService.actualizaralmacen(this.idalmacen,this.editalmacen).subscribe(
@@ -62,7 +71,13 @@ export class AlmacenesComponent{
                 this.modificaralerta();
             },
             error=>{
-                console.log(<any>error);               
+                console.log(<any>error);
+                if(error.status==500){
+                    let text="el almacen ya existe";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.focus();
+                    this.nombre.select();
+                }               
             }
         );
     }
@@ -82,6 +97,7 @@ export class AlmacenesComponent{
             
         }else{
             console.log(this.idalmacen);
+            
         }
       
     }
@@ -108,33 +124,32 @@ export class AlmacenesComponent{
         this.almacen=new almacen(0,'','','',null,this.user.id);
     }
     agregaralmacen(){
+        this.nombre=document.getElementById('firstName');
         this._almacenesService.addAlmacenes(this.almacen).subscribe(
             result=>{
                 console.log(result);
-                if(result.code===300){
-                    this.alertarepetido();
-                }else{
+
                     this.limpiar();
                     this.destruir();
                     this.reconstruir();
                     this.modificaralerta();
-                }
+                    this.nombre.focus();
             },
             error=>{
                 console.log(<any>error);
+                if(error.status==500){
+                    let text="el almacen ya existe";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.focus();
+                    this.nombre.select();
+                }
             }
 
         )
 
     }
 
-    alertarepetido(){
-        swal({
-            position: 'center',
-            icon: "warning",
-            title: 'el nombre del almacen ya existe',
-          })
-    }
+
     EliminarAlmacen(){
         this._almacenesService.EliminarAlmacen(this.boraralmacen).subscribe(
             result=>{

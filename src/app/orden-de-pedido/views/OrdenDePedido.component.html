@@ -16,7 +16,7 @@
                     <div class="card-title">
                         <label class="control-label" >
                             <i class="fa fa-archive"></i>
-                            Registro de {{title}}
+                            Registro de {{titulo}}
                         </label>
                     </div>
                     <ul class="nav nav-tabs profile-tab" role="tablist">
@@ -31,37 +31,40 @@
                                     <div class="row p-t-20">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Almacenes
-                                                <span *ngIf="!almacen.valid && almacen.touched" class="label label-default">Debe seleccionar un almacen </span>
-                                                <label id="rec" *ngIf="!almacen.valid">*</label>
-                                                </label>
-                                                    <select #almacen="ngModel" (change)="almacenvalidacion()" name="almacen" [(ngModel)]="agregarOrdenPedido.id_almacen" class="form-control custom-select" required>
-                                                        <option disabled="disabled">--seleccione el almacen</option>    
-                                                        <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
+                                                <label class="control-label">Almacenes</label>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="lista.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!lista.valid && lista.touched" style="color: red" class="fa fa-times"></i>
+                                                    <select #lista="ngModel" (change)="almacenvalidacion()" name="lista" [(ngModel)]="agregarOrdenPedido.id_almacen" class="form-control custom-select" required>
+                                                        <option *ngFor="let almacen of almacenes" [ngValue]="almacen.id"><b>{{almacen.nombre}}</b></option>
                                                     </select>
+                                                </div> 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Fecha de Entrega
-                                                <span *ngIf="!fecha.valid && fecha.touched" class="label label-default"><p>fecha incorecta</p></span>
-                                                <label id="rec" *ngIf="!fecha.valid">*</label>
-                                                </label>
-                                                <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="agregarOrdenPedido.fecha_estimada_entrega"  class="form-control" required/>
+                                                <label class="control-label">Fecha de Entrega</label>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="fecha.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!fecha.valid && fecha.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="agregarOrdenPedido.fecha_estimada_entrega"  class="form-control" required/>
+                                                </div> 
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row p-t-20">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">proveedores
-                                                <span *ngIf="!proveedor.valid && proveedor.touched" class="label label-default">Debe seleccionar un provedor </span>
-                                                <label id="rec" *ngIf="!proveedor.valid">*</label>
-                                                </label>
+                                                <label class="control-label">proveedores</label>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="proveedor.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!proveedor.valid && proveedor.touched" style="color: red" class="fa fa-times"></i>
                                                     <select #proveedor="ngModel" (change)="proveedorvalidacion()"  name="proveedor" [(ngModel)]="agregarOrdenPedido.id_proveedor" class="form-control custom-select" required>
-                                                        <option disabled="disabled">--seleccione producto</option>    
+                                                        <option disabled="disabled">--seleccione el proveedor</option>    
                                                         <option *ngFor="let provedor of provedores" value="{{provedor.id}}"><b>{{provedor.nombre_proveedor}}</b></option>
                                                     </select>
+                                                </div> 
+                                                    
                                             </div>
                                         </div>
                                     </div>

@@ -107,7 +107,7 @@
                             </thead>
                             <tbody  >         
                                 <tr *ngFor="let inventario of inventarios,let $index=index,let total of movimientos[index]">
-                                    <td style="text-align:left;width: 180px;">{{inventario.fecha}}</td>
+                                    <td style="text-align:left;width: 180px;">{{inventario.created_at}}</td>
                                     <td style="text-align:left;width: 230px;">{{inventario.descripcion}}  de <strong> {{inventario.nombre_producto}} </strong></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
                                         <a *ngIf="inventario.tipo_movimiento==2" style="color: green"> {{inventario.cantidad}}</a></td>

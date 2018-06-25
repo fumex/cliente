@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,ViewContainerRef } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import {ProductoService} from '../services/producto.service';
 import { producto } from '../modelos/productos';
@@ -9,14 +9,20 @@ import { UnidadService } from '../services/unidad.service';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 
+import {ToastService} from '../../toastalert/service/toasts.service'
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
+
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
 
+
 @Component({
   selector: 'productos-add',
   templateUrl: '../views/productos.component.html',
-  providers: [ProductoService,CategoriaService,UnidadService]
+  providers: [ProductoService,CategoriaService,UnidadService,ToastService],
+
 })
 export class ProductosComponent{
     public titulo:string;
@@ -37,6 +43,10 @@ export class ProductosComponent{
     public unidad;
     public modificarproducto;
     public user:User;
+    public nombre;
+    public descripcion;
+    public selectunidad;
+    public cantidad ;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
@@ -44,7 +54,12 @@ export class ProductosComponent{
         private _categoriaservice:CategoriaService,
         private _UnidadService:UnidadService,
         private auth:AuthService,
+        private toaste:ToastService,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
+
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.titulo = "productos";
         this.tabla();
         this.user=this.auth.getUser();
@@ -66,6 +81,7 @@ export class ProductosComponent{
         this.ident=null;
         this.unidad=null;
     }
+
     ngOnInit(){
         this.mostrar();
         this.mostrarcategoria();
@@ -115,6 +131,7 @@ export class ProductosComponent{
     }
 
     editarproduto(id){
+        let nombre =document.getElementById('firstName');
         //this.productos=new producto(0,'','','','',null);
         id=this.modificarproducto;
         console.log(id);
@@ -133,14 +150,29 @@ export class ProductosComponent{
                 this.modificaralerta();
             },
             error=>{
-                console.log(<any>error);               
+                console.log(<any>error);   
+                if(error.status==500){
+                    let text="ocurio un error insertando el producto";
+                    this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
+                    nombre.focus();
+                }            
             }
         );
     }
    
     limpiar(){
-        this.ident=null;
+        this.modificarcategoria=null;
+        this.llamarcategoria=null;
+        this.aparecereditcate=null;
+
+        this.modificarunidad=null;
+        this.llamarunidad=null;
+        this.aparecereditunidad=null;
+        
         this.modificarproducto=null;
+        this.ident=null;
+        this.unidad=null;
+
         this.editproducto=new producto(0,null,'','','',null,this.user.id,null);
         this.agregarpro=new producto(0,null,'','','',null,this.user.id,null);
     }
@@ -156,19 +188,25 @@ export class ProductosComponent{
         );
     }
     agregarproducto(){
-        console.log(this.agregarpro);
+        let nombre =document.getElementById('firstName');
         this._productoservice.addproducto(this.agregarpro).subscribe(
             result=>{
+                console.log(result);
+                
                 this.limpiar();
                 this.modificaralerta();
                 this.destruir();
                 this.reconstruir();
-                console.log(result);
-                
-
+                this.unidad=null;
+                nombre.focus();
             },
             error=>{
                 console.log(<any>error);
+                if(error.status==500){
+                    let text="ocurio un error insertando el producto";
+                    this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
+                    nombre.focus();
+                } 
             }
 
         )
@@ -291,4 +329,8 @@ export class ProductosComponent{
             timer: 3000
           })
     }
+    
+    showSuccess() {
+        
+      }
 }

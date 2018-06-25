@@ -9,6 +9,8 @@ import{categoriaedit}from './componentes/categoria-edit.component';
 import{ ProductosListarComponent}from './componentes/productos-list.component';
 import{ unidadcomponent}from './componentes/unidad.component';
 import{ unidadesedit} from './componentes/unidad-edit.component';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -18,11 +20,14 @@ import{ unidadesedit} from './componentes/unidad-edit.component';
         categoriaedit,
         ProductosListarComponent,
         unidadcomponent,
-        unidadesedit
+        unidadesedit,
+        
       ],
       imports: [
         CommonModule,
-        FormsModule
+        FormsModule,
+        BrowserAnimationsModule,
+        ToastModule.forRoot(),
         
       ],
       providers: [

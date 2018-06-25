@@ -70,12 +70,50 @@
 42. responsive
 
 */
+.inner-addon {
+  position: relative;
+}
+.inner-addon .fa {
+  position: absolute;
+  padding-top: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+  pointer-events: none;
+}
+.left-addon .fa {
+  left: 0px;
+}
+.right-addon .fa {
+  right: 0px;
+}
+.left-addon input {
+  padding-left: 30px;
+}
+.right-addon input {
+  padding-right: 30px;
+}
+.left-addon select {
+  padding-left: 30px;
+}
+.right-addon select {
+  padding-right: 30px;
+}
 form input[type="text"]:required:valid{
   border:1px solid #589bff;
   /* otras propiedades */
  }
  /*caso contrario, el color sera rojo*/
  form input[type="text"]:focus:required:invalid{
+  border:1px solid rgb(238, 103, 103);
+  
+  /* otras propiedades */
+ }
+ form input[type="email"]:required:valid{
+  border:1px solid #589bff;
+  /* otras propiedades */
+ }
+ /*caso contrario, el color sera rojo*/
+ form input[type="email"]:focus:required:invalid{
   border:1px solid rgb(238, 103, 103);
   /* otras propiedades */
  }

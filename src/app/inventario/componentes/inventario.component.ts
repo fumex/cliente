@@ -205,7 +205,7 @@ export class InventarioComponent{
         if(numero>stock )
         {
             this.input.value = stock;
-
+            this.input.style="border: 0.3px solid red;";
             this.alerta(); 
         }else{
             if(numero<1){

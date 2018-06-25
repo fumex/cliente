@@ -8,26 +8,30 @@
         <div class="col-lg-12">
             <div class="card card-outline-primary">
                 <div class="card-body">
-                <form #formAlmacen="ngForm" (ngSubmit)="agregaralmacen()" action="#">
-                   <span *ngIf="!formAlmacen.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>
+                <form #formAlmacen="ngForm"  action="#">
+                   <!--<span *ngIf="!formAlmacen.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>-->
                     <div class="form-body">
                         <div class="row p-t-20">
                             <div class="col-md-6">
                                  <div class="form-group">
                                     <label class="control-label">Nombre
-                                        <span *ngIf="!nombre.valid && nombre.touched" class="label label-default">El nombre es obligatorio</span>
-                                        <label id="rec" *ngIf="!nombre.valid">*</label>
                                     </label>
-                                    <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="almacen.nombre"  class="form-control"required/>
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                        <input  type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="almacen.nombre"  class="form-control"required/>
+                                    </div> 
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group has-danger">           
-                                    <label class="control-label">telefono
-                                        <span *ngIf="!telefono.valid && telefono.touched" class="label label-default">El numero no es correcto</span>                                                 
-                                        <label id="rec" *ngIf="!telefono.valid">*</label>
+                                    <label class="control-label">telefono                                               
                                     </label>
-                                    <input type="text" id="lastName" #telefono="ngModel" name="telefono" [(ngModel)]="almacen.telefono" class="form-control" required pattern="[0-9]+"/>
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text" id="lastName" #telefono="ngModel" name="telefono" [(ngModel)]="almacen.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
@@ -35,26 +39,30 @@
                             <div class="col-md-6 ">
                                 <div class="form-group">                                             
                                     <label>Descripción
-                                        <span *ngIf="!Descripcion.valid && Descripcion.touched" class="label label-default">La descripcion es obligatoria</span>
-                                        <label id="rec" *ngIf="!Descripcion.valid">*</label>
                                     </label>
-                                    <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="almacen.descripcion" class="form-control" required>
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="almacen.descripcion" class="form-control" required>
+                                    </div> 
                                 </div>
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">                                             
                                     <label>Direccion
-                                        <span *ngIf="!Direccion.valid && Direccion.touched" class="label label-default">La descripcion es obligatoria</span>
-                                        <label id="rec" *ngIf="!Direccion.valid">*</label>
                                     </label>
-                                    <input type="text" #Direccion="ngModel" name="Direccion" [(ngModel)]="almacen.direccion" class="form-control" required>
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="Direccion.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!Direccion.valid && Direccion.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text" #Direccion="ngModel" name="Direccion" [(ngModel)]="almacen.direccion" class="form-control" required>
+                                    </div> 
                                 </div>
                             </div>
                         </div>            
                     </div>
                     <div style="text-align: center" class="form-actions">
-                        <button  type="submit" [disabled]="!formAlmacen.form.valid"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
-                        <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-check"></i> cancelar</button>
+                        <button  (click)="agregaralmacen()" [disabled]="!formAlmacen.form.valid"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
+                        <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
                     </div>
                 </form>
                 </div>
@@ -92,7 +100,7 @@
                                         <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
                                             <div style="margin-right: 0px;">
                                                 <div style="padding-right: 0px;">
-                                                    <input #nombre="ngModel" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
+                                                    <input #nombre="ngModel" id="editalmacenaje" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
                                                 </div>
                                             </div>
                                         </td>
