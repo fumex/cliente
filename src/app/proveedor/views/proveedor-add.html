@@ -100,16 +100,17 @@
                                                     <label class="control-label">Tipo</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input type="text" #tipo  placeholder="Agregar" class="form-control">
+                                                    <input type="text" #tipo  placeholder="Agregar" class="form-control" required>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control custom-select" #operacion>
+                                                    <select class="form-control custom-select" #operacion required>
+                                                        <option disabled="disabled">selecione</option>
                                                         <option>Servicio</option>
                                                         <option>Proveedor</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <button type="button" (click)="saveTipo(tipo.value, operacion.value)" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-check"></i></button>
+                                                    <button type="button" (click)="saveTipo(tipo.value, operacion.value)" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5" ><i class="fa fa-check"></i></button>
                                                 </div>
                                                 <div class="col-sm-1">
                                                     <button type="button" (click)="exit()" class="btn btn-warning btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-close"></i></button>
@@ -122,7 +123,7 @@
                                     <div class="col-lg-12 row">
                                         <div class="col-md-4"></div>
                                         <div class="col-md-4">
-                                            <button type="submit" [disabled]="!formProveedor.form.valid" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
+                                            <button type="submit" [disabled]="!formProveedor.form.valid || estado==false" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
                                             <button type="button"  class="btn btn-inverse" (click)="onCancel()">Cancel</button> 
                                         </div>
                                         <div class="col-md-4"></div>

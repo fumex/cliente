@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 
+declare var swal:any;
 declare  var $:any;
 @Component({
     selector:'servicio-anular',
@@ -27,6 +28,9 @@ export class ServicioAnularComponent implements OnInit{
     public igv:number;
     public fecha:string;
     public user:User;
+
+    public confirmado;
+    public val:boolean;
     constructor(
         private anularService:ServicioPagoService,
         private route:ActivatedRoute,
@@ -37,6 +41,8 @@ export class ServicioAnularComponent implements OnInit{
         this.title='ANULAR SERVICIO';
         this.user=this.auth.getUser();
         this.tabla();
+        this.confirmado=null;
+        this.val=false;
     }
     ngOnInit(){
         this.getServicios();
@@ -64,6 +70,8 @@ export class ServicioAnularComponent implements OnInit{
                                                 tipo_pago,nombre_proveedor,descripcion,
                                                 subtotal,igv,created_at);
          this.asignarCampos(this.servicio);
+         this.confirmado=id;
+         this.val=true;
      }
 
      asignarCampos(servi:ServicioAnularModel){
@@ -91,6 +99,30 @@ export class ServicioAnularComponent implements OnInit{
      }
      list(){
         this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+    }
+    //---------------Alert----------------
+    alertaDelete(){
+        swal({
+            title: "Esta seguro",
+            text: "despúes de borrar, no se pude recuperar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                this.anular();
+                swal({
+                    position: 'center',
+                    icon: "error",
+                    title: 'eliminado...',   
+                    timer: 4000,
+                    buttons: false,
+                });
+            } else {
+              
+            }
+          });
     }
 
 }

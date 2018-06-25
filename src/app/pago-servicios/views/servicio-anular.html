@@ -108,21 +108,15 @@
                                                     <th>Fecha</th>
                                                 </tr>
                                             </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Codigo</th>
-                                                    <th>tipo Documento</th>
-                                                    <th>Comprobante</th>
-                                                    <th>Tipo Pago</th>
-                                                    <th>Nombre</th>
-                                                    <th>Fecha</th>
-                                                </tr>
-                                            </tfoot>
                                             <tbody>
                                                 <tr *ngFor="let servicio of servicios">
-                                                    <td>
-                                                        <button class="btn btn-info" (click)="getServicio(servicio.id,servicio.code,
+                                                    <td *ngIf="confirmado==servicio.id">
+                                                        <button class="btn btn-success btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td *ngIf="confirmado!==servicio.id">
+                                                        <button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="getServicio(servicio.id,servicio.code,
                                                                                                         servicio.documento,servicio.nroBoleta,
                                                                                                         servicio.tipo_pago,servicio.nombre_proveedor,
                                                                                                         servicio.descripcion,servicio.subtotal,
@@ -163,7 +157,7 @@
                                                 <strong>SUBTOTAL:</strong> 
                                             </div>
                                             <div class="col-sm-7">
-                                                s/.{{subtotal}}
+                                                s/.{{subtotal | number:'1.2'}}
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +167,7 @@
                                                 <strong>IGV:</strong> 
                                             </div>
                                             <div class="col-sm-8">
-                                                s/.{{igv}}
+                                                s/.{{igv | number:'1.2'}}
                                             </div>
                                         </div>
                                     </div>
@@ -183,14 +177,14 @@
                                                 <strong>TOTAL:</strong> 
                                             </div>
                                             <div class="col-sm-8">
-                                                <strong>s/.{{subtotal + igv}}</strong>  
+                                                <strong>s/.{{(subtotal -- igv)|number:'1.2'}}</strong>  
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <button class="btn btn-danger" (click)="anular()">Anular</button>
+                                    <button class="btn btn-danger" (click)="alertaDelete()" [disabled]="val==false">Anular</button>
                                 </div>
                             </div>
                         </div> 

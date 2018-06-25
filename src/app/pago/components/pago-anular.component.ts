@@ -9,6 +9,7 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 
 declare  var $:any;
+declare var swal:any;
 @Component({
     selector:'pago-anular',
     templateUrl:'../views/pago-anular.html',
@@ -33,6 +34,8 @@ export class PagoAnularComponent implements OnInit{
     public fecha:string;
     //------------------------------------------------
     public user:User;
+    public confirmado;
+    public val:boolean;
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
@@ -44,6 +47,8 @@ export class PagoAnularComponent implements OnInit{
         this.code="";
         this.user
         this.tabla();
+        this.confirmado=null;
+        this.val=false;
     }
     ngOnInit(){
         this.listaPagos();
@@ -74,6 +79,7 @@ export class PagoAnularComponent implements OnInit{
                 console.log(this.id_compra);
                 this.anularComp(this.id_compra);
                 this.list();
+                
             }, 
             error=>{
                 console.log(<any>error);
@@ -120,6 +126,8 @@ export class PagoAnularComponent implements OnInit{
         this.pago = new PagoAnulaModel(id,code,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,fecha);
         this.asignarCampos(this.pago);
         this.listDetalle(this.code);
+        this.confirmado=id;
+        this.val=true;
     }
 
     asignarCampos(pago:PagoAnulaModel){
@@ -135,5 +143,29 @@ export class PagoAnularComponent implements OnInit{
     }
     list(){
         this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
+    }
+    //Alerta 
+    alertaDelete(){
+        swal({
+            title: "Esta seguro",
+            text: "despúes de borrar, no se pude recuperar",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                this.anularCompra();
+                swal({
+                    position: 'center',
+                    icon: "error",
+                    title: 'eliminado...',   
+                    timer: 6000,
+                    buttons: false,
+                });
+            } else {
+              
+            }
+          });
     }
 }

@@ -31,20 +31,6 @@
                                         <th>Total</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Codigo</th>
-                                        <th>Comprobante</th>
-                                        <th>Nro</th>
-                                        <th>tipo</th>
-                                        <th>Nombre</th>
-                                        <th>Descripcion</th>
-                                        <th>Subtotal</th>
-                                        <th>IGV</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
                                     <tr *ngFor="let servicio of servicios; let $index=index;">
                                         <td>{{$index+1}}</td>
@@ -56,7 +42,7 @@
                                         <td>{{servicio.descripcion}}</td>
                                         <td>{{servicio.subtotal}}</td>
                                         <td>{{servicio.igv}}</td>
-                                        <td>{{servicio.subtotal + servicio.igv}}</td>
+                                        <td>{{ (servicio.subtotal -- servicio.igv)}}</td>
                                     </tr>
                                 </tbody>
                             </table>

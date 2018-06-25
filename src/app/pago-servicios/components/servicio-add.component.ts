@@ -8,6 +8,7 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 
 declare  var $:any;
+declare var swal:any;
 @Component({
     selector:'servicio-add',
     templateUrl:'../views/servicio-add.html',
@@ -31,6 +32,17 @@ export class ServicioAddComponent implements OnInit{
     public compo:string;
     public id_proveedor:number;
     public user:User;
+
+    public a1:boolean;
+    public a2:boolean;
+    public a3:boolean;
+    public a4:boolean;
+    public a5:boolean;
+    public validacion:boolean;
+    public val:boolean;
+    public a6:boolean;  
+
+    public confirmado;
     constructor(
         private serviPagoService:ServicioPagoService,
         private route:ActivatedRoute,
@@ -42,6 +54,16 @@ export class ServicioAddComponent implements OnInit{
         this.tabla();
         this.total=null;
         this.igv=null;
+        this.confirmado=false;
+        this.a1=false;
+        this.a2=false;
+        this.a3=false;
+        this.a4=false;
+        this.a5=false;
+        this.validacion=false;
+        this.val=false;
+        this.a6=false
+
     }
     ngOnInit(){
         this.getCodigo();
@@ -94,6 +116,7 @@ export class ServicioAddComponent implements OnInit{
      addServicio(id,nombre_proveedor,ruc,direccion,tipo){
         this.servicio = new ServicioModel(id,nombre_proveedor,ruc,direccion,'','',tipo);
         console.log(this.servicio);
+        this.confirmado=id;
         this.asignarCompos(this.servicio)
      }
      asignarCompos(servi:ServicioModel){
@@ -102,10 +125,14 @@ export class ServicioAddComponent implements OnInit{
         this.ruc=servi.ruc;
         this.direccion=servi.direccion;
         this.tipo=servi.tipo;
+        this.a6=true;
+        this.validar();
      }
      sumaTotal(subtotal){
-         this.igv=parseFloat(subtotal)*0.18;
-         this.total=parseFloat(subtotal) + this.igv;
+         let sub= parseFloat(subtotal);
+         this.igv=parseFloat((sub*0.18).toFixed(2));
+         this.total=parseFloat((sub+ this.igv).toFixed(2));
+         this.validate5(sub);
      }
      //---------------Guardar-----------------------------------
      onSubmit(compro, nroRecibo, tipoP, descrip, subtotal){
@@ -114,6 +141,7 @@ export class ServicioAddComponent implements OnInit{
             result=>{
                 console.log(result);
                 this.list();
+                this.alertaSave();
             },
             error=>{
                 console.log(<any>error)
@@ -122,6 +150,66 @@ export class ServicioAddComponent implements OnInit{
      }
      list(){
         this.router.navigate(['/'+this.user.rol+'/servicio/list']);
+    }
+
+    //--------------Validacion---------------------------------------
+    validate1(){
+        this.a1=true;
+        this.validar();
+    }
+    validate2(recibo){
+        if(recibo ===""){
+            this.a2=false;
+            this.validar();
+        }else{
+            this.a2=true;
+            this.validar();
+        }
+    }
+    validate3(){
+        this.a3=true;
+        this.validar();
+    }
+    validate4(descrp){
+        if(descrp==""){
+            console.log('aqui');
+            this.a4=false;
+            this.validar();
+        }else{
+            this.a4=true;
+            this.validar();
+        }
+        
+    }
+    validate5(total){
+        if(total==""){
+            this.a5=false;
+            this.validar();
+        }else{
+            this.a5=true;
+            this.validar();
+        } 
+    }
+    validar(){
+        if(this.a1==true && this.a2==true && this.a3==true){
+            this.validacion=true;
+            if(this.a4==true && this.a5==true && this.a6==true){
+                this.val=true;
+            }else{
+                this.val=false;
+            }
+        }else{
+            this.validacion=false;
+        }
+    }
+    alertaSave(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'Guardado...',
+            buttons: false,
+            timer: 4000,
+        })   
     }
 
 }

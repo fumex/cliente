@@ -16,8 +16,10 @@ import { ProductoModule } from '../../productos/productos.module';
 
 import {InventarioService} from '../../inventario/services/inventario.service';
 import {inventario} from '../../inventario/modelos/inventario';
- 
+
+declare var jQuery:any;
 declare  var $:any;
+declare var swal:any;
 @Component({
     selector:'pago-add',
     templateUrl:'../views/pago-add.html',
@@ -39,6 +41,14 @@ export class PagoAddComponent implements OnInit{
     public confirmado:any=[];
     public user:User;
 
+    public a1:boolean;
+    public a2:boolean;
+    public a3:boolean;
+    public a4:boolean;
+    public a5:boolean;
+    public validacion:boolean;
+    public val:boolean;
+
     public inventario:inventario;
     public inventarios:Array<inventario>=[];
     constructor(
@@ -59,6 +69,13 @@ export class PagoAddComponent implements OnInit{
         this.total=0;
         this.tabla();
         this.sumaTotal();
+        this.a1=true;
+        this.a2=true;
+        this.a3=true;
+        this.a4=true;
+        this.a5=true;
+        this.validacion=false;
+        this.val=false;
     }
     ngOnInit(){
         this.getProveedor();
@@ -93,18 +110,20 @@ export class PagoAddComponent implements OnInit{
             $(function(){
                  $('#pagoadd').DataTable();
             });
-        },3000);
+        },4000);
      }
 
     onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
         let subtotal=this.sumaTotal();
-        let igv=this.total*0.18;
+        let igv=Number((this.total*0.18).toFixed(2));
+        console.log(igv);
         this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,igv);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
                 this.addDetalles();
                 this.list();
+                this.alertaSave();
             },
             error=>{
                 console.log(<any>error);
@@ -161,6 +180,8 @@ export class PagoAddComponent implements OnInit{
         if(!this.existeCompra(id,this.compras)){
             this.compras.push(this.compra);
             console.log(this.compras);
+            this.val=true;
+            this.validar();
         }
         else{
             console.log('ya esta agregado');
@@ -177,7 +198,14 @@ export class PagoAddComponent implements OnInit{
         this.compras.splice(index,1);
         console.log(this.compras);
         this.sumaTotal();
-        this.confirmado[ind]=true;        
+        this.confirmado[ind]=true;
+        if(this.compras.length===0){
+            this.val=false;
+            this.validar();
+        }else{
+            this.val=true;
+            this.validar();
+        } 
     }
     
     //suma detalle
@@ -230,5 +258,57 @@ export class PagoAddComponent implements OnInit{
     
     list(){
         this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
+    }
+    //Validacion
+    validate1(){
+        this.a1=false;
+        this.validar();
+    }
+    validate2(recibo){
+        if(recibo===""){
+            console.log('aqui');
+            this.a2=true;
+            this.val=false;
+            this.validar();
+        }else{
+            this.a2=false;
+            this.validar();
+        }
+    }
+    validate3(){
+        this.a3=false;
+        this.validar();
+    }
+    validate4(){
+        this.a4=false;
+        this.validar();
+    }
+    validate5(){
+        this.a5=false;
+        this.validar();
+    }
+    validar(){
+        if(this.a1==false && this.a2==false && this.a3==false && this.a4==false && this.a5==false){
+           this.validacion=true;
+           if(this.val==true){
+                this.val=true;
+              //this.destruir();
+           }else{
+               this.val=false;
+           }
+        }
+        else{
+            this.validacion=false;
+        }
+    }
+    //----------Alertas----------------------------
+    alertaSave(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'Guardado...',
+            buttons: false,
+            timer: 6000,
+        })   
     }
 }

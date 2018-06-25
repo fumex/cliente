@@ -106,23 +106,13 @@
                                                 <th>Fecha</th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th></th>
-                                                <th>Codigo</th>
-                                                <th>Documento</th>
-                                                <th>Comprobante</th>
-                                                <th>Almacen</th>
-                                                <th>Nombre</th>
-                                                <th>Tipo Pago</th>
-                                                <th>Monto</th>
-                                                <th>Fecha</th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
                                             <tr *ngFor="let pago of pagos">
-                                                <td>
-                                                    <button class="btn btn-info" (click)="getPago(pago.id,pago.code,pago.nombre_proveedor,
+                                                <td *ngIf="confirmado==pago.id">
+                                                    <button class="btn btn-success btn-flat btn-addon btn-xs m-b-10" ><i class="fa fa-check"></i></button>
+                                                </td>
+                                                <td *ngIf="confirmado!==pago.id">
+                                                    <button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="getPago(pago.id,pago.code,pago.nombre_proveedor,
                                                                                                 pago.documento, pago.nroBoleta, pago.nombre,
                                                                                                 pago.tipoPago,pago.subtotal,pago.igv,
                                                                                                 pago.created_at)">
@@ -135,7 +125,7 @@
                                                 <td>{{pago.nombre}}</td>
                                                 <td>{{pago.nombre_proveedor}}</td>
                                                 <td>{{pago.tipoPago}}</td>
-                                                <td>{{pago.subtotal + pago.igv}}</td>
+                                                <td>{{ (pago.subtotal --  pago.igv)}}</td>
                                                 <td>{{pago.created_at}}</td>                                    
                                             </tr>
                                         </tbody>
@@ -167,15 +157,6 @@
                                         <th>Precio</th>
                                         <th>Total</th>
                                     </thead>
-                                    <tfoot>
-                                        <th>#</th>
-                                        <th>Codigo</th>
-                                        <th>Producto</th>
-                                        <th>Almacen</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>Total</th>
-                                    </tfoot>
                                     <tbody>
                                         <tr *ngFor="let compra of compras; let $index=index">
                                             <td>{{$index + 1}}</td>
@@ -184,7 +165,7 @@
                                             <td>{{compra.nombre}}</td>
                                             <td>{{compra.cantidad}}</td>
                                             <td>{{compra.precio_unitario}}</td>
-                                            <td>{{compra.cantidad * compra.precio_unitario}}</td>
+                                            <td>{{(compra.cantidad * compra.precio_unitario)|number:'1.2'}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -230,14 +211,14 @@
                                             <strong>TOTAL:</strong> 
                                         </div>
                                         <div class="col-sm-8">
-                                            <strong>s/. {{subtotal + igv}}</strong>  
+                                            <strong>s/. {{(subtotal -- igv)}}</strong>  
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
-                                <button class="btn btn-danger" (click)="anularCompra()">Anular</button>
+                                <button class="btn btn-danger" (click)="alertaDelete()" [disabled]="val==false">Anular</button>
                             </div>
                         </div>
                     </div>
