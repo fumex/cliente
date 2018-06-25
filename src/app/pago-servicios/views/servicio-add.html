@@ -20,16 +20,10 @@
                         <div class="col-md-4 align-self-center">
                             PAGO DE {{title}} : <strong>{{code}}</strong>
                         </div>
-                        <div class="col-md-4">
-
-                        </div>
-                        <div class="col-md-4 align-self-center">
-                            sucursal : Sucursal 1
-                        </div>
                     </div>
                     <ul class="nav nav-tabs profile-tab" role="tablist">
                         <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#pago" role="tab">Comprobante</a> </li>
-                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#servicio" role="tab">Servicios</a></li>
+                        <li class="nav-item" [hidden]="validacion!==true"> <a class="nav-link" data-toggle="tab" href="#servicio" role="tab">Servicios</a></li>
                     </ul>
                     <br>
                     <div class="tab-content">
@@ -44,7 +38,8 @@
                                                 </label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #compro>
+                                                <select class="form-control custom-select" #compro (change)="validate1()">
+                                                    <option disabled="disabled" hidden>Tipo de Documento</option>
                                                     <option *ngFor="let comprobante of comprobantes" [value]="comprobante.id" >
                                                         {{comprobante.documento}}
                                                     </option>
@@ -57,7 +52,7 @@
                                                 <label>Nro Recibo</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" #nroRecibo>
+                                                <input type="text" class="form-control" #nroRecibo (change)="validate2(nroRecibo.value)">
                                             </div>
                                         </div>
                                         <br>
@@ -66,7 +61,8 @@
                                                 <label>Tipo de Pago</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #tipoP>
+                                                <select class="form-control custom-select" #tipoP (change)="validate3()">
+                                                    <option disabled="disabled" hidden>Tipo de Pago</option>
                                                     <option>Efectivo</option>
                                                     <option>Bancario</option>
                                                 </select>
@@ -90,18 +86,15 @@
                                                     <th>direccion</th>
                                                 </tr>
                                             </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>Accion</th>
-                                                    <th>Nombre</th>
-                                                    <th>Ruc</th>
-                                                    <th>Direccion</th>
-                                                </tr>
-                                            </tfoot>
                                             <tbody>
                                                 <tr *ngFor="let servicio of servicios">
-                                                    <td>
-                                                        <button class="btn btn-info" (click)="addServicio(servicio.id,servicio.nombre_proveedor,servicio.ruc,servicio.direccion,servicio.tipo)">
+                                                    <td *ngIf="confirmado==servicio.id">
+                                                        <button class="btn btn-success btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td *ngIf="confirmado!==servicio.id">
+                                                        <button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="addServicio(servicio.id,servicio.nombre_proveedor,servicio.ruc,servicio.direccion,servicio.tipo)">
                                                             <i class="fa fa-check"></i>
                                                         </button>
                                                     </td>
@@ -194,7 +187,7 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="form-group">
-                                                        <textarea class="form-control" rows="3" #descrip></textarea>
+                                                        <textarea class="form-control" rows="3" #descrip  (change)="validate4(descrip.value)"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,7 +232,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    <label>{{igv}}</label>
+                                                    <label> s/. {{igv |number:'1.2' }}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -251,14 +244,14 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    <label><strong>{{total}}</strong></label>
+                                                    <label><strong>s/. {{total |number:'1.2'}}</strong></label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="row">
                                                 <div class="col-sm-3">
-                                                    <button class="btn btn-info" (click)="onSubmit(compro.value, nroRecibo.value, tipoP.value, descrip.value, subtotal.value)">Guardar</button>
+                                                    <button class="btn btn-info" (click)="onSubmit(compro.value, nroRecibo.value, tipoP.value, descrip.value, subtotal.value)" [disabled]=" val==false">Guardar</button>
                                                 </div>
                                             </div>
                                         </div>

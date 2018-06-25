@@ -41,7 +41,7 @@ export class PagoListComponent implements OnInit{
                      ]
                  });
             });
-        },3000);
+        },5000);
      }
      getPagos(){
          this.pagoService.listPago(this.user.id).subscribe(

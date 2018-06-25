@@ -49,6 +49,9 @@ export class SucursalAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                if(error.status===500){
+                    console.log('exite sucursal');
+                }
             }
         )
     }
