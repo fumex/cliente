@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewContainerRef } from '@angular/core';
 import { PagoService } from '../services/pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompraAnularModel } from '../models/anula-compra';
@@ -7,13 +7,15 @@ import { PagoModel } from '../models/pago';
 import { PagoAnulaModel } from '../models/pago-anular';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare  var $:any;
 declare var swal:any;
 @Component({
     selector:'pago-anular',
     templateUrl:'../views/pago-anular.html',
-    providers:[PagoService]
+    providers:[PagoService,ToastService]
 })
 export class PagoAnularComponent implements OnInit{
     public title:string;
@@ -36,12 +38,17 @@ export class PagoAnularComponent implements OnInit{
     public user:User;
     public confirmado;
     public val:boolean;
+    
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=auth.getUser();
         this.title="ANULAR COMPRA";
         this.code="";
@@ -69,6 +76,8 @@ export class PagoAnularComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -119,6 +128,8 @@ export class PagoAnularComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error)
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }

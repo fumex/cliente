@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { SucursalService } from "../services/sucursal.service";
 import { SucursalModel } from "../modelos/sucursal";
 import { User } from "../../auth/interfaces/user.model";
@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../auth/services/auth.service";
 import { almacen } from "../../Almacenes/modelos/almacenes";
 import { AlmacenesService } from "../../Almacenes/services/almacenes.service";
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var jQuery:any;
 declare var $:any;
@@ -13,7 +15,7 @@ declare var swal:any;
 @Component({
     selector:'sucursal-add',
     templateUrl:'../views/sucursal-add.html',
-    providers:[SucursalService]
+    providers:[SucursalService,ToastService]
 })
 export class SucursalAddComponent implements OnInit{
     public title:string;
@@ -27,8 +29,12 @@ export class SucursalAddComponent implements OnInit{
         private route:ActivatedRoute,
         private router:Router,
         private auth:AuthService,
-        private almacenService:AlmacenesService
+        private almacenService:AlmacenesService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.confirmado=true;
         this.title="AGREGAR SUCURSAL";
         this.user=this.auth.getUser();
@@ -50,7 +56,8 @@ export class SucursalAddComponent implements OnInit{
             error=>{
                 console.log(<any>error);
                 if(error.status===500){
-                    console.log('exite sucursal');
+                    let text="La sucursal existe";
+                    this.toaste.WarningAlert(text,'Error!');
                 }
             }
         )
@@ -62,6 +69,8 @@ export class SucursalAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -79,6 +88,8 @@ export class SucursalAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -110,6 +121,8 @@ export class SucursalAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }

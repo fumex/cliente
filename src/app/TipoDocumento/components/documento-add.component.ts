@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { DocumentoModel } from "../models/documento";
-import { DocumentoService } from "../services/documento.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService } from "../../auth/services/auth.service";
-import { User } from "../../auth/interfaces/user.model";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { DocumentoModel } from '../models/documento';
+import { DocumentoService } from '../services/documento.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var jQuery:any;
 declare var $:any;
@@ -11,7 +13,7 @@ declare var swal:any;
 @Component({
     selector:'documento-add',
     templateUrl:'../views/documento-add.html',
-    providers:[DocumentoService]
+    providers:[DocumentoService,ToastService]
 
 })
 export class TipoDocumentoAddComponent implements OnInit{
@@ -25,8 +27,12 @@ export class TipoDocumentoAddComponent implements OnInit{
         private documentoService:DocumentoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.title='Documento';
         this.user=this.auth.getUser();
         this.documento= new DocumentoModel(null,'','',this.user.id);
@@ -46,6 +52,9 @@ export class TipoDocumentoAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="El Documento existe";
+                this.toaste.WarningAlert(text,'Error!');
+                
             }
         );
     }
@@ -75,6 +84,8 @@ export class TipoDocumentoAddComponent implements OnInit{
             },  
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         )
     }
@@ -85,6 +96,8 @@ export class TipoDocumentoAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         )
     }

@@ -156,6 +156,7 @@
                                             <tr>
                                                 <th>categoria</th>
                                                 <th>Codigo</th>
+                                                <th>¿Se puede Vender?</th>
                                                 <th>Unidad</th>
                                                 <th>Nombre Producto</th>
                                                 <th>Descripcion</th>
@@ -169,9 +170,19 @@
                                             <tr *ngFor="let comp of compras; let $index=index">
                                                 <td>{{comp.nombre}}</td>
                                                 <td>
+                                                    <div>
+                                                        <div>
+                                                            <input class="form-control" type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo" required>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
                                                     <div style="margin-right: 0px;">
                                                         <div style="padding-right: 0px;">
-                                                            <input class="form-control" type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo" required>
+                                                            <select class="form-control" #vend="ngModel" name="vend" [(ngModel)]="compras[$index].vendible" required>
+                                                                <option value="true">Si</option>
+                                                                <option value="false">No</option>
+                                                            </select>   
                                                         </div>
                                                     </div>
                                                 </td>

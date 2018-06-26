@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,  ViewContainerRef} from '@angular/core';
 import { PagoService } from '../services/pago.service';
 import { ProveedorModel } from '../../proveedor/models/proveedor';
 import { PagoModel } from '../models/pago';
@@ -17,13 +17,16 @@ import { ProductoModule } from '../../productos/productos.module';
 import {InventarioService} from '../../inventario/services/inventario.service';
 import {inventario} from '../../inventario/modelos/inventario';
 
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 declare var jQuery:any;
 declare  var $:any;
 declare var swal:any;
 @Component({
     selector:'pago-add',
     templateUrl:'../views/pago-add.html',
-    providers:[PagoService,InventarioService]
+    providers:[PagoService,InventarioService, ToastService]
 })
 export class PagoAddComponent implements OnInit{
 
@@ -60,8 +63,12 @@ export class PagoAddComponent implements OnInit{
         private auth:AuthService,
 
         private _inventarioservice:InventarioService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,null);
 
@@ -127,6 +134,8 @@ export class PagoAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="EL numero del comprobante ya esta registrado";
+                this.toaste.WarningAlert(text,'Error!');
             }
         );
     }
@@ -140,6 +149,8 @@ export class PagoAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -152,6 +163,8 @@ export class PagoAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -161,6 +174,11 @@ export class PagoAddComponent implements OnInit{
             result=>{
                 this.productos=result;
                 this.indexPro(this.confirmado,this.productos);
+            },
+            error=>{
+                console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -176,7 +194,7 @@ export class PagoAddComponent implements OnInit{
     addCompra(index,id,categoria,unidad_medida,articulo,descripcion){
         
         this.confirmado[index]=false;
-        this.compra= new CompraModel(index,id,categoria,unidad_medida,null,articulo,descripcion,null,null);
+        this.compra= new CompraModel(index,id,categoria,unidad_medida,null,null,articulo,descripcion,null,null);
         if(!this.existeCompra(id,this.compras)){
             this.compras.push(this.compra);
             console.log(this.compras);
@@ -226,7 +244,7 @@ export class PagoAddComponent implements OnInit{
         let us=this.user.id;
         this.compras.forEach(function(value){
             let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
-            let d_almacen=new almacenstock(null,null,value.codigo,value.id,value.cantidad,value.precio,null);
+            let d_almacen=new almacenstock(null,null,value.codigo,value.vendible,value.id,value.cantidad,value.precio,null);
             let inven=new inventario(null,null,null,value.id,null,null,value.cantidad,null,value.precio,null,us);
                 pago.addPagoDetalle(pagoD).subscribe(
                     result=>{
@@ -251,7 +269,7 @@ export class PagoAddComponent implements OnInit{
                     error=>{
                         console.log(<any>error);
                     }
-                );  
+                ); 
             }   
         );
     }
