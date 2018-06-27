@@ -69,8 +69,7 @@ export class ServicioAddComponent implements OnInit{
         this.a5=false;
         this.validacion=false;
         this.val=false;
-        this.a6=false
-
+        this.a6=false;
     }
     ngOnInit(){
         this.getCodigo();
@@ -224,5 +223,6 @@ export class ServicioAddComponent implements OnInit{
             timer: 4000,
         })   
     }
+
 
 }
