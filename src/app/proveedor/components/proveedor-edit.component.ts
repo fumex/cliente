@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ProveedorService } from '../services/proveedor.service';
 import { ProveedorModel } from '../models/proveedor';
 import { ActivatedRoute, Router,Params } from '@angular/router';
@@ -6,6 +6,8 @@ import { TipoProveedorModel } from '../models/tipoProveedor';
 import { TipoProveedorService } from '../services/tipoProveedor.service';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { ToastsManager } from 'ng2-toastr';
+import { ToastService } from '../../toastalert/service/toasts.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -13,7 +15,7 @@ declare var swal:any;
 @Component({
  selector:'proveedor-edit',
  templateUrl:'../views/proveedor-add.html',
- providers:[ProveedorService]
+ providers:[ProveedorService, ToastService]
 })
 export class ProveedorEditComponent implements OnInit{
 
@@ -30,8 +32,12 @@ export class ProveedorEditComponent implements OnInit{
         private route:ActivatedRoute,
         private router:Router,
         private tipoProveedorService:TipoProveedorService,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.title='Editar Proveedor',
         this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
@@ -56,6 +62,8 @@ export class ProveedorEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="Error de conexion";
+                    this.toaste.errorAlerta(text,'Error!');
                 }
             )
         });
@@ -70,6 +78,8 @@ export class ProveedorEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -83,6 +93,8 @@ export class ProveedorEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="El Proveedor o Ruc ya existe";
+                    this.toaste.WarningAlert(text,'Error!');
                 }
             );
         });
@@ -98,6 +110,8 @@ export class ProveedorEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="El Tipo de proveedor ya existe";
+                this.toaste.WarningAlert(text,'Error!');
             }
         );
     }
@@ -157,6 +171,8 @@ export class ProveedorEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }

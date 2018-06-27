@@ -17,11 +17,13 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 control-label" >
                                                     Documento
-                                                    <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
-                                                    <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="documento.documento" placeholder="ingrese nombre del documento" class="form-control" required/>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="documento.documento" placeholder="ingrese nombre del documento" class="form-control" required/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -31,14 +33,16 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 control-label">
                                                     Operaciones
-                                                    <span *ngIf="!operacion.valid && operacion.touched" class="label label-danger">*</span>
-                                                    <span *ngIf="operacion.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                 </label>
                                                 <div class="col-sm-9">
-                                                    <select class="form-control custom-select" #operacion="ngModel" name="operacion" [(ngModel)]="documento.operacion" required>
-                                                        <option>Personal</option>
-                                                        <option>Comprobante</option>               
-                                                    </select>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="operacion.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!operacion.valid && operacion.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select class="form-control custom-select" #operacion="ngModel" name="operacion" [(ngModel)]="documento.operacion" required>
+                                                            <option>Personal</option>
+                                                            <option>Comprobante</option>               
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -48,7 +52,7 @@
                                             <div class="col-md-8">
                                                 <div class="row">
                                                     <div class="offset-sm-3 col-md-9">
-                                                        <button type="submit" [disabled]="!formDocumento.form.valid" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
+                                                        <button type="submit" [disabled]="!formDocumento.form.valid" class="btn btn-info"> <i class="fa fa-check"></i>Guardar</button>
                                                         <button type="button"  class="btn btn-inverse" (click)="onCancel()">Cancel</button>
                                                     </div>
                                                 </div>

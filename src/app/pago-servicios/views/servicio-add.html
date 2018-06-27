@@ -38,21 +38,28 @@
                                                 </label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #compro (change)="validate1()">
-                                                    <option disabled="disabled" hidden>Tipo de Documento</option>
-                                                    <option *ngFor="let comprobante of comprobantes" [value]="comprobante.id" >
-                                                        {{comprobante.documento}}
-                                                    </option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a1==true" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select" #compro (change)="validate1()">
+                                                        <option disabled="disabled" hidden>Tipo de Documento</option>
+                                                        <option *ngFor="let comprobante of comprobantes" [value]="comprobante.id" >
+                                                            {{comprobante.documento}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <label>Nro Recibo</label>
+                                                <label>Nro Comprobante</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" #nroRecibo (change)="validate2(nroRecibo.value)">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a2==true" style="color: green" class="fa fa-check"></i>
+                                                    <input type="text" placeholder="numero de comprobante" class="form-control" #nroRecibo (change)="validate2(nroRecibo.value)">
+                                                </div>
                                             </div>
                                         </div>
                                         <br>
@@ -61,11 +68,14 @@
                                                 <label>Tipo de Pago</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #tipoP (change)="validate3()">
-                                                    <option disabled="disabled" hidden>Tipo de Pago</option>
-                                                    <option>Efectivo</option>
-                                                    <option>Bancario</option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a3==true" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select" #tipoP (change)="validate3()">
+                                                        <option disabled="disabled" hidden>Tipo de Pago</option>
+                                                        <option>Efectivo</option>
+                                                        <option>Bancario</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +197,10 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <div class="form-group">
-                                                        <textarea class="form-control" rows="3" #descrip  (change)="validate4(descrip.value)"></textarea>
+                                                        <div class="inner-addon left-addon">
+                                                            <i *ngIf="a4==true" style="color: green" class="fa fa-check"></i>
+                                                            <input type="text" class="form-control" rows="3" #descrip  (change)="validate4(descrip.value)">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -220,7 +233,10 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    <input type="number" #subtotal (change)="sumaTotal(subtotal.value)" class="form-control">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="a5==true" style="color: green" class="fa fa-check"></i>
+                                                        <input type="number" min="0"  #subtotal (change)="sumaTotal(subtotal.value)" class="form-control"> 
+                                                    </div>
                                                 </div>  
                                             </div>
                                         </div>

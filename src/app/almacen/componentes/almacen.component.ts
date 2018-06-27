@@ -34,8 +34,8 @@ export class AlmacenComponent{
         private _almacenesservice:AlmacenesService,
     ){
         this.titulo = "resumen de almacenes";
-        this.stok=new almacenstock(0,0,'',0,0,0,0);
-        this.editalmecen=new almacenstock(0,0,'',0,0,0,0);
+        this.stok=new almacenstock(0,0,'',null,0,0,0,0);
+        this.editalmecen=new almacenstock(0,0,'',null,0,0,0,0);
         this.ident=null;
         this.idalmacen=null;
         this.usuario=this.auth.getUser();;
@@ -125,7 +125,7 @@ export class AlmacenComponent{
     limpiar(){
         this.ident=null;
         this.idalmacen=null;
-        this.editalmecen=new almacenstock(0,0,'',0,0,0,0);
+        this.editalmecen=new almacenstock(0,0,'',null,0,0,0,0);
     }
     agregaralmacen(){
         this._almacenService.addAlmacen(this.stok).subscribe(

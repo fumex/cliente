@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { SucursalService } from '../services/sucursal.service';
 import { AuthService } from '../../auth/services/auth.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -6,7 +6,8 @@ import { User } from '../../auth/interfaces/user.model';
 import { SucursalModel } from '../modelos/sucursal';
 import { AlmacenesService } from '../../Almacenes/services/almacenes.service';
 import { almacen } from '../../Almacenes/modelos/almacenes';
-
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 
 declare var jQuery:any;
@@ -15,7 +16,7 @@ declare var swal:any;
 @Component({
     selector:'sucursal-edit',
     templateUrl:'../views/sucursal-add.html', //reutilizar
-    providers:[SucursalService]
+    providers:[SucursalService, ToastService]
 })
 export class SucursalEditComponent implements OnInit{
     
@@ -30,8 +31,12 @@ export class SucursalEditComponent implements OnInit{
         private route:ActivatedRoute,
         private router:Router,
         private sucursalService:SucursalService,
-        private almacenService:AlmacenesService
+        private almacenService:AlmacenesService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.title='Editar Sucursal'
         this.user=this.auth.getUser();
         this.tabla();
@@ -55,6 +60,8 @@ export class SucursalEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="Error de conexion";
+                    this.toaste.errorAlerta(text,'Error!');
                 }
             );
         });
@@ -70,6 +77,8 @@ export class SucursalEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="La sucursal existe";
+                    this.toaste.WarningAlert(text,'Error!');
                 }
             );
         });
@@ -83,6 +92,8 @@ export class SucursalEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }
@@ -118,6 +129,8 @@ export class SucursalEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }

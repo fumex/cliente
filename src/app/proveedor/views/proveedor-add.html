@@ -19,35 +19,43 @@
                                                 <div class="col-md-4">
                                                     <label class="control-label" >
                                                         Nombre
-                                                        <span *ngIf="!nombre.valid && nombre.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="nombre.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control" required/>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="proveedor.nombre_proveedor" placeholder="Nombre de proveedor" class="form-control" required/>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="control-label">Ruc:
-                                                        <span *ngIf="!ruc.valid && ruc.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="ruc.valid" class="label label-success"><i class="fa fa-check"></i></span>
+                                                    <label class="control-label">
+                                                        Ruc:
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="text" #ruc="ngModel"  maxlength="11" name="ruc" [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control" required  pattern="[0-9]{11}"/>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="ruc.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!ruc.valid && ruc.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #ruc="ngModel"  maxlength="11" name="ruc" [(ngModel)]="proveedor.ruc" placeholder="Ruc"  class="form-control" required  pattern="[0-9]{11}"/>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="control-label">
                                                         Direccion
-                                                        <span *ngIf="!direccion.valid && direccion.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="direccion.valid && direccion.touched" class="label label-success"><i class="fa fa-check"></i></span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control" required/>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="proveedor.direccion" placeholder="Dirección de proveedor" class="form-control" required/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -56,40 +64,46 @@
                                                 <div class="col-md-4">
                                                     <label class="control-label" >
                                                         Telefono
-                                                        <span *ngIf="!telefono.valid && telefono.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="telefono.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                     </label>     
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input type="text" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="phone" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="control-label">
                                                         Email
-                                                        <span *ngIf="!email.valid && email.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="email.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
                                                         <input type="email" #email="ngModel"  name="email" [(ngModel)]="proveedor.email" placeholder="Email" class="form-control" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"/>
+                                                    </div>  
                                                 </div>
                                             </div>
                                             <div class="row" *ngIf="estado==true">
                                                 <div class="col-md-4">
                                                     <label class="control-label">
                                                         Categori
-                                                        <span *ngIf="!id.valid && id.touched" class="label label-danger">*</span>
-                                                        <span *ngIf="id.valid" class="label label-success"><i class="fa fa-check"></i></span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-7">
-                                                    <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
-                                                        <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
-                                                            {{tipo.tipo}} - {{tipo.operacion}}
-                                                        </option>               
-                                                    </select>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="id.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!id.valid && id.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
+                                                            <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
+                                                                {{tipo.tipo}} - {{tipo.operacion}}
+                                                            </option>               
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="col-sm-1">
                                                         <button type="button" (click)="getAdd()" class="btn btn-info btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-plus"></i></button>
@@ -104,7 +118,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <select class="form-control custom-select" #operacion required>
-                                                        <option disabled="disabled">selecione</option>
+                                                        <option disabled="disabled" hidden>selecione</option>
                                                         <option>Servicio</option>
                                                         <option>Proveedor</option>
                                                     </select>

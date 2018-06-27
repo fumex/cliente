@@ -42,12 +42,16 @@
                                                 <label class="control-label">Comprobante</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #idDocumento name="idDocumento" (change)="validate1()">
-                                                    <option disabled="disabled" hidden>Tipo de documento </option>
-                                                    <option *ngFor="let documento of documentos" [value]="documento.id">
-                                                        {{ documento.documento}}
-                                                    </option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a1==false" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select" #idDocumento name="idDocumento" (change)="validate1()">
+                                                        <option disabled="disabled" hidden>Tipo de documento </option>
+                                                        <option *ngFor="let documento of documentos" [value]="documento.id">
+                                                            {{ documento.documento}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -55,7 +59,10 @@
                                                 <label class="control-label">Nro </label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo" (change)="validate2(recibo.value)">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a2==false" style="color: green" class="fa fa-check"></i>
+                                                    <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo" (change)="validate2(recibo.value)" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -65,12 +72,15 @@
                                                 <label class="control-label">Proveedor</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #idProveedor name="idProveedor" (change)="validate3()">
-                                                    <option disabled="disabled" hidden>Seleccione proveedor </option>
-                                                    <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">
-                                                        {{ proveedor.nombre_proveedor}}
-                                                    </option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a3==false" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select" #idProveedor name="idProveedor" (change)="validate3()">
+                                                        <option disabled="disabled" hidden>Seleccione proveedor </option>
+                                                        <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">
+                                                            {{ proveedor.nombre_proveedor}}
+                                                        </option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -78,12 +88,15 @@
                                                 <label class="control-label">Almacen</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select" #idAlmacen name="idAlmacen" (change)="validate4()">
-                                                    <option disabled="disabled" hidden>Seleccione almacen </option>
-                                                    <option *ngFor="let almacen of almacenes" [value]="almacen.id">
-                                                        {{almacen.nombre}}
-                                                    </option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a4==false" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select" #idAlmacen name="idAlmacen" (change)="validate4()">
+                                                        <option disabled="disabled" hidden>Seleccione almacen </option>
+                                                        <option *ngFor="let almacen of almacenes" [value]="almacen.id">
+                                                            {{almacen.nombre}}
+                                                        </option>
+                                                    </select>    
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -91,11 +104,14 @@
                                                 <label class="control-label">Tipo Pago</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <select class="form-control custom-select"(change)="validate5()" #tipo >
-                                                    <option disabled="disabled" hidden>Tipo de pago </option>
-                                                    <option>Efectivo</option>
-                                                    <option>Bancario</option>
-                                                </select>
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a5==false" style="color: green" class="fa fa-check"></i>
+                                                    <select class="form-control custom-select"(change)="validate5()" #tipo >
+                                                        <option disabled="disabled" hidden>Tipo de pago </option>
+                                                        <option>Efectivo</option>
+                                                        <option>Bancario</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -156,6 +172,7 @@
                                             <tr>
                                                 <th>categoria</th>
                                                 <th>Codigo</th>
+                                                <th>¿Se puede Vender?</th>
                                                 <th>Unidad</th>
                                                 <th>Nombre Producto</th>
                                                 <th>Descripcion</th>
@@ -171,7 +188,19 @@
                                                 <td>
                                                     <div style="margin-right: 0px;">
                                                         <div style="padding-right: 0px;">
-                                                            <input class="form-control" type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo" required>
+                                                            <div class="inner-addon left-addon">
+                                                                <input class="form-control" type="text" #cod="ngModel" name="cod" [(ngModel)]="compras[$index].codigo" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <select class="form-control" #vend="ngModel" name="vend" [(ngModel)]="compras[$index].vendible" required>
+                                                                <option value="true">Si</option>
+                                                                <option value="false">No</option>
+                                                            </select>   
                                                         </div>
                                                     </div>
                                                 </td>

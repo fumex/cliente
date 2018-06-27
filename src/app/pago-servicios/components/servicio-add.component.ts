@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ServicioPagoService } from '../services/servicio.service';
 import { ServicioModel } from '../models/servicio';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
@@ -6,13 +6,16 @@ import { ServicioAddModel } from '../models/servicio-add';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 declare  var $:any;
 declare var swal:any;
 @Component({
     selector:'servicio-add',
     templateUrl:'../views/servicio-add.html',
-    providers:[ServicioPagoService]
+    providers:[ServicioPagoService, ToastService]
 
 })
 export class ServicioAddComponent implements OnInit{
@@ -47,8 +50,12 @@ export class ServicioAddComponent implements OnInit{
         private serviPagoService:ServicioPagoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.title='SERVICIOS'
         this.user=this.auth.getUser();
         this.tabla();
@@ -62,8 +69,7 @@ export class ServicioAddComponent implements OnInit{
         this.a5=false;
         this.validacion=false;
         this.val=false;
-        this.a6=false
-
+        this.a6=false;
     }
     ngOnInit(){
         this.getCodigo();
@@ -97,6 +103,8 @@ export class ServicioAddComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
          );
      }
@@ -109,6 +117,8 @@ export class ServicioAddComponent implements OnInit{
              },
              error=>{
                  console.log(<any>error);
+                 let text="Error de conexion";
+                 this.toaste.errorAlerta(text,'Error!');
              }
          );
      }
@@ -129,10 +139,19 @@ export class ServicioAddComponent implements OnInit{
         this.validar();
      }
      sumaTotal(subtotal){
-         let sub= parseFloat(subtotal);
-         this.igv=parseFloat((sub*0.18).toFixed(2));
-         this.total=parseFloat((sub+ this.igv).toFixed(2));
-         this.validate5(sub);
+         if(subtotal==""){
+            let sub=parseFloat(subtotal);
+            this.igv=sub*0.18;
+            this.total=parseFloat((sub+this.igv).toFixed(2));
+            this.a5=false;
+            this.validar();
+         }else{
+            let sub=parseFloat(subtotal);
+            this.igv=sub*0.18;
+            this.total=parseFloat((sub+this.igv).toFixed(2));
+            this.a5=true;
+            this.validar();
+         }  
      }
      //---------------Guardar-----------------------------------
      onSubmit(compro, nroRecibo, tipoP, descrip, subtotal){
@@ -144,7 +163,9 @@ export class ServicioAddComponent implements OnInit{
                 this.alertaSave();
             },
             error=>{
-                console.log(<any>error)
+                console.log(<any>error);
+                let text="el comprobante ya existe";
+                this.toaste.WarningAlert(text,'Error!');
             }
         )
      }
@@ -181,15 +202,6 @@ export class ServicioAddComponent implements OnInit{
         }
         
     }
-    validate5(total){
-        if(total==""){
-            this.a5=false;
-            this.validar();
-        }else{
-            this.a5=true;
-            this.validar();
-        } 
-    }
     validar(){
         if(this.a1==true && this.a2==true && this.a3==true){
             this.validacion=true;
@@ -211,5 +223,6 @@ export class ServicioAddComponent implements OnInit{
             timer: 4000,
         })   
     }
+
 
 }

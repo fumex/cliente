@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ServicioPagoService } from '../services/servicio.service';
 import { ServicioAnularModel } from '../models/servicio-anular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var swal:any;
 declare  var $:any;
 @Component({
     selector:'servicio-anular',
     templateUrl:'../views/servicio-anular.html',
-    providers:[ServicioPagoService]
+    providers:[ServicioPagoService, ToastService]
 })
 export class ServicioAnularComponent implements OnInit{
 
@@ -35,8 +37,12 @@ export class ServicioAnularComponent implements OnInit{
         private anularService:ServicioPagoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.title='ANULAR SERVICIO';
         this.user=this.auth.getUser();
@@ -62,6 +68,8 @@ export class ServicioAnularComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
      }
@@ -94,6 +102,8 @@ export class ServicioAnularComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }         
         );
      }

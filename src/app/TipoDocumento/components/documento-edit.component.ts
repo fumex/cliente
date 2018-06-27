@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { DocumentoService } from '../services/documento.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DocumentoModel } from '../models/documento';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
+import { ToastsManager } from 'ng2-toastr';
+import { ToastService } from '../../toastalert/service/toasts.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -11,7 +13,7 @@ declare var swal:any;
 @Component({
     selector:'documento-edit',
     templateUrl:'../views/documento-add.html',
-    providers:[DocumentoService]
+    providers:[DocumentoService, ToastService]
 })
 export class TipoDocumentoEditComponent implements OnInit{
 
@@ -24,8 +26,12 @@ export class TipoDocumentoEditComponent implements OnInit{
         private documentoService:DocumentoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=auth.getUser();
         this.title='Editar Documento'
         this.documento= new DocumentoModel(null,'','',this.user.id);
@@ -46,6 +52,8 @@ export class TipoDocumentoEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="Error de conexion";
+                    this.toaste.errorAlerta(text,'Error!');
                 }
             );
         });
@@ -60,6 +68,8 @@ export class TipoDocumentoEditComponent implements OnInit{
                 },
                 error=>{
                     console.log(<any>error);
+                    let text="El Nombre del documento existe";
+                    this.toaste.WarningAlert(text,'Error!');
                 }
             );
         });
@@ -93,6 +103,8 @@ export class TipoDocumentoEditComponent implements OnInit{
             },
             error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
             }
         );
     }

@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  ViewContainerRef } from '@angular/core';
 import { PagoService } from '../services/pago.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { ToastService } from '../../toastalert/service/toasts.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var jQuery:any;
 declare var $:any;
 @Component({
     selector:'pago-list',
     templateUrl:'../views/pago-list.html',
-    providers:[PagoService]
+    providers:[PagoService, ToastService]
 })
 export class PagoListComponent implements OnInit{
 
@@ -21,8 +23,12 @@ export class PagoListComponent implements OnInit{
         private pagoService:PagoService,
         private route:ActivatedRoute,
         private router:Router,
-        private auth:AuthService
+        private auth:AuthService,
+        private toaste:ToastService,
+        private toastr:ToastsManager,
+        vcr:ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.title='Lista de Compras';
         this.tabla();
@@ -50,6 +56,8 @@ export class PagoListComponent implements OnInit{
              },
              error=>{
                 console.log(<any>error);
+                let text="Error de conexion";
+                this.toaste.errorAlerta(text,'Error!');
              }
          );
      }
