@@ -37,6 +37,7 @@ export class categoriacomponent{
         
     }
     exit(){
+        
         this._productoscomponent.getexitcate();
     }
 
@@ -47,8 +48,9 @@ export class categoriacomponent{
             response=>{
                 console.log(response);
                 this.categoria = new categoria(null,'',this.user.id);
-                this._productoscomponent.mostrarcategoria();
-                this.alertaecho();
+                this._productoscomponent.mostrarcategoria(response.code);
+                //this.alertaecho();
+                //this.toaste.errorAlerta('la categoria se inserto','Guardado');
                 this.exit();
             },
             error=>{
@@ -56,7 +58,7 @@ export class categoriacomponent{
                 //this.alertaerror();
                 if(error.status==500){
                     let text="la categoria ya existe";
-                    this.toaste.errorAlerta(text,'Error!');
+                    this.toaste.errorAlerta("la categoria ya existe",'Error!');
                     this.nombre.focus();
                     this.nombre.select();
                 }

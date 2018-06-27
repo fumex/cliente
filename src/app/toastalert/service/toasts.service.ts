@@ -37,4 +37,9 @@ export class ToastService{
             toastLife:3000,
         });
      }
+     SuccessAlertcontiempo(text,titulo,time){
+        this.toastr.success(text, titulo, {
+            toastLife:time,
+        });
+     }
 }

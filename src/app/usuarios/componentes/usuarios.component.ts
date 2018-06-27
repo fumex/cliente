@@ -10,7 +10,7 @@ import { DetalleUsuarioModel } from '../../usuarios/modelos/DetalleUsuario';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 import {OrdenPedidosService} from '../../orden-de-pedido/services/Ordendepedido.service';
-
+import {Router,ActivatedRoute,Params}from '@angular/router';
 
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -49,6 +49,7 @@ export class usuarioscomponent{
         private _OrdenPedidosService:OrdenPedidosService,
         private _DettaleUsuarioService:DettaleUsuarioService,
         private auth:AuthService,
+        private _router:Router,
         private toaste:ToastService,
         public toastr: ToastsManager,
         vcr: ViewContainerRef
@@ -56,7 +57,7 @@ export class usuarioscomponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
-        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
         //this.documentos=new DocumentoModel(null,null,null);
         this.titulo="Datos Personales"
         this.paswor=null;
@@ -107,9 +108,9 @@ export class usuarioscomponent{
         this.sucursales[index].id=null;
         this.detalleusu.id=index;
         this.detalleusu.id_sucursal=id;
-        this.detalleusu.permiso=1;
+        this.detalleusu.permiso=true;
         this.DetalleUsuario.push(this.detalleusu);
-        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
         console.log(this.DetalleUsuario);
         console.log(this.ap+' '+this.cuenta)
     }
@@ -140,6 +141,7 @@ export class usuarioscomponent{
                 if(response.code===200){
                     console.log("entro al if");
                    this.guardardetalle();
+                   this._router.navigate(['/'+this.user.rol+'/editarusuario']);
                 }
             },
             error=>{
@@ -147,6 +149,8 @@ export class usuarioscomponent{
                 if(error.status==500){
                     let text="Ese Email ya se encuentra registrado";
                     this.toaste.errorAlerta(text,'Error!');
+                    this.usuario.password=null;
+                    this.usuario.confirme=null;
                     this.nombre.focus();
                     this.nombre.select();
                 }
@@ -209,7 +213,7 @@ export class usuarioscomponent{
     limpiar(){
         this.cuenta=0;
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
-        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
         let numero=this.DetalleUsuario.length;
         let indice=0;
         while(this.id<numero){

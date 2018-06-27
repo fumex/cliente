@@ -35,7 +35,7 @@ export class InventarioComponent{
     public vertablaproductos;
     public input;
     public usuario;
-
+    public otroalmacenvalid;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
@@ -46,7 +46,7 @@ export class InventarioComponent{
     ){
         this.titulo = "Ajustes de inventario";
         //this.productos=new ProductosfiltradoporAlmacenModel(0,'','',0,0,'',0,0);
-        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario=new inventario(null,'','',0,null,0,0,null,0,0,0);
         this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
         this.ident=null;
         this.tabla();
@@ -56,7 +56,7 @@ export class InventarioComponent{
         this.vertablaproductos;
         this.id=0;
         this.usuario=this.auth.getUser();;
-
+        this.otroalmacenvalid=null;
     }
 
     ngOnInit(){
@@ -104,6 +104,11 @@ export class InventarioComponent{
         this.id=0;
         console.log(this.movimientos);
     }
+    validacionotro(des){
+        if(this.inventario.opciones==null){
+            this.inventario.opciones='otro';
+        }
+    }
     guardarmoviemientos(){
         
         while(this.id<this.movimientos.length){
@@ -146,9 +151,14 @@ export class InventarioComponent{
     actualizar(id){
         this.ident=id;
         console.log(this.almacenselec);
+        if(id=='tranferencia entre almacenes'){
+            this.otroalmacenvalid=null;
+        }
         
     }
-
+    validarotroalmacen(id){
+        this.otroalmacenvalid=id;
+    }
   
     mostraralmacen(){
         

@@ -54,7 +54,7 @@ export class unidadcomponent{
                 }else{
                     this.unidades = new UnidadesModel(null,'','',this.user.id);
                     this._productoscomponent.mostarunidad();
-                    this.alertaecho();
+                    //this.alertaecho();
                     this.exit();
                 }
                 

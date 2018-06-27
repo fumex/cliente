@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { UsuarioModel} from '../modelos/usuarios'
 import { Router } from '@angular/router';
@@ -14,6 +14,9 @@ declare var swal:any;
 
 @Component({
   selector: 'modificar-usuariopersonal',
+  host: {
+    '(document:click)': 'handleClick($event)',
+    },
   templateUrl: '../views/EditUserAutenticacion.html',
   providers:[UsuarioService],
   styleUrls: ['../styles/edituser.css']
@@ -31,23 +34,19 @@ export class EditUsuariosp implements OnInit {
     public resultado:any;
     public usuario:UsuarioModel;
     public almacenes:almacen;
+    public nombres:Array<1>=[]
     public query = '';
-    public countries = [ "Albania","Andorra","Armenia","Austria","Azerbaijan","Belarus",
-                        "Belgium","Bosnia & Herzegovina","Bulgaria","Croatia","Cyprus",
-                        "Czech Republic","Denmark","Estonia","Finland","France","Georgia",
-                        "Germany","Greece","Hungary","Iceland","Ireland","Italy","Kosovo",
-                        "Latvia","Liechtenstein","Lithuania","Luxembourg","Macedonia","Malta",
-                        "Moldova","Monaco","Montenegro","Netherlands","Norway","Poland",
-                        "Portugal","Romania","Russia","San Marino","Serbia","Slovakia","Slovenia",
-                        "Spain","Sweden","Switzerland","Turkey","Ukraine","United Kingdom","Vatican City"];
     public filteredList = [];
+    public elementRef;    
     constructor(
         private _almacenesService:AlmacenesService,
         private _usuarioservice:UsuarioService,
         private authService:AuthService,
         private router:Router,
+        private myElement: ElementRef,
     ) { 
         this.user=this.authService.getUser();
+        this.elementRef = myElement;
         this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
         this.titulo=this.user.email;
         this.mostrar=null;
@@ -65,7 +64,7 @@ export class EditUsuariosp implements OnInit {
     }
     filter() {
         if (this.query !== ""){
-            this.filteredList = this.countries.filter(function(el){
+            this.filteredList = this.nombres.filter(function(el){
                 return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
         }else{
@@ -78,6 +77,20 @@ export class EditUsuariosp implements OnInit {
         this.filteredList = [];
     }
 
+    handleClick(event){
+        var clickedComponent = event.target;
+        var inside = false;
+        do {
+            if (clickedComponent === this.elementRef.nativeElement) {
+                inside = true;
+            }
+           clickedComponent = clickedComponent.parentNode;
+        } while (clickedComponent);
+         if(!inside){
+             this.filteredList = [];
+         }
+     }
+
     onSubmit(){
 
     
@@ -86,10 +99,16 @@ export class EditUsuariosp implements OnInit {
         this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
     }
     mostraralmacen(){
+        let i=0;
         this._almacenesService.getAlmacenes().subscribe(
             result=>{
                this.almacenes=result;
-                console.log(result);
+               
+               while(i<result.length){
+                    this.nombres.push(result[i].nombre);
+                    i=i+1;
+               }
+                console.log(this.nombres);
             },
             error=>{
                 console.log(<any>error);

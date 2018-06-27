@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewContainerRef } from '@angular/core';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 import {OrdenPedidosService} from '../services/Ordendepedido.service';
 import { OrdenDePedidoModel } from '../modelos/OrdendePedido';
@@ -12,6 +12,9 @@ import { DetalleOrdenDePedidoModel} from '../../detalle-orden-de-pedido/modelos/
 import {DetalleOrdenPedidosService} from '../../detalle-orden-de-pedido/services/DetalleOrdenPedido.service';
 import {AuthService} from '../../auth/services/auth.service';
 
+import {ToastService} from '../../toastalert/service/toasts.service'
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 declare var jQuery:any;
 declare var $:any;
 declare var swal:any;
@@ -19,7 +22,7 @@ declare var swal:any;
 @Component({
   selector: 'productos-add',
   templateUrl: '../views/OrdenDePedido.component.html',
-  providers: [OrdenPedidosService,AlmacenesService,ProductoService,DetalleOrdenPedidosService]
+  providers: [OrdenPedidosService,AlmacenesService,ProductoService,DetalleOrdenPedidosService,ToastService]
 })
 export class OrdenDePedidoComponent{
     public titulo:string;
@@ -42,6 +45,9 @@ export class OrdenDePedidoComponent{
     public usuario;
     public almacenvalid;
     public provedorvalid;
+    public fechavalidad;
+    public seleccionado;
+    public textocantidad;
     constructor(
         private _almacenesService:AlmacenesService,
         private _route:ActivatedRoute,
@@ -51,13 +57,17 @@ export class OrdenDePedidoComponent{
         private _detalleorden:DetalleOrdenPedidosService,
         private _proveedorservice:ProveedorService,
         private auth:AuthService,
+        private toaste:ToastService,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
     ){
+        this.toastr.setRootViewContainerRef(vcr);
         this.titulo="Orden De Pedido";
         
-        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,null);
+        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,null,null);
         this.agregarDetalleOrden=new DetalleOrdenDePedidoModel(0,0,'',0);
         this.fecha=null;
-        this.fecha2="sas";
+        this.fecha2;
         this.mostrar=null;
         this.mostrarguardar=null;
         this.id=0;
@@ -67,18 +77,23 @@ export class OrdenDePedidoComponent{
         this.texto=null;
         this.almacenvalid=false;
         this.provedorvalid=false;
+        this.seleccionado=null;
+        this.fechavalidad=true;
     }
     ngOnInit(){
         this.mostraralmacen();
         this.mostrarproveedor();
         this.mostrarproducto();
         this.fechaactual();
+
+
     }  
     mostraralmacen(){
         this._almacenesService.mostraalmacenusuario(this.usuario.id).subscribe(
             result=>{
                 this.almacenes=result;
                 console.log(result);
+
             },
             error=>{
                 console.log(<any>error);
@@ -86,9 +101,19 @@ export class OrdenDePedidoComponent{
         );
 
     }
-    almacenvalidacion(){
+    fechavalidacion(fecha){
+        if(this.fecha2>fecha){
+            console.log('no sirvew');
+            this.fechavalidad=false;
+        }else{
+            console.log('cambiar a true');
+            this.fechavalidad=true;
+        }
+    }
+    almacenvalidacion(id){
         this.almacenvalid=true;
         console.log(this.almacenvalid);
+       this.seleccionado=id;
     }
     proveedorvalidacion(){
         this.provedorvalid=true;
@@ -184,26 +209,46 @@ export class OrdenDePedidoComponent{
         this.id=0;
         this.mostrar=null;
         this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,null);
+        this.fechavalidad=false;
+        this.seleccionado=0;
     }
     guardartodo(){
-        this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
-            result=>{
-                console.log(result);
-                if(result.code===200){
-
-                    this.guardardetalleorden();
-                    this.guardaralerta();
-                    
-                }
-            },
-            error=>{
-                console.log(<any>error);
+        let indice=0;
+        let index=0;
+        let aprobado=true;
+        this.textocantidad=document.getElementById('pruebacantidad');
+        while(index<this.pedidos.length){
+            if(this.pedidos[index].cantidad<1){
+                aprobado=false;
+                indice=index;
+                index=this.pedidos.length-1;
             }
-
-        ) 
-       
+            index=index+1;
+        }
+        if(aprobado===true){
+            this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
+                result=>{
+                    console.log(result);
+                    if(result.code===200){
+                        this.guardardetalleorden();
+                        this.guardaralerta();
+                        
+                    }
+                },
+                error=>{
+                    console.log(<any>error);
+                }
+    
+            );
+        }else{
+            let text="coloque una cantidad superio a 0";
+            this.toaste.errorAlerta(text,'Error!No se pudo guardar su pedido ');
+            this.texto=indice;
+            this.textocantidad.focus();
+        }
     }
     guardardetalleorden(){
+
         while(this.id<this.pedidos.length){
             console.log(this.pedidos[this.id]);
             this.agregarDetalleOrden=this.pedidos[this.id];
