@@ -139,10 +139,19 @@ export class ServicioAddComponent implements OnInit{
         this.validar();
      }
      sumaTotal(subtotal){
-         let sub= parseFloat(subtotal);
-         this.igv=parseFloat((sub*0.18).toFixed(2));
-         this.total=parseFloat((sub+ this.igv).toFixed(2));
-         this.validate5(sub);
+         if(subtotal==""){
+            let sub=parseFloat(subtotal);
+            this.igv=sub*0.18;
+            this.total=parseFloat((sub+this.igv).toFixed(2));
+            this.a5=false;
+            this.validar();
+         }else{
+            let sub=parseFloat(subtotal);
+            this.igv=sub*0.18;
+            this.total=parseFloat((sub+this.igv).toFixed(2));
+            this.a5=true;
+            this.validar();
+         }  
      }
      //---------------Guardar-----------------------------------
      onSubmit(compro, nroRecibo, tipoP, descrip, subtotal){
@@ -192,15 +201,6 @@ export class ServicioAddComponent implements OnInit{
             this.validar();
         }
         
-    }
-    validate5(total){
-        if(total==""){
-            this.a5=false;
-            this.validar();
-        }else{
-            this.a5=true;
-            this.validar();
-        } 
     }
     validar(){
         if(this.a1==true && this.a2==true && this.a3==true){
