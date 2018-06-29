@@ -43,7 +43,7 @@ export class EditarUsuarioPersonal{
     ){
 
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
-        this.detalleusu=new DetalleUsuarioModel(null,0,0,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
 
         //this.documentos=new DocumentoModel(null,null,null);
         this.titulo="Mantenimiento de Usuarios"
@@ -131,10 +131,11 @@ export class EditarUsuarioPersonal{
         this._DettaleUsuarioService.seleccionardetalleusuario(id).subscribe(
             respuesta=>{
                 this.detalleusu=respuesta;
+                console.log(this.id);
                 while(this.id<respuesta.length){
                     
                     
-                    if(respuesta[this.id].permiso===1){
+                    if(respuesta[this.id].permiso===true){
                         
                         
                         while(this.id2 < this.sucursales.length){
@@ -178,13 +179,13 @@ export class EditarUsuarioPersonal{
     addsucursal(index,id){
         console.log(this.sucursales);
         console.log(this.DetalleUsuario);   
-        this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,null);
         this.siguiente=this.siguiente+1;
         this.id=0;
         this.sucursales[index].id=null;
         while(this.id<this.DetalleUsuario.length){
             if(this.DetalleUsuario[this.id].id===index){
-                this.DetalleUsuario[this.id].permiso=1;
+                this.DetalleUsuario[this.id].permiso=true;
                 this.count=this.count+1;
             }
             this.id=this.id+1;
@@ -192,9 +193,9 @@ export class EditarUsuarioPersonal{
         if(this.count===0){
             this.detalleusu.id=index;
             this.detalleusu.id_sucursal=id;
-            this.detalleusu.permiso=1;
+            this.detalleusu.permiso=true;
             this.DetalleUsuario.push(this.detalleusu);
-            this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
+            this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,null);
 
             console.log("entro")
         }
@@ -211,7 +212,7 @@ export class EditarUsuarioPersonal{
             if(this.DetalleUsuario[this.id].id===index)
             {
                 this.sucursales[index].id=this.DetalleUsuario[this.id].id_sucursal;
-                this.DetalleUsuario[this.id].permiso=0;
+                this.DetalleUsuario[this.id].permiso=false;
                 //this.DetalleUsuario.splice(this.id,1);
             }
             this.id=this.id+1;
@@ -237,7 +238,7 @@ export class EditarUsuarioPersonal{
         this.id=0;
         this.id2=0;
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
-        this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,0);
+        this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,null);
         let numero=this.DetalleUsuario.length;
         while(this.id<numero){
             while(this.id2<this.sucursales.length){

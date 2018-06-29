@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { OrdenPedidosService } from '../services/Ordendepedido.service';
 import { OrdenDePedidoModel} from '../modelos/OrdendePedido';
+
 import { DetalleOrdenPedidosService } from '../../detalle-orden-de-pedido/services/DetalleOrdenPedido.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
@@ -30,6 +31,8 @@ export class pedidolistarcomponent {
     public idpedido;
     public provedores:any=[];;
     public almacenes:almacen;
+    public fecha2;
+    public fechatrue;
     constructor(
         private _pedidoservice:OrdenPedidosService,
         private _detallepdidoservice:DetalleOrdenPedidosService,
@@ -41,18 +44,37 @@ export class pedidolistarcomponent {
     ){
         this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null)
         this.user=this.auth.getUser();
-        this.title='Lista de Compras';
-        this.destruir();
-        this.reconstruir();
+        this.title='Lista de Pedidos';
+        
         this.idpedido=0;
         this.mostareditar=null;
         this.mostrarformedit=null;
+        this.fecha2=null;
+        
     }
     ngOnInit(){
         console.log("asdasd"); 
+        this.reconstruir();
         this.mostraralmacen();
         this.mostrarproveedor();
-        this.getpedidos(); 
+        this.fechaactual();
+    }
+    fechaactual(){
+        this._pedidoservice.getfecha().subscribe(
+            result=>{
+                this.fecha2=result.res;
+            },
+            error=>{
+                console.log(<any>error);
+            }   
+        )
+    }
+    validarfecha(fecha){
+        if(this.fecha2>fecha){
+            this.fechatrue=false;
+        }else{
+            this.fechatrue=true;
+        }
     }
     activarmodificar(){
         this.mostareditar=1;
@@ -78,11 +100,8 @@ export class pedidolistarcomponent {
     }
     cancelarmodificar(){
         this.mostareditar=null;
-        
+        this.selectorden(this.idpedido);
     }
-
-
-
 
 
 
@@ -130,19 +149,18 @@ export class pedidolistarcomponent {
             icon: "warning",
             buttons: true,
             dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-                this.eliminardetalle(id);
-              swal("ese producto se elimino de su pedido", {
-                icon: "success",
-                buttons: false,
-                timer: 3000
-              });
-            } else {
-              
-            }
-          });
+        })
+      .then((willDelete) => {
+        if (willDelete) {
+            this.eliminardetalle(id);
+          swal("ese producto se elimino de su pedido", {
+            icon: "success",
+            buttons: false,
+            timer: 3000
+            });
+        } else {
+        }
+        });
     }
     eliminardetalle(id){
         this._detallepdidoservice.borrardetalle(id).subscribe(
@@ -250,6 +268,7 @@ export class pedidolistarcomponent {
     reconstruir(){
         this.getpedidos();
         this.tabla();
+        
     }
     tabladetalle(){
         setTimeout(function(){

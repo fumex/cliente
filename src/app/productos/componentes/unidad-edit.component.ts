@@ -71,7 +71,7 @@ export class unidadesedit{
                 }else{
                     this._productoscomponent.mostarunidad();
                     this.exit();
-                    this.alertaecho();
+                    //this.alertaecho();
                 }
                 
             },

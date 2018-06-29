@@ -58,8 +58,8 @@ export class categoriaedit{
         this._categoriaservice.actualizarcategoria(this.id,this.categoria).subscribe(
             response=>{
                 console.log(response);
-                this._productoscomponent.mostrarcategoria();
-                this.alertaecho();
+                this._productoscomponent.mostrarcategoria(response.code);
+                //this.alertaecho();
                 this.exit();
             },
             error=>{

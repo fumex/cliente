@@ -1,148 +1,156 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h2>{{titulo}}</h2>
+        <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-outline-primary">
-                <div class="card-body">
+    <div class="col-lg-12">
+        <div class="card card-outline-primary">
+            <div class="card-body">
                 <form #formAlmacen="ngForm"  action="#">
                    <!--<span *ngIf="!formAlmacen.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>-->
-                    <div class="form-body">
-                        <div class="row p-t-20">
-                            <div class="col-md-6">
-                                 <div class="form-group">
-                                    <label class="control-label">Nombre
-                                    </label>
-                                    <div class="inner-addon left-addon">
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Nombre:</label>    
+                                </div>
+                                <div class="col-sm-8">
+                                   <div class="inner-addon left-addon">
                                         <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
                                         <input  type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="almacen.nombre"  class="form-control"required/>
-                                    </div> 
+                                    </div>   
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group has-danger">           
-                                    <label class="control-label">telefono                                               
-                                    </label>
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
-                                        <input type="text" id="lastName" #telefono="ngModel" name="telefono" [(ngModel)]="almacen.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
-                                    </div> 
+                                <br>
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Descripción:</label>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row p-t-20">
-                            <div class="col-md-6 ">
-                                <div class="form-group">                                             
-                                    <label>Descripción
-                                    </label>
+                                <div class="col-sm-8">
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
                                         <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="almacen.descripcion" class="form-control" required>
                                     </div> 
-                                </div>
+                                </div>  
                             </div>
-                            <div class="col-md-6 ">
-                                <div class="form-group">                                             
-                                    <label>Direccion
-                                    </label>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div class="col-sm-4">
+                                    <label class="control-label">telefono:</label>    
+                                </div>
+                                <div class="col-sm-8">
+                                   <div class="inner-addon left-addon">
+                                        <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text" id="lastName" #telefono="ngModel" name="telefono" [(ngModel)]="almacen.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                    </div>   
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Direccion:</label>
+                                </div>
+                                <div class="col-sm-8">
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="Direccion.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!Direccion.valid && Direccion.touched" style="color: red" class="fa fa-times"></i>
                                         <input type="text" #Direccion="ngModel" name="Direccion" [(ngModel)]="almacen.direccion" class="form-control" required>
                                     </div> 
-                                </div>
+                                </div>  
                             </div>
-                        </div>            
+                        </div>
                     </div>
-                    <div style="text-align: center" class="form-actions">
-                        <button  (click)="agregaralmacen()" [disabled]="!formAlmacen.form.valid"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
-                        <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
-                    </div>
-                </form>
                 </div>
-                <hr>
-                <div class="card-body">
-                    <div *ngIf="!almacenes">
-                        cargando listado de almacenes....
-                    </div>
-                    <div *ngIf="almacenes">
-                    <h4 class="card-title">Exportar Información</h4>
-                        <div class="table-responsive m-t-20">
-                        <form #formEditarAlmacen="ngForm" (ngSubmit)="editarAlmacen(s)">   
-                            <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                <thead>
-                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>direccion</th>
-                                        <th>descripcion</th>
-                                        <th>telefono</th>
-                                        <td style="width: 80px;"></td>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>direccion</th>
-                                        <th>descripcion</th>
-                                        <th>telefono</th>
-                                        <td style="width: 80px;"></td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr *ngFor="let almacen of almacenes">
-                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.nombre}}</td>
-                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input #nombre="ngModel" id="editalmacenaje" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
-                                                </div>
+                <br>
+                <br>
+                <div style="text-align: center" class="form-actions">
+                    <button  (click)="agregaralmacen()" [disabled]="!formAlmacen.form.valid"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
+                    <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
+                </div>
+            </form>
+            </div>
+            <hr>
+            <div class="card-body">
+                <div *ngIf="!almacenes">
+                    cargando listado de almacenes....
+                </div>
+                <div *ngIf="almacenes">
+                <h4 class="card-title">Exportar Información</h4>
+                    <div class="table-responsive m-t-20">
+                    <form #formEditarAlmacen="ngForm" (ngSubmit)="editarAlmacen(s)">   
+                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                            <thead>
+                                 <tr>
+                                    <th>Nombre</th>
+                                    <th>direccion</th>
+                                    <th>descripcion</th>
+                                    <th>telefono</th>
+                                    <td style="width: 80px;"></td>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>direccion</th>
+                                    <th>descripcion</th>
+                                    <th>telefono</th>
+                                    <td style="width: 80px;"></td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr *ngFor="let almacen of almacenes">
+                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.nombre}}</td>
+                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                        <div style="margin-right: 0px;">
+                                            <div style="padding-right: 0px;">
+                                                <input #nombre="ngModel" id="editalmacenaje" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
                                             </div>
-                                        </td>
-                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.direccion}}</td>
-                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input #direccion="ngModel" name="direccion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.direccion" >
-                                                </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.direccion}}</td>
+                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                        <div style="margin-right: 0px;">
+                                            <div style="padding-right: 0px;">
+                                                <input #direccion="ngModel" name="direccion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.direccion" >
                                             </div>
-                                        </td>
-                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.descripcion}}</td>
-                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input #descripcion="ngModel" name="descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.descripcion" >
-                                                </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.descripcion}}</td>
+                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                        <div style="margin-right: 0px;">
+                                            <div style="padding-right: 0px;">
+                                                <input #descripcion="ngModel" name="descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.descripcion" >
                                             </div>
-                                        </td>
-                                        <td *ngIf="idalmacen!=almacen.id">{{almacen.telefono}}</td>
-                                        <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input #telefono="ngModel" name="telefono" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.telefono" >
-                                                </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.telefono}}</td>
+                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
+                                        <div style="margin-right: 0px;">
+                                            <div style="padding-right: 0px;">
+                                                <input #telefono="ngModel" name="telefono" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.telefono" >
                                             </div>
-                                        </td>
-                                        <td style="width: 80px;">
-                                            <div *ngIf="idalmacen!=almacen.id">
-                                                <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
-                                                <a style="color: white"class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
-                                            </div>
-                                            <div *ngIf="idalmacen==almacen.id">
-                                                <button style="color: white" class="btn btn-sm btn-info" type="submit"><i class="fa fa-check"></i></button>                                            
-                                                <a style="color: white" class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
-                                            </div>
-                                        </td> 
-                                    </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                    </div>
+                                        </div>
+                                    </td>
+                                    <td style="width: 80px;">
+                                        <div *ngIf="idalmacen!=almacen.id">
+                                            <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
+                                            <a style="color: white"class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
+                                        </div>
+                                        <div *ngIf="idalmacen==almacen.id">
+                                            <button style="color: white" class="btn btn-sm btn-info" type="submit"><i class="fa fa-check"></i></button>                                            
+                                            <a style="color: white" class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
+                                        </div>
+                                    </td> 
+                                </tr>
+                        </tbody>
+                    </table>
+                </form>
                 </div>
             </div>
         </div>

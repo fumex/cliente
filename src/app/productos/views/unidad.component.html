@@ -1,28 +1,16 @@
 <form #formunidad="ngForm" >
-    <div class="row p-t-1">
-        <div class="col-md-5">   
-            <div class="form-group">
-                <label >{{titulo}}</label>
-                <div class="inner-addon left-addon">
-                    <i *ngIf="unidad.valid" style="color: green" class="fa fa-check"></i>
-                    <i *ngIf="!unidad.valid && unidad.touched" style="color: red" class="fa fa-times"></i>
-                    <input  type="text"  #unidad="ngModel" id="unidadess" name="unidad" [(ngModel)]="unidades.unidad" class="form-control" placeholder="{{titulo}}" required>
-                </div> 
-            </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label class="control-label">{{titulo}}</label>    
         </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label >Abreviación</label>
-                <div class="inner-addon left-addon">
-                    <i *ngIf="abreviacion.valid" style="color: green" class="fa fa-check"></i>
-                    <i *ngIf="!abreviacion.valid && abreviacion.touched" style="color: red" class="fa fa-times"></i>
-                    <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control " placeholder="abreviacion" required>
-                </div> 
-            </div>                  
+        <div class="col-sm-5">
+            <div class="inner-addon left-addon">
+                <i *ngIf="unidad.valid" style="color: green" class="fa fa-check"></i>
+                <i *ngIf="!unidad.valid && unidad.touched" style="color: red" class="fa fa-times"></i>
+                <input  type="text"  #unidad="ngModel" id="unidadess" name="unidad" [(ngModel)]="unidades.unidad" class="form-control" placeholder="{{titulo}}" required>
+            </div>   
         </div>
-        <div class="col-md-2">  
-            <br>
-            <br>
+        <div class="col-sm-3">
             <button  *ngIf="titulo=='agregar unidad'" (click)="guardarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
                 class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
                     <i class="fa fa-upload"></i></button>
@@ -31,5 +19,19 @@
                     <i class="fa fa-save"></i></button>    
             <button type="button" (click)="exit()" class="btn btn-warning btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-close"></i></button>
         </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-sm-4">
+            <label class="control-label">Abreviación</label>    
+        </div>
+        <div class="col-sm-5">
+            <div class="inner-addon left-addon">
+                <i *ngIf="abreviacion.valid" style="color: green" class="fa fa-check"></i>
+                <i *ngIf="!abreviacion.valid && abreviacion.touched" style="color: red" class="fa fa-times"></i>
+                <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control " placeholder="abreviacion" required>
+            </div>    
+        </div>
+        
     </div>
 </form>

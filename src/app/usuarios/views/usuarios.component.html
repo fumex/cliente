@@ -1,6 +1,6 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h2>{{titulo}}</h2>
+        <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
 <div *ngIf="cuenta==1 && ap==1 && titulo=='Mantenimiento de Usuarios'" class="container-fluid">
@@ -61,88 +61,117 @@
                 <div class="card card-outline-primary">
                     <div class="card-body">
                         <div class="form-body">
-                            <div class="row p-t-20">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">nombre</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control" required>
-                                        </div> 
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">nombre</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control" required>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">apellidos</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="apellidos.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!apellidos.valid && apellidos.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control"required/>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">direccion</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="usuario.direccion" class="form-control" required />
+                                                </div> 
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">documento</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="documento.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!documento.valid && documento.touched" style="color: red" class="fa fa-times"></i>
+                                                    <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                            <option disabled="disabled" >--seleccione el documento</option>    
+                                                        <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">nacimiento</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="nacimiento.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!nacimiento.valid && nacimiento.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="date" #nacimiento="ngModel" name="nacimiento" max="{{fecha}}" [(ngModel)]="usuario.nacimiento" class="form-control" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">telefono</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}">
+                                                </div> 
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">documento(numero)</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="numero.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!numero.valid && numero.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control " required pattern="[0-9]+"/>
+                                                </div> 
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div style="text-align: right;padding-right: 50px" class="col-sm-12">
+                                                <button *ngIf="titulo=='Mantenimiento de Usuarios'" style="margin-right: 10px"  (click)="volvertablausuarios()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
+                                                <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>  
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">apellidos</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="apellidos.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!apellidos.valid && apellidos.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control"required/>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">nacimiento </label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="nacimiento.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!nacimiento.valid && nacimiento.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="date" #nacimiento="ngModel" name="nacimiento" max="{{fecha}}" [(ngModel)]="usuario.nacimiento" class="form-control" required/>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">direccion </label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="usuario.direccion" class="form-control" required />
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">telefono</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}">
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">documento</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="documento.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!documento.valid && documento.touched" style="color: red" class="fa fa-times"></i>
-                                            <select #documento="ngModel" name="documento" [(ngModel)]="usuario.id_documento" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                    <option disabled="disabled" >--seleccione el documento</option>    
-                                                <option *ngFor="let docu of documentos" value="{{docu.id}}"><b>{{docu.documento}}</b></option>
-                                            </select>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">documento(numero)</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="numero.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!numero.valid && numero.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text" #numero="ngModel" name="numero" [(ngModel)]="usuario.numero_documento" class="form-control " required pattern="[0-9]+"/>
-                                        </div> 
-                                    </div>
-                                </div>                
-                            </div>
-                            <div  style="text-align: right;padding-right: 50px">
-                                <button *ngIf="titulo=='Mantenimiento de Usuarios'" style="margin-right: 10px"  (click)="volvertablausuarios()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>
                             </div>
                         </div>
                     </div>
@@ -158,19 +187,25 @@
                 <div class="card card-outline-primary">
                     <div class="card-body">
                         <div class="form-body">
-                            <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">rol</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="rol.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!rol.valid && rol.touched" style="color: red" class="fa fa-times"></i>
-                                            <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select" required>
-                                                <option disabled="disabled" >--seleccione el rol</option>    
-                                                <option  ><b>admin</b></option>
-                                                <option  ><b>empleado</b></option>
-                                            </select>
-                                        </div> 
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div  class="col-sm-2">
+                                                <label class="control-label">Rol</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="rol.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!rol.valid && rol.touched" style="color: red" class="fa fa-times"></i>
+                                                    <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select" required>
+                                                        <option disabled="disabled" >--seleccione el rol</option>    
+                                                        <option  ><b>admin</b></option>
+                                                        <option  ><b>empleado</b></option>
+                                                    </select>
+                                                </div>  
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -236,27 +271,33 @@
         </div>
     </div>                  
 </form>
-<form #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
-     <div *ngIf="cuenta!=0 && ap==0 && titulo!='Mantenimiento de Usuarios'"  class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-outline-primary">
-                    <div class="card-body">
+
+<form  #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
+    <div  *ngIf="cuenta!=0 && ap==0 && titulo!='Mantenimiento de Usuarios'" class="main-wrapper">
+        <div class="unix-login">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="card">
                         <div class="form-body">
-                            <div class="row p-t-20">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">email</label>
+                            <div class="col-md-12">
+                                <div class="row p-t-20">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Email:</label>    
+                                    </div>
+                                    <div class="col-sm-8">
                                         <div class="inner-addon left-addon">
                                             <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
                                             <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
                                             <input type="text" id="emailunico"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control" required>
-                                        </div> 
+                                        </div>  
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">password (8 digitos)</label>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div  class="col-sm-4">
+                                        <label class="control-label">password (8 digitos)</label>    
+                                    </div>
+                                    <div class="col-sm-8">
                                         <div class="inner-addon right-addon">
                                             <i *ngIf="password.valid" style="color: green" class="fa fa-check-circle"></i>
                                             <i *ngIf="!password.valid && password.touched" style="color: red" class="fa fa-times-circle"></i>
@@ -264,10 +305,13 @@
                                             class="form-control"  required pattern="[A-Za-z0-9]{8,20}"/>
                                         </div> 
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group has-danger">           
-                                        <label class="control-label">confime la contraseña</label>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div  class="col-sm-4">
+                                        <label class="control-label">confime la contraseña</label>    
+                                    </div>
+                                    <div class="col-sm-8">
                                         <div class="inner-addon right-addon">
                                             <i *ngIf="confime.valid && iguales==true" style="color: green" class="fa fa-check-circle"></i>
                                             <i *ngIf="confime.valid && iguales==false" style="color: red" class="fa fa-times-circle"></i>
@@ -276,14 +320,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div  style="text-align: right;padding-right: 50px;">
-                                <button style="margin-right: 10px" [disabled]="!fordatos.form.valid "  (click)="volverapermisos()" class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                <button  type="submit" [disabled]="!formvalidacion.form.valid" class="btn btn-success btn-flat btn-addon ">Guardar <i class="fa fa-upload"></i></button>
-                            </div>
                         </div>
+                        <br>
+                        <br>
+                        <div style="text-align: center">
+                            <button style="margin-right: 10px" [disabled]="!fordatos.form.valid "  (click)="volverapermisos()" class="btn btn-primary "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
+                            <button  type="submit" [disabled]="!formvalidacion.form.valid" class="btn btn-success ">Guardar <i class="fa fa-upload"></i></button>
+                        </div>              
                     </div>
                 </div>
             </div>
         </div>
-    </div>                  
+    </div>
 </form>

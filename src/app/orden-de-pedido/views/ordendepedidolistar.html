@@ -60,62 +60,76 @@
                         <h3 style="text-align: center"><strong><i class="fa fa-search-plus"></i>Detalle de Pedido</strong></h3>
                         <br>
                         <br>
-                        <div class="row p-t-20">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">proveedores  : <strong>{{editarpedido.nombre_proveedor}}</strong></label>
-                                </div>
-                            </div>
-                            <div style="text-align: right" class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Fecha de Pedido  : <strong>{{editarpedido.created_at}}</strong></label>
-                               </div>
-                            </div>
-                        </div>
-                        <div  *ngIf="mostareditar==null" class="row p-t-20">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Almacenes</label>
-                                        <select #almacen="ngModel" name="almacen" [(ngModel)]="editarpedido.id_almacen" class="form-control custom-select" disabled>
+                        <div class="form-horizonta">
+                            <div class="col-lg-12 row">
+                                <div class="col-lg-6">
+                                    <div class="row p-t-20">
+                                        <div class="col-sm-12">
+                                            <label class="control-label">proveedores  : <strong>{{editarpedido.nombre_proveedor}}</strong></label>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div *ngIf="mostareditar==null" class="col-sm-4">
+                                            <label class="control-label">Almacenes:</label>    
+                                        </div>
+                                        <div  *ngIf="mostareditar==null" class="col-sm-8">
+                                            <select #almacen="ngModel" name="almacen" [(ngModel)]="editarpedido.id_almacen" class="form-control custom-select" disabled>
                                                 <option disabled="disabled">--seleccione el almacen</option>    
                                                 <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
-                                        </select>
+                                            </select> 
+                                        </div>
+                                        <div *ngIf="mostareditar!=null" class="col-sm-4">
+                                            <label class="control-label">Almacenes:</label>
+                                        </div>
+                                        <div *ngIf="mostareditar!=null" class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="almacenes" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!almacenes" style="color: red" class="fa fa-times"></i>
+                                                <select #almacen="ngModel" name="almacen" [(ngModel)]="editarpedido.id_almacen" class="form-control custom-select" required>
+                                                    <option disabled="disabled">--seleccione el almacen</option>    
+                                                    <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
+                                                </select>
+                                            </div>  
+                                        </div>  
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Fecha de Entrega</label>
-                                    <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="editarpedido.fecha_estimada_entrega"  class="form-control" disabled/>
+                                <div class="col-lg-6">
+                                    <div class="row p-t-20">
+                                        <div style="text-align: right" class="col-sm-12">
+                                            <label class="control-label">Fecha de Pedido  : <strong>{{editarpedido.created_at}}</strong></label>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div *ngIf="mostareditar==null" class="col-sm-4">
+                                            <label class="control-label">Fecha de Entrega:</label>    
+                                        </div>
+                                        <div  *ngIf="mostareditar==null" class="col-sm-8">
+                                            <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="editarpedido.fecha_estimada_entrega"  class="form-control" disabled/>
+                                        </div>
+                                        <div *ngIf="mostareditar!=null" class="col-sm-4">
+                                            <label class="control-label">Fecha de Entrega:</label>
+                                        </div>
+                                        <div *ngIf="mostareditar!=null" class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="fechatrue==true" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="fechatrue==false" style="color: red" class="fa fa-times"></i>
+                                                <input type="date" min="{{fecha2}}" (change)="validarfecha(editarpedido.fecha_estimada_entrega)" #fecha="ngModel" name="fecha" [(ngModel)]="editarpedido.fecha_estimada_entrega"  class="form-control" required/>
+                                            </div>  
+                                        </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div  *ngIf="mostareditar!=null" class="row p-t-20">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Almacenes
-                                    <span *ngIf="!almacen.valid && almacen.touched" class="label label-default">Debe seleccionar un almacen </span>
-                                    </label>
-                                        <select #almacen="ngModel" name="almacen" [(ngModel)]="editarpedido.id_almacen" class="form-control custom-select" required>
-                                            <option disabled="disabled">--seleccione el almacen</option>    
-                                            <option *ngFor="let almacen of almacenes" value="{{almacen.id}}"><b>{{almacen.nombre}}</b></option>
-                                        </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Fecha de Entrega
-                                    <span *ngIf="!fecha.valid && fecha.touched" class="label label-default"><p>fecha incorecta</p></span>
-                                    </label>
-                                    <input type="date" min="{{fecha2}}" #fecha="ngModel" name="fecha" [(ngModel)]="editarpedido.fecha_estimada_entrega"  class="form-control" required/>
-                                </div>
-                            </div>
-                        </div>
+                        <br>
+                        <br>
                         <div  *ngIf="mostareditar==null" style="text-align: center" >
                             <button (click)="activarmodificar()"  class="btn btn-info"> <i class="fa fa-edit"></i> Modificar</button>
                             <button (click)="volvertablapedido()" class="btn btn-success"> <i class="fa fa-arrow-circle-o-up"></i> Volver</button>
                         </div>
                         <div  *ngIf="mostareditar!=null" style="text-align: center" >
-                            <button (click)="guardarpedido()"  class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
+                            <button (click)="guardarpedido()" [disabled]="fechatrue==false" class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
                             <button (click)="cancelarmodificar()" class="btn btn-success"> <i class="fa fa-window-close"></i> Cancelar</button>
                             <button (click)="volvertablapedido()" class="btn btn-success"> <i class="fa fa-arrow-circle-o-up"></i> Volver</button>
                         </div>

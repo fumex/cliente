@@ -1,10 +1,9 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-            <h2>{{titulo}}</h2>
+        <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
 <div  class="container-fluid">
-    <div class="row">
         <div class="col-lg-12">
             <div  class="card card-outline-primary">
                 <div class="card-body">
@@ -12,91 +11,106 @@
                         <!--<div   *ngIf="!formProducto.form.valid &&  nombre.touched &&  Descripcion.touched " class="alert alert-danger">
                             <span style="color:black">rellenar todos los campo requeridos(<label style="color: red" >*</label>)</span>
                         </div>-->
-                       
-                        <div class="form-body">
-                            <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Nombre</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
-                                        </div> 
-                                   </div>
-                                </div>
-                                <div  *ngIf="llamarcategoria==null" class="col-md-4"  >
-                                    <div class="form-group">
-                                        <label class="control-label col-md-8">Categoria </label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
-                                            <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
-                                                    <option   disabled="disabled">--seleccione la categoria</option>    
-                                                <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
-                                            </select>
+                        <div class="form-horizonta">
+                            <div class="col-lg-12 row">
+                                <div class="col-lg-6">
+                                    <div class="row p-t-20">
+                                        <div class="col-sm-4">
+                                            <label class="control-label">Nombre:</label>    
                                         </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="llamarcategoria==null" style="text-align: left;margin-top: 16px" class="col-md-2" >
-                                    <br>
-                                    <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
-                                </div>
-                                <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-md-6" >
-                                     <categoria></categoria>
-                                </div> 
-                                <div *ngIf="aparecereditcate==2" class="col-md-6" >
-                                        <categoria-edit></categoria-edit>
-                                </div>       
-                            </div>
-                            <div class="row p-t-20">
-                                <div class="col-md-6 ">
-                                    <div class="form-group">                                             
-                                        <label>Descripción</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
-                                            <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" placeholder="escriba una descripcion" required>
-                                        </div> 
-                                    </div>
-                                </div>    
-                                <div *ngIf="llamarunidad==null" class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="control-label">Unidad de media  </label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
-                                            <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                    <option disabled="disabled">--seleccione la unidad</option>    
-                                                <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                            </select>
+                                        <div class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
+                                            </div>  
                                         </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="col-sm-4">
+                                            <label class="control-label">Descripción</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                                <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" placeholder="escriba una descripcion" required>
+                                            </div> 
+                                        </div>  
                                     </div>
                                 </div>
-                                <div *ngIf="llamarunidad==null" style="text-align: left;margin-top: 36px" class="col-md-1">
-                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
-                                </div>
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="control-label">cantidad</label>
-                                        <div class="inner-addon left-addon">
-                                            <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
-                                            <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
-                                            <input style="width: 170px;" id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
+                                <div class="col-lg-6">
+                                    <div class="row p-t-20">
+                                        <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                            <label class="control-label">Categoria:</label>    
+                                        </div>
+                                        <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                             <div class="inner-addon left-addon">
+                                                <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
+                                                <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
+                                                        <option   disabled="disabled">--seleccione la categoria</option>    
+                                                    <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                        <div *ngIf="llamarcategoria==null" style="text-align: left;" class="col-sm-4" >
+                                            <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
+                                            <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
+                                        </div>
+                                          <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
+                                            <categoria></categoria>
                                         </div> 
+                                        <div *ngIf="aparecereditcate==2" class="col-sm-12" >
+                                                <categoria-edit></categoria-edit>
+                                        </div> 
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                            <label class="control-label">Unidad de media</label>
+                                        </div>
+                                        <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                                <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                        <option disabled="disabled">--seleccione la unidad</option>    
+                                                    <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                                </select>
+                                            </div> 
+                                        </div>  
+                                        <div *ngIf="llamarunidad==null" style="text-align: left;" class="col-sm-4">
+                                            <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
+                                            <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                        </div>
+                                         <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
+                                            <div class="form-group">
+                                                <unidades></unidades>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
+                                                <unidades-edit></unidades-edit>
+                                        </div> 
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
+                                            <label class="control-label">cantidad</label>
+                                        </div>
+                                        <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
+                                                <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
+                                            </div> 
+                                        </div>  
                                     </div>
                                 </div>
-                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-md-6" >
-                                    <div class="form-group">
-                                        <unidades></unidades>
-                                    </div>
-                                </div>
-                                <div *ngIf="aparecereditunidad==2" class="col-md-6" >
-                                        <unidades-edit></unidades-edit>
-                                </div> 
-                            </div>
+                            </div> 
+                            <br>
+                            <br>  
                             <div style="text-align: center" >
                                 <button (click)="agregarproducto()" [disabled]="!formProducto.form.valid || (aparecereditunidad==null && llamarunidad!=null) || (llamarcategoria!=null && aparecereditcate==null) || aparecereditunidad==2 || aparecereditcate==2"  class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
                                 <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> Cancelar</button>
@@ -196,7 +210,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 

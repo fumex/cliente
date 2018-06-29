@@ -84,7 +84,7 @@ export class ProductosComponent{
 
     ngOnInit(){
         this.mostrar();
-        this.mostrarcategoria();
+        this.mostrarcategoria(0);
         this.mostarunidad();
         this.confirmaractualizar(this.modificarproducto);
         this.aparecermodificarcategoria(this.modificarcategoria);
@@ -131,7 +131,7 @@ export class ProductosComponent{
     }
 
     editarproduto(id){
-        let nombre =document.getElementById('firstName');
+        this.nombre =document.getElementById('firstName');
         //this.productos=new producto(0,'','','','',null);
         id=this.modificarproducto;
         console.log(id);
@@ -154,7 +154,8 @@ export class ProductosComponent{
                 if(error.status==500){
                     let text="ocurio un error insertando el producto";
                     this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
-                    nombre.focus();
+                    this.nombre.focus();
+                    this.nombre.select();
                 }            
             }
         );
@@ -188,7 +189,7 @@ export class ProductosComponent{
         );
     }
     agregarproducto(){
-        let nombre =document.getElementById('firstName');
+        this.nombre =document.getElementById('firstName');
         this._productoservice.addproducto(this.agregarpro).subscribe(
             result=>{
                 console.log(result);
@@ -198,14 +199,16 @@ export class ProductosComponent{
                 this.destruir();
                 this.reconstruir();
                 this.unidad=null;
-                nombre.focus();
+                this.nombre.focus();
+
             },
             error=>{
                 console.log(<any>error);
                 if(error.status==500){
                     let text="ocurio un error insertando el producto";
                     this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
-                    nombre.focus();
+                    this.nombre.focus();
+                    this.nombre.select();
                 } 
             }
 
@@ -230,10 +233,12 @@ export class ProductosComponent{
 
 
     getexitcate(){
+        
         this.modificarcategoria=null;
         this.llamarcategoria=null;
         this.aparecereditcate=null;
-        this.agregarpro.id_categoria=null;
+        //this.agregarpro.id_categoria=null;
+        
     }
     getexituni(){
         this.llamarunidad=null;
@@ -242,11 +247,13 @@ export class ProductosComponent{
         this.aparecereditunidad=null;
         this.agregarpro.id_unidad=null;
     }
-    mostrarcategoria(){
+    mostrarcategoria(code){
+        
         this._categoriaservice.getCategoria().subscribe(
             result=>{
                 this.cate=result;
-                console.log(result);
+                
+               
             },
             error=>{
                 console.log(<any>error);
