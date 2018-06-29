@@ -1,0 +1,184 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="container">
+                            <div class="card-body">
+                                <form class="form-horizontal" #formCliente="ngForm" (ngSubmit)="onSubmit()">
+                                    <div class="col-lg-12 row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label" >
+                                                        Nombre
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="cliente.nombre" placeholder="Nombre de Cliente" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label" >
+                                                        Apellidos
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="apellido.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!apellido.valid && apellido.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #apellido="ngModel" name="apellido" [(ngModel)]="cliente.apellido" placeholder="Apellidos de clientes" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label">
+                                                        Documento
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="id.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!id.valid && id.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="cliente.id_documento" required>
+                                                            <option *ngFor="let documento of documentos" [ngValue]="documento.id" >
+                                                                {{documento.documento}}
+                                                            </option>               
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label">
+                                                        Nro Documento
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="nroDocumento.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!nroDocumento.valid && nroDocumento.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #nroDocumento="ngModel"  name="nroDocumento" [(ngModel)]="cliente.nro_documento" placeholder="Nro Documento"  class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label">
+                                                        Dirección
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #direccion="ngModel"  name="direccion" [(ngModel)]="cliente.direccion" placeholder="Direccion del cliente" class="form-control" required/>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label">
+                                                        Email
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="email" #email="ngModel"  name="email" [(ngModel)]="cliente.email" placeholder="Email" class="form-control" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"/>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label" >
+                                                        Telefono
+                                                    </label>     
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="phone" #telefono="ngModel"  name="telefono" [(ngModel)]="cliente.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-lg-12 row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <button type="submit" [disabled]="!formCliente.form.valid || estado==false" class="btn btn-success"> <i class="fa fa-check"></i>Guardar</button>
+                                            <button type="button"  class="btn btn-inverse" (click)="onCancel()">Cancel</button> 
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="container">
+                            <div class="card-body">
+                                <h4 class="card-title">Exportar Información</h4>
+                                <div class="table-responsive m-t-40">
+                                    <table id="cli" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nombre</th>
+                                                <th>Apellidos</th>
+                                                <th>Documento</th>
+                                                <th>Nro Documento</th>
+                                                <th>Direccion</th>
+                                                <th>email</th>
+                                                <th>telefono</th>
+                                                <th></th>
+                                                <th *ngIf="confirmado==true"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let cliente of clientes ; let $index=index">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{cliente.nombre}}</td>
+                                                <td>{{cliente.apellido}}</td>
+                                                <td>{{cliente.documento}}</td>
+                                                <td>{{cliente.nro_documento}}</td>
+                                                <td>{{cliente.direccion}}</td>                                
+                                                <td>{{cliente.email}}</td>
+                                                <td>{{cliente.telefono}}</td> 
+                                                <td>
+                                                    <button type="button" (click)="edit(cliente.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                                <td *ngIf="confirmado==true">
+                                                    <button type="button" (click)="alertaDelete(cliente.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
