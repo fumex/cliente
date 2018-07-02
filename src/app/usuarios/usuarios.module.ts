@@ -5,6 +5,7 @@ import { UsuarioService } from "./services/usuarios.service";
 import { DettaleUsuarioService } from "./services/DetalleUsuario.service";
 import { usuarioscomponent } from "./componentes/usuarios.component";
 import { EditarUsuarioPersonal } from "./componentes/editaruserpersonal.component";
+import {ImagesComponent} from './componentes/insertarimagen.component';
 import { EditUsuariosp } from "./componentes/EditUserAutenticacion.component";
 
 @NgModule({
@@ -12,6 +13,7 @@ import { EditUsuariosp } from "./componentes/EditUserAutenticacion.component";
         usuarioscomponent,
         EditUsuariosp,
         EditarUsuarioPersonal,
+        ImagesComponent
       ],
       imports: [
         CommonModule,
