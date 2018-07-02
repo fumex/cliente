@@ -37,7 +37,9 @@ export class EditUsuariosp implements OnInit {
     public nombres:Array<1>=[]
     public query = '';
     public filteredList = [];
-    public elementRef;    
+    public elementRef; 
+    public image;
+    public filesToUpload;   
     constructor(
         private _almacenesService:AlmacenesService,
         private _usuarioservice:UsuarioService,
@@ -76,7 +78,6 @@ export class EditUsuariosp implements OnInit {
         this.query = item;
         this.filteredList = [];
     }
-
     handleClick(event){
         var clickedComponent = event.target;
         var inside = false;

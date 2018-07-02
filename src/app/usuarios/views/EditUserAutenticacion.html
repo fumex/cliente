@@ -5,7 +5,7 @@
           <div class="login-content card">
             <div class="login-form">
                 <h4>{{titulo}}</h4>   
-                <form #cambiocontra="ngForm" (ngSubmit)="modificar()">
+                <form #cambiocontra="ngForm" (ngSubmit)="modificar()" >
                 <div class="form-body">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -34,7 +34,8 @@
                 </div>
                 <div >
                     <button  type="submit" [disabled]="!cambiocontra.form.valid" class="btn btn-primary btn-flat btn-addon ">Modificar <i class="fa fa-edit"></i></button>
-                </div>               
+                </div> 
+             
             </form>
             </div>
           </div>
@@ -78,7 +79,6 @@
     </div>
 </div> 
 <div class="inner-addon left-addon">
-    <i style="color: green" class="fa fa-check"></i>
-    <i style="color: red" class="fa fa-edit"></i>
-    <input type="text" class="form-control" placeholder="Usuario" />
-</div> 	
+    <add-image></add-image>
+</div>  
+	
