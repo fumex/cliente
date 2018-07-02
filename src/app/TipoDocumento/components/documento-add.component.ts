@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { DocumentoModel } from '../models/documento';
 import { DocumentoService } from '../services/documento.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,7 @@ declare var swal:any;
 @Component({
     selector:'documento-add',
     templateUrl:'../views/documento-add.html',
-    providers:[DocumentoService,ToastService]
+    providers:[DocumentoService,ToastService,]
 
 })
 export class TipoDocumentoAddComponent implements OnInit{

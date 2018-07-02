@@ -41,6 +41,8 @@ import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { SucursalAddComponent } from '../../sucursales/components/sucursal-add.component';
 import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit.component';
+import { ClienteAddComponent } from '../../cliente/components/cliente-add.component';
+import { ClienteEditComponent } from '../../cliente/components/cliente-edit.component';
 
 @NgModule({
    
@@ -109,6 +111,14 @@ import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit
                     {
                         path:'sucursal/edit/:id',
                         component:SucursalEditComponent
+                    },
+                    {
+                        path:'cliente',
+                        component:ClienteAddComponent
+                    },
+                    {
+                        path:'cliente/edit/:id',
+                        component:ClienteEditComponent
                     },
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},
