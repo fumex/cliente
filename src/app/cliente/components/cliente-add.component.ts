@@ -33,7 +33,7 @@ export class ClienteAddComponent implements OnInit{
         private toaste:ToastService,
         private toastr:ToastsManager,
         private documentoService:DocumentoService,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
     ){
         this.user=auth.getUser();
         this.estado=true;
@@ -178,4 +178,26 @@ export class ClienteAddComponent implements OnInit{
              });
          },3000);
     }
+
+    uploadFile(event){
+        let elem : FileList = event.target.files;
+        console.log(elem);
+        if(elem.length>0){
+            const file:File=elem[0];
+            console.log(file);
+            const elemSize:number=elem[0].size;
+            const formData: FormData = new FormData();
+            formData.append('myfile',file);
+            console.log(formData);
+            this.clienteService.sendFile(formData).subscribe(
+                result=>{
+                    console.log(result);
+                },
+                error=>{
+                    console.log(<any>error);
+                }
+            );
+        }
+    }
+    
 }
