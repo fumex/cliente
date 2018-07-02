@@ -180,24 +180,19 @@ export class ClienteAddComponent implements OnInit{
     }
 
     uploadFile(event){
-        let elem : FileList = event.target.files;
-        console.log(elem);
-        if(elem.length>0){
-            const file:File=elem[0];
-            console.log(file);
-            const elemSize:number=elem[0].size;
-            const formData: FormData = new FormData();
-            formData.append('myfile',file);
-            console.log(formData);
-            this.clienteService.sendFile(formData).subscribe(
-                result=>{
-                    console.log(result);
-                },
-                error=>{
-                    console.log(<any>error);
-                }
-            );
+        let elem = event.target;  //line 2
+        if(elem.files.length > 0){     //line 3
+          let formData = new FormData();  //line 4
+          formData.append('myfile', elem.files[0]);  //line 5
+          this.clienteService.sendFile(formData).subscribe( //line7
+              (response) => {
+                  //response code
+              console.log(response);
+              });
+    
         }
+        
+    elem.value = ""; //line 8
     }
     
 }

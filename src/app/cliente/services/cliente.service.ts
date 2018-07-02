@@ -33,8 +33,8 @@ export class ClienteService{
     }
 
     //---------------Prueba
-    sendFile(formData:FormData){
-        //let params=JSON.stringify(formData);
+    sendFile(formData:any){
+        let params=JSON.stringify(formData);
         let headers=new HttpHeaders().set('Content-Type','application/json');
         return this.http.post(this.url+'empresa-add',formData,{headers:headers});
     }
