@@ -243,22 +243,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-10 col-lg-offset-3 row">
-                        <div class="form-goup col-lg-4 ">
+                <div>
+                    <div class="col-lg-12 row">
+                        <div class="form-goup col-lg-2 ">
                             <label >Subtotal :</label>
                             <label>{{total | number:'1.2'}}</label>
                         </div>
-                        <div class="form-goup col-lg-5">
-                            <label > IGV 18% :</label>
-                            <label>{{total * 0.18 |number:'1.2'}}</label>
+                        <div class="form-goup col-lg-3">
+                            <div class="inner-addon left-addon">
+                                <i *ngIf="a6==false" style="color: green" class="fa fa-check"></i>
+                                <select class="form-control custom-select" #impu name="impu" (change)="impuesto(impu.value)">
+                                    <option disabled="disabled">Impuesto</option>
+                                    <option *ngFor="let impuesto of impuestos" [value]="impuesto.porcentaje">
+                                        {{impuesto.nombre}} {{impuesto.porcentaje}}%
+                                    </option>
+                                </select>
+                            </div>
+                        </div>:
+                        <div class="form-goup col-lg-3">
+                            <label>{{total*_impuesto | number:'1.2'}}</label>
                         </div>
                         <div class="form-goup col-lg-3">
                             <label> TOTAL:</label>
-                            <label>{{total + total*0.18 | number:'1.2'}}</label>
+                            <label>{{total + total*_impuesto | number:'1.2'}}</label>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-lg-offset-2">
+                    <br>
+                    <div class="col-lg-12">
                         <div class="form-goup">
                             <input type="button" (click)="onSubmit(idProveedor.value,idDocumento.value,recibo.value,idAlmacen.value,tipo.value)" class="btn btn-info btn-responsive" value="Guardar" [disabled]=" val==false || !formProveedor.form.valid">
                         </div>

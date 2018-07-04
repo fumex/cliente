@@ -40,7 +40,7 @@ export class SucursalEditComponent implements OnInit{
         this.title='Editar Sucursal'
         this.user=this.auth.getUser();
         this.tabla();
-        this.sucursal=new SucursalModel(null,'',null,'','','',this.user.id);
+        this.sucursal=new SucursalModel(null,'',null,'','','','',this.user.id);
         this.confirmado=false;
     }
     ngOnInit(){

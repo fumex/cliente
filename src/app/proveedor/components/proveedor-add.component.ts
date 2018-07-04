@@ -39,7 +39,7 @@ export class ProveedorAddComponent implements OnInit{
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.user=auth.getUser();
-        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
+        this.proveedor= new ProveedorModel(null,'','','','','','',null,this.user.id);
         this.estado=true;
         this.tipo = new TipoProveedorModel(null,null,null);
         this.title="Proveedor"
@@ -110,7 +110,7 @@ export class ProveedorAddComponent implements OnInit{
         this.clearProveedor();
     }
     clearProveedor(){
-        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
+        this.proveedor= new ProveedorModel(null,'','','','','','',null,this.user.id);
     }
     //----------------------Lista--------------------------------------
     tabla(){

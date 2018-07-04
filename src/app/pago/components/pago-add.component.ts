@@ -19,6 +19,8 @@ import {inventario} from '../../inventario/modelos/inventario';
 
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ImpuestoService } from '../../impuesto/services/impuesto.service';
+import { ImpuestoModel } from '../../impuesto/models/impuesto';
 
 declare var jQuery:any;
 declare  var $:any;
@@ -43,12 +45,15 @@ export class PagoAddComponent implements OnInit{
     public productos:any=[];
     public confirmado:any=[];
     public user:User;
+    public impuestos:ImpuestoModel[];
+    public _impuesto:number;
 
     public a1:boolean;
     public a2:boolean;
     public a3:boolean;
     public a4:boolean;
     public a5:boolean;
+    public a6:boolean;
     public validacion:boolean;
     public val:boolean;
 
@@ -61,7 +66,7 @@ export class PagoAddComponent implements OnInit{
         private router:Router,
         private documentoService:DocumentoService,
         private auth:AuthService,
-
+        private impuestoService:ImpuestoService,
         private _inventarioservice:InventarioService,
         private toaste:ToastService,
         private toastr:ToastsManager,
@@ -81,6 +86,7 @@ export class PagoAddComponent implements OnInit{
         this.a3=true;
         this.a4=true;
         this.a5=true;
+        this.a6=true;
         this.validacion=false;
         this.val=false;
     }
@@ -90,6 +96,7 @@ export class PagoAddComponent implements OnInit{
         this.getAlmacenes();
         this.listProducto();
         this.getDocumentos();
+        this.getImpuestos();
     }
     getProveedor(){
         this.pagoService.getProveedor().subscribe(
@@ -100,6 +107,21 @@ export class PagoAddComponent implements OnInit{
                 console.log(<any>error)
             }
         );
+    }
+    getImpuestos(){
+        this.impuestoService.getImpuestos().subscribe(
+            result=>{
+                this.impuestos=result;
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    impuesto(impu:number){
+        this._impuesto=impu/100;
+        this.a6=false;
+        this.validar();
     }
     getCodigo(){
         this.pagoService.getCodigo().subscribe(
@@ -122,9 +144,9 @@ export class PagoAddComponent implements OnInit{
 
     onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
         let subtotal=this.sumaTotal();
-        let igv=Number((this.total*0.18).toFixed(2));
-        console.log(igv);
-        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,igv);
+        let impuesto=Number((this.total*this._impuesto).toFixed(2));
+        console.log(impuesto);
+        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,impuesto);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -309,7 +331,9 @@ export class PagoAddComponent implements OnInit{
         if(this.a1==false && this.a2==false && this.a3==false && this.a4==false && this.a5==false){
            this.validacion=true;
            if(this.val==true){
-                this.val=true;
+               if(this.a6==false){
+                    this.val=true;
+               }
               //this.destruir();
            }else{
                this.val=false;

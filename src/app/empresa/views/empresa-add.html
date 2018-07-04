@@ -1,0 +1,48 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+</div>
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="container">
+                            <div class="card-body">
+                                <form #formEmpresa=ngForm (ngSubmit)="onSubmit(Caption,Image)">
+                                    <div class="col-lg-12 row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="Caption">Caption</label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input class="form-control" type="text" #Caption ngModel name="Caption" id="Caption" required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <img [src]="imageUrl" alt="">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)">
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

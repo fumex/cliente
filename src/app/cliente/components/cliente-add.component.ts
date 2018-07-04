@@ -33,14 +33,14 @@ export class ClienteAddComponent implements OnInit{
         private toaste:ToastService,
         private toastr:ToastsManager,
         private documentoService:DocumentoService,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
     ){
         this.user=auth.getUser();
         this.estado=true;
         this.confirmado=true;
         this.title='Agregar Cliente'
         this.toastr.setRootViewContainerRef(vcr);
-        this.cliente= new ClienteModel(null,'','',null,'','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
         this.tabla();
     }
     ngOnInit(){
@@ -99,7 +99,7 @@ export class ClienteAddComponent implements OnInit{
         );
     }
     clearCliente(){
-        this.cliente= new ClienteModel(null,'','',null,'','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
     }
     onCancel(){
         this.clearCliente();

@@ -38,7 +38,7 @@ export class SucursalAddComponent implements OnInit{
         this.confirmado=true;
         this.title="AGREGAR SUCURSAL";
         this.user=this.auth.getUser();
-        this.sucursal=new SucursalModel(null,'',null,'','','',this.user.id);
+        this.sucursal=new SucursalModel(null,'',null,'','','','',this.user.id);
         this.tabla();
     }
     ngOnInit(){
@@ -76,7 +76,7 @@ export class SucursalAddComponent implements OnInit{
     }
 
     onCancel(){
-        this.sucursal= new SucursalModel(null,'',null,'','','',this.user.id);
+        this.sucursal= new SucursalModel(null,'',null,'','','','',this.user.id);
     }
 
     //--------------------Listado de sucursales-----------------------------------
