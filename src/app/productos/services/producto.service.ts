@@ -46,4 +46,21 @@ export class ProductoService{
     listProductos(){
         return this._http.get<any>(this.url+'/productos-get').shareReplay();
     }
+    insertariamgen( listas: Array<File>){
+        if(listas.length>0){
+            let file:File=listas[0];
+            let formdata:FormData=new FormData();
+            
+            formdata.append('photo',file,file.name);
+            
+            let headers = new HttpHeaders();
+            headers.append('Content-Type', 'application/json');
+            //let options = new RequestOptions({ headers: headers });
+            return this._http.post(this.url+'/imagenesproductos', formdata,{headers:headers} ).shareReplay();
+            
+        }
+    }
+    mostaraimagen(name){
+        return this._http.get<any>(this.url+'/imagenesproductos/'+name).shareReplay();
+    }
 }

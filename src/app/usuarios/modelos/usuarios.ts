@@ -12,6 +12,7 @@ export class UsuarioModel{
         public rol:string,
         public confirme:string,
         public nuevo:string,
-        public password:string
+        public password:string,
+        public imagen:string,
 	){}
 }

@@ -37,8 +37,8 @@ export class ProductosListarComponent{
         this.titulo = "productos";
         this.tabla();
         this.user=this.auth.getUser();
-        this.producto=new producto(0,null,'','','',null,this.user.id,null);
-        this.editproducto=new producto(0,null,'','','',null,this.user.id,null);
+        this.producto=new producto(0,null,'','','',null,this.user.id,null,null);
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null);
         this.modificarproducto=null;
         this.ident=null;
         
@@ -122,7 +122,7 @@ export class ProductosListarComponent{
     limpiar(){
         this.ident=null;
         this.modificarproducto=null;
-        this.editproducto=new producto(0,null,'','','',null,this.user.id,null);
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null);
     }
 
     mostrarcategoria(){

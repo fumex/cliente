@@ -17,18 +17,27 @@
                 <div class="card-body">
                     <div class="card-two">
                         <header>
-                            <div class="avatar">
-                                <img src="{{user.imagen}}"/>
+                            <div style="text-align: center" >
+                                <img id="mostrada"  class="imagen_perfil" [src]="imageUrl"/>
+                            </div>
+                            <div *ngIf="filesToUpload==null" style="text-align: center;margin-right: 12px" >
+                                <input id="image" type="file" class="file-input" (change)="verfile($event.target.files,$event)">
+                            </div>
+                            <div  *ngIf="filesToUpload!=null" style="text-align: center" >
+                                <br>
+                                <button  class="btn btn-sm btn-info" (click)="isertarimagen(ususario.numero_documento)"><i class="fa fa-save"></i> Guardar</button>
+                                <button  class="btn btn-sm btn-danger" (click)="cancelar()"><i class="fa fa-cancel"></i> Cancelar</button>
                             </div>
                         </header>
-                        <h3>{{user?.name}} - {{user?.email}}</h3>
+                            <h3>{{user?.name}} - {{user?.email}}</h3>
                         <div class="desc">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla.
+                            <p>Nombre Completo - {{ususario.name }} {{ususario.apellidos}}</p>
+                            <p>Telefono - {{ususario.telefono }} </p>
+                            <p>Documento de Identidad - {{ususario.numero_documento }}</p>
+                            <p>Fecha de Nacimiento - {{ususario.nacimiento }} </p>
                         </div>
                         <div class="contacts">
-                            <a href=""><i class="fa fa-plus"></i></a>
-                            <a href=""><i class="fa fa-whatsapp"></i></a>
-                            <a href=""><i class="fa fa-envelope"></i></a>
+                            <a  [routerLink]="['/admin/modificarcontraseña']" title="configuraciones avanzadas"><i class="fa fa-cogs"></i></a>
                         </div>
                     </div>
                 </div>
