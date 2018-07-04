@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-<form #fordatos="ngForm" (ngSubmit)="alimentarareglodp()">
+<form #fordatos="ngForm" >
     <div *ngIf="cuenta==0 && ap==0" class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -75,10 +75,9 @@
                                                     <input type="text"  #nombre="ngModel" name="nombre" [(ngModel)]="usuario.name" class="form-control" required>
                                                 </div> 
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row p-t-20">
+                                            <br>
+                                            <br>
+                                            <br>
                                             <div  class="col-sm-4">
                                                 <label class="control-label">apellidos</label>    
                                             </div>
@@ -89,13 +88,9 @@
                                                     <input type="text"  #apellidos="ngModel" name="apellidos" [(ngModel)]="usuario.apellidos"  class="form-control"required/>
                                                 </div> 
                                             </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <div class="col-lg-6">
-                                        <div class="row p-t-20">
+                                            <br>
+                                            <br>
+                                            <br>
                                             <div class="col-sm-4">
                                                 <label class="control-label">direccion</label>    
                                             </div>
@@ -140,19 +135,27 @@
                                     <div class="col-lg-6">
                                         <div class="row p-t-20">
                                             <div  class="col-sm-4">
-                                                <label class="control-label">telefono</label>    
                                             </div>
-                                            <div class="col-sm-8">
-                                                <div class="inner-addon left-addon">
-                                                    <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
-                                                    <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
-                                                    <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}">
-                                                </div> 
+                                            <div class="col-sm-8" style="text-align: center" *ngIf="filesToUpload==null">
+                                                <img class="usuarios_imagen"  [src]="image" > 
+                                            </div>
+                                            <div class="col-sm-8" style="text-align: center" *ngIf="filesToUpload!=null">
+                                                <img  class="usuarios_imagen"   [src]="imageUrl" > 
+                                            </div>
+                                            <div *ngIf="titulo!='Mantenimiento de Usuarios'" class="col-sm-4">
+                                                <label class="control-label">Avatar</label>    
+                                            </div>
+                                            <div *ngIf="titulo=='Mantenimiento de Usuarios'" class="col-sm-4">
+                                            </div>
+                                            <div *ngIf="titulo!='Mantenimiento de Usuarios'" class="col-sm-8">
+                                                <input type="file" id="image" (change)="mostarriname($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                            </div>
+                                            <div *ngIf="titulo=='Mantenimiento de Usuarios'" class="col-sm-8">
                                             </div>
                                             <br>
                                             <br>
                                             <br>
-                                            <div  class="col-sm-4">
+                                             <div  class="col-sm-4">
                                                 <label class="control-label">documento(numero)</label>    
                                             </div>
                                             <div class="col-sm-8">
@@ -165,9 +168,22 @@
                                             <br>
                                             <br>
                                             <br>
+                                            <div  class="col-sm-4">
+                                                <label class="control-label">telefono</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text"  #telefono="ngModel" name="telefono" [(ngModel)]="usuario.telefono" class="form-control" required pattern="[0-9]{1}[0-9]{8}">
+                                                </div> 
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
                                             <div style="text-align: right;padding-right: 50px" class="col-sm-12">
                                                 <button *ngIf="titulo=='Mantenimiento de Usuarios'" style="margin-right: 10px"  (click)="volvertablausuarios()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon "><i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                                <button  type="submit" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>  
+                                                <button  (click)="alimentarareglodp()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">siguiente <i class="fa fa-arrow-circle-right"></i></button>  
                                             </div>
                                         </div>
                                     </div>
@@ -272,7 +288,7 @@
     </div>                  
 </form>
 
-<form  #formvalidacion="ngForm" (ngSubmit)="guardarusuario(usuario.password,usuario.password)">
+<form  #formvalidacion="ngForm" (ngSubmit)="isertarimagen()">
     <div  *ngIf="cuenta!=0 && ap==0 && titulo!='Mantenimiento de Usuarios'" class="main-wrapper">
         <div class="unix-login">
             <div class="row justify-content-center">

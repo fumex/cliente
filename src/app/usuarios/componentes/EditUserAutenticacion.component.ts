@@ -49,7 +49,7 @@ export class EditUsuariosp implements OnInit {
     ) { 
         this.user=this.authService.getUser();
         this.elementRef = myElement;
-        this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
         this.titulo=this.user.email;
         this.mostrar=null;
         this.paswor=null;
@@ -97,7 +97,7 @@ export class EditUsuariosp implements OnInit {
     
     }
     limpiar(){
-        this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
     }
     mostraralmacen(){
         let i=0;

@@ -12,8 +12,10 @@ import { User } from '../../auth/interfaces/user.model';
 import {OrdenPedidosService} from '../../orden-de-pedido/services/Ordendepedido.service';
 import {Router,ActivatedRoute,Params}from '@angular/router';
 
+
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { environment } from "../../../environments/environment";
 
 declare var jQuery:any;
 declare var $:any;
@@ -42,6 +44,15 @@ export class usuarioscomponent{
     public nombre;
     public fecha;
     public iguales;
+    public filesToUpload:File[];
+    public text;
+    public image:any;
+    public url;
+    public ruta;
+    public filear;
+    public res:any;
+    imageUrl: string = "assets/images/1.png";
+    fileToUpload:File = null;
     constructor(
         private _UsuarioService:UsuarioService,
         private _DocumentoService:DocumentoService,
@@ -56,7 +67,7 @@ export class usuarioscomponent{
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','',null);
         this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
         //this.documentos=new DocumentoModel(null,null,null);
         this.titulo="Datos Personales"
@@ -69,12 +80,80 @@ export class usuarioscomponent{
         this.id=0;
         this.fecha=null;
         this.iguales=false;
+        this.url=environment.api_url; 
+        this.filesToUpload=null;  
+        this.image=this.url+'/imagenes/2.png';
     }
     ngOnInit(){
         this.mostradocuemnto();
         this.mostrarsucursal();
         this.fechaactual();
+        
     }
+    mostarriname(file: FileList,fileInput: any){
+        this.filear=document.getElementById('image');
+        var filePath = this.filear.value;
+        console.log(file[0].size);
+        var allowedExtensions = /(.jpg|.jpeg|.png)$/i;
+       
+        if(!this.filear.value){
+            console.log('nada');
+            this.filesToUpload=null;
+        }else{
+            if(file[0].size> 2000000){
+                console.log('muy granmde');
+                this.filesToUpload=null;
+                this.filear.value="";
+            }else{
+                if(!allowedExtensions.exec(filePath)){
+                    console.log('no entro')
+                    this.filesToUpload=null;
+                    this.filear.value="";
+                    return false;
+                }else{
+                    console.log('entro');
+                    this.filesToUpload = fileInput.target.files;
+                    this.fileToUpload = file.item(0);
+                    var reader = new FileReader();
+                    reader.onload = (event:any) => {
+                    this.imageUrl = event.target.result;
+                    }
+
+                    reader.readAsDataURL(this.fileToUpload);
+                }
+            }
+        }
+    }
+    isertarimagen(dni){
+        dni=this.usuario.numero_documento;  
+        
+        if(this.filesToUpload==null){
+            this.usuario.imagen='2.png';
+            this.guardarusuario();
+        }else{
+            this._UsuarioService.insertariamgen(this.filesToUpload,dni).subscribe(
+                respuesta=>{
+                    
+                    this.res=respuesta;
+                    console.log(this.res);
+                    if(this.res.code==200){
+                        this.usuario.imagen=this.res.name+this.usuario.numero_documento+'.'+this.res.extencion;
+                        this.guardarusuario();
+
+                    }
+                },
+                error=>{
+                    console.log(<any>error);
+                }
+            );  
+        }
+           
+    }
+    getimage(name){
+        this.image=this.url+'/imagenes/'+name;
+        console.log('get'+name);
+    }
+    
     fechaactual(){
         this._OrdenPedidosService.getfecha().subscribe(
             respuesta=>{
@@ -127,7 +206,7 @@ export class usuarioscomponent{
         this.id=0;
         console.log(this.DetalleUsuario);
     }
-    guardarusuario(pas1,pas2){
+    guardarusuario(){
         this.nombre =document.getElementById('emailunico');
         this.id=0;
         this.paswor =document.getElementById('pasword');
@@ -137,7 +216,7 @@ export class usuarioscomponent{
             this._UsuarioService.addusuario(this.usuario).subscribe(
             response=>{
                 console.log(response);
-                this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','');
+                this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','',null);
                 if(response.code===200){
                     console.log("entro al if");
                    this.guardardetalle();
@@ -212,7 +291,7 @@ export class usuarioscomponent{
     }
     limpiar(){
         this.cuenta=0;
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','',null);
         this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
         let numero=this.DetalleUsuario.length;
         let indice=0;

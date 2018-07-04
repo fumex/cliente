@@ -71,4 +71,12 @@ export class UsuarioService{
     mostaraimagen(name){
         return this._http.get<any>(this.url+'/imagenes/'+name).shareReplay();
     }
+    updateimagen(id,usuario:any){
+        let json = JSON.stringify(usuario);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/modificarimagen/'+id,params,{headers:headers});
+    }
 }

@@ -3,213 +3,323 @@
         <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
-<div  class="container-fluid">
-        <div class="col-lg-12">
-            <div  class="card card-outline-primary">
-                <div class="card-body">
-                    <form #formProducto="ngForm"  action="#">
+<div  class="container-fluid" *ngIf="modificarproducto==null">
+    <div class="col-lg-12">
+        <div  class="card card-outline-primary">
+            <div class="card-body">
+                <form #formProducto="ngForm"  action="#">
                         <!--<div   *ngIf="!formProducto.form.valid &&  nombre.touched &&  Descripcion.touched " class="alert alert-danger">
                             <span style="color:black">rellenar todos los campo requeridos(<label style="color: red" >*</label>)</span>
                         </div>-->
-                        <div class="form-horizonta">
-                            <div class="col-lg-12 row">
-                                <div class="col-lg-6">
-                                    <div class="row p-t-20">
-                                        <div class="col-sm-4">
-                                            <label class="control-label">Nombre:</label>    
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div class="inner-addon left-addon">
-                                                <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
-                                                <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                                <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
-                                            </div>  
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <div class="col-sm-4">
-                                            <label class="control-label">Descripción</label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div class="inner-addon left-addon">
-                                                <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
-                                                <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
-                                                <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" placeholder="escriba una descripcion" required>
-                                            </div> 
-                                        </div>  
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Nombre:</label>    
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
+                                    </div>  
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Descripción</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="agregarpro.descripcion" class="form-control" placeholder="escriba una descripcion" required>
+                                    </div> 
+                                </div>  
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">Unidad de media</label>
+                                </div>
+                                <div *ngIf="llamarunidad==null" class="col-sm-5">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                    </div> 
+                                </div>  
+                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-3">
+                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                </div>
+                                 <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
+                                    <div class="form-group">
+                                        <unidades></unidades>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="row p-t-20">
-                                        <div *ngIf="llamarcategoria==null" class="col-sm-4">
-                                            <label class="control-label">Categoria:</label>    
-                                        </div>
-                                        <div *ngIf="llamarcategoria==null" class="col-sm-4">
-                                             <div class="inner-addon left-addon">
-                                                <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
-                                                <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
-                                                <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
-                                                        <option   disabled="disabled">--seleccione la categoria</option>    
-                                                    <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
-                                                </select>
-                                            </div>  
-                                        </div>
-                                        <div *ngIf="llamarcategoria==null" style="text-align: left;" class="col-sm-4" >
-                                            <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
-                                            <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
-                                        </div>
-                                          <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
-                                            <categoria></categoria>
-                                        </div> 
-                                        <div *ngIf="aparecereditcate==2" class="col-sm-12" >
-                                                <categoria-edit></categoria-edit>
-                                        </div> 
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <div *ngIf="llamarunidad==null" class="col-sm-4">
-                                            <label class="control-label">Unidad de media</label>
-                                        </div>
-                                        <div *ngIf="llamarunidad==null" class="col-sm-4">
-                                            <div class="inner-addon left-addon">
-                                                <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
-                                                <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
-                                                <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                        <option disabled="disabled">--seleccione la unidad</option>    
-                                                    <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                                </select>
-                                            </div> 
-                                        </div>  
-                                        <div *ngIf="llamarunidad==null" style="text-align: left;" class="col-sm-4">
-                                            <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
-                                            <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
-                                        </div>
-                                         <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
-                                            <div class="form-group">
-                                                <unidades></unidades>
-                                            </div>
-                                        </div>
-                                        <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
-                                                <unidades-edit></unidades-edit>
-                                        </div> 
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
-                                            <label class="control-label">cantidad</label>
-                                        </div>
-                                        <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
-                                            <div class="inner-addon left-addon">
-                                                <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
-                                                <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
-                                                <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
-                                            </div> 
-                                        </div>  
-                                    </div>
+                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
+                                        <unidades-edit></unidades-edit>
+                                </div> 
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarunidad==null && unidad==null" class="col-sm-4" >
                                 </div>
-                            </div> 
-                            <br>
-                            <br>  
-                            <div style="text-align: center" >
-                                <button (click)="agregarproducto()" [disabled]="!formProducto.form.valid || (aparecereditunidad==null && llamarunidad!=null) || (llamarcategoria!=null && aparecereditcate==null) || aparecereditunidad==2 || aparecereditcate==2"  class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
-                                <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> Cancelar</button>
+                                <div *ngIf="llamarunidad==null && unidad==null" class="col-sm-8" >            
+                                </div> 
+                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">cantidad</label>
+                                </div>
+                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
+                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
+                                    </div> 
+                                </div> 
                             </div>
                         </div>
-                    </form>
-                    <hr>
-                    <h4 class="card-title">Exportar Información</h4>
-                    <div class="table-responsive m-t-40">
-                        <div *ngIf="!productos">
-                                cargando listado de productos....
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div  class="col-sm-4">
+                                </div>
+                                <div class="col-sm-8" style="text-align: center" >
+                                    <img  class="productos_imagen"   [src]="imageUrl" > 
+                                </div>
+                                <div  class="col-sm-4">
+                                    <label class="control-label">Imagen</label>    
+                                </div>
+                                <div  class="col-sm-8">
+                                    <input type="file" id="image" (change)="mostarriname($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                    <label class="control-label">Categoria:</label>    
+                                </div>
+                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                     <div class="inner-addon left-addon">
+                                        <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
+                                                <option   disabled="disabled">--seleccione la categoria</option>    
+                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
+                                        </select>
+                                    </div>  
+                                </div>
+                                <div *ngIf="llamarcategoria==null" style="text-align: left;" class="col-sm-4" >
+                                    <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
+                                </div>
+                                <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
+                                    <categoria></categoria>
+                                </div> 
+                                <div *ngIf="aparecereditcate==2" class="col-sm-12" >
+                                        <categoria-edit></categoria-edit>
+                                </div>                                     
+                            </div>
                         </div>
-                            <div *ngIf="productos">
-                            <form #formagregarProducto="ngForm" (ngSubmit)="editarproduto(productos.id)">
-                                <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                    <thead style="text-align: center">
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>cantidad</th>
-                                            <th>unidad de medida</th>
-                                            <th>categoria</th>
-                                            <th>descripcion</th>
-                                            <th ><a *ngIf="modificarproducto!=null">Guardar?</a></th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot style="text-align: center">
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>cantidad</th>
-                                            <th>unidad de medida</th>
-                                            <th>categoria</th>
-                                            <th>descripcion</th>
-                                        <th></th> 
-                                    </tr>
-                                    </tfoot>
-                                    <tbody style="text-align: center" > 
-                                    <tr *ngFor="let producto of productos">
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.nombre_producto}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input #nombre="ngModel" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editproducto.nombre_producto" #nombre>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.cantidad}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input type="number"  #cantidad="ngModel" name="cantidad" style="width:100%; height: 38px;" [(ngModel)]="editproducto.cantidad" #cantidad required/>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.abreviacion}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <select #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.unidadmedida)" name="unidadmedida" [(ngModel)]="editproducto.id_unidad" class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" required>
-                                                    <option disabled="disabled"><b>--unidad de medida</b></option>
-                                                    <option *ngFor="let unidades of unidadmodelo" value="{{unidades.id}}"><b>{{unidades.abreviacion}}</b></option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.nombre}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <select style="width:100%; height: 38px;" #cates="ngModel" name="cates" [(ngModel)]="editproducto.id_categoria"  tabindex="0" SelectedIndex="-1" required> 
-                                                        <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="modificarproducto!=producto.id">{{producto.descripcion}}</td>
-                                        <td *ngIf="modificarproducto==producto.id" style="padding: 0px;">
-                                            <div style="margin-right: 0px;">
-                                                <div style="padding-right: 0px;">
-                                                    <input  #Descripcion="ngModel" name="Descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editproducto.descripcion" #direccion>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td  style="width: 80px;">
-                                        <div *ngIf="modificarproducto!=producto.id">
-                                            <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(producto.id)"><i class="fa fa-edit"></i></a>                                            
-                                            <a style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(producto.id)" ><i class="fa fa-trash"></i></a>
-                                        </div>
-                                        <div *ngIf="modificarproducto==producto.id">
-                                            <button style="color: white" class="btn btn-sm btn-info" type="submit"><i class="fa fa-check"></i></button>                                            
-                                            <a style="color: white" class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
-                                        </div>
-                                        </td>     
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                        </div>
+                    </div> 
+                    <br>
+                    <br>  
+                    <div style="text-align: center" >
+                        <button (click)="isertarimagen()" [disabled]="!formProducto.form.valid || (aparecereditunidad==null && llamarunidad!=null) || (llamarcategoria!=null && aparecereditcate==null) || aparecereditunidad==2 || aparecereditcate==2"  class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
+                        <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> Cancelar</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <h4 class="card-title">Exportar Información</h4>
+            <div class="table-responsive m-t-40">
+                <div *ngIf="!productos">
+                        cargando listado de productos....
+                </div>
+                    <div *ngIf="productos">
+                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                            <thead style="text-align: center">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>cantidad</th>
+                                    <th>unidad de medida</th>
+                                    <th>categoria</th>
+                                    <th>descripcion</th>
+                                    <th ><a *ngIf="modificarproducto!=null">Guardar?</a></th>
+                                </tr>
+                            </thead>
+                            <tfoot style="text-align: center">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>cantidad</th>
+                                    <th>unidad de medida</th>
+                                    <th>categoria</th>
+                                    <th>descripcion</th>
+                                <th></th> 
+                            </tr>
+                            </tfoot>
+                            <tbody style="text-align: center" > 
+                            <tr *ngFor="let producto of productos">
+                                <td >{{producto.nombre_producto}}</td>
+                                <td >{{producto.cantidad}}</td>
+                                <td >{{producto.abreviacion}}</td>
+                                <td >{{producto.nombre}}</td>
+                                <td >{{producto.descripcion}}
+                                <td  style="width: 80px;">
+                                    <div>
+                                        <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(producto.id)"><i class="fa fa-edit"></i></a>                                            
+                                        <a style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(producto.id)" ><i class="fa fa-trash"></i></a>
+                                    </div>
+                                </td>     
+                            </tr>
+                        </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
-
-
+<div class="container-fluid" *ngIf="modificarproducto!=null">
+    <div class="col-lg-12">
+        <div  class="card card-outline-primary">
+            <div class="card-body">
+                <div style="text-align: center">
+                    <h3 style=" text-decoration: underline;color:#3f70f8">Editar Producto</h3>
+                </div>
+               
+                <form #formProductoeditar2="ngForm"  action="#">
+        <!--<div   *ngIf="!formProducto.form.valid &&  nombre.touched &&  Descripcion.touched " class="alert alert-danger">
+            <span style="color:black">rellenar todos los campo requeridos(<label style="color: red" >*</label>)</span>
+        </div>-->
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Nombre:</label>    
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                        <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="editproducto.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
+                                    </div>  
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Descripción</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="editproducto.descripcion" class="form-control" placeholder="escriba una descripcion" required>
+                                    </div> 
+                                </div>  
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">Unidad de media</label>
+                                </div>
+                                <div *ngIf="llamarunidad==null" class="col-sm-5">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(editproducto.id_unidad)" name="unidadmedida" [(ngModel)]="editproducto.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                    </div> 
+                                </div>  
+                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-3">
+                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="unidad!=null" (click)="llamarunid(editproducto.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                </div>
+                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
+                                    <div class="form-group">
+                                        <unidades></unidades>
+                                    </div>
+                                </div>
+                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
+                                        <unidades-edit></unidades-edit>
+                                </div> 
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarunidad==null"class="col-sm-4">
+                                    <label class="control-label">cantidad</label>
+                                </div>
+                                <div *ngIf="llamarunidad==null" class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
+                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="editproducto.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
+                                    </div> 
+                                </div> 
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div  class="col-sm-4">
+                                </div>
+                                <div class="col-sm-8" style="text-align: center" >
+                                    <img  class="productos_imagen"   [src]="imageedit" > 
+                                </div>
+                                <div  class="col-sm-4">
+                                    <label class="control-label">Imagen</label>    
+                                </div>
+                                <div  class="col-sm-8">
+                                    <input type="file" id="imageeditar" (change)="editarimagen($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                    <label class="control-label">Categoria:</label>    
+                                </div>
+                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(editproducto.id_categoria)" name="cates" [(ngModel)]="editproducto.id_categoria" class="form-control custom-select" required>
+                                                <option   disabled="disabled">--seleccione la categoria</option>    
+                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
+                                        </select>
+                                    </div>  
+                                </div>
+                                <div *ngIf="llamarcategoria==null" style="text-align: left;" class="col-sm-4" >
+                                    <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="modificarcategoria!=null" (click)="llamarcate(editproducto.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
+                                </div>
+                                <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
+                                    <categoria></categoria>
+                                </div> 
+                                <div *ngIf="aparecereditcate==2" class="col-sm-12" >
+                                        <categoria-edit></categoria-edit>
+                                </div> 
+                                
+                            </div>
+                        </div>
+                    </div> 
+                    <br>
+                    <br>  
+                    <div style="text-align: center" >
+                        <button (click)="insertareditimage(editproducto.id)" [disabled]="!formProductoeditar2.form.valid || (aparecereditunidad==null && llamarunidad!=null) || (llamarcategoria!=null && aparecereditcate==null) || aparecereditunidad==2 || aparecereditcate==2"  class="btn btn-info"> <i class="fa fa-cloud-upload"></i> Actualizar</button>
+                        <button (click)="cancelar()" class="btn btn-success"> <i class="fa fa-ban"></i> Cancelar</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

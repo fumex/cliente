@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import {DocumentoModel} from '../../TipoDocumento/models/documento';
 import {DocumentoService}from '../../TipoDocumento/services/documento.service';
 import { User } from '../../auth/interfaces/user.model';
+import { environment } from "../../../environments/environment";
 
 declare var jQuery:any;
 declare var $:any;
@@ -35,6 +36,15 @@ export class EditarUsuarioPersonal{
     public count;
     public siguiente;
     public usuarios:UsuarioModel;
+    public filesToUpload:File[];
+    public text;
+    public image:any;
+    public url;
+    public ruta;
+    public filear;
+    public res:any;
+    imageUrl: string = "assets/images/1.png";
+    fileToUpload:File = null;
     constructor(
         private _UsuarioService:UsuarioService,
         private _SucursalService:SucursalService,
@@ -42,7 +52,7 @@ export class EditarUsuarioPersonal{
         private _DocumentoService:DocumentoService,
     ){
 
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','',null);
         this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
 
         //this.documentos=new DocumentoModel(null,null,null);
@@ -55,7 +65,9 @@ export class EditarUsuarioPersonal{
         this.id2=0;
         this.count=0;
         this.idusuario=0
-     
+        this.url=environment.api_url; 
+        this.filesToUpload=null;  
+        this.image=this.url+'/imagenes/2.png';
     }
     ngOnInit(){
         this.mostrarsucursal();
@@ -63,12 +75,14 @@ export class EditarUsuarioPersonal{
         this.mostrarusuarios();
         console.log(this.DetalleUsuario.length);  
     }
+
     confirmaractualizar(id){
         this.idusuario=id;
         this.cuenta=0;
         this.ap=0;
         this.mostraruduario(id);
         this.mostrardetalleusuario(id); 
+        
     }
     borrar(id){
         this._UsuarioService.deshabilitarusuario(id).subscribe(
@@ -110,6 +124,8 @@ export class EditarUsuarioPersonal{
             response=>{
                 
                 this.usuario=response;
+                console.log(response)
+                this.image=this.url+'/imagenes/'+this.usuario.imagen;
             },
             error=>{
                 console.log(<any>error);
@@ -237,7 +253,7 @@ export class EditarUsuarioPersonal{
         this.cuenta=0;
         this.id=0;
         this.id2=0;
-        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','');
+        this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','','','','','',null);
         this.detalleusu=new DetalleUsuarioModel(null,0,this.idusuario,null);
         let numero=this.DetalleUsuario.length;
         while(this.id<numero){
@@ -349,7 +365,7 @@ export class EditarUsuarioPersonal{
             }
           });
     }
-    guardarusuario(pas1,pas2){
+    guardarusuario(){
         
     }
   
