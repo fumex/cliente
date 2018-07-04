@@ -16,29 +16,24 @@
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="col-md-4">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-secondary" (click)="opcion2()">Persona</button>
+                                                        <button type="button" class="btn btn-secondary" (click)="opcion1()">Empresa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
                                                     <label class="control-label" >
-                                                        Nombre
+                                                        {{tipo}}
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="inner-addon left-addon">
                                                         <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="cliente.nombre" placeholder="Nombre de Cliente" class="form-control" required/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <label class="control-label" >
-                                                        Apellidos
-                                                    </label>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="inner-addon left-addon">
-                                                        <i *ngIf="apellido.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!apellido.valid && apellido.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #apellido="ngModel" name="apellido" [(ngModel)]="cliente.apellido" placeholder="Apellidos de clientes" class="form-control" required/>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="cliente.nombre" placeholder="{{tipo_cliente}}" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,7 +153,6 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Nombre</th>
-                                                <th>Apellidos</th>
                                                 <th>Documento</th>
                                                 <th>Nro Documento</th>
                                                 <th>Direccion</th>
@@ -173,7 +167,6 @@
                                             <tr *ngFor="let cliente of clientes ; let $index=index">
                                                 <td>{{$index+1}}</td>
                                                 <td>{{cliente.nombre}}</td>
-                                                <td>{{cliente.apellido}}</td>
                                                 <td>{{cliente.documento}}</td>
                                                 <td>{{cliente.nro_documento}}</td>
                                                 <td>{{cliente.direccion}}</td>                                

@@ -12,7 +12,7 @@ export class TipoPagoService{
     updateTipoPago(id, tipo_pago:TipoPagoModel):Observable<any>{
         let params=JSON.stringify(tipo_pago);
         let headers=new HttpHeaders().set('Content-Type','application/json');
-        return this.http.post(`${environment.api_url}/moneda-update/`+id,params,{headers:headers});
+        return this.http.post(`${environment.api_url}/tipo_pago-update/`+id,params,{headers:headers});
     }
     addTipoPago(tipo_pago:TipoPagoModel):Observable<any>{
         let params=JSON.stringify(tipo_pago);

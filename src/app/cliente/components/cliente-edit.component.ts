@@ -38,7 +38,7 @@ export class ClienteEditComponent implements OnInit{
         this.title='Editar Cliente'
         this.toastr.setRootViewContainerRef(vcr);
         this.tabla();
-        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
     }
     ngOnInit(){
         this.getCliente();
