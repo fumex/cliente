@@ -8,6 +8,7 @@ export class ClienteModel{
         public direccion:string,
         public email:string,
         public telefono:string,
+        public telefono2:string,
         public id_user:number
     ){}
 }

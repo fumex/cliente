@@ -6,6 +6,7 @@ export class SucursalModel{
         public descripcion: string,
         public direccion: string,
         public telefono:string,
+        public telefono2:string,
         public id_user:number,
     ){}
 }   

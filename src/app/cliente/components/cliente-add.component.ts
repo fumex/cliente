@@ -40,7 +40,7 @@ export class ClienteAddComponent implements OnInit{
         this.confirmado=true;
         this.title='Agregar Cliente'
         this.toastr.setRootViewContainerRef(vcr);
-        this.cliente= new ClienteModel(null,'','',null,'','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
         this.tabla();
     }
     ngOnInit(){
@@ -99,7 +99,7 @@ export class ClienteAddComponent implements OnInit{
         );
     }
     clearCliente(){
-        this.cliente= new ClienteModel(null,'','',null,'','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
     }
     onCancel(){
         this.clearCliente();
@@ -178,21 +178,4 @@ export class ClienteAddComponent implements OnInit{
              });
          },3000);
     }
-
-    uploadFile(event){
-        let elem = event.target;  //line 2
-        if(elem.files.length > 0){     //line 3
-          let formData = new FormData();  //line 4
-          formData.append('myfile', elem.files[0]);  //line 5
-          this.clienteService.sendFile(formData).subscribe( //line7
-              (response) => {
-                  //response code
-              console.log(response);
-              });
-    
-        }
-        
-    elem.value = ""; //line 8
-    }
-    
 }

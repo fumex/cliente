@@ -43,6 +43,11 @@ import { SucursalAddComponent } from '../../sucursales/components/sucursal-add.c
 import { SucursalEditComponent } from '../../sucursales/components/sucursal-edit.component';
 import { ClienteAddComponent } from '../../cliente/components/cliente-add.component';
 import { ClienteEditComponent } from '../../cliente/components/cliente-edit.component';
+import { EmpresaAddComponent } from '../../empresa/components/empresa-add.component';
+import { ImpuestoAddComponent } from '../../impuesto/components/impuesto-add.component';
+import { ImpuestoEditComponent } from '../../impuesto/components/Impuesto-edit.component';
+import { MonedaAddComponent } from '../../moneda/components/moneda-add.component';
+import { MonedaEditComponent } from '../../moneda/components/moneda-edit.component';
 
 @NgModule({
    
@@ -119,6 +124,26 @@ import { ClienteEditComponent } from '../../cliente/components/cliente-edit.comp
                     {
                         path:'cliente/edit/:id',
                         component:ClienteEditComponent
+                    },
+                    {
+                        path:'empresa',
+                        component:EmpresaAddComponent
+                    },
+                    {
+                        path:'impuesto',
+                        component:ImpuestoAddComponent
+                    },
+                    {
+                        path:'impuesto/edit/:id',
+                        component:ImpuestoEditComponent
+                    },
+                    {
+                        path:'moneda',
+                        component:MonedaAddComponent
+                    },
+                    {
+                        path:'moneda/edit/:id',
+                        component:MonedaEditComponent
                     },
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},

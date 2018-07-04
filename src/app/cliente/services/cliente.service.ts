@@ -31,11 +31,4 @@ export class ClienteService{
     deleteCliente(id):Observable<any>{
         return this.http.get(this.url+'cliente-delete/'+id).shareReplay();
     }
-
-    //---------------Prueba
-    sendFile(formData:any){
-        let params=JSON.stringify(formData);
-        let headers=new HttpHeaders().set('Content-Type','application/json');
-        return this.http.post(this.url+'empresa-add',formData,{headers:headers});
-    }
 }

@@ -18,7 +18,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="control-label" >
-                                                        Nombre
+                                                        Razon Social
                                                     </label>
                                                 </div>
                                                 <div class="col-md-8">
@@ -63,7 +63,7 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="control-label" >
-                                                        Telefono
+                                                        Telefono Fijo
                                                     </label>     
                                                 </div>
                                                 <div class="col-md-8">
@@ -71,6 +71,20 @@
                                                         <i *ngIf="telefono.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!telefono.valid && telefono.touched" style="color: red" class="fa fa-times"></i>
                                                         <input type="phone" #telefono="ngModel"  name="telefono" [(ngModel)]="proveedor.telefono" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label" >
+                                                        Telefono Movil
+                                                    </label>     
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="telefono2.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!telefono2.valid && telefono2.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="phone" #telefono2="ngModel"  name="telefono2" [(ngModel)]="proveedor.telefono2" maxlength="9" placeholder="Telefono del proveedor" class="form-control" required pattern="[0-9]{1}[0-9]{8}"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -99,6 +113,7 @@
                                                         <i *ngIf="id.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!id.valid && id.touched" style="color: red" class="fa fa-times"></i>
                                                         <select class="form-control custom-select" #id="ngModel" name="id" [(ngModel)]="proveedor.tipo_proveedor" required>
+                                                            <option disabled="disabled" hidden>selecione</option>
                                                             <option *ngFor="let tipo of tipos" [ngValue]="tipo.id" >
                                                                 {{tipo.tipo}} - {{tipo.operacion}}
                                                             </option>               
@@ -118,7 +133,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <select class="form-control custom-select" #operacion required>
-                                                        <option disabled="disabled" hidden>selecione</option>
+                                                        <option disabled="disabled" >selecione</option>
                                                         <option>Servicio</option>
                                                         <option>Proveedor</option>
                                                     </select>
@@ -158,7 +173,8 @@
                                                 <th>Nombre</th>
                                                 <th>Ruc</th>
                                                 <th>Direccion</th>
-                                                <th>telefono</th>
+                                                <th>telefono fijo</th>
+                                                <th>telefono Movil</th>
                                                 <th>email</th>
                                                 <th>Tipo</th>
                                                 <th>Categoria</th>
@@ -171,7 +187,8 @@
                                                 <td>{{proveedor.nombre_proveedor}}</td>
                                                 <td>{{proveedor.ruc}}</td>
                                                 <td>{{proveedor.direccion}}</td>                    
-                                                <td>{{proveedor.telefono}}</td>                    
+                                                <td>{{proveedor.telefono}}</td>
+                                                <td>{{proveedor.telefono2}}</td>                    
                                                 <td>{{proveedor.email}}</td> 
                                                 <td>{{proveedor.tipo}}</td>
                                                 <td>{{proveedor.operacion}}</td>

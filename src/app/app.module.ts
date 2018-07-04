@@ -32,6 +32,9 @@ import { EmpleadoComponent } from './empleado/empleado.component';
 import { EmpleadoModule } from './empleado/empleado.module';
 import { SucursalModule } from './sucursales/sucursal.module';
 import { ClienteModule } from './cliente/cliente.module';
+import { EmpresaModule } from './empresa/empresa.module';
+import { ImpuestoModule } from './impuesto/impuesto.module';
+import { MonedaModule } from './moneda/moneda.module';
 
 
 
@@ -64,7 +67,10 @@ import { ClienteModule } from './cliente/cliente.module';
     ServiciosModule,
     SucursalModule,
     //------------------------
-    ClienteModule
+    ClienteModule,
+    EmpresaModule,
+    ImpuestoModule,
+    MonedaModule
   ],
   providers: [
     AuthGuard,

@@ -40,7 +40,7 @@ export class ProveedorEditComponent implements OnInit{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.title='Editar Proveedor',
-        this.proveedor= new ProveedorModel(null,'','','','','',null,this.user.id);
+        this.proveedor= new ProveedorModel(null,'','','','','','',null,this.user.id);
         this.estado=true;
         this.tabla();
         this.confirmado=false;  
