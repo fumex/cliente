@@ -38,6 +38,7 @@ import { ClienteModule } from './cliente/cliente.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { ImpuestoModule } from './impuesto/impuesto.module';
 import { MonedaModule } from './moneda/moneda.module';
+import { TipoPagoModule } from './tipo_pago/tipo_pago.module';
 
 
 
@@ -74,7 +75,11 @@ import { MonedaModule } from './moneda/moneda.module';
     EmpresaModule,
     ImpuestoModule,
     MonedaModule,
-    detalleModule
+
+    detalleModule,
+
+    TipoPagoModule
+
   ],
   providers: [
     AuthGuard,

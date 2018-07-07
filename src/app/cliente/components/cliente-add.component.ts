@@ -19,6 +19,8 @@ declare var swal:any;
 export class ClienteAddComponent implements OnInit{
     
     public title:string;
+    public tipo:string;
+    public tipo_cliente:string;
     public cliente:ClienteModel;
     public clientes:any=[];
     public user:User;
@@ -38,14 +40,24 @@ export class ClienteAddComponent implements OnInit{
         this.user=auth.getUser();
         this.estado=true;
         this.confirmado=true;
-        this.title='Agregar Cliente'
+        this.title='Agregar Cliente';
+        this.tipo='Nombre';
+        this.tipo_cliente='Nombre de Cliente';
         this.toastr.setRootViewContainerRef(vcr);
-        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
         this.tabla();
     }
     ngOnInit(){
         this.getDocumentos();
         this.getClientes();
+    }
+    opcion1(){
+        this.tipo='Razon Social';
+        this.tipo_cliente='Razon Social Cliente';
+    }
+    opcion2(){
+        this.tipo='Nombre';
+        this.tipo_cliente='Nombre Cliente';
     }
     getDocumentos(){
         this.documentoService.getDocumPersona().subscribe(
@@ -99,7 +111,7 @@ export class ClienteAddComponent implements OnInit{
         );
     }
     clearCliente(){
-        this.cliente= new ClienteModel(null,'','',null,'','','','','',this.user.id);
+        this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
     }
     onCancel(){
         this.clearCliente();

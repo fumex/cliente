@@ -11,31 +11,185 @@
                     <div class="row">
                         <div class="container">
                             <div class="card-body">
-                                <form #formEmpresa=ngForm (ngSubmit)="onSubmit(Caption,Image)">
+                                <form #formEmpresa=ngForm (ngSubmit)="onSubmit(ruc.value)">
                                     <div class="col-lg-12 row">
                                         <div class="col-md-6">
                                             <div class="row">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8" style="text-align: center">
+                                                    <img  class="productos_imagen" [src]="imageUrl" >
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                            </div>
+                                            <br>
+                                            <div class="row ">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8" style="text-align: center">
+                                                    <input type="file" id="image" (change)="viewImage($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
                                                 <div class="col-md-4">
-                                                    <label for="Caption">Caption</label> 
+                                                    <label for="control-label">
+                                                        Nombre
+                                                    </label> 
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <input class="form-control" type="text" #Caption ngModel name="Caption" id="Caption" required>
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="empresa.nombre" placeholder="Nombre de Empresa" class="form-control" required/>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-8">
-                                                    <img [src]="imageUrl" alt="">
-                                                </div>
                                                 <div class="col-md-4">
-                                                    <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)">
-                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <label for="control-label">
+                                                        Ruc
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="ruc.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!ruc.valid && ruc.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #ruc="ngModel" name="ruc" [(ngModel)]="empresa.ruc" placeholder="Ingrese Ruc" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Direccion
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="direccion.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!direccion.valid && direccion.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #direccion="ngModel" name="direccion" [(ngModel)]="empresa.direccion" placeholder="Ingrese Direccion" class="form-control" required/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Pagina Web
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="web.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!web.valid && web.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #web="ngModel" name="web" [(ngModel)]="empresa.web" placeholder="http://www.empresa.com" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Correo Electronico
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #email="ngModel" name="email" [(ngModel)]="empresa.email" placeholder="correo@empresa.com" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Telefono Fijo
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="telefono1.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!telefono1.valid && telefono1.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #telefono1="ngModel" name="telefono1" [(ngModel)]="empresa.telefono1" placeholder="telefono fijo" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Telefono Movil
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="telefono2.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!telefono2.valid && telefono2.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #telefono2="ngModel" name="telefono2" [(ngModel)]="empresa.telefono2" placeholder="telefono Movil" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Departamento
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="departamento.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!departamento.valid && departamento.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #departamento="ngModel" name="departamento" [(ngModel)]="empresa.departamento" placeholder="Ingrese Departamento" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Provincia
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="provincia.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!provincia.valid && provincia.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #provincia="ngModel" name="provincia" [(ngModel)]="empresa.provincia" placeholder="Ingrese Provincia" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Distrito
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="distrito.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!distrito.valid && distrito.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #distrito="ngModel" name="distrito" [(ngModel)]="empresa.distrito" placeholder="Ingrese Distrito" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-lg-12 row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4" style="text-align: center">
+                                            <button class="btn btn-info">Guardar</button>
+                                            <button class="btn btn-inverse">Cancelar</button>
+                                        </div>
+                                        <div class="col-md-4"></div>
                                     </div>
                                 </form>
                             </div>

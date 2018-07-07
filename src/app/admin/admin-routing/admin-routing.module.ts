@@ -48,6 +48,8 @@ import { ImpuestoAddComponent } from '../../impuesto/components/impuesto-add.com
 import { ImpuestoEditComponent } from '../../impuesto/components/Impuesto-edit.component';
 import { MonedaAddComponent } from '../../moneda/components/moneda-add.component';
 import { MonedaEditComponent } from '../../moneda/components/moneda-edit.component';
+import { TipoPagoAddComponent } from '../../tipo_pago/components/tipo_pago-add.component';
+import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit.component';
 
 @NgModule({
    
@@ -144,6 +146,14 @@ import { MonedaEditComponent } from '../../moneda/components/moneda-edit.compone
                     {
                         path:'moneda/edit/:id',
                         component:MonedaEditComponent
+                    },
+                    {
+                        path:'tipo_pago',
+                        component:TipoPagoAddComponent
+                    },
+                    {
+                        path:'tipo_pago/edit/:id',
+                        component:TipoPagoEditComponent
                     },
                     { path:'productos',component:ProductosComponent},
                     { path:'productos/list',component:ProductosListarComponent},
