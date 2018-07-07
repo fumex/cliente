@@ -15,6 +15,19 @@
                     <div class="col-lg-12 row">
                         <div class="col-lg-6">
                             <div class="row p-t-20">
+
+                                <div class="col-sm-12" style="text-align: center" >
+                                    <img  class="productos_imagen"   [src]="imageUrl" > 
+                                </div>
+                                <div  class="col-sm-4">
+                                    <label class="control-label">Imagen</label>    
+                                </div>
+                                <div  class="col-sm-8">
+                                    <input type="file" id="image" (change)="mostarriname($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                </div>
+                                <br>
+                                <br>
+                                <br>
                                 <div class="col-sm-4">
                                     <label class="control-label">Nombre:</label>    
                                 </div>
@@ -25,6 +38,75 @@
                                         <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="agregarpro.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
                                     </div>  
                                 </div>
+                                <br>      
+                                <br>
+                                <br>            
+                                <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">Unidad de media</label>
+                                </div>
+                                <div *ngIf="llamarunidad==null" class="col-sm-6">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                    </div> 
+                                </div>  
+                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-2">
+                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm" style="margin-left: -30px;"> <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">cantidad</label>
+                                </div>
+                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
+                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
+                                    </div> 
+                                </div>
+                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
+                                    <div class="form-group">
+                                        <unidades></unidades>
+                                    </div>
+                                </div>
+                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
+                                    <unidades-edit></unidades-edit> 
+                                </div>  
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
+                                    <label class="control-label">Categoria:</label>    
+                                </div>
+                                <div *ngIf="llamarcategoria==null" class="col-sm-6">
+                                     <div class="inner-addon left-addon">
+                                        <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
+                                                <option   disabled="disabled">--seleccione la categoria</option>    
+                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
+                                        </select>
+                                    </div>  
+                                </div>
+                                <div *ngIf="llamarcategoria==null" style="text-align: right;" class="col-sm-2" >
+                                    <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm " style="margin-left: -30px;">  <i class="fa fa-plus"></i></a>
+                                    <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
+                                </div>
+                                <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
+                                    <categoria></categoria>
+                                </div> 
+                                <div *ngIf="aparecereditcate==2" class="col-sm-12" >
+                                        <categoria-edit></categoria-edit>
+                                </div>  
                                 <br>
                                 <br>
                                 <br>
@@ -40,90 +122,93 @@
                                 </div>  
                                 <br>
                                 <br>
-                                <br>
-                                <div *ngIf="llamarunidad==null" class="col-sm-4">
-                                    <label class="control-label">Unidad de media</label>
+                                <br> 
+                                <div  class="col-sm-4">
+                                    <label class="control-label">IGV:</label>    
                                 </div>
-                                <div *ngIf="llamarunidad==null" class="col-sm-5">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
-                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                <option disabled="disabled">--seleccione la unidad</option>    
-                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                <div class="col-sm-8">
+                                     <div class="inner-addon left-addon">
+                                        <i *ngIf="igv.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!igv.valid && igv.touched" style="color: red" class="fa fa-times"></i>
+                                        <select  id="igvselect" #igv="ngModel" (change)="agregardetalleimpuestoigv(detalleimpu.id_impuesto)" name="igv" [(ngModel)]="detalleimpu.id_impuesto" class="form-control custom-select" required>
+                                                <option  disabled="disabled">--selecciona el tipo de igv</option>    
+                                            <option  *ngFor="let ig of impuestoigv" value="{{ig.id}}"><b>{{ig.nombre}}</b></option>
                                         </select>
-                                    </div> 
-                                </div>  
-                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-3">
-                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
+                                    </div>  
                                 </div>
-                                 <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
-                                    <div class="form-group">
-                                        <unidades></unidades>
+                                <br>
+                                <br>
+                                <br>
+                                <div *ngIf="mostratablaotros==null"  class="col-sm-4">
+                                    <button  class="btn btn-primary btn-sm" (click)="mostratablaimpuestos()" style="background: #3584f0;border: 1px solid #3636f6;" ><i class="fa fa-arrow-circle-down"></i> mas impuestos</button>
+                                </div>
+                               
+                                <div  *ngIf="mostratablaotros!=null" class="col-sm-12">
+                                    <div style="text-align: right" class="col-sm-12">
+                                        <table style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th  style="text-align: center">
+                                                        Nombre
+                                                        <hr>
+                                                    </th>
+                                                    <th  style="text-align: center">porcentage<hr></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let imotro of impuestrootro;let $index=index">
+                                                    <td style="width : 50px;">
+                                                        <div *ngIf="imotro.id!=null"><button (click)="agregardetalleimpuestootro($index,imotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                        <div *ngIf="imotro.id==null" ><button (click)="quitardetalleimpuestootro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                    </td>
+                                                    <td  style="text-align: center"><a >{{imotro.nombre}}</a></td>
+                                                    <td  style="text-align: center"><a >{{imotro.porcentaje}}%</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
-                                        <unidades-edit></unidades-edit>
-                                </div> 
-                                <br>
-                                <br>
-                                <br>
-                                <div *ngIf="llamarunidad==null && unidad==null" class="col-sm-4" >
-                                </div>
-                                <div *ngIf="llamarunidad==null && unidad==null" class="col-sm-8" >            
-                                </div> 
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
-                                    <label class="control-label">cantidad</label>
-                                </div>
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
-                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
-                                    </div> 
-                                </div> 
+                                    <!--<div class="table-responsive m-t-0">
+                                        <div *ngIf="!impuestrootro">
+                                            cargando impuestos ...
+                                        </div>
+                                        <div *ngIf="impuestrootro">
+                                            <table id="tablaimpuesto" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                <thead style="text-align: center">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>nombre</th>
+                                                        <th>descripcionm</th>
+                                                        <th style="width: 80px;">porcentage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="text-align: center" > 
+                                                    <tr *ngFor="let otro of impuestrootro">
+                                                        <td><button  class="btn btn-sm btn-info "><i class="fa fa-circle"></i></button></td>
+                                                        <td >{{otro.nombre}}</td>
+                                                        <td >{{otro.descripcion}}</td>
+                                                        <td style="text-align: center" >{{otro.porcentaje}} %</td>   
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>-->
+                                </div>  
+                            </div>
+                        </div>
+                
+                        <div class="col-lg-12" style="margin-left: -15px">
+                            
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="row p-t-20">
+                                
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row p-t-20">
-                                <div  class="col-sm-4">
-                                </div>
-                                <div class="col-sm-8" style="text-align: center" >
-                                    <img  class="productos_imagen"   [src]="imageUrl" > 
-                                </div>
-                                <div  class="col-sm-4">
-                                    <label class="control-label">Imagen</label>    
-                                </div>
-                                <div  class="col-sm-8">
-                                    <input type="file" id="image" (change)="mostarriname($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
-                                    <label class="control-label">Categoria:</label>    
-                                </div>
-                                <div *ngIf="llamarcategoria==null" class="col-sm-4">
-                                     <div class="inner-addon left-addon">
-                                        <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
-                                        <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>
-                                                <option   disabled="disabled">--seleccione la categoria</option>    
-                                            <option *ngFor="let categoria of cate" value="{{categoria.id}}"><b>{{categoria.nombre}}</b></option>
-                                        </select>
-                                    </div>  
-                                </div>
-                                <div *ngIf="llamarcategoria==null" style="text-align: left;" class="col-sm-4" >
-                                    <a (click)="llamarcate(1,null)" class="btn btn-success btn-flat btn-addon btn-sm ">  <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="modificarcategoria!=null" (click)="llamarcate(agregarpro.id_categoria,2)" class="btn btn-primary btn-flat btn-addon btn-sm "> <i class="fa fa-edit"></i></a>   
-                                </div>
-                                <div *ngIf="llamarcategoria!=null && aparecereditcate==null" class="col-sm-12" >
-                                    <categoria></categoria>
-                                </div> 
-                                <div *ngIf="aparecereditcate==2" class="col-sm-12" >
-                                        <categoria-edit></categoria-edit>
-                                </div>                                     
+                                
                             </div>
                         </div>
                     </div> 
@@ -188,11 +273,7 @@
 <div class="container-fluid" *ngIf="modificarproducto!=null">
     <div class="col-lg-12">
         <div  class="card card-outline-primary">
-            <div class="card-body">
-                <div style="text-align: center">
-                    <h3 style=" text-decoration: underline;color:#3f70f8">Editar Producto</h3>
-                </div>
-               
+            <div class="card-body">               
                 <form #formProductoeditar2="ngForm"  action="#">
         <!--<div   *ngIf="!formProducto.form.valid &&  nombre.touched &&  Descripcion.touched " class="alert alert-danger">
             <span style="color:black">rellenar todos los campo requeridos(<label style="color: red" >*</label>)</span>
@@ -201,6 +282,19 @@
                     <div class="col-lg-12 row">
                         <div class="col-lg-6">
                             <div class="row p-t-20">
+
+                                <div class="col-sm-12" style="text-align: center" >
+                                    <img  class="productos_imagen"   [src]="imageedit" > 
+                                </div>
+                                <div  class="col-sm-4">
+                                    <label class="control-label">Imagen</label>    
+                                </div>
+                                <div  class="col-sm-8">
+                                    <input type="file" id="imageeditar" (change)="editarimagen($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                </div>
+                                <br>
+                                <br>
+                                <br>
                                 <div class="col-sm-4">
                                     <label class="control-label">Nombre:</label>    
                                 </div>
@@ -211,19 +305,6 @@
                                         <input type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="editproducto.nombre_producto"  class="form-control" placeholder="escriba el nombre del producto" required/>
                                     </div>  
                                 </div>
-                                <br>
-                                <br>
-                                <br>
-                                <div class="col-sm-4">
-                                    <label class="control-label">Descripción</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
-                                        <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="editproducto.descripcion" class="form-control" placeholder="escriba una descripcion" required>
-                                    </div> 
-                                </div>  
                                 <br>
                                 <br>
                                 <br>
@@ -270,16 +351,15 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="row p-t-20">
-                                <div  class="col-sm-4">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Descripción</label>
                                 </div>
-                                <div class="col-sm-8" style="text-align: center" >
-                                    <img  class="productos_imagen"   [src]="imageedit" > 
-                                </div>
-                                <div  class="col-sm-4">
-                                    <label class="control-label">Imagen</label>    
-                                </div>
-                                <div  class="col-sm-8">
-                                    <input type="file" id="imageeditar" (change)="editarimagen($event.target.files,$event)" name="image" class="form-control" accept="image/jpg && image/png" required />
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="describe" type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="editproducto.descripcion" class="form-control" placeholder="escriba una descripcion" required>
+                                    </div> 
                                 </div>
                                 <br>
                                 <br>
@@ -306,8 +386,52 @@
                                 </div> 
                                 <div *ngIf="aparecereditcate==2" class="col-sm-12" >
                                         <categoria-edit></categoria-edit>
-                                </div> 
-                                
+                                </div>                               
+                                <br>
+                                <br>
+                                <br>
+                                <div  class="col-sm-4">
+                                    <label class="control-label">IGV:</label>    
+                                </div>
+                                <div class="col-sm-8">
+                                     <div class="inner-addon left-addon">
+                                        <i *ngIf="igv2.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!igv2.valid && igv2.touched" style="color: red" class="fa fa-times"></i>
+                                        <select  id="igvselect" #igv2="ngModel" (change)="ediciondeligv(editigv.id_impuesto)" name="igv2" [(ngModel)]="editigv.id_impuesto" class="form-control custom-select" required>
+                                                <option  disabled="disabled">--selecciona el tipo de igv</option>    
+                                            <option  *ngFor="let ig of impuestoigv" value="{{ig.id}}"><b>{{ig.nombre}}</b></option>
+                                        </select>
+                                    </div>  
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div   class="col-sm-12">
+                                    <div style="text-align: right" class="col-sm-12">
+                                        <table style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th  style="text-align: center">
+                                                        Nombre
+                                                        <hr>
+                                                    </th>
+                                                    <th  style="text-align: center">porcentage<hr></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let idotro of impuestroeditotro;let $index=index">
+                                                    <td style="width : 50px;">
+                                                        <div *ngIf="idotro.id!=null"><button (click)="agregardetalleimpuestootro($index,idotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                        <div *ngIf="idotro.id==null" ><button (click)="quitardetalleimpuestootro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                    </td>
+                                                    <td  style="text-align: center"><a >{{idotro.nombre}}</a></td>
+                                                    <td  style="text-align: center"><a >{{idotro.porcentaje}}%</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>  
                             </div>
                         </div>
                     </div> 

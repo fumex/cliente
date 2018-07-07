@@ -11,7 +11,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AuthGuard } from './guards/auth.guards';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
-import { CategoriaService} from './categorias/services/services.categoria';
+//import { CategoriaService} from './categorias/services/services.categoria';
+//import { detalleimpuestoservice} from './detalle_impuesto/services/detalle_impuesto.service'
 import { HttpModule}from '@angular/http';
 import { ProveedorModule } from './proveedor/proveedor.module';
 import { PagoModule } from './pago/pagos.module';
@@ -24,6 +25,8 @@ import { AlmacenesModule } from './Almacenes/almacenes.module';
 import { AlmacenModule } from './almacen/almacen.module';
 import { UsuariosModule }from './usuarios/usuarios.module';
 
+
+import { detalleModule} from './detalle_impuesto/detalle.module'
 import {OrdenDePedidoModule} from './orden-de-pedido/OrdenDePedido.module';
 
 import { TipoDocumentoModule } from './TipoDocumento/documento.module';
@@ -70,7 +73,8 @@ import { MonedaModule } from './moneda/moneda.module';
     ClienteModule,
     EmpresaModule,
     ImpuestoModule,
-    MonedaModule
+    MonedaModule,
+    detalleModule
   ],
   providers: [
     AuthGuard,

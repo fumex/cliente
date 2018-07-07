@@ -16,14 +16,14 @@
         <div class="col-sm-4">
             <label class="control-label">Abreviación</label>    
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="inner-addon left-addon">
                 <i *ngIf="abreviacion.valid" style="color: green" class="fa fa-check"></i>
                 <i *ngIf="!abreviacion.valid && abreviacion.touched" style="color: red" class="fa fa-times"></i>
                 <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control " placeholder="abreviacion" required>
             </div>    
         </div>
-        <div class="col-sm-3" style="text-align: right">
+        <div class="col-sm-4" style="text-align: right">
             <button  *ngIf="titulo=='agregar unidad'" (click)="guardarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
                 class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
                     <i class="fa fa-upload"></i></button>

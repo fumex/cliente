@@ -28,4 +28,12 @@ export class ImpuestoService{
     deleteImpuesto(id):Observable<any>{
         return this.http.get(`${environment.api_url}/impuesto-delete/`+id).shareReplay();
     }
+
+
+    getigv():Observable<any>{
+        return this.http.get<any>(`${environment.api_url}/igv`).shareReplay();
+    }
+    getotro():Observable<any>{
+        return this.http.get<any>(`${environment.api_url}/otro`).shareReplay();
+    }
 }
