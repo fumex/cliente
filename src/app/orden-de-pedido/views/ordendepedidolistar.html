@@ -117,6 +117,19 @@
                                                 <i *ngIf="fechatrue==false" style="color: red" class="fa fa-times"></i>
                                                 <input type="date" min="{{fecha2}}" (change)="validarfecha(editarpedido.fecha_estimada_entrega)" #fecha="ngModel" name="fecha" [(ngModel)]="editarpedido.fecha_estimada_entrega"  class="form-control" required/>
                                             </div>  
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div  class="col-sm-4">
+                                            <label class="control-label">Terminos y condiciones</label>
+                                        </div>
+                                        <div  class="col-sm-8">
+                                            <div class="inner-addon left-addon">
+                                                <i *ngIf="termino.valid" style="color: green" class="fa fa-check"></i>
+                                                <i *ngIf="!termino.valid && termino.touched " style="color: red" class="fa fa-times"></i>
+                                                <input type="text" #termino="ngModel" name="termino" [(ngModel)]="editarpedido.terminos"  class="form-control"  required/>
+                                            </div>  
                                         </div> 
                                     </div>
                                 </div>

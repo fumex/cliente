@@ -62,22 +62,27 @@ export class AlmacenesComponent{
         console.log(this.editalmacen);
         this._almacenesService.actualizaralmacen(this.idalmacen,this.editalmacen).subscribe(
             result=>{
-                this.mostrar();
-                this.limpiar();
-                this.destruir();
-                this.reconstruir();
+                this.nombre.focus();
                 console.log(result);
                 console.log(this.editalmacen);
-                this.modificaralerta();
-            },
-            error=>{
-                console.log(<any>error);
-                if(error.status==500){
+                if(result.code===300){
                     let text="el almacen ya existe";
                     this.toaste.errorAlerta(text,'Error!');
-                    this.nombre.focus();
+                    
                     this.nombre.select();
-                }               
+                }else{
+                    if(result.code===200){
+                        this.mostrar();
+                        this.limpiar();
+                        this.destruir();
+                        this.reconstruir();
+                        this.modificaralerta();
+                    }
+                }
+                
+            },
+            error=>{
+                console.log(<any>error);             
             }
         );
     }
@@ -127,22 +132,24 @@ export class AlmacenesComponent{
         this.nombre=document.getElementById('firstName');
         this._almacenesService.addAlmacenes(this.almacen).subscribe(
             result=>{
+                this.nombre.focus();
                 console.log(result);
-
-                    this.limpiar();
-                    this.destruir();
-                    this.reconstruir();
-                    this.modificaralerta();
-                    this.nombre.focus();
+                if(result.code===300){
+                    let text="el almacen ya existe";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.select();
+                    
+                }else{
+                    if(result.code===200){
+                        this.limpiar();
+                        this.destruir();
+                        this.reconstruir();
+                        this.modificaralerta();
+                    }
+                }
             },
             error=>{
                 console.log(<any>error);
-                if(error.status==500){
-                    let text="el almacen ya existe";
-                    this.toaste.errorAlerta(text,'Error!');
-                    this.nombre.focus();
-                    this.nombre.select();
-                }
             }
 
         )

@@ -48,6 +48,7 @@ export class OrdenDePedidoComponent{
     public fechavalidad;
     public seleccionado;
     public textocantidad;
+    public terminosycon;
     constructor(
         private _almacenesService:AlmacenesService,
         private _route:ActivatedRoute,
@@ -64,7 +65,7 @@ export class OrdenDePedidoComponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.titulo="Orden De Pedido";
         
-        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,null,null);
+        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,null,null,null);
         this.agregarDetalleOrden=new DetalleOrdenDePedidoModel(0,0,'',0);
         this.fecha=null;
         this.fecha2;
@@ -79,6 +80,7 @@ export class OrdenDePedidoComponent{
         this.provedorvalid=false;
         this.seleccionado=null;
         this.fechavalidad=true;
+        this.terminosycon=null;
     }
     ngOnInit(){
         this.mostraralmacen();
@@ -149,7 +151,7 @@ export class OrdenDePedidoComponent{
         this._ordenPedidoService.getfecha().subscribe(
             result=>{
                 this.fecha2=result.res;
-                this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,result.res);
+                this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,null,result.res);
             },
             error=>{
                 console.log(<any>error);
@@ -182,7 +184,7 @@ export class OrdenDePedidoComponent{
     addpedido(nombre,idente,idpro){
         console.log(idpro);
         if(this.pedidos.length>1){
-            this.texto=this.pedidos.length-1;
+            this.texto=this.pedidos.length;
         }
         this.mostrarguardar=this.mostrarguardar+1;
         this.productos[idente].id=this.quitar;
@@ -196,6 +198,9 @@ export class OrdenDePedidoComponent{
 
         
     }
+    mostarterminos(){
+        this.terminosycon=1;
+    }
     vercuadrotexto(id){
         console.log(id)
         this.texto=id;
@@ -208,9 +213,10 @@ export class OrdenDePedidoComponent{
         this.mostrarguardar=0;
         this.id=0;
         this.mostrar=null;
-        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,null);
+        this.agregarOrdenPedido=new OrdenDePedidoModel(0,null,null,0,null,null);
         this.fechavalidad=false;
         this.seleccionado=0;
+        this.terminosycon=null;
     }
     guardartodo(){
         let indice=0;

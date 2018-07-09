@@ -422,8 +422,8 @@
                                             <tbody>
                                                 <tr *ngFor="let idotro of impuestroeditotro;let $index=index">
                                                     <td style="width : 50px;">
-                                                        <div *ngIf="idotro.id!=null"><button (click)="agregardetalleimpuestootro($index,idotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
-                                                        <div *ngIf="idotro.id==null" ><button (click)="quitardetalleimpuestootro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                        <div *ngIf="idotro.id!=null"><button (click)="agregardetalleotro($index,idotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                        <div *ngIf="idotro.id==null" ><button (click)="quitardetalleotro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
                                                     </td>
                                                     <td  style="text-align: center"><a >{{idotro.nombre}}</a></td>
                                                     <td  style="text-align: center"><a >{{idotro.porcentaje}}%</a></td>
