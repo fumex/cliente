@@ -215,24 +215,25 @@ export class usuarioscomponent{
             console.log(this.usuario);
             this._UsuarioService.addusuario(this.usuario).subscribe(
             response=>{
+                this.nombre.focus();
                 console.log(response);
                 this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','',null);
-                if(response.code===200){
-                    console.log("entro al if");
-                   this.guardardetalle();
-                   this._router.navigate(['/'+this.user.rol+'/editarusuario']);
-                }
-            },
-            error=>{
-                console.log(<any>error);
-                if(error.status==500){
+                if(response.code===300){
                     let text="Ese Email ya se encuentra registrado";
                     this.toaste.errorAlerta(text,'Error!');
                     this.usuario.password=null;
                     this.usuario.confirme=null;
-                    this.nombre.focus();
                     this.nombre.select();
+                }else{
+                    if(response.code===200){
+                       this.guardardetalle();
+                       this._router.navigate(['/'+this.user.rol+'/editarusuario']);
+                    }
                 }
+
+            },
+            error=>{
+                console.log(<any>error);
             }
             );
             this.titulo="Datos Personales";

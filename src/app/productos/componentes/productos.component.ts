@@ -402,12 +402,10 @@ export class ProductosComponent{
                 console.log(this.impuestroeditotro.length)
 
                 while(indice<this.impuestroeditotro.length){
-                    console.log('entro'+indice)
                     while(indice2<this.editarimpuestootro.length){
-                        console.log('entro'+indice2)
                         if(this.impuestroeditotro[indice].id===this.editarimpuestootro[indice2].id_impuesto){
-                            console.log('entro al if')
-                            this.editarimpuestootro[indice2].id= this.impuestroeditotro[indice].id;
+                            
+                            this.editarimpuestootro[indice2].id= indice;
                             this.impuestroeditotro[indice].id=null;
                         }
                         indice2=indice2+1;
@@ -430,7 +428,6 @@ export class ProductosComponent{
             res=>{
                 this.editotro=res;
 
-                
                 while(indice<res.length){
                     this.editarimpuestootro.push(this.editotro[indice])
                     indice=indice+1;
@@ -441,6 +438,74 @@ export class ProductosComponent{
                 console.log(err)
             }
         );
+    }
+    agregardetalleotro(index,id){
+        console.log(index+','+id);
+        let indice=0;
+        let repe=0;
+        this.impuestroeditotro[index].id=null;
+        while(indice<this.editarimpuestootro.length){
+            console.log(indice);
+            if(this.editarimpuestootro[indice].id_impuesto===id){
+                console.log('entro');
+                this.editarimpuestootro[indice].estado=true;
+                repe=1;
+            }
+            indice=indice+1;
+        }
+       
+        if(repe===0){
+            console.log(repe);
+            this.detalleimpuesotro.id=index;
+            this.detalleimpuesotro.id_impuesto=id;
+            this.detalleimpuesotro.id_producto=this.modificarproducto;
+            this.detalleimpuesotro.estado=true;
+            this.editarimpuestootro.push(this.detalleimpuesotro);
+            this.detalleimpuesotro=new DetalleImpuestoModel(null,null,null,null);
+        }
+       
+        
+        console.log(this.editarimpuestootro);
+    }
+    quitardetalleotro(index){
+        
+        console.log(index);
+        let indice=0;
+
+        while(indice<this.editarimpuestootro.length){
+            if(this.editarimpuestootro[indice].id==index){
+                this.impuestroeditotro[index].id=this.editarimpuestootro[indice].id_impuesto;
+                this.editarimpuestootro[indice].estado=false;
+
+            }
+
+            indice=indice+1;
+        }
+        indice=0;
+        console.log(this.editarimpuestootro);
+        console.log(this.impuestroeditotro);
+    }
+    modificaciondelotro(){
+        let indice=0;
+        while(indice<this.editarimpuestootro.length){
+            this._detalleimpuestoservice.detalleimpuestoseditotro(this.editarimpuestootro[indice]).subscribe(
+                res=>{
+                    console.log(res)
+                },
+                err=>{
+                    console.log(<any>err);
+                }
+            );
+
+            indice=indice+1;
+        }
+    }
+    limpiarediciondelotro(){
+        this.editigv=new DetalleImpuestoModel(null,null,null,null);
+        let indice=0;
+        while(indice<this.editarimpuestootro.length){
+            this.editarimpuestootro.splice(0,1)
+        }
     }
     treerimpuestosigv(id){
         this._detalleimpuestoservice.seleccionardetealleigv(id).subscribe(
@@ -494,22 +559,27 @@ export class ProductosComponent{
         console.log(this.editproducto);
         this._productoservice.Productosupdate(id,this.editproducto).subscribe(
             result=>{
-                this.modificaciondeligv();
-                this.limpiar();
-                this.reconstruir();
+                this.nombre.focus();
                 console.log(result);
-                console.log(this.productos);
-                this.modificarproducto=null;
-                this.modificaralerta();
-                
+                if(result.code===300){
+                    let text="el Producto ya existe";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.select();
+                }else{
+                    if(result.code===200){
+                        this.modificaciondeligv();
+                        this.modificaciondelotro();
+                        this.limpiar();
+                        this.reconstruir();
+                        this.modificarproducto=null;
+                        this.modificaralerta();
+                    }
+                } 
             },
             error=>{
                 console.log(<any>error);   
                 if(error.status==500){
-                    let text="ocurio un error insertando el producto";
-                    this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
-                    this.nombre.focus();
-                    this.nombre.select();
+                    
                 }            
             }
         );
@@ -542,6 +612,7 @@ export class ProductosComponent{
        
         this.limpiartablaimpuestos();
         this.limpiarediciondeligv();
+        this.limpiarediciondelotro();
 
         if(this.detalleimpuestoigv.length>0){
             console.log('entro');
@@ -598,26 +669,29 @@ export class ProductosComponent{
         this._productoservice.addproducto(this.agregarpro).subscribe(
             result=>{
                 console.log(result);
-                if(result.code==200){
-                    this.insertarigv();
-                    this.insertarotro();
-                }
-                this.limpiar();
-                this.modificaralerta();
-                this.destruir();
-                this.reconstruir();
-                this.unidad=null;
                 this.nombre.focus();
+                if(result.code==300){
+                    let text="el Producto ya existe";
+                    this.toaste.errorAlerta(text,'Error!');
+                    this.nombre.select();
+                }else{
+                    if(result.code==200){
+                        this.insertarigv();
+                        this.insertarotro();
+                        this.limpiar();
+                        this.agregaralerta();
+                        this.destruir();
+                        this.reconstruir();
+                        this.unidad=null;
+                    }
+                }
                 
-
+                
             },
             error=>{
                 console.log(<any>error);
                 if(error.status==500){
-                    let text="ocurio un error insertando el producto";
-                    this.toaste.errorAlerta(text,'Error!(es posible que el producto ya exista)');
-                    this.nombre.focus();
-                    this.nombre.select();
+                    
                 } 
             }
 
@@ -751,7 +825,7 @@ export class ProductosComponent{
         swal({
             position: 'center',
             icon: "success",
-            title: 'se guardo el almacen',
+            title: 'se guardo el Producto',
             buttons: false,
             timer: 3000
           })
@@ -760,7 +834,7 @@ export class ProductosComponent{
         swal({
             position: 'center',
             icon: "success",
-            title: 'se guardo el almacen',
+            title: 'se guardo el Producto',
             buttons: false,
             timer: 3000
           })

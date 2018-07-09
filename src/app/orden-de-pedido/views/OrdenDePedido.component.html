@@ -74,6 +74,22 @@
                                                         <input type="date" min="{{fecha2}}" (change)="fechavalidacion(agregarOrdenPedido.fecha_estimada_entrega)" #fecha="ngModel" name="fecha" [(ngModel)]="agregarOrdenPedido.fecha_estimada_entrega"  class="form-control custom-select"  required/>
                                                     </div>  
                                                 </div>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <div *ngIf="terminosycon==null" class="col-sm-4">
+                                                    <button  class="btn btn-primary btn-sm" (click)="mostarterminos()" style="background: #3584f0;border: 1px solid #3636f6;" ><i class="fa fa-arrow-circle-down"></i> terminos y condiciones</button>
+                                                </div>
+                                                <div  *ngIf="terminosycon!=null" class="col-sm-4">
+                                                    <label class="control-label">Terminos y condiciones</label>
+                                                </div>
+                                                <div  *ngIf="terminosycon!=null" class="col-sm-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="termino.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!termino.valid && termino.touched " style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #termino="ngModel" name="termino" [(ngModel)]="agregarOrdenPedido.terminos"  class="form-control"  required/>
+                                                    </div>  
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -152,8 +168,8 @@
                                         <td>producto n°{{$index + 1}}</td>
                                         <td>{{pedido.id_producto}}</td>
                                         <td *ngIf="texto!=$index">{{pedido.cantidad}}</td>
-                                        <td *ngIf="texto==$index">
-                                            <div style="margin-right: 0px;">
+                                        <td *ngIf="texto==$index" style="width: 280px">
+                                            <div style="margin-right: 0px;width: 280px">
                                                 <div style="padding-right: 0px;">
                                                     <input type="number" min="1" id="pruebacantidad" #cantidad="ngModel" name="cantidad" [(ngModel)]="pedido.cantidad"  class="form-control" />
                                                 </div>

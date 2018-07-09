@@ -42,7 +42,7 @@ export class pedidolistarcomponent {
         private auth:AuthService,
         private _proveedorservice:ProveedorService,
     ){
-        this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null)
+        this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null,null)
         this.user=this.auth.getUser();
         this.title='Lista de Pedidos';
         
