@@ -50,7 +50,11 @@ import { MonedaAddComponent } from '../../moneda/components/moneda-add.component
 import { MonedaEditComponent } from '../../moneda/components/moneda-edit.component';
 import { TipoPagoAddComponent } from '../../tipo_pago/components/tipo_pago-add.component';
 import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit.component';
+
 import { CajasComponent } from '../../cajas/componentes/cajas.component';
+
+
+import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 
 
 @NgModule({
@@ -132,6 +136,10 @@ import { CajasComponent } from '../../cajas/componentes/cajas.component';
                     {
                         path:'empresa',
                         component:EmpresaAddComponent
+                    },
+                    {
+                        path:'empresa/perfil',
+                        component:EmpresaPerfilComponent
                     },
                     {
                         path:'impuesto',
