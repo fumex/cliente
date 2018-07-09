@@ -23,9 +23,9 @@ export class EmpresaAddComponent implements OnInit{
     public user:User;
     public imageUrl:string;
 
-    public filear
-    filesToUpload:File[];
-    fileToUpload:File=null;
+    public filear;
+    public filesToUpload:File[];
+    public fileToUpload:File=null;
     constructor(
         private empresaService:EmpresaService,
         private route:ActivatedRoute,
@@ -46,7 +46,14 @@ export class EmpresaAddComponent implements OnInit{
     ngOnInit(){
         console.log('hola');
     }
-    addEmpresa(){
+    img(ruc){
+        let f= new Date();
+        let fecha=f.getDate()+"-"+(f.getMonth()+1)+"-"+f.getFullYear()+"-"+f.getSeconds();
+        let emp=fecha+'-'+ruc;
+        return emp; 
+    }
+    addEmpresa(ruc){
+        this.empresa.imagen=this.img(ruc);
         this.empresaService.addEmpresa(this.empresa).subscribe(
             result=>{
                 console.log(result);
@@ -92,7 +99,7 @@ export class EmpresaAddComponent implements OnInit{
         }
     }
     onSubmit(ruc){
-        let _ruc=ruc;
+        let _ruc=this.img(ruc);
         if(this.filesToUpload==null){
             
         }
@@ -100,7 +107,7 @@ export class EmpresaAddComponent implements OnInit{
             this.empresaService.postFile(_ruc,this.fileToUpload).subscribe(
                 result=>{
                     console.log('imagen agregada');
-                    this.addEmpresa();
+                    this.addEmpresa(_ruc);
                 },
                 error=>{
                     console.log(<any>error);
