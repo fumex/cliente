@@ -37,7 +37,7 @@ export class EmpresaService{
         headers.append('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/imagen-up`,formData,{headers:headers});
     }
-    getImage(name){
+    getImage(name):Observable<any>{
         return this.http.get(`${environment.api_url}/empresa-img/`+name).shareReplay();
     }
     dataEmpresa():Observable<any>{

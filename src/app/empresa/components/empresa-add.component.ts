@@ -48,8 +48,8 @@ export class EmpresaAddComponent implements OnInit{
     }
     img(ruc){
         let f= new Date();
-        let fecha=f.getDate()+"-"+(f.getMonth()+1)+"-"+f.getFullYear()+"-"+f.getSeconds();
-        let emp=fecha+'-'+ruc;
+        let fecha=f.getDate()+"_"+(f.getMonth()+1)+"_"+f.getFullYear();
+        let emp=fecha+'_'+ruc;
         return emp; 
     }
     addEmpresa(ruc){
