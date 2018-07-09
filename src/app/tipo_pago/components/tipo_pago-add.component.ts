@@ -35,9 +35,11 @@ export class TipoPagoAddComponent implements OnInit{
         this.user=this.auth.getUser();
         this.tipo_pago= new TipoPagoModel(null,'','','',this.user.id);
         this.confirmado=true;
-        this.tabla();
+        //this.tabla();
     }
     ngOnInit(){
+
+
         this.getTipoPagos();
     }
     onSubmit(){

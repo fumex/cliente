@@ -13,6 +13,7 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
+
 @NgModule({
     declarations: [
         ProductosComponent,
@@ -33,6 +34,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
       providers: [
         ProductoService,
         UnidadService,
+        
       ]
 })
 export class ProductoModule{
