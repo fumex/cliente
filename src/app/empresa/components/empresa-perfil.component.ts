@@ -8,6 +8,8 @@ import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
 import { environment } from '../../../environments/environment.prod';
 
+declare var jQuery:any;
+declare var $:any;
 @Component({
     selector:'empresa-perfil',
     templateUrl:'../views/empresa-perfil.html',
@@ -56,13 +58,15 @@ export class EmpresaPerfilComponent implements OnInit{
     }
     ngOnInit(){
         this.getEmpresa();
+        this.recargar();
     }
+
     getEmpresa(){
         this.empresaService.dataEmpresa().subscribe(
             result=>{
                 this.empresa=result;
                 this.asignacionCampos(this.empresa);
-                this.imageUrl=this.url+'empresa-img/'+this.image+'.png';
+                this.imageUrl=this.url+'empresa-img/'+this.image;
                 console.log(this.imageUrl);
             },
             error=>{
@@ -83,5 +87,11 @@ export class EmpresaPerfilComponent implements OnInit{
         this.web=empresa.web;
         this.email=empresa.web;
         this.image=empresa.imagen;
+    }
+    edit(){
+        this.router.navigate(['/'+this.user.rol+'/empresa/edit/'+this.id]);
+    }
+    recargar(){
+        $('#galeria').load();
     }
 }
