@@ -8,6 +8,7 @@ import { PagoDetalleModel } from '../models/pago-detalle';
 import { UnidadModel } from '../models/unidad';
 import { almacenstock } from '../../almacen/modelos/almacen';
 import { CompraAnularModel } from '../models/anula-compra';
+import { ProductoDetalleModel } from '../../productos/modelos/producto_detalle';
 
 @Injectable()
 export class PagoService{
@@ -72,5 +73,9 @@ export class PagoService{
     }
     getCompra(cod):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/compra-get/`+cod).shareReplay();
+    }
+    pago_detal(){
+        let a='hola';
+        return a;
     }
 }

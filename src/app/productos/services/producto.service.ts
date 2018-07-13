@@ -63,4 +63,8 @@ export class ProductoService{
     mostaraimagen(name){
         return this._http.get<any>(this.url+'/imagenesproductos/'+name).shareReplay();
     }
+    //-------------------------Detalle Producto------------------------------------------------------------------
+    listDetalleProducto(id):Observable<any>{
+        return this._http.get(this.url+'/auth/producto-detalle/'+id).shareReplay();
+    }
 }

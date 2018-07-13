@@ -21,6 +21,8 @@ import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ImpuestoService } from '../../impuesto/services/impuesto.service';
 import { ImpuestoModel } from '../../impuesto/models/impuesto';
+import { ProductoDetalleModel } from '../../productos/modelos/producto_detalle';
+import { ProductoService } from '../../productos/services/producto.service';
 
 declare var jQuery:any;
 declare  var $:any;
@@ -43,10 +45,19 @@ export class PagoAddComponent implements OnInit{
     public almacenes:almacen[];
     public total:number;
     public productos:any=[];
+    
+    public prods_d:Array<ProductoDetalleModel>=[];
+    public produ_ds:ProductoDetalleModel[];
+    public pro_im:ProductoDetalleModel;
+    
+
     public confirmado:any=[];
     public user:User;
-    public impuestos:ImpuestoModel[];
     public _impuesto:number;
+    public igv:number;
+    public isc:number;
+    public otro:number;
+
 
     public a1:boolean;
     public a2:boolean;
@@ -61,6 +72,7 @@ export class PagoAddComponent implements OnInit{
     public inventarios:Array<inventario>=[];
     constructor(
         private pagoService:PagoService,
+        private productoService:ProductoService,
         private almacenService:AlmacenesService,
         private route:ActivatedRoute,
         private router:Router,
@@ -75,9 +87,14 @@ export class PagoAddComponent implements OnInit{
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
-        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,null);
+        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,0,0,0);
 
         this.title="Compras";
+        //----------impuestos
+        this.igv=0;
+        this.isc=0;
+        this.otro=0;
+        //---------
         this.total=0;
         this.tabla();
         this.sumaTotal();
@@ -96,7 +113,6 @@ export class PagoAddComponent implements OnInit{
         this.getAlmacenes();
         this.listProducto();
         this.getDocumentos();
-        this.getImpuestos();
     }
     getProveedor(){
         this.pagoService.getProveedor().subscribe(
@@ -108,20 +124,17 @@ export class PagoAddComponent implements OnInit{
             }
         );
     }
-    getImpuestos(){
-        this.impuestoService.getImpuestos().subscribe(
+    lisDetalleProduc(id){
+        this.productoService.listDetalleProducto(id).subscribe(
             result=>{
-                this.impuestos=result;
+                console.log('--aqui--');
+                this.produ_ds=result;
+                this.addDetalleProduct(this.produ_ds);
             },
             error=>{
                 console.log(<any>error);
             }
         );
-    }
-    impuesto(impu:number){
-        this._impuesto=impu/100;
-        this.a6=false;
-        this.validar();
     }
     getCodigo(){
         this.pagoService.getCodigo().subscribe(
@@ -144,9 +157,9 @@ export class PagoAddComponent implements OnInit{
 
     onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
         let subtotal=this.sumaTotal();
-        let impuesto=Number((this.total*this._impuesto).toFixed(2));
-        console.log(impuesto);
-        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,impuesto);
+        //let impuesto=Number((this.total*this._impuesto).toFixed(2));
+        //console.log(impuesto);
+        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.isc,this.otro);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -220,6 +233,7 @@ export class PagoAddComponent implements OnInit{
         if(!this.existeCompra(id,this.compras)){
             this.compras.push(this.compra);
             console.log(this.compras);
+            this.lisDetalleProduc(id);
             this.val=true;
             this.validar();
         }
@@ -227,6 +241,14 @@ export class PagoAddComponent implements OnInit{
             console.log('ya esta agregado');
         }
     }
+
+    addDetalleProduct(_prods_d:ProductoDetalleModel[]){
+        this.prods_d=this.prods_d.concat(_prods_d);
+        console.log(this.prods_d);
+    }
+
+
+   
     existeCompra( id,_compras:CompraModel[]){
         for(let i=0; i<_compras.length;i++){
             if(_compras[i].id===id){
@@ -234,29 +256,72 @@ export class PagoAddComponent implements OnInit{
             }
         }
     }
-    exitCompra(ind,index){
+    exitCompra(ind,index,id_pro){
         this.compras.splice(index,1);
-        console.log(this.compras);
+        //console.log(this.compras);
         this.sumaTotal();
         this.confirmado[ind]=true;
+        this.exitDetallePro(id_pro);
         if(this.compras.length===0){
             this.val=false;
             this.validar();
+            this.prods_d=[];
+            console.log(this.prods_d);
         }else{
             this.val=true;
             this.validar();
         } 
     }
     
+    exitDetallePro(id_prod){
+        
+        let pro=this.prods_d;
+        for( let i=0;i<pro.length;i++){
+            if(pro[i].id==id_prod){
+                pro[i].nombre_producto='';
+            }
+        }
+        console.log('aqui')
+        this.prods_d=pro;
+        console.log(this.prods_d);
+    }
+    
     //suma detalle
     sumaTotal(){
+        let igv=0;
+        let isc=0;
+        let otro=0;
         let total=0;
-       this.compras.forEach(function(value){
-         total=total+(value.cantidad*value.precio);
-         console.log(total);
-       });
-       this.total=total;
-       return this.total;
+        let impues=this.prods_d;
+        let precio=0;
+        this.compras.forEach(function(comp){
+            total=total+(comp.cantidad*comp.precio);
+            console.log(total);
+            precio=comp.cantidad*comp.precio;
+            impues.forEach(function(value){
+                if(value.tipo=='IGV'){ 
+                    if(comp.nombre_producto==value.nombre_producto){
+                        igv=igv + precio*value.porcentaje/100;
+                    } 
+                }
+                if(value.tipo=='ISC'){
+                    if(comp.nombre_producto==value.nombre_producto){
+                        isc=isc + precio*value.porcentaje/100;
+                    }
+                }
+                if(value.tipo=='OTRO'){
+                    if(comp.nombre_producto==value.nombre_producto){
+                        otro=otro + precio*value.porcentaje/100;
+                    }
+                }
+            });
+        });
+        this.igv=igv;
+        this.otro=otro;
+        this.isc=isc;
+        this.total=total;
+        console.log('IGV: '+this.igv+'   -  '+'otro: '+this.otro+'  -  '+'ISC: '+this.isc);
+        return this.total;
     }
     //guardar todo
     addDetalles(){
@@ -331,9 +396,7 @@ export class PagoAddComponent implements OnInit{
         if(this.a1==false && this.a2==false && this.a3==false && this.a4==false && this.a5==false){
            this.validacion=true;
            if(this.val==true){
-               if(this.a6==false){
                     this.val=true;
-               }
               //this.destruir();
            }else{
                this.val=false;
