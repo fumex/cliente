@@ -92,6 +92,14 @@ export class ClienteEditComponent implements OnInit{
             );
         });
     }
+    opcion1(){
+        this.tipo='Razon Social';
+        this.tipo_cliente='Razon Social Cliente';
+    }
+    opcion2(){
+        this.tipo='Nombre';
+        this.tipo_cliente='Nombre Cliente';
+    }
     onSubmit(){
         this.route.params.forEach((params:Params)=>{
             let id=params['id'];

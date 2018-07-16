@@ -114,4 +114,7 @@ export class EmpresaAddComponent implements OnInit{
             }
         );
     }
+    onCancel(){
+        console.log('cancelad');
+    }
 }
