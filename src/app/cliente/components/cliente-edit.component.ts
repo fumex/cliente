@@ -18,6 +18,8 @@ declare var swal:any;
 })
 export class ClienteEditComponent implements OnInit{
     
+    public tipo:string;
+    public tipo_cliente:string;
     public title:string;
     public cliente:ClienteModel;
     public clientes:any=[];
