@@ -17,7 +17,7 @@ declare var swal:any;
     providers:[ClienteService, ToastService]
 })
 export class ClienteEditComponent implements OnInit{
-    
+
     public tipo:string;
     public tipo_cliente:string;
     public title:string;
@@ -26,6 +26,7 @@ export class ClienteEditComponent implements OnInit{
     public user:User;
     public documentos:any=[];
     public estado:boolean;
+    public confirmado:boolean;
     constructor(
         private documentoService:DocumentoService,
         private clienteService:ClienteService,
@@ -37,7 +38,10 @@ export class ClienteEditComponent implements OnInit{
         vcr:ViewContainerRef
     ){
         this.user=this.auth.getUser();
+        this.confirmado=true;
         this.title='Editar Cliente'
+        this.tipo='Nombre';
+        this.tipo_cliente='Nombre de Cliente';
         this.toastr.setRootViewContainerRef(vcr);
         this.tabla();
         this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
