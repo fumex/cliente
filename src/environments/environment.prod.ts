@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  api_url:'http://localhost:8000/api',
-  url:'http://localhost:4200/'
+  api_url:'https://cuscobackend.herokuapp.com/api',
+  url:'https://webcusco.herokuapp.com/'
 };
