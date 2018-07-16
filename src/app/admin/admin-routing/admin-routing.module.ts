@@ -52,7 +52,7 @@ import { TipoPagoAddComponent } from '../../tipo_pago/components/tipo_pago-add.c
 import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit.component';
 
 import { CajasComponent } from '../../cajas/componentes/cajas.component';
-
+import { VentasComponent} from '../../ventas/componentes/ventas.component'
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 
@@ -176,7 +176,8 @@ import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.
                     { path:'usuarios',component:usuarioscomponent}, 
                     { path:'modificarcontraseña',component:EditUsuariosp},
                     { path:'editarusuario',component:EditarUsuarioPersonal},
-                    { path:'cajas',component:CajasComponent}
+                    { path:'cajas',component:CajasComponent},
+                    { path:'ventas',component:VentasComponent},
                 ]
             }
         ]),

@@ -1,0 +1,221 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{titulo}}</h3>
+    </div>
+</div>
+<div *ngIf="apertura==null" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div class="form-body">
+                        <div *ngIf="almacenselec!=0" class="container-fluid">
+                            <div class="table-responsive m-t-40">
+                                <div *ngIf="!cajas">
+                                    cargando listado de almacenes....
+                                </div>
+                                <div *ngIf="cajas">
+                                <table  class="table table-bordered table-striped" cellpadding="0" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>nombre de caja</th>
+                                            <th>descripcion</th>
+                                            <th>sucursal</th>
+                                            <th style="width: 85px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>  
+                                        <tr (click)="aperturarcaja(caj.id)" *ngFor="let caj of cajas; let $index=index">
+                                            <td style="text-align: center">{{caj.nombre}}</td>
+                                            <td style="text-align: center"><strong>{{caj.descripcion}}</strong></td>
+                                            <td style="text-align: center">{{caj.nombre_sucursal}}</td>
+                                            <td style="text-align: center"> 
+                                                <button (click)="aperturarcaja(caj.id)" class="btn btn-sm btn-success" >
+                                                    <i class="fa fa-arrow-circle-right"></i> aperturar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="apertura==null" class="container">
+    <div class="fluid">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-title">
+                    <label class="control-label" >
+                        <i class="fa fa-inbox"></i>
+                        Registro de {{titulo}}
+                    </label>
+                    <div style="text-align: right; margin-top: -25px; margin-right: 40px;">
+                        <button class="botonariba" title="Salir"> <i class="fa fa-sign-out" ></i> </button>
+                    </div>
+                </div>
+                <ul class="nav nav-tabs profile-tab" role="tablist">
+                    
+                    <li class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
+                    <li  class="nav-item"> <a id="tabpro"class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
+                    <li  class="nav-item"> <a id="tabcli"class="nav-link" data-toggle="tab" href="#usuarios" role="tab">Clientes</a> </li>
+                </ul>
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="datos" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-1"></div>
+                                            <div  class="col-sm-10">
+                                                <div class="inner-addon right-addon">
+                                                    <!--<i  style="color: green" class="fa fa-check"></i>-->
+                                                    <input type="text" 
+                                                    style="background-color: white;
+                                                    border-color: #0099f2;
+                                                    opacity: 5;
+                                                    box-shadow: inset 0px 0px 2px 2px #acd2e8;
+                                                    text-align: center;" 
+                                                    id="firstName"  name="nombre"  disabled="disabled"  class="form-control usuariotext" placeholder="Ingrese el usuario" required/>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button (click)="irausuarios()" class="bottonusuario" >
+                                                    <i class="fa fa-user-plus"></i> 
+                                                </button>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10" style="text-align: right" >
+                                                <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
+                                                    <i class="fa fa-sticky-note-o"></i> Factura
+                                                </button>
+                                                <button *ngIf="factura==true"   class="botonfactura">
+                                                    <i class="fa fa-sticky-note"></i> Factura
+                                                </button>
+                                                <button *ngIf="boleta!=true" (click)="seleccionarboleta()" style="margin-left: -4px;" class="botonboletaclick">
+                                                    <i class="fa fa-sticky-note-o"></i> Boleta
+                                                </button>
+                                                
+                                                <button *ngIf="boleta==true" style="margin-left: -4px;" class="botonboleta">
+                                                    <i class="fa fa-sticky-note"></i> Boleta
+                                                </button>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="usuarios" role="tabpanel">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                 <div class="table-responsive m-t-10">
+                                    <div *ngIf="!clientes">
+                                        cargando listado de Usuarios .....
+                                    </div>
+                                    <div *ngIf="clientes">
+                                    <table id="" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px;"></th>
+                                                <th><strong>Nombres</strong></th>
+                                                <th><strong>Documento</strong></th>
+                                                <th><strong>Numero de documento</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>  
+                                            <tr *ngFor="let cliente of clientes;"> 
+                                                <td >
+                                                    <button *ngIf="clientselec==cliente.id" class="btn btn-sm btn-success" ><i class="fa fa-check-circle"></i></button>
+                                                    <button *ngIf="clientselec!=cliente.id" class="btn btn-sm btn-info" (click)="seleccionarcliente(cliente.id,cliente.nombre,cliente.documento,cliente.nro_documento)"><i class="fa fa-circle"></i></button>
+                                                </td>
+                                                <td style="text-align: center"><a>{{cliente.nombre}}</a></td>
+                                                <td style="text-align: center"><a>{{cliente.documento}}</a>
+                                                <td style="text-align: center"> <a>{{cliente.nro_documento}}</a></td>
+                                            </tr>
+                                            <!--<tr  *ngFor="let da of productos;">
+                                                    <td style="text-align: center">id:{{da.id}}</td>
+                                                    <td style="text-align: center" >
+                                                        <li *ngFor="let des of da.preg">
+                                                            <strong>{{des.pid}}:{{des.preg}}</strong>
+                                                        </li>
+                                                    </td>
+                                                </tr>-->
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <div style="text-align: right">
+                                    <button (click)="limpiar()"  class="btn btn-danger"> <i class="fa fa-eraser"></i> cancelar</button>
+                                    <button  (click)="mandarusuario()"   [disabled]="acepclient==0"  class="btn btn-info"> <i class="fa fa-save"></i> agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="producto" role="tabpanel">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                 <div class="table-responsive m-t-10">
+                                    <div *ngIf="!productos">
+                                        cargando listado de Productos ....
+                                    </div>
+                                    <div *ngIf="productos">
+                                    <table id="tablacajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th><strong>producto</strong></th>
+                                                <th><strong>Descripcion</strong></th>
+                                                <th><strong>Unidad de venta</strong></th>
+                                                <th><strong>categoria</strong></th>
+                                                <th ><strong>precio de venta</strong></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>  
+                                            <tr *ngFor="let producto of productos;"> 
+                                                <td style="width: 50px;height: 50px;"> <img  class="productos_ventas_imagen"   src="{{url}}/{{producto.imagen}}" > </td>
+                                                <td style="text-align: center"><a>{{producto.nombre_producto}}</a></td>
+                                                <td style="text-align: center"><a>{{producto.descripcion}}</a>
+                                                <td style="text-align: center"> <a>{{producto.unidad}}</a></td>
+                                                <td style="text-align: center"><a>{{producto.nombre}}</a></td>
+                                                <td style="text-align: center"><a>{{producto.precio_venta}}</a></td>
+                                                <td>
+                                                    <a *ngFor="let $index=index;let imp of producto.preg" title="{{imp.nombre}}:{{imp.porcentaje}}"><i class="fa fa-question-circle"></i></a>
+                                                </td>
+                                            </tr>
+                                            <!--<tr  *ngFor="let da of productos;">
+                                                    <td style="text-align: center">id:{{da.id}}</td>
+                                                    <td style="text-align: center" >
+                                                        <li *ngFor="let des of da.preg">
+                                                            <strong>{{des.pid}}:{{des.preg}}</strong>
+                                                        </li>
+                                                    </td>
+                                                </tr>-->
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -6,6 +6,8 @@ import { DettaleUsuarioService } from "./services/DetalleUsuario.service";
 import { usuarioscomponent } from "./componentes/usuarios.component";
 import { EditarUsuarioPersonal } from "./componentes/editaruserpersonal.component";
 import { EditUsuariosp } from "./componentes/EditUserAutenticacion.component";
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -15,7 +17,9 @@ import { EditUsuariosp } from "./componentes/EditUserAutenticacion.component";
       ],
       imports: [
         CommonModule,
-        FormsModule
+        FormsModule,
+        BrowserAnimationsModule,
+        ToastModule.forRoot(),
         
       ],
       providers: [

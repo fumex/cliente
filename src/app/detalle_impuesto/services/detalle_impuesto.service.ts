@@ -33,7 +33,10 @@ export class detalleimpuestoservice{
         return this._http.get<any>(this.url+'/detalleimpuestosotro/'+id).shareReplay();
     }
 
-   
+    seleccionardetealle(id){
+        return this._http.get<any>(this.url+'/detalleimpuestos/'+id).shareReplay();
+
+    }
     detalleimpuestoseditigv(detalle:DetalleImpuestoModel):Observable<any>{
         let json = JSON.stringify(detalle);
         

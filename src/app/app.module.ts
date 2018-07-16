@@ -41,7 +41,8 @@ import { MonedaModule } from './moneda/moneda.module';
 import { TipoPagoModule } from './tipo_pago/tipo_pago.module';
 
 
-import { CajasModule} from './cajas/cajas.module'
+import { CajasModule} from './cajas/cajas.module';
+import { VentasModule} from './ventas/ventas.module';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { CajasModule} from './cajas/cajas.module'
     detalleModule,
 
     TipoPagoModule,
-    CajasModule
+    CajasModule,
+    VentasModule,
 
   ],
   providers: [

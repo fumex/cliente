@@ -3,163 +3,158 @@
         <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
-<div class="container-fluid">
-    <div class="col-lg-12">
-        <div class="card card-outline-primary">
-            <div class="card-body">
+<div class="container">
+    <div class="fluid">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-title">
+                    <label class="control-label" >
+                        <i class="fa fa-inbox"></i>
+                        Registro de {{titulo}}
+                    </label>
+                </div>
+                <ul class="nav nav-tabs profile-tab" role="tablist">
+                    
+                    <li class="nav-item"> <a id="tabcli" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
+                    <li *ngIf="mostrauser!=null" class="nav-item"> <a class="nav-link" data-toggle="tab" href="#usuario" role="tab">Usuario</a> </li>
+                </ul>
+                <br>
                 <form #formCaja="ngForm"  action="#">
-                <div class="form-horizonta">
-                    <div class="col-lg-12 row">
-                        <div class="col-lg-6">
-                            <div class="row p-t-20">
-                                <div class="col-sm-4">
-                                    <label class="control-label">Nombre:</label>    
+                <div class="tab-content">
+                    <div class="tab-pane active" id="datos" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Nombre:</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input  type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="cajas.nombre"  class="form-control"required/>
+                                                </div>   
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Descripción:</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                                    <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="cajas.descripcion" class="form-control" required>
+                                                </div> 
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Sucursal:</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="sucursal.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!sucursal.valid && sucursal.touched" style="color: red" class="fa fa-times"></i>
+                                                    <select class="form-control custom-select" (change)="obtenerusuario(cajas.id_sucursal)" #sucursal="ngModel" name="sucursal" [(ngModel)]="cajas.id_sucursal" required>
+                                                            <option *ngFor="let sucursal of sucursales" value="{{sucursal.id}}" >
+                                                            {{sucursal.nombre_sucursal}}
+                                                        </option>               
+                                                    </select>
+                                                </div>   
+                                            </div>                    
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-8">
-                                   <div class="inner-addon left-addon">
-                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                        <input  type="text"  id="firstName" #nombre="ngModel" name="nombre" [(ngModel)]="cajas.nombre"  class="form-control"required/>
-                                    </div>   
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                                <div class="col-sm-4">
-                                    <label class="control-label">Descripción:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="Descripcion.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!Descripcion.valid && Descripcion.touched" style="color: red" class="fa fa-times"></i>
-                                        <input type="text" #Descripcion="ngModel" name="Descripcion" [(ngModel)]="cajas.descripcion" class="form-control" required>
-                                    </div> 
-                                </div>  
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="row p-t-20">
-                                <div class="col-sm-4">
-                                    <label class="control-label">Sucursal:</label>    
+                    </div>
+                    <div  class="tab-pane" id="usuario" role="tabpanel">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <div class="table-responsive m-t-20">
+                                    <div *ngIf="!usuarios">
+                                        cargando listado de productos....
+                                    </div>
+                                    <div *ngIf="usuarios" style="margin-right: 15%;margin-left: 15%">
+                                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 40px;"></th>
+                                                    <th style="text-align: center">nombres</th>
+                                                    <th style="text-align: center">Rol</th>
+                                                    <th style="text-align: center">Documento</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>  
+                                            <tr *ngFor="let useres of usuarios; let $indice=index">
+                                                <td>
+                                                    <div *ngIf="useres.id!=quitar"><button (click)="addcajas(useres.id,$indice)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-times-circle"></i></button></div>
+                                                    <div *ngIf="useres.id==quitar"><button (click)="quitarcajas($indice)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                </td>
+                                                <td style="text-align: center">{{useres.name}} {{useres.apellidos}} </td>
+                                                <td style="text-align: center">{{useres.rol}}</td>
+                                                <td style="text-align: center">{{useres.numero_documento}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="col-sm-8">
-                                   <div class="inner-addon left-addon">
-                                        <i *ngIf="sucursal.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!sucursal.valid && sucursal.touched" style="color: red" class="fa fa-times"></i>
-                                        <select class="form-control custom-select" #sucursal="ngModel" name="sucursal" [(ngModel)]="cajas.sucursal" required>
-                                            <option *ngFor="let sucur of sucursales" [ngValue]="sucur.id" >
-                                                {{sucur.nombre}}
-                                            </option>               
-                                        </select>
-                                    </div>   
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                                <div class="col-sm-4">
-                                    <label class="control-label">Responsable:</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="res.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!res.valid && res.touched" style="color: red" class="fa fa-times"></i>
-                                        <select class="form-control custom-select" #res="ngModel" name="res" [(ngModel)]="cajas.sucursal" required>
-                                            <option *ngFor="let sucur of sucursales" [ngValue]="sucur.id" >
-                                                {{sucur.nombre}}
-                                            </option>                 
-                                        </select>
-                                    </div> 
-                                </div>  
                             </div>
                         </div>
                     </div>
                 </div>
-                <br>
-                <br>
-                <div style="text-align: center" class="form-actions">
-                    <button  (click)="agregaralmacen()" [disabled]="!formCaja.form.valid"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
-                    <button (click)="limpiar()" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
-                </div>
             </form>
+            <br>
+            <div *ngIf="mostraeditcaja==null" style="text-align: center" class="form-actions">
+                <button  (click)="guardarCaja()"  href="#datos" [disabled]="!formCaja.form.valid"  class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
+                <button (click)="limpiar()"  class="btn btn-success"> <i class="fa fa-eraser"></i> Limpiar</button>
+                
             </div>
-            <hr>
-            <!--<div class="card-body">
-                <div *ngIf="!almacenes">
-                    cargando listado de almacenes....
-                </div>
-                <div *ngIf="almacenes">
-                <h4 class="card-title">Exportar Información</h4>
-                    <div class="table-responsive m-t-20">
-                    <form #formEditarAlmacen="ngForm" (ngSubmit)="editarAlmacen(s)">   
-                        <table id="mytable" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                            <thead>
-                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>direccion</th>
-                                    <th>descripcion</th>
-                                    <th>telefono</th>
-                                    <td style="width: 80px;"></td>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>direccion</th>
-                                    <th>descripcion</th>
-                                    <th>telefono</th>
-                                    <td style="width: 80px;"></td>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr *ngFor="let almacen of almacenes">
-                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.nombre}}</td>
-                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                        <div style="margin-right: 0px;">
-                                            <div style="padding-right: 0px;">
-                                                <input #nombre="ngModel" id="editalmacenaje" name="nombre" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.nombre" >
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.direccion}}</td>
-                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                        <div style="margin-right: 0px;">
-                                            <div style="padding-right: 0px;">
-                                                <input #direccion="ngModel" name="direccion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.direccion" >
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.descripcion}}</td>
-                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                        <div style="margin-right: 0px;">
-                                            <div style="padding-right: 0px;">
-                                                <input #descripcion="ngModel" name="descripcion" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.descripcion" >
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="idalmacen!=almacen.id">{{almacen.telefono}}</td>
-                                    <td *ngIf="idalmacen==almacen.id" style="padding: 0px;">
-                                        <div style="margin-right: 0px;">
-                                            <div style="padding-right: 0px;">
-                                                <input #telefono="ngModel" name="telefono" type="text" style="width:100%; height: 38px;" [(ngModel)]="editalmacen.telefono" >
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="width: 80px;">
-                                        <div *ngIf="idalmacen!=almacen.id">
-                                            <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
-                                            <a style="color: white"class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
-                                        </div>
-                                        <div *ngIf="idalmacen==almacen.id">
-                                            <button style="color: white" class="btn btn-sm btn-info" type="submit"><i class="fa fa-check"></i></button>                                            
-                                            <a style="color: white" class="btn btn-sm btn-danger " (click)="cancelar()" ><i class="fa fa-ban"></i></a>  
-                                        </div>
-                                    </td> 
-                                </tr>
-                        </tbody>
-                    </table>
-                </form>
-                </div>
-            </div>-->
+            <div *ngIf="mostraeditcaja!=null" style="text-align: center" class="form-actions">
+                <button  (click)="editcaja()"  href="#datos" [disabled]="!formCaja.form.valid"  class="btn btn-info"> <i class="fa fa-upload"></i> Actualizar</button>
+                <button (click)="cancelaredit()"  href="#datos" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
+            </div>
+            <hr>              
+            <div style="text-align: left;" class="card-title">
+                <label class="control-label">
+                    <i class="fa fa-dropbox"></i>
+                        Lista completa de Cajas
+                </label>
+            </div>
+            <div>
+                <table id="tablacajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>nombre</th>
+                            <th>descripcion</th>
+                            <th>sucursal</th>
+                            <th>direccion</th>
+                            <th style="width: 80px;"></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let caj of getcajas">
+                            <td>{{caj.nombre}}</td>
+                            <td>{{caj.descripcion}}</td>
+                            <td>{{caj.nombre_sucursal}}</td>
+                            <td>{{caj.direccion}}</td>
+                            <td>
+                                <div style="width: 80px;">  
+                                    <a class="btn btn-sm btn-info " (click)="getcaja(caj.id)" ><i class="fa fa-edit"></i></a>                                        
+                                    <a class="btn btn-sm btn-danger " (click)="eliminarcaja(caj.id)" ><i class="fa fa-trash"></i></a>            
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
+            </div>
         </div>
     </div>
 </div>

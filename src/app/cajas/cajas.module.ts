@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CajasComponent } from './componentes/cajas.component';
 import { CajasService } from './services/cajas.services';
+import { DetalleCajasUsuarioService } from './services/detalle.cajas.usuarios.services';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -18,7 +19,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         
     ],
     providers:[
-        CajasService
+        CajasService,
+        DetalleCajasUsuarioService
     ]
 
 })

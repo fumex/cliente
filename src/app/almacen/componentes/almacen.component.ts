@@ -118,6 +118,7 @@ export class AlmacenComponent{
     }
     cerrar(){
         this.ocuataralmacenes=null;
+        this.tablalmacenes();
     }
     cancelar(){
         this.limpiar();

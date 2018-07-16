@@ -70,10 +70,62 @@
 42. responsive
 
 */
+.botonariba{
+  width: 50px;
+  height: 50px;
+  color:white;
+  border-color: red;
+  box-shadow: inset 0px 0px 20px 16px #c71c1c;
+}
+.botonfacturaclick{
+  height: 40px;
+  width: 115px;
+  color: white;
+  background: #0edc0e;
+  border: 0px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+.botonfactura{
+  height: 40px;
+  width: 115px;
+  background: #d2ffd5;
+  color: #a8a5a5;
+  border: 0px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+.botonboletaclick{
+  height: 40px;
+  width: 115px;
+  color: white;
+  background: #0edc0e;
+  border: 0px;
+  border-bottom-right-radius: 25px;
+  border-top-right-radius: 25px;
+}
+.botonboleta{
+  height: 40px;
+  width: 115px;
+  background: #d2ffd5;
+  color: #a8a5a5;
+  border: 0px;
+  border-bottom-right-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+
+.usuariotext::-webkit-input-placeholder {
+  text-align: center;
+}
 .usuarios_imagen{
   width: 142px;
   height: 142px;
   border-radius: 50%;
+}
+.productos_ventas_imagen{
+  width: 50px;
+  height: 50px;
 }
 .productos_imagen{
   width: 132px;
@@ -3016,6 +3068,19 @@ table.dataTable thead .sorting::after {
   -webkit-transition: 0.2s ease-in;
   -o-transition: 0.2s ease-in;
   transition: 0.2s ease-in;
+ 
+}
+.bottonusuario{
+  margin-left: -31px;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 0%;
+  border-bottom-left-radius: 0%;
+  border-bottom-right-radius: 50%;
+  height: 42px;
+  width: 40px;
+  border: 0px;
+  background: #10a8ff;
+  color: white;
 }
 .btn-success:hover {
   background: #26dad2;

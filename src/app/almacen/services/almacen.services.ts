@@ -40,6 +40,10 @@ export class AlmaceneService{
         return this._http.get<any>(this.url+'/almacen/'+id).shareReplay();
 
     }
+    SeleccionarAlmacenporcaja(id){
+        return this._http.get<any>(this.url+'/seleccionarporcaja/'+id).shareReplay();
+
+    }
 
 
  

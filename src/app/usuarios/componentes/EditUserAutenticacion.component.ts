@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef,ViewContainerRef } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { UsuarioModel} from '../modelos/usuarios'
 import { Router } from '@angular/router';
@@ -6,6 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {AlmacenesService}from '../../Almacenes/services/almacenes.service';
 import{almacen} from '../../Almacenes/modelos/almacenes';
 import { UsuarioService } from '../services/usuarios.service';
+
+import {ToastService} from '../../toastalert/service/toasts.service'
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 declare var jQuery:any;
 declare var $:any;
@@ -18,7 +21,7 @@ declare var swal:any;
     '(document:click)': 'handleClick($event)',
     },
   templateUrl: '../views/EditUserAutenticacion.html',
-  providers:[UsuarioService],
+  providers:[UsuarioService,ToastService],
   styleUrls: ['../styles/edituser.css']
 
 })
@@ -46,7 +49,12 @@ export class EditUsuariosp implements OnInit {
         private authService:AuthService,
         private router:Router,
         private myElement: ElementRef,
+        private toaste:ToastService,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
+
     ) { 
+        this.toastr.setRootViewContainerRef(vcr);
         this.user=this.authService.getUser();
         this.elementRef = myElement;
         this.usuario=new UsuarioModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -166,24 +174,15 @@ export class EditUsuariosp implements OnInit {
         }
     }
     contradiferente(){
-        
-         swal({
-            title: 'contraseña incorecta',
-            text:'tiene '+(3-this.canterror)+' oportunidades mas',
-            timer: 5000,
-        })
+        this.toaste.errorAlerta('tiene '+(3-this.canterror)+' oportunidades mas','contraseña incorecta');
+
     }
     nuevadifertente(){
-        swal({
-        title: 'las contraseñas no coinciden',
-        timer: 1000,
-       })
+        this.toaste.WarningAlert('las contraseñas no coinciden','Error!');
+
     }
     correcto(){
-        swal({
-            title: 'se modifico con exito',
-            timer: 1000,
-        })
+        this.toaste.SuccessAlert('se modifico su contraseña','Echo!!!')
     }
 
 }
