@@ -58,7 +58,7 @@ export class EmpresaPerfilComponent implements OnInit{
     }
     ngOnInit(){
         this.getEmpresa();
-        this.recargar();
+       // this.recargar();
     }
 
     getEmpresa(){
@@ -66,7 +66,7 @@ export class EmpresaPerfilComponent implements OnInit{
             result=>{
                 this.empresa=result;
                 this.asignacionCampos(this.empresa);
-                this.imageUrl=this.url+'empresa-img/'+this.image;
+                this.imageUrl=this.url+'/empresa-img/'+this.image;
                 console.log(this.imageUrl);
             },
             error=>{
