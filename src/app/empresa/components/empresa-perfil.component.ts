@@ -6,7 +6,10 @@ import { User } from '../../auth/interfaces/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
+import { environment } from '../../../environments/environment.prod';
 
+declare var jQuery:any;
+declare var $:any;
 @Component({
     selector:'empresa-perfil',
     templateUrl:'../views/empresa-perfil.html',
@@ -21,7 +24,7 @@ export class EmpresaPerfilComponent implements OnInit{
     public filear;
     public filesToUpload:File[];
     public fileToUpload:File=null;
-
+    public imageUrl:string;
     public id:number;
     public nombre:string;
     public ruc:string;
@@ -33,7 +36,8 @@ export class EmpresaPerfilComponent implements OnInit{
     public telefono2:string;
     public web:string;
     public email:string;
-    public imageUrl:string;
+    public image:string;
+    public url;
 
     constructor(
         private empresaService:EmpresaService,
@@ -49,16 +53,21 @@ export class EmpresaPerfilComponent implements OnInit{
         this.imageUrl=="/assets/images/2.png";
         this.user=this.auth.getUser();
         this.confirmado=true;
-        this.filesToUpload=null; 
+        this.filesToUpload=null;
+        this.url=environment.api_url;
     }
     ngOnInit(){
         this.getEmpresa();
+        this.recargar();
     }
+
     getEmpresa(){
         this.empresaService.dataEmpresa().subscribe(
             result=>{
                 this.empresa=result;
                 this.asignacionCampos(this.empresa);
+                this.imageUrl=this.url+'empresa-img/'+this.image;
+                console.log(this.imageUrl);
             },
             error=>{
                 console.log(<any>error);
@@ -77,6 +86,12 @@ export class EmpresaPerfilComponent implements OnInit{
         this.telefono2=empresa.telefono2;
         this.web=empresa.web;
         this.email=empresa.web;
-        this.imageUrl=empresa.imagen;
+        this.image=empresa.imagen;
+    }
+    edit(){
+        this.router.navigate(['/'+this.user.rol+'/empresa/edit/'+this.id]);
+    }
+    recargar(){
+        $('#galeria').load();
     }
 }

@@ -22,7 +22,6 @@ export class EmpresaAddComponent implements OnInit{
     public confirmado:boolean;
     public user:User;
     public imageUrl:string;
-
     public filear;
     public filesToUpload:File[];
     public fileToUpload:File=null;
@@ -48,12 +47,12 @@ export class EmpresaAddComponent implements OnInit{
     }
     img(ruc){
         let f= new Date();
-        let fecha=f.getDate()+"-"+(f.getMonth()+1)+"-"+f.getFullYear()+"-"+f.getSeconds();
-        let emp=fecha+'-'+ruc;
-        return emp; 
+        let fecha=f.getDate()+"_"+(f.getMonth()+1)+"_"+f.getFullYear()+"_"+f.getMilliseconds();
+        let emp=fecha+'_'+ruc;
+        return emp;
     }
     addEmpresa(ruc){
-        this.empresa.imagen=this.img(ruc);
+        this.empresa.imagen=ruc
         this.empresaService.addEmpresa(this.empresa).subscribe(
             result=>{
                 console.log(result);
@@ -62,6 +61,10 @@ export class EmpresaAddComponent implements OnInit{
                 console.log(<any>error);
             }
         );
+    }
+
+    getExtension(filename){
+        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename)[0] : undefined;
     }
     viewImage(file:FileList,fileInput:any){
         this.filear=document.getElementById('image');
@@ -100,19 +103,15 @@ export class EmpresaAddComponent implements OnInit{
     }
     onSubmit(ruc){
         let _ruc=this.img(ruc);
-        if(this.filesToUpload==null){
-            
-        }
-        else{
-            this.empresaService.postFile(_ruc,this.fileToUpload).subscribe(
-                result=>{
-                    console.log('imagen agregada');
-                    this.addEmpresa(_ruc);
-                },
-                error=>{
-                    console.log(<any>error);
-                }
-            );
-        }
+        this.empresaService.postFile(_ruc,this.fileToUpload).subscribe(
+            result=>{
+                console.log('imagen agregada');
+                let ru=_ruc+'.'+this.getExtension(this.filear.value);
+                this.addEmpresa(ru);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
     }
 }

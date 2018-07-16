@@ -15,8 +15,8 @@ export class EmpresaService{
         let headers=new HttpHeaders().set('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/empresa-add`,params,{headers:headers});
     }
-    updateEmpresa(id, emrpesa:EmpresaModel):Observable<any>{
-        let params=JSON.stringify(emrpesa);
+    updateEmpresa(id, empresa:EmpresaModel):Observable<any>{
+        let params=JSON.stringify(empresa);
         let headers=new HttpHeaders().set('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/empresa-update/`+id,params,{headers:headers});
     }
@@ -37,7 +37,7 @@ export class EmpresaService{
         headers.append('Content-Type','application/json');
         return this.http.post(`${environment.api_url}/imagen-up`,formData,{headers:headers});
     }
-    getImage(name){
+    getImage(name):Observable<any>{
         return this.http.get(`${environment.api_url}/empresa-img/`+name).shareReplay();
     }
     dataEmpresa():Observable<any>{

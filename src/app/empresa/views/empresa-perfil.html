@@ -12,45 +12,40 @@
                         <div class="container">
                             <div class="card-body">
                                 <div class="col-md-12">
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <strong><h1 class="text-primary">{{nombre}}</h1></strong>
+                                            <strong><span> RUC:</span> </strong> {{ ruc }} <br>
+                                            <strong><span><i class="fa fa-street-view"></i>DIRECCION:</span> </strong> {{ direccion }} <br>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
                                     <div class="row">
-                                        
-                                        <div class="col-md-6">
-                                            <img src="http://www.grpsinergy.com//wp-content/uploads/2015/05/cabecera-nuestra-empresa-sinergy.png" class="img-responsive" alt="">
+                                        <div style="text-align: center;" class="col-md-6">
+                                            <img id="galeria" style="width: 70%;" [src]="imageUrl" class="img-responsive" alt="">
                                         </div>
-                                        <div class="col-md-6">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>EMPRESA:</span> </strong> {{ nombre }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>RUC:</span> </strong> {{ ruc }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>DIRECCION:</span> </strong> {{ direccion }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>DEPARTAMENTO:</span> </strong> {{ departamento }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>PROVINCIA:</span> </strong> {{ provincia }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>DISTRITO:</span> </strong> {{ distrito }} <br> 
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>TELEFONO:</span> </strong> {{ telefono1 }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>TELEFONO FIJO:</span> </strong> {{ telefono2 }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>WEB:</span> </strong> {{ web }} <br>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <strong><span><i class="fa fa-building"></i>EMAIL:</span> </strong> {{ email }} <br>
-                                                </li>
-                                            </ul>
+                                        <div class="col-md-6" style="padding:10%;">
+                                            <strong><span>DEPARTAMENTO:</span> </strong> {{ departamento }} <br>
+                                            <strong><span>PROVINCIA:</span> </strong> {{ provincia }} <br>
+                                            <strong><span>DISTRITO:</span> </strong> {{ distrito }} <br>
+                                            <strong><span><i class="fa fa-mobile"></i></span> </strong> {{ telefono1 }} <br>
+                                            <strong><span><i class="fa fa-phone"></i></span> </strong> {{ telefono2 }} <br>
+                                            <br>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <button type="button" (click)="edit()" class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="row" style="text-align: center">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <strong><span><i class="fa fa-globe"></i>  WEB:</span> </strong> {{ web }} <br>
+                                            <strong><span><i class="fa fa-envelope"></i>  EMAIL:</span> </strong> {{ email }} <br>
+                                        </div>
+                                        <div class="col-md-4"></div>
                                     </div>
                                 </div>
                             </div>

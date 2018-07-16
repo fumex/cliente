@@ -55,6 +55,7 @@ import { CajasComponent } from '../../cajas/componentes/cajas.component';
 import { VentasComponent} from '../../ventas/componentes/ventas.component'
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
+import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
 
 
 @NgModule({
@@ -136,6 +137,10 @@ import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.
                     {
                         path:'empresa',
                         component:EmpresaAddComponent
+                    },
+                    {
+                        path:'empresa/edit/:id',
+                        component:EmpresaEditComponent
                     },
                     {
                         path:'empresa/perfil',

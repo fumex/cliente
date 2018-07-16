@@ -27,7 +27,9 @@
                                         <th>Pago</th>
                                         <th>Almacen</th>
                                         <th>SubTotal</th>
-                                        <th>Impuesto</th>
+                                        <th>IGV</th>
+                                        <th>ISC</th>
+                                        <th>OTRO</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
@@ -41,8 +43,10 @@
                                         <td>{{pago.tipoPago}}</td>
                                         <td>{{pago.nombre}}</td>
                                         <td>{{pago.subtotal}}</td>
-                                        <td>{{pago.igv}}</td>
-                                        <td>{{ (pago.subtotal -- pago.igv) | number:'1.2' }}</td>
+                                        <td>{{pago.igv  | number:'1.2' }}</td>
+                                        <td>{{pago.isc  | number:'1.2'}}</td>
+                                        <td>{{pago.otro | number:'1.2' }}</td>
+                                        <td>{{ (pago.subtotal*1 + pago.igv*1 + pago.isc*1 + pago.otro*1 ) | number:'1.2' }}</td>
                                     </tr>
                                 </tbody>
                             </table>
