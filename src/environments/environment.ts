@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  api_url:'https://cuscobackend.herokuapp.com/api',
-  url:'https://webcusco.herokuapp.com/'
+  api_url:'http://127.0.0.1:8000/api',
+  url:'http//:localhost:4200/'
 };
