@@ -19,8 +19,6 @@ export class LoginComponent implements OnInit {
     private formBuilder:FormBuilder,
     private authService:AuthService,
     private router:Router
-    
-
   ) {
     
    }
@@ -40,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.f.value).subscribe(
       response=>{
         this.user=response;
+        console.log('aqui user')
         location.href=`${environment.url}`+this.user.user.rol;
          this.rol=this.user.user.rol;
       },
