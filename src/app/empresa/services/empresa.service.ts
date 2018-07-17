@@ -41,6 +41,6 @@ export class EmpresaService{
         return this.http.get(`${environment.api_url}/empresa-img/`+name).shareReplay();
     }
     dataEmpresa():Observable<any>{
-        return this.http.get(`${environment.api_url}/empresa/`).shareReplay();
+        return this.http.get(`${environment.api_url}/empresa-data`).shareReplay();
     }
 }
