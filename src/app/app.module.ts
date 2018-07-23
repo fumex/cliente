@@ -48,6 +48,7 @@ import { VentasModule} from './ventas/ventas.module';
 @NgModule({
   declarations: [
     AppComponent,
+    
   ],
   imports: [
     BrowserModule,
