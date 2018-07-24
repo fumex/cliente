@@ -28,9 +28,9 @@
                                         <th>Almacen</th>
                                         <th>SubTotal</th>
                                         <th>IGV</th>
-                                        <th>ISC</th>
                                         <th>OTRO</th>
                                         <th>Total</th>
+                                        <th>opcion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,9 +44,12 @@
                                         <td>{{pago.nombre}}</td>
                                         <td>{{pago.subtotal}}</td>
                                         <td>{{pago.igv  | number:'1.2' }}</td>
-                                        <td>{{pago.isc  | number:'1.2'}}</td>
                                         <td>{{pago.otro | number:'1.2' }}</td>
                                         <td>{{ (pago.subtotal*1 + pago.igv*1 + pago.isc*1 + pago.otro*1 ) | number:'1.2' }}</td>
+                                        <td><button class="btn btn-info" (click)="recibo(pago.id,pago.code,pago.nombre_proveedor,
+                                            pago.documento, pago.nroBoleta, pago.nombre,
+                                            pago.tipoPago,pago.subtotal,pago.igv,
+                                            pago.created_at)">view</button></td>
                                     </tr>
                                 </tbody>
                             </table>

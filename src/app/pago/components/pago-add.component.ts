@@ -55,7 +55,7 @@ export class PagoAddComponent implements OnInit{
     public user:User;
     public _impuesto:number;
     public igv:number;
-    public isc:number;
+    public exoneracion:number;
     public otro:number;
 
 
@@ -92,7 +92,7 @@ export class PagoAddComponent implements OnInit{
         this.title="Compras";
         //----------impuestos
         this.igv=0;
-        this.isc=0;
+        this.exoneracion=0;
         this.otro=0;
         //---------
         this.total=0;
@@ -159,7 +159,7 @@ export class PagoAddComponent implements OnInit{
         let subtotal=this.sumaTotal();
         //let impuesto=Number((this.total*this._impuesto).toFixed(2));
         //console.log(impuesto);
-        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.isc,this.otro);
+        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.exoneracion,this.otro);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -289,7 +289,6 @@ export class PagoAddComponent implements OnInit{
     //suma detalle
     sumaTotal(){
         let igv=0;
-        let isc=0;
         let otro=0;
         let total=0;
         let impues=this.prods_d;
@@ -299,15 +298,10 @@ export class PagoAddComponent implements OnInit{
             console.log(total);
             precio=comp.cantidad*comp.precio;
             impues.forEach(function(value){
-                if(value.tipo=='IGV'){ 
+                if(value.tipo=='igv'){ 
                     if(comp.nombre_producto==value.nombre_producto){
                         igv=igv + precio*value.porcentaje/100;
                     } 
-                }
-                if(value.tipo=='ISC'){
-                    if(comp.nombre_producto==value.nombre_producto){
-                        isc=isc + precio*value.porcentaje/100;
-                    }
                 }
                 if(value.tipo=='OTRO'){
                     if(comp.nombre_producto==value.nombre_producto){
@@ -318,9 +312,8 @@ export class PagoAddComponent implements OnInit{
         });
         this.igv=igv;
         this.otro=otro;
-        this.isc=isc;
         this.total=total;
-        console.log('IGV: '+this.igv+'   -  '+'otro: '+this.otro+'  -  '+'ISC: '+this.isc);
+        console.log('IGV: '+this.igv+'   -  '+'otro: '+this.otro+'  -  '+'ISC: '+this.exoneracion);
         return this.total;
     }
     //guardar todo

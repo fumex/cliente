@@ -9,7 +9,7 @@ export class PagoModel{
      public tipoPago:string,
      public subtotal:number,
      public igv:number,
-     public isc:number,
+     public exoneracion:number,
      public otro:number,
     ){}
 }
