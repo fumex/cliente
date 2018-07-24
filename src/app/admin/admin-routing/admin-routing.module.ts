@@ -58,6 +58,7 @@ import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
 
 
+
 @NgModule({
    
     imports:[
@@ -202,7 +203,7 @@ export class AdminRoutingModule {
             private _route: ActivatedRoute,
         //private _login:LoginComponent,
     ){
-        this.url='http://localhost:4200';
+        this.url=environment.url;
         this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
 ;
             if(this.url+'/'+data.user.rol!=this.ruta){

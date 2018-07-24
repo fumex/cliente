@@ -63,7 +63,7 @@ export class EmpresaEditComponent implements OnInit{
     }
     image(imagen:string){
         this.img_up=imagen;
-        this.imageUrl=this.url+'empresa-img/'+imagen;
+        this.imageUrl=this.url+'/empresa-img/'+imagen;
     }
     viewImage(file:FileList,fileInput:any){
         this.filear=document.getElementById('image');
