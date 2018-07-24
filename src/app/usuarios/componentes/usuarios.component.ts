@@ -124,8 +124,8 @@ export class usuarioscomponent{
             }
         }
     }
-    isertarimagen(dni){
-        dni=this.usuario.numero_documento;  
+    isertarimagen(){
+       let dni=this.usuario.numero_documento;  
         
         if(this.filesToUpload==null){
             this.usuario.imagen='2.png';
