@@ -15,13 +15,13 @@
                                     cargando listado de almacenes....
                                 </div>
                                 <div *ngIf="cajas">
-                                <table  class="table table-bordered table-striped" cellpadding="0" cellspacing="0">
+                                <table  style="width: 100%;text-align: center">
                                     <thead>
                                         <tr>
-                                            <th>nombre de caja</th>
-                                            <th>descripcion</th>
-                                            <th>sucursal</th>
-                                            <th style="width: 85px;"></th>
+                                            <th>nombre de caja<hr style="    background: #68a5da;"></th>
+                                            <th>descripcion<hr style="margin-left: -10px;background: #68a5da;"></th>
+                                            <th>sucursal<hr style="margin-left: -10px;background: #68a5da;"></th>
+                                            <th style="width: 85px;"><br><hr style="margin-left: -10px;background: #68a5da;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>  
@@ -51,21 +51,20 @@
     <div class="fluid">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-title">
-                    <label class="control-label" >
-                        <i class="fa fa-inbox"></i>
-                        Registro de {{titulo}}
-                    </label>
-                    <div style="text-align: right; margin-top: -25px; margin-right: 40px;">
-                        <button class="botonariba" title="Salir"> <i class="fa fa-sign-out" ></i> </button>
+                <div class="form-horizonta">
+                    <div class="row p-t-20">
+                        <div class="col-sm-6">
+                            <ul class="nav nav-tabs profile-tab" role="tablist" style="border-color: transparent;">
+                                <li [hidden]="verusuarios!=null" class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
+                                <li [hidden]="verusuarios==null" class="nav-item"> <a id="tabcli"class="nav-link" data-toggle="tab" href="#usuarios" role="tab">Clientes</a> </li>
+                                <li class="nav-item"> <a id="tabpago" class="nav-link" data-toggle="tab" href="#pago" role="tab">Pago</a> </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6" style="text-align: right">
+                            <button class="botonariba" title="Salir"> <i class="fa fa-sign-out" ></i> </button>
+                        </div>
                     </div>
-                </div>
-                <ul class="nav nav-tabs profile-tab" role="tablist">
-                    
-                    <li class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
-                    <li  class="nav-item"> <a id="tabpro"class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
-                    <li  class="nav-item"> <a id="tabcli"class="nav-link" data-toggle="tab" href="#usuarios" role="tab">Clientes</a> </li>
-                </ul>
+                </div> 
                 <br>
                 <div class="tab-content">
                     <div class="tab-pane active" id="datos" role="tabpanel">
@@ -74,6 +73,258 @@
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-12" >
                                         <div class="row p-t-20">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10" style="text-align: left" >
+                                                <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
+                                                    <i class="fa fa-sticky-note-o"></i> Factura
+                                                </button>
+                                                <button *ngIf="factura==true"   class="botonfactura">
+                                                    <i class="fa fa-sticky-note"></i> Factura
+                                                </button>
+                                                <button *ngIf="boleta!=true" (click)="seleccionarboleta()" style="margin-left: -4px;" class="botonboletaclick">
+                                                    <i class="fa fa-sticky-note-o"></i> Boleta
+                                                </button>
+                                                
+                                                <button *ngIf="boleta==true" style="margin-left: -4px;" class="botonboleta">
+                                                    <i class="fa fa-sticky-note"></i> Boleta
+                                                </button>
+                                                
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-1"></div>
+                                            <div  class="col-sm-10">
+                                                <div class="inner-addon right-addon">
+                                                    <!--<i  style="color: green" class="fa fa-check"></i>-->
+                                                    <input type="text" 
+                                                    style="background-color: white;
+                                                    border-color: #0099f2;
+                                                    opacity: 5;
+                                                    box-shadow: inset 0px 0px 2px 2px #acd2e8;
+                                                    text-align: center;" 
+                                                    id="firstName"  name="nombre"  disabled="disabled"  class="form-control usuariotext" placeholder="Ingrese el usuario" required/>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button (click)="irausuarios()" class="bottonusuario" >
+                                                    <i class="fa fa-user-plus"></i> 
+                                                </button>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-12">
+                                                <table id="tablacajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th><strong>producto</strong></th>
+                                                            <th><strong>Descripcion</strong></th>
+                                                            <th><strong>Unidad de venta</strong></th>
+                                                            <th><strong>categoria</strong></th>
+                                                            <th ><strong>precio de venta</strong></th>
+                                                            <th ><strong>stock</strong></th>
+                                                            <th ><strong>cantidad</strong></th>
+                                                            <th style="width: 80px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <tr  *ngFor="let producto of productos;let $index=index;"> 
+                                                            <td style="width: 50px;height: 50px;"> <img  class="productos_ventas_imagen"   src="{{url}}/{{producto.imagen}}" > </td>
+                                                            <td style="text-align: center"><a>{{producto.nombre_producto}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.descripcion}}</a>
+                                                            <td style="text-align: center"> <a>{{producto.unidad}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.nombre}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.precio_venta}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.stock}}</a></td>
+                                                            <td *ngIf="prodcant!=producto.id && producto.cantidad!=null" style="text-align: center" (dblclick)="editarcantpro(producto.id,producto.cantidad)"><a>{{producto.cantidad}}</a></td>
+                                                            <td *ngIf="prodcant==producto.id && producto.cantidad!=null" style="padding: 0px;">
+                                                                <div style="margin-right: 0px;">
+                                                                    <div style="padding-right: 0px;">
+                                                                    <input #cantidad="ngModel" name="cantidad" type="text" style="width:100%; height: 28px;" [(ngModel)]="producto.cantidad" >
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td *ngIf="producto.cantidad==null" style="text-align: center;color: #4b8bff" ><a>Enviado</a></td>
+                                                            <td>
+                                                                <button *ngIf="producto.cantidad!=null" (click)="addproducto($index,producto)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
+                                                                    <i class="fa fa-circle"></i>
+                                                                </button>
+                                                                <button *ngIf="producto.cantidad==null"  class="btn btn-sm btn-info" >
+                                                                    <i class="fa fa-check-circle"></i>
+                                                                </button>
+                                                                <a *ngFor="let $index=index;let imp of producto.preg" title="{{imp.nombre}}:{{imp.porcentaje}}"><i class="fa fa-question-circle"></i></a>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-12" style="text-align: center;margin-top: 30px">
+                                                <label for="card-title">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                     <strong>Productos</strong>   
+                                                </label>
+                                            </div>
+                                            <br>
+                                            <div class="col-sm-12">
+                                                <table  width="100%" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000" 
+                                                style="width: 100%;text-align: center;border-collapse:collapse;border-color:#ddd;">
+                                                    <thead style="border-bottom: solid 1px #88c8ff;">
+                                                        <tr>
+                                                            <th>N°</th>
+                                                            <th style="width: 495px">descripcion</th>
+                                                            <th>Precio Unitario</th>
+                                                            <th style="width:110px;;">Cantidad</th>
+                                                            <th style="text-align: center;width: 100px;">Valor de Venta</th>
+                                                            <th style="width: 40px;"></th>
+                                                            <th style="width: 20px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        <tr  *ngFor="let dventa of detalleventas;let $index=index;">
+                                                            <td style="text-align: center">{{$index +1}}</td>
+                                                            <td style="text-align: center">{{dventa.descripcion}}</td>
+                                                            <td style="text-align: center">{{dventa.precio_unitario}}</td>
+                                                            <td *ngIf="editarcant!=dventa.id_producto" style="text-align: center" >{{dventa.cantidad}}</td>
+                                                            <td style="text-align: center">{{dventa.cantidad*dventa.precio_unitario}}</td>
+                                                            <td style="text-align: center">
+                                                                <a (click)="agregarunidadpro($index,dventa)" style="color:green" title="agregar una unidad"><i class="fa fa-plus-square"></i></a>
+                                                                <a (click)="quitarunidadpro($index,dventa)" style="color:red" title="quitar una unidad"><i class="fa fa-minus-square"></i></a>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                <a (click)="quitarproducto($index,dventa)" style="color:red" title="quitar producto"><i class="fa fa-trash"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  *ngFor="let ini of inicio">
+                                                            <td style="color: transparent">{{ini.id }}</td>
+                                                            <td>{{ini.descripcion}}</td>
+                                                            <td >{{ini.precio_unitario}}</td>
+                                                            <td >{{ini.cantidad}}</td>
+                                                            <td >{{ini.cantidad}}</td>
+                                                            <td>{{ini.cantidad}}</td>
+                                                            <td>{{ini.cantidad}}</td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
+                                                            <td colspan="2" style="color:#99abb4">subtotal</td>
+                                                            <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
+                                                           
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="col-sm-7"></div>
+                                            <div class="col-sm-5" style="    margin-left: -40px;">
+                                                <table  width="100%;" style="margin-left: -20px;">
+                                                    <tbody style="border-bottom: solid">
+                                                        <tr *ngFor="let imp of impuestos;let $index=index;">
+                                                            <td>
+                                                                <li style="color: #99abb4" >{{imp.nombre }}({{imp.porcentaje}}%)</li>
+                                                            </td>
+                                                            <td style="text-align: center;width: 100px;" >
+                                                                <li style="color: #99abb4;text-align: center" >{{imp.cantidad | number : '1.2-2'}}</li>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                     <tbody *ngIf="impuestos.length>0">
+                                                        <tr style="background: #88c8ff">
+                                                            <td>
+                                                                <li style="color: black" >Total</li>
+                                                            </td>
+                                                            <td style="text-align: center;width: 100px;" >
+                                                                <li style="color: black;text-align: center" >{{total | number : '1.2-2'}}</li>
+                                                            </td>
+                                                           
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="col-sm-9"></div>
+                                            <div class="col-sm-2" style="text-align: right">
+                                                <button style=" margin-top: 30px;">Continuar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="usuarios" role="tabpanel">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                 <div class="table-responsive m-t-10">
+                                    <div *ngIf="!clientes">
+                                        cargando listado de Usuarios .....
+                                    </div>
+                                    <div *ngIf="clientes">
+                                    <table id="tabclientes" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px;"></th>
+                                                <th><strong>Nombres</strong></th>
+                                                <th><strong>Documento</strong></th>
+                                                <th><strong>Numero de documento</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>  
+                                            <tr *ngFor="let cliente of clientes;"> 
+                                                <td >
+                                                    <button *ngIf="clientselec==cliente.id" class="btn btn-sm btn-success" ><i class="fa fa-check-circle"></i></button>
+                                                    <button *ngIf="clientselec!=cliente.id" class="btn btn-sm btn-info" (click)="seleccionarcliente(cliente.id,cliente.nombre,cliente.documento,cliente.nro_documento)"><i class="fa fa-circle"></i></button>
+                                                </td>
+                                                <td style="text-align: center"><a>{{cliente.nombre}}</a></td>
+                                                <td style="text-align: center"><a>{{cliente.documento}}</a>
+                                                <td style="text-align: center"> <a>{{cliente.nro_documento}}</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <div style="text-align: right">
+                                    <button (click)="limpiar()"  class="btn btn-danger"> <i class="fa fa-eraser"></i> cancelar</button>
+                                    <button  (click)="mandarusuario()"   [disabled]="acepclient==0"  class="btn btn-info"> <i class="fa fa-save"></i> agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div  class="tab-pane" id="pago" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Tipo de pago:</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="tipo.valid" style="color: green" class="fa fa-check"></i>
+                                                    <i *ngIf="!tipo.valid && tipo.touched" style="color: red" class="fa fa-times"></i>
+                                                    <select class="form-control custom-select" (change)="obtenerusuario(cajas.id_sucursal)"  name="tipo"  required>
+                                                            <option value="Tarjeta" >Tarjeta</option> 
+                                                            <option value="Efectivo" >Efectivo</option>      
+                                                            <option value="Mixto" >Mixto</option>                    
+                                                    </select>
+                                                </div>   
+                                            </div>    
+                                            <div class="col-sm-6">
+
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
                                             <div class="col-sm-1"></div>
                                             <div  class="col-sm-10">
                                                 <div class="inner-addon right-addon">
@@ -95,119 +346,94 @@
                                             <br>
                                             <br>
                                             <br>
-                                            <div class="col-sm-1"></div>
-                                            <div class="col-sm-10" style="text-align: right" >
-                                                <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
-                                                    <i class="fa fa-sticky-note-o"></i> Factura
-                                                </button>
-                                                <button *ngIf="factura==true"   class="botonfactura">
-                                                    <i class="fa fa-sticky-note"></i> Factura
-                                                </button>
-                                                <button *ngIf="boleta!=true" (click)="seleccionarboleta()" style="margin-left: -4px;" class="botonboletaclick">
-                                                    <i class="fa fa-sticky-note-o"></i> Boleta
-                                                </button>
-                                                
-                                                <button *ngIf="boleta==true" style="margin-left: -4px;" class="botonboleta">
-                                                    <i class="fa fa-sticky-note"></i> Boleta
-                                                </button>
-                                                
+                                            <div class="col-sm-12" style="text-align: center;margin-top: 30px">
+                                                <label for="card-title">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                     <strong>Productos</strong>   
+                                                </label>
+                                            </div>
+                                            <br>
+                                            <div class="col-sm-12">
+                                                <table  width="100%" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000" 
+                                                style="width: 100%;text-align: center;border-collapse:collapse;border-color:#ddd;">
+                                                    <thead style="border-bottom: solid 1px #88c8ff;">
+                                                        <tr>
+                                                            <th>N°</th>
+                                                            <th style="width: 495px">descripcion</th>
+                                                            <th>Precio Unitario</th>
+                                                            <th style="width:110px;;">Cantidad</th>
+                                                            <th style="text-align: center;width: 100px;">Valor de Venta</th>
+                                                            <th style="width: 40px;"></th>
+                                                            <th style="width: 20px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        <tr  *ngFor="let dventa of detalleventas;let $index=index;">
+                                                            <td style="text-align: center">{{$index +1}}</td>
+                                                            <td style="text-align: center">{{dventa.descripcion}}</td>
+                                                            <td style="text-align: center">{{dventa.precio_unitario}}</td>
+                                                            <td *ngIf="editarcant!=dventa.id_producto" style="text-align: center" >{{dventa.cantidad}}</td>
+                                                            <td style="text-align: center">{{dventa.cantidad*dventa.precio_unitario}}</td>
+                                                            <td style="text-align: center">
+                                                                <a (click)="agregarunidadpro($index,dventa)" style="color:green" title="agregar una unidad"><i class="fa fa-plus-square"></i></a>
+                                                                <a (click)="quitarunidadpro($index,dventa)" style="color:red" title="quitar una unidad"><i class="fa fa-minus-square"></i></a>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                <a (click)="quitarproducto($index,dventa)" style="color:red" title="quitar producto"><i class="fa fa-trash"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  *ngFor="let ini of inicio">
+                                                            <td style="color: transparent">{{ini.id }}</td>
+                                                            <td>{{ini.descripcion}}</td>
+                                                            <td >{{ini.precio_unitario}}</td>
+                                                            <td >{{ini.cantidad}}</td>
+                                                            <td >{{ini.cantidad}}</td>
+                                                            <td>{{ini.cantidad}}</td>
+                                                            <td>{{ini.cantidad}}</td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
+                                                            <td colspan="2" style="color:#99abb4">subtotal</td>
+                                                            <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
+                                                           
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="col-sm-7"></div>
+                                            <div class="col-sm-5" style="    margin-left: -40px;">
+                                                <table  width="100%;" style="margin-left: -20px;">
+                                                    <tbody style="border-bottom: solid">
+                                                        <tr *ngFor="let imp of impuestos;let $index=index;">
+                                                            <td>
+                                                                <li style="color: #99abb4" >{{imp.nombre }}({{imp.porcentaje}}%)</li>
+                                                            </td>
+                                                            <td style="text-align: center;width: 100px;" >
+                                                                <li style="color: #99abb4;text-align: center" >{{imp.cantidad | number : '1.2-2'}}</li>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                     <tbody *ngIf="impuestos.length>0">
+                                                        <tr style="background: #88c8ff">
+                                                            <td>
+                                                                <li style="color: black" >Total</li>
+                                                            </td>
+                                                            <td style="text-align: center;width: 100px;" >
+                                                                <li style="color: black;text-align: center" >{{total | number : '1.2-2'}}</li>
+                                                            </td>
+                                                           
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="col-sm-9"></div>
+                                            <div class="col-sm-2" style="text-align: right">
+                                                <button style=" margin-top: 30px;">Continuar</button>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div  class="tab-pane" id="usuarios" role="tabpanel">
-                        <div class="card-body">
-                            <div class="col-lg-12">
-                                 <div class="table-responsive m-t-10">
-                                    <div *ngIf="!clientes">
-                                        cargando listado de Usuarios .....
-                                    </div>
-                                    <div *ngIf="clientes">
-                                    <table id="" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 30px;"></th>
-                                                <th><strong>Nombres</strong></th>
-                                                <th><strong>Documento</strong></th>
-                                                <th><strong>Numero de documento</strong></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>  
-                                            <tr *ngFor="let cliente of clientes;"> 
-                                                <td >
-                                                    <button *ngIf="clientselec==cliente.id" class="btn btn-sm btn-success" ><i class="fa fa-check-circle"></i></button>
-                                                    <button *ngIf="clientselec!=cliente.id" class="btn btn-sm btn-info" (click)="seleccionarcliente(cliente.id,cliente.nombre,cliente.documento,cliente.nro_documento)"><i class="fa fa-circle"></i></button>
-                                                </td>
-                                                <td style="text-align: center"><a>{{cliente.nombre}}</a></td>
-                                                <td style="text-align: center"><a>{{cliente.documento}}</a>
-                                                <td style="text-align: center"> <a>{{cliente.nro_documento}}</a></td>
-                                            </tr>
-                                            <!--<tr  *ngFor="let da of productos;">
-                                                    <td style="text-align: center">id:{{da.id}}</td>
-                                                    <td style="text-align: center" >
-                                                        <li *ngFor="let des of da.preg">
-                                                            <strong>{{des.pid}}:{{des.preg}}</strong>
-                                                        </li>
-                                                    </td>
-                                                </tr>-->
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-                                <br>
-                                <br>
-                                <div style="text-align: right">
-                                    <button (click)="limpiar()"  class="btn btn-danger"> <i class="fa fa-eraser"></i> cancelar</button>
-                                    <button  (click)="mandarusuario()"   [disabled]="acepclient==0"  class="btn btn-info"> <i class="fa fa-save"></i> agregar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div  class="tab-pane" id="producto" role="tabpanel">
-                        <div class="card-body">
-                            <div class="col-lg-12">
-                                 <div class="table-responsive m-t-10">
-                                    <div *ngIf="!productos">
-                                        cargando listado de Productos ....
-                                    </div>
-                                    <div *ngIf="productos">
-                                    <table id="tablacajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th><strong>producto</strong></th>
-                                                <th><strong>Descripcion</strong></th>
-                                                <th><strong>Unidad de venta</strong></th>
-                                                <th><strong>categoria</strong></th>
-                                                <th ><strong>precio de venta</strong></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>  
-                                            <tr *ngFor="let producto of productos;"> 
-                                                <td style="width: 50px;height: 50px;"> <img  class="productos_ventas_imagen"   src="{{url}}/{{producto.imagen}}" > </td>
-                                                <td style="text-align: center"><a>{{producto.nombre_producto}}</a></td>
-                                                <td style="text-align: center"><a>{{producto.descripcion}}</a>
-                                                <td style="text-align: center"> <a>{{producto.unidad}}</a></td>
-                                                <td style="text-align: center"><a>{{producto.nombre}}</a></td>
-                                                <td style="text-align: center"><a>{{producto.precio_venta}}</a></td>
-                                                <td>
-                                                    <a *ngFor="let $index=index;let imp of producto.preg" title="{{imp.nombre}}:{{imp.porcentaje}}"><i class="fa fa-question-circle"></i></a>
-                                                </td>
-                                            </tr>
-                                            <!--<tr  *ngFor="let da of productos;">
-                                                    <td style="text-align: center">id:{{da.id}}</td>
-                                                    <td style="text-align: center" >
-                                                        <li *ngFor="let des of da.preg">
-                                                            <strong>{{des.pid}}:{{des.preg}}</strong>
-                                                        </li>
-                                                    </td>
-                                                </tr>-->
-                                        </tbody>
-                                    </table>
                                     </div>
                                 </div>
                             </div>
