@@ -114,7 +114,8 @@
                                                 <td *ngIf="confirmado!==pago.id">
                                                     <button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="getPago(pago.id,pago.code,pago.nombre_proveedor,
                                                                                                 pago.documento, pago.nroBoleta, pago.nombre,
-                                                                                                pago.tipoPago,pago.subtotal,pago.igv,
+                                                                                                pago.tipoPago,pago.subtotal,pago.igv,pago.exonerados,pago.gravados,
+                                                                                                pago.otro,
                                                                                                 pago.created_at)">
                                                         <i class="fa fa-check"></i>
                                                     </button>
@@ -191,17 +192,41 @@
                                             <strong>SUBTOTAL:</strong> 
                                         </div>
                                         <div class="col-sm-7">
-                                            s/.{{subtotal}}
+                                           <strong>S/. {{subtotal | number:'1.2'}}</strong>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
-                                        <div class="col-sm-4">
-                                            <strong>IGV:</strong> 
+                                        <div class="col-sm-6">
+                                            IGV: 
                                         </div>
-                                        <div class="col-sm-8">
-                                            s/.{{igv}}
+                                        <div class="col-sm-6">
+                                            s/.{{igv | number:'1.2'}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            EXONERADO:
+                                        </div>
+                                        <div class="col-sm-6">
+                                            s/. {{exonerados | number:'1.2'}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            GRAVADOS: 
+                                        </div>
+                                        <div class="col-sm-6">
+                                            s/. {{gravados | number:'1.2'}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            OTROS: 
+                                        </div>
+                                        <div class="col-sm-6">
+                                            s/. {{otro | number:'1.2'}}
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +236,7 @@
                                             <strong>TOTAL:</strong> 
                                         </div>
                                         <div class="col-sm-8">
-                                            <strong>s/. {{(subtotal -- igv)}}</strong>  
+                                            <strong> <h1 class="text-primary">S/. {{(subtotal*1 + igv*1 +otro*1 | number:'1.2')}}</h1></strong>  
                                         </div>
                                     </div>
                                 </div>

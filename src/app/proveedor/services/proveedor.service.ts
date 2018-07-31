@@ -36,4 +36,19 @@ export class ProveedorService{
     deleteProveedor(id):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/proveedores-delete/`+id).shareReplay();
     }
+
+    //--------------------------------------------------------------------------------------------
+    setProvee(prove:any){
+        if(prove){
+            localStorage.setItem('provee',btoa(JSON.stringify(prove)));
+          return true;
+        }
+        return false;
+    }
+    getProvee():any{
+        return localStorage.getItem('provee')?JSON.parse(atob(localStorage.getItem('provee'))):null;
+    }
+    clearProvee():void{
+        localStorage.removeItem('provee');
+    }
 }

@@ -33,6 +33,9 @@ export class PagoAnularComponent implements OnInit{
     public tipoPago:string;
     public subtotal:number;
     public igv:number;
+    public exonerados:number;
+    public gravados:number;
+    public otro:number;
     public fecha:string;
     //------------------------------------------------
     public user:User;
@@ -133,8 +136,8 @@ export class PagoAnularComponent implements OnInit{
             }
         );
     }
-    getPago(id,code,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,fecha){
-        this.pago = new PagoAnulaModel(id,code,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,fecha);
+    getPago(id,code,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,exonerado,gravados,otro,fecha){
+        this.pago = new PagoAnulaModel(id,code,null,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,exonerado,gravados,otro,fecha);
         this.asignarCampos(this.pago);
         this.listDetalle(this.code);
         this.confirmado=id;
@@ -150,6 +153,9 @@ export class PagoAnularComponent implements OnInit{
         this.tipoPago=pago.tipoPago;
         this.subtotal=pago.subtotal;
         this.igv=pago.igv;
+        this.exonerados=pago.exonerados;
+        this.gravados=pago.gravados;
+        this.otro=pago.otro;
         this.fecha=pago.created_at;
     }
     list(){

@@ -1,0 +1,113 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{title}}</h3>
+    </div>
+    <div class="col-md-7 align-self-left">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <button type="button" (click)="generatePDF()" class="btn btn-secondary btn-rounded btn-sm m-b-10 m-l-5">
+                    <i class="fa fa-arrow-circle-down"></i> PDF
+                </button>
+            </li>
+            <li class="breadcrumb-item">
+                <button type="button" class="btn btn-info btn-rounded btn-sm m-b-10 m-l-5"(click)="listar()">Lista</button>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="container">
+                        <br>
+                        <div id="formConfirmation">
+                            <div class="pdf-page size-a4">
+                                <div class="container theme-showcase" role="main">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="pdf-header">
+                                                <img src="{{imagen_empresa}}">
+                                                <span>{{nombre_empresa}}</span>
+                                            </div>
+                                            <div class="pdf-footer">
+                                                <p>COD:{{code}}
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="pdf-empresa">
+                                                    <p class="empresa">{{nombre_proveedor}}</p>
+                                                    <p class="direccion">{{direccion}} <br> 
+                                                        {{telefono}} - {{telefono2}}<br>
+                                                        {{email}}
+                                                    </p>
+                                                </div>
+                                                <div class="pdf-ruc">
+                                                    <p class="ruc">{{ruc}}</p>
+                                                    <p class="fac">{{documento}}</p>
+                                                    <p class="numero">{{nroBoleta}}</p>
+                                                </div>
+                                                <div class="pdf-datos">
+                                                    <p><strong>RUC:</strong>{{ ruc_empresa}}</p>
+                                                    <p><strong>Señor(es): </strong>{{nombre_empresa}}</p>
+                                                    <p><strong>Dirección: </strong>{{direccion_empresa}}</p>
+                                                </div>
+                                                <div class="pdf-fecha">
+                                                    <p><strong>FECHA:</strong> F001-000314</p>
+                                                    <p><strong>GUIA: </strong></p>
+                                                </div>
+                                            </div>
+                                            <div class="pdf-body">
+                                                <table class="table table-striped" style="text-align:center;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Producto</th>
+                                                            <th>Unidad</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let compra of compras; let $index=index" style="text-align:center;">
+                                                            <th>{{$index + 1 }}</th>
+                                                            <th>{{compra.nombre_producto}}</th>
+                                                            <th>{{compra.unidad}}</th>
+                                                            <th>{{compra.cantidad}}</th>
+                                                            <th>{{compra.precio_unitario}}</th>
+                                                            <th>{{(compra.cantidad * compra.precio_unitario)|number:'1.2'}}</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-md-4"></div>
+                                                        <div class="col-md-4"></div>
+                                                        <div class="col-md-4">
+                                                            <p>SUBTOTAL S/. {{subtotal | number:'1.2'}} <br>
+                                                               IGV S/. {{ igv | number:'1.2' }} <br>
+                                                               EXONERADO S/. {{ exonerados | number:'1.2'}}<br>
+                                                               GRAVADOS S/. {{gravados | number:'1.2'}} <br>
+                                                               OTROS S/. {{otros | number:'1.2'}} <br>
+                                                               TOTAL S/. {{subtotal*1+igv*1+otros*1 | number:'1.2'}} <br>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

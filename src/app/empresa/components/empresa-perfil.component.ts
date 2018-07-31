@@ -85,7 +85,7 @@ export class EmpresaPerfilComponent implements OnInit{
         this.telefono1=empresa.telefono1;
         this.telefono2=empresa.telefono2;
         this.web=empresa.web;
-        this.email=empresa.web;
+        this.email=empresa.email;
         this.image=empresa.imagen;
     }
     edit(){

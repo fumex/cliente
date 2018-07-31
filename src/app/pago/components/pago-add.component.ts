@@ -57,7 +57,7 @@ export class PagoAddComponent implements OnInit{
     public igv:number;
     public exoneracion:number;
     public otro:number;
-
+    public gravados:number;
 
     public a1:boolean;
     public a2:boolean;
@@ -87,7 +87,7 @@ export class PagoAddComponent implements OnInit{
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
-        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,0,0,0);
+        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,0,0,0,0);
 
         this.title="Compras";
         //----------impuestos
@@ -159,7 +159,7 @@ export class PagoAddComponent implements OnInit{
         let subtotal=this.sumaTotal();
         //let impuesto=Number((this.total*this._impuesto).toFixed(2));
         //console.log(impuesto);
-        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.exoneracion,this.otro);
+        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.exoneracion,this.gravados,this.otro);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -291,29 +291,47 @@ export class PagoAddComponent implements OnInit{
         let igv=0;
         let otro=0;
         let total=0;
+        let gravados=0;
         let impues=this.prods_d;
         let precio=0;
+        let exoneracion=0;
         this.compras.forEach(function(comp){
             total=total+(comp.cantidad*comp.precio);
             console.log(total);
             precio=comp.cantidad*comp.precio;
             impues.forEach(function(value){
-                if(value.tipo=='igv'){ 
-                    if(comp.nombre_producto==value.nombre_producto){
-                        igv=igv + precio*value.porcentaje/100;
+                if(value.tipo=='IGV'){
+                    if(value.nombre=='gravados'){
+                        if(comp.nombre_producto==value.nombre_producto){
+                            gravados=gravados + (precio/(1+ (value.porcentaje/100)))*(value.porcentaje/100);
+                        }
+                    }else{
+                        if(value.nombre=='exonerados'){
+                            if(comp.nombre_producto==value.nombre_producto){
+                                exoneracion=exoneracion + precio;
+                            }
+                        }else{
+                            if(comp.nombre_producto==value.nombre_producto){
+                                igv=igv + precio*value.porcentaje/100;
+                            }
+                        }
                     } 
                 }
-                if(value.tipo=='OTRO'){
-                    if(comp.nombre_producto==value.nombre_producto){
-                        otro=otro + precio*value.porcentaje/100;
+                else{
+                    if(value.tipo=='OTRO'){
+                        if(comp.nombre_producto==value.nombre_producto){
+                            otro=otro + precio*value.porcentaje/100;
+                        }
                     }
                 }
             });
         });
+        this.exoneracion=exoneracion;
+        this.gravados=gravados;
         this.igv=igv;
         this.otro=otro;
         this.total=total;
-        console.log('IGV: '+this.igv+'   -  '+'otro: '+this.otro+'  -  '+'ISC: '+this.exoneracion);
+        console.log('IGV: '+this.igv+'   -  '+'otro: '+this.otro+'  -  '+'exoneracion: '+this.exoneracion);
         return this.total;
     }
     //guardar todo

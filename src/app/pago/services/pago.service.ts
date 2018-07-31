@@ -9,6 +9,7 @@ import { UnidadModel } from '../models/unidad';
 import { almacenstock } from '../../almacen/modelos/almacen';
 import { CompraAnularModel } from '../models/anula-compra';
 import { ProductoDetalleModel } from '../../productos/modelos/producto_detalle';
+import { PagoAnulaModel } from '../models/pago-anular';
 
 @Injectable()
 export class PagoService{
@@ -74,8 +75,18 @@ export class PagoService{
     getCompra(cod):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/compra-get/`+cod).shareReplay();
     }
-    pago_detal(){
-        let a='hola';
-        return a;
+    //--------------------Pago Recibo-----------------------------------------------------
+    setPago(pago:PagoAnulaModel){
+        if(pago){
+            localStorage.setItem('pago',btoa(JSON.stringify(pago)));
+          return true;
+        }
+        return false;
+    }
+    getPagoP():PagoAnulaModel{
+        return localStorage.getItem('pago')?JSON.parse(atob(localStorage.getItem('pago'))):null;
+    }
+    clear():void{
+        localStorage.removeItem('pago');
     }
 }
