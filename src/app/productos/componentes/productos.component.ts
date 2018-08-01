@@ -327,8 +327,8 @@ export class ProductosComponent{
     getigv(){
         this._ImpuestoService.getigv().subscribe(
             res=>{
-                this.impuestoigv=res;
-                console.log(res);
+                 this.impuestoigv=res;
+                console.log(this.impuestoigv);
             },
             err=>{
                 console.log(<any>err)
