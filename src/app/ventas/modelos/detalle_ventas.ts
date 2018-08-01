@@ -3,9 +3,13 @@ export class DetalleVentasModel{
       	public id: number,
         public id_venta: number,
 		public id_producto: number,
-		public cantidad: number,
+        public cantidad: number,
+        public codigo: number,
         public precio_unitario: number,
         public descripcion:string,
+        public igv:number,
+        public isc:number,
+        public otro:number,
         public estado: boolean,
 	){}
 }
