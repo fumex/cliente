@@ -1,0 +1,160 @@
+.pdf-page {
+    margin: 0 auto;
+    box-sizing: border-box;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.3);
+    background-color: #fff;
+    color: #333;
+    position: relative;
+}
+.pdf-header {
+    position: absolute;
+    top: .5in;
+    height: .4in;
+    left: .5in;
+    right: .5in;
+    border-bottom: 1px solid #e5e5e5;
+}
+.pdf-header img{
+    width: 33px;
+}
+.invoice-number {
+    padding-top: .17in;
+    float: right;
+}
+.pdf-footer {
+    position: absolute;
+    bottom: .5in;
+    height: .6in;
+    left: .5in;
+    right: .5in;
+    padding-top: 10px;
+    border-top: 1px solid #e5e5e5;
+    text-align: left;
+    color: #787878;
+    font-size: 12px;
+    top: 10.8in;
+}
+.pdf-body {
+    position: absolute;
+    top: 4.7in;
+    bottom: 1.2in;
+    left: .5in;
+    right: .5in;
+}
+
+.size-a4 { width: 8.3in; height: 11.7in; }
+.size-letter { width: 8.5in; height: 11in; }
+.size-executive { width: 7.25in; height: 10.5in; }
+
+.company-logo {
+    font-size: 30px;
+    font-weight: bold;
+    color: #3aabf0;
+}
+.for {
+    position: absolute;
+    top: 1.5in;
+    left: .5in;
+    width: 2.5in;
+}
+.from {
+    position: absolute;
+    top: 1.5in;
+    right: .5in;
+    width: 2.5in;
+}
+.from p, .for p {
+    color: #787878;
+}
+.signature {
+    padding-top: .5in;
+}
+
+.pdf-empresa{
+    position: absolute;
+    top: 1.2in;
+    left: 0.7in;
+    width: 4in;
+    text-align: center;
+
+}
+.pdf-ruc{
+    position:absolute;
+    top: 1.2in;
+    left: 4.8in;
+    width: 2.6in;
+    border: 2px solid #555;
+    border-radius: 17px;
+    text-align: center;
+}
+.empresa{
+    font-family: 'Franklin Gothic Medium';
+    color:#57595a;
+    font-size: 27px;
+    text-align: center;
+}
+.ruc{
+    color: #333;
+    font-size: 17px;
+    font-family: 'Franklin Gothic Medium';
+}
+.pdf-empresa p{
+    
+    text-align: center;
+}
+.fac{
+    color:#675a5a;
+    font-family:'Franklin Gothic Medium';
+    font-size: 18px;
+}
+.numero{
+    color: #333;
+    font-size: 17px;
+    font-family: 'Franklin Gothic Medium'; 
+}
+.pdf-datos{
+    position: absolute;
+    top: 3.0in;
+    left: 0.7in;
+    width: 5.4in;
+}
+.pdf-datos p{
+    color:#675a5a;
+    font-size: 14px;
+}
+.pdf-datos p strong{
+     color: #333;   
+}
+
+.pdf-fecha{
+    position: absolute;
+    top: 3.0in;
+    left: 5.4in;
+    width: 2.1in;
+}
+.pdf-fecha p{
+    color:#675a5a;
+    font-size: 14px;
+}
+.pdf-fecha p strong{
+     color: #333;   
+}
+.tabla{
+    position: absolute;
+    top: 0.1in;
+    border: solid thin; 
+    border-collapse: collapse;
+}
+.tabla th{
+    border: solid thin;
+    padding: 0.5rem 2rem;
+}
+.tabla td{
+    border: solid thin;
+    padding: 0.5rem 2rem;
+}
+.pdf-total{
+    left: 4.8in;
+    width: 2.6in;
+    border: 2px solid #555;
+}

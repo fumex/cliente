@@ -56,6 +56,7 @@ import { VentasComponent} from '../../ventas/componentes/ventas.component'
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
+import { PagoReciboComponent } from '../../pago/components/pago-recibo.component';
 
 
 
@@ -106,6 +107,10 @@ import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.comp
                     {
                         path:'transaccion/anular',
                         component:PagoAnularComponent
+                    },
+                    {
+                        path:'transaccion/recibo',
+                        component:PagoReciboComponent
                     },
                     {
                         path:'servicio',

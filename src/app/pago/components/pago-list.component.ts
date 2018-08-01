@@ -5,6 +5,8 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PagoAnulaModel } from '../models/pago-anular';
+import { ProveedorService } from '../../proveedor/services/proveedor.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -15,10 +17,15 @@ declare var $:any;
 })
 export class PagoListComponent implements OnInit{
 
+    public pagoDetalle:any=[];
+    //-------------------------------
     public title:string;
     public pagos:any=[];
+    public provee:any;
     public confirmado;
     public user:User;
+    public cadena;
+    public pago:PagoAnulaModel;
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
@@ -48,8 +55,8 @@ export class PagoListComponent implements OnInit{
                  });
             });
         },5000);
-     }
-     getPagos(){
+    }
+    getPagos(){
          this.pagoService.listPago(this.user.id).subscribe(
              result=>{
                 this.pagos=result;
@@ -60,8 +67,21 @@ export class PagoListComponent implements OnInit{
                 this.toaste.errorAlerta(text,'Error!');
              }
          );
-     }
-     agregar(){
-         this.router.navigate(['/'+this.user.rol+'/transaccion']);
-     }
+    }
+    agregar(){
+        this.router.navigate(['/'+this.user.rol+'/transaccion']);
+    }
+
+    recibo(id,code,id_prove,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,exonerado,gravado,otro,fecha){
+        let pago= new PagoAnulaModel(id,code,id_prove,nom_prove,docume,nroBoleta,almacen,tipoPago,subtotal,igv,exonerado,gravado,otro,fecha);   
+        if(!this.pagoService.getPagoP()){
+            this.pagoService.setPago(pago);
+            this.router.navigate(['/'+this.user.rol+'/transaccion/recibo']);
+        }
+        else{
+            let a =this.pagoService.clear();
+            this.pagoService.setPago(pago);
+            this.router.navigate(['/'+this.user.rol+'/transaccion/recibo']);
+        }
+    }
 }
