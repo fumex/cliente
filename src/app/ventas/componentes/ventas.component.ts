@@ -12,7 +12,7 @@ import { CantidadMOdel} from '../modelos/cantidad';
 import { conversordenumerosaletras} from '../services/numeroaletras.service';
 import { User } from "../../auth/interfaces/user.model";
 import { AuthService } from "../../auth/services/auth.service";
-
+import { DetalleVentasService } from "../services/DetalleVentas.service";
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { environment } from "../../../environments/environment";
@@ -26,7 +26,7 @@ declare var swal:any;
 @Component({
     selector:'ventas',
     templateUrl:'../views/ventas.component.html',
-    providers:[VentasService,DetalleCajasService,ToastService,DetalleCajasUsuarioService,AlmaceneService,detalleimpuestoservice,ClienteService,conversordenumerosaletras]
+    providers:[DetalleVentasService,VentasService,DetalleCajasService,ToastService,DetalleCajasUsuarioService,AlmaceneService,detalleimpuestoservice,ClienteService,conversordenumerosaletras]
 })
 export class VentasComponent{
     letrado: string;
@@ -41,7 +41,6 @@ export class VentasComponent{
     public apertura=null;
     public cajas:any;
     public id_caja=0;
-    public data:Array<any>=[];
     public url=environment.api_url+'/imagenesproductos'; 
     imageUrl: string = "assets/images/1.png";
     public factura=false;
@@ -83,6 +82,7 @@ export class VentasComponent{
         private _DetalleCajasService:DetalleCajasService,
         private _DetalleCajasUsuarioService:DetalleCajasUsuarioService,
         private  _AlmaceneService:AlmaceneService,
+        private _DetalleVentasService:DetalleVentasService,
         private _detalleimpuestoservice:detalleimpuestoservice,
         private _VentasService:VentasService,
         private conversor:conversordenumerosaletras,
@@ -96,17 +96,19 @@ export class VentasComponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.titulo="Ventas";
-        this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null);
-        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,null,null);
+        this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null);
+        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null);
         this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
         this.igv=0;
         this.letrado=this.conversor.NumeroALetras(0);
+        this.iniciodeusuario();
     }
     
     ngOnInit(){
-        this.obtenercajas();
+        
         this.traercliente();
+       
         //this.alertaapertura();
         //this.data = [];
         for(var j=0;j<5;j++){
@@ -117,16 +119,24 @@ export class VentasComponent{
                 cantidad:"",});
         }
         console.log(this.inicio)
-        for(var i = 3; i < 5; i++)
-        {
-        
-            this.data.push({ id:i, preg:[] });
-            this.data[ this.data.length-1].preg.push( {pid: i, preg: "Aqui pregunta" });
-            this.data[ this.data.length-1].preg.push( {pid: i+1, preg: "Aqui pregunta2" });
-        }
-        
-        console.log( this.data);
         this.obtenerdocuemntos();
+    }
+    iniciodeusuario(){
+        this._DetalleCajasService.buscarusuario(this.user.id).subscribe(
+            res=>{
+                if(res.code==300){
+                    this.DetalleCaja.id_caja=res.mensage;
+                    this.DetalleCaja.id_usuario=this.user.id;
+                    this.id_caja=res.mensage;
+                    this.traerproductos();
+                }else{
+                    this.obtenercajas();    
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
     }
     obtenerdocuemntos(){
         this._VentasService.obtenerdocumentos().subscribe(
@@ -151,6 +161,7 @@ export class VentasComponent{
         this.total=this.ventas.total+sumaimp;
     }
     addproducto(indice,arreglopro){
+        console.log(arreglopro);
         this.inps=document.getElementById('cantidadeditada');
         this.contador++;
         let j=0;
@@ -184,6 +195,17 @@ export class VentasComponent{
                 this.detallev.cantidad=arreglopro.cantidad;
                 this.detallev.descripcion=arreglopro.nombre_producto;
                 this.detallev.codigo=arreglopro.codigo;
+                for(let l=0;l< arreglopro.preg.length;l++){
+                    if(arreglopro.preg[l].tipo=="IGV"){
+                        this.detallev.igv=arreglopro.preg[l].porcentaje;
+                    }
+                    if(arreglopro.preg[l].tipo=="ISC"){
+                        this.detallev.isc=arreglopro.preg[l].porcentaje;
+                    }
+                    if(arreglopro.preg[l].tipo=="OTRO"){
+                        this.detallev.otro=arreglopro.preg[l].porcentaje;
+                    }
+                }
                 this.detalleventas.push(this.detallev);
                 this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null);
     
@@ -203,15 +225,12 @@ export class VentasComponent{
                             }
                         }else{
                             if(this.impuestos[j].nombre===arreglopro.preg[i].nombre){
-                                //falta preguntar como se pone en la factura
-                                //this.ventas.total=this.ventas.total+parseFloat(arreglopro.precio_venta);
                                 this.impuestos[j].cantidad=this.impuestos[j].cantidad+(parseFloat(arreglopro.precio_venta)*arreglopro.cantidad);
                                 cont++
                             }
                         }
                     }else{
                         if(this.impuestos[j].nombre===arreglopro.preg[i].nombre){
-                            //this.ventas.total=this.ventas.total+(parseFloat(arreglopro.precio_venta)/(1+arreglopro.preg[i].porcentaje/100));
                             this.impuestos[j].cantidad=this.impuestos[j].cantidad+(parseFloat(arreglopro.precio_venta)*arreglopro.cantidad)*(arreglopro.preg[i].porcentaje/100);
                             cont++
                         }
@@ -221,18 +240,18 @@ export class VentasComponent{
                 }
                 if(cont===0){
                     if(arreglopro.preg[i].tipo==="IGV"){
+                        this.detalleventas
                         if(arreglopro.preg[i].nombre==="gravados"){
                             this.ventas.total=this.ventas.total+((parseFloat(arreglopro.precio_venta)*arreglopro.cantidad)/(1+arreglopro.preg[i].porcentaje/100));
                             this.impuestos.push({nombre:"IGV",
                             porcentaje:arreglopro.preg[i].porcentaje,cantidad:(parseFloat(arreglopro.precio_venta)*arreglopro.cantidad)/(1+arreglopro.preg[i].porcentaje/100)*(arreglopro.preg[i].porcentaje/100)});
+                            
                         }else{
-                            //falta preguntar como se pone en la factura
-                            //this.ventas.total=this.ventas.total+(parseFloat(arreglopro.precio_venta));
                             this.impuestos.push({nombre:arreglopro.preg[i].nombre,
                             porcentaje:arreglopro.preg[i].porcentaje,cantidad:(parseFloat(arreglopro.precio_venta)*arreglopro.cantidad)});
                         }
+                    
                     }else{
-                        //this.ventas.total=this.ventas.total+(parseFloat(arreglopro.precio_venta)/(1+arreglopro.preg[i].porcentaje/100));
                         this.impuestos.push({nombre:arreglopro.preg[i].nombre,
                         porcentaje:arreglopro.preg[i].porcentaje,cantidad:(parseFloat(arreglopro.precio_venta)*(arreglopro.cantidad)*arreglopro.preg[i].porcentaje/100)});
                     }                    
@@ -250,7 +269,7 @@ export class VentasComponent{
             arreglopro.cantidad=null;
         }
         
-       
+        console.log(this.detalleventas);
     }
     agregartarjeta(){
         this.inps=document.getElementById('combotarjeta');
@@ -264,10 +283,40 @@ export class VentasComponent{
         }else{
             this.ventas.serie_venta=this.numerofac;
         }
+        this.guardarventas();
+        
         this.ventas.total=Math.round(this.total*100)/100;
         this.verpago==null;
         console.log(this.ventas)
         console.log(this.detalleventas)
+    }
+    guardarventas(){
+        this._VentasService.GuardarVenta(this.ventas).subscribe(
+            res=>{
+                console.log(res);
+                if(res.code==200){
+                    this.guardardetalleventas();
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );  
+    }
+    guardardetalleventas(){
+        let i=0;
+        while(i<this.detalleventas.length){
+            this._DetalleVentasService.guardardetalleventas(this.detalleventas[i]).subscribe(
+                res=>{
+                    console.log(res);
+                },
+                err=>{
+                    console.log(<any>err);
+                }
+            );
+            i++;
+        }
+        
     }
     seleccionartipo(){
         this.combo=document.getElementById('comboselect');
@@ -628,9 +677,12 @@ export class VentasComponent{
     aperturarcaja(id){
         this.DetalleCaja.id_caja=id;
         this.DetalleCaja.id_usuario=this.user.id;
-        this.mostarproductos();
+        
         console.log(this.DetalleCaja);
         this.id_caja=id;
+    }
+    volveralascajas(){
+        this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null);
     }
     sumartodaslasmonedas(){
         this.sumamonedas=0;
@@ -671,55 +723,44 @@ export class VentasComponent{
         }
     }
     mandarmontodeapertura(){
-        let cantidadconcat="";
         this.DetalleCaja.monto_apertura="";
+       
         if(this.arreglocantidad.c10>0){
             this.DetalleCaja.monto_apertura+="c10|"+this.arreglocantidad.c10+"|";
-            this.sumamonedas+=this.arreglocantidad.c10*0.1;
         }
         if(this.arreglocantidad.c20>0){
             this.DetalleCaja.monto_apertura+="c20|"+this.arreglocantidad.c20+"|";
-            this.sumamonedas+=this.arreglocantidad.c20*0.2;
         }
         if(this.arreglocantidad.c50>0){
             this.DetalleCaja.monto_apertura+="c50|"+this.arreglocantidad.c50+"|";
-            this.sumamonedas+=this.arreglocantidad.c50*0.5;
         }
         if(this.arreglocantidad.m01>0){
             this.DetalleCaja.monto_apertura+="m01|"+this.arreglocantidad.m01+"|";
-            this.sumamonedas+=this.arreglocantidad.m01*1;
         }
         if(this.arreglocantidad.m02>0){
             this.DetalleCaja.monto_apertura+="m02|"+this.arreglocantidad.m02+"|";
-            this.sumamonedas+=this.arreglocantidad.m02*2;
         }
         if(this.arreglocantidad.m05>0){
             this.DetalleCaja.monto_apertura+="m05|"+this.arreglocantidad.m05+"|";
-            this.sumamonedas+=this.arreglocantidad.m05*5;
         }
         if(this.arreglocantidad.b10>0){
             this.DetalleCaja.monto_apertura+="b10|"+this.arreglocantidad.b10+"|";
-            this.sumamonedas+=this.arreglocantidad.b10*10;
         }
         if(this.arreglocantidad.b20>0){
             this.DetalleCaja.monto_apertura+="b20|"+this.arreglocantidad.b20+"|";
-            this.sumamonedas+=this.arreglocantidad.b20*20;
         }
         if(this.arreglocantidad.b50>0){
             this.DetalleCaja.monto_apertura+="b50|"+this.arreglocantidad.b50+"|";
-            this.sumamonedas+=this.arreglocantidad.b50*50;
         }
         if(this.arreglocantidad.c01>0){
             this.DetalleCaja.monto_apertura+="c01|"+this.arreglocantidad.c01+"|";
-            this.sumamonedas+=this.arreglocantidad.c01*100;
         }
         if(this.arreglocantidad.c02>0){
             this.DetalleCaja.monto_apertura+="c02|"+this.arreglocantidad.c02+"|";
-            this.sumamonedas+=this.arreglocantidad.c02*200;
         }
         console.log(this.DetalleCaja.monto_apertura);
-        this.arreglocantidad
         
+        this.mostarproductos();
     }
     montoapertura(n){
         
@@ -758,6 +799,9 @@ export class VentasComponent{
                 this.arreglocantidad.c02+=1;
                 break;
         }
+        this.sumartodaslasmonedas();
+    }
+    ponermonedaenelimput(n){
         this.sumartodaslasmonedas();
     }
     quitarmoneda(n){
@@ -832,42 +876,48 @@ export class VentasComponent{
         }
     }
     mostarproductos(){
-        let indice=0;
+        
         this._DetalleCajasService.AperturaCaja(this.DetalleCaja).subscribe(
             res=>{
                 if(res.code==200){
-                    this._AlmaceneService.SeleccionarAlmacenporcaja(this.id_caja).subscribe(
-                        res=>{
-                           this.ventas.id_caja=this.DetalleCaja.id_caja;
-                            
-                           while(indice<res.length){
-                               this.pro=res[indice];
-                               this.productos.push({
-                                id:res[indice].id,
-                                imagen:res[indice].imagen,
-                                nombre_producto:res[indice].nombre_producto,
-                                descripcion:res[indice].descripcion,
-                                unidad:res[indice].unidad,
-                                nombre:res[indice].nombre,
-                                precio_venta:res[indice].precio_venta,
-                                stock:res[indice].stock,
-                                codigo:res[indice].codigo,
-                                cantidad:1,
-                                preg:[]});
-                                this.mostrarimpuestosdeproductos(res[indice].id,indice);
-                               indice=indice+1;
-                           }
-                           this.tablacajas();  
-                
-                            console.log(this.productos);
-                            console.log(this.productos[0].preg);
-                        },
-                        err=>{
-                            console.log(<any>err);
-                        }
-                    );
+                    
+                    this.traerproductos();
                 }
                 console.log(res);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+    }
+    traerproductos(){
+        this.apertura=1;
+        let indice=0;
+        this._AlmaceneService.SeleccionarAlmacenporcaja(this.id_caja).subscribe(
+            res=>{
+               this.ventas.id_caja=this.DetalleCaja.id_caja;
+               
+               while(indice<res.length){
+                   this.pro=res[indice];
+                   this.productos.push({
+                    id:res[indice].id,
+                    imagen:res[indice].imagen,
+                    nombre_producto:res[indice].nombre_producto,
+                    descripcion:res[indice].descripcion,
+                    unidad:res[indice].unidad,
+                    nombre:res[indice].nombre,
+                    precio_venta:res[indice].precio_venta,
+                    stock:res[indice].stock,
+                    codigo:res[indice].codigo,
+                    cantidad:1,
+                    preg:[]});
+                    this.mostrarimpuestosdeproductos(res[indice].id,indice);
+                   indice=indice+1;
+               }
+               this.tablacajas();  
+    
+                console.log(this.productos);
+                console.log(this.productos[0].preg);
             },
             err=>{
                 console.log(<any>err);
@@ -903,7 +953,7 @@ export class VentasComponent{
                 
                 this.cajas=res;
                 this.cantcajas=res.length
-                console.log(this.cantcajas);
+                console.log(res);
             },
             err=>{
                 console.log(<any>err);

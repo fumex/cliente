@@ -4,33 +4,31 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/Observable';
-import {DetalleCaja}from '../modelos/detalle_almacen';
+import {DetalleVentasModel}from '../modelos/detalle_ventas';
 
 @Injectable()
-export class DetalleCajasService{
+export class DetalleVentasService{
     public url:string;
     constructor(
         public _http:HttpClient
     ){
      this.url=environment.api_url;   
     }
-    CierreCaja(dcaja:DetalleCaja):Observable<any>{
-        let json = JSON.stringify(dcaja);
+    guardardetalleventas(detalle:DetalleVentasModel):Observable<any>{
+        let json = JSON.stringify(detalle);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/cierre',params,{headers:headers});
+        return this._http.post(this.url+'/guardardetalleventa',params,{headers:headers});
     }
-    AperturaCaja(dcaja:DetalleCaja):Observable<any>{
-        let json = JSON.stringify(dcaja);
+    guardarmoveinv(detalle:DetalleVentasModel):Observable<any>{
+        let json = JSON.stringify(detalle);
         
         let params = "json="+json;
         let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
        
-        return this._http.post(this.url+'/apertura',params,{headers:headers});
+        return this._http.post(this.url+'/guardariym',params,{headers:headers});
     }
-    buscarusuario(id){
-        return this._http.get<any>(this.url+'/buscarusuarioencaja/'+id).shareReplay();
-    }
+
 }
