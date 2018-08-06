@@ -235,6 +235,7 @@ export class OrdenDePedidoComponent{
             this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
                 result=>{
                     console.log(result);
+                    this.storagePedido(this.agregarOrdenPedido);//--------Almacenamiento en el local storage
                     if(result.code===200){
                         this.guardardetalleorden();
                         this.guardaralerta();
@@ -316,5 +317,15 @@ export class OrdenDePedidoComponent{
             buttons: false,
             timer: 1500
           })
+    }
+    storagePedido(pedido:OrdenDePedidoModel){
+        if(!this._ordenPedidoService.getOrdenPedido()){
+            this._ordenPedidoService.setOrdenPedido(pedido);
+            //this._router.navigate(['/'+this.usuario.rol+'/pedido/recibo']);
+        }else{
+            this._ordenPedidoService.clear();
+            this._ordenPedidoService.setOrdenPedido(pedido);
+            //this._router.navigate(['/'+this.usuario.rol+'/pedido/recibo']);
+        }
     }
 }

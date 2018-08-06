@@ -130,8 +130,8 @@
                                         <i *ngIf="igv.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!igv.valid && igv.touched" style="color: red" class="fa fa-times"></i>
                                         <select  id="igvselect" #igv="ngModel" (change)="agregardetalleimpuestoigv(detalleimpu.id_impuesto)" name="igv" [(ngModel)]="detalleimpu.id_impuesto" class="form-control custom-select" required>
-                                                <option  disabled="disabled">--selecciona el tipo de igv</option>    
-                                            <option  *ngFor="let ig of impuestoigv" value="{{ig.id}}"><b>{{ig.nombre}}</b></option>
+                                            <option  disabled="disabled">--selecciona el tipo de igv</option>    
+                                            <option *ngFor="let ig of impuestoigv" value="{{ig.id}}"><b>{{ig.nombre}}</b></option>
                                         </select>
                                     </div>  
                                 </div>
