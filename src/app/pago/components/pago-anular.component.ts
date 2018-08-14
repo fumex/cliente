@@ -156,7 +156,7 @@ export class PagoAnularComponent implements OnInit{
         this.exonerados=pago.exonerados;
         this.gravados=pago.gravados;
         this.otro=pago.otro;
-        this.fecha=pago.created_at;
+        this.fecha=pago.fecha;
     }
     list(){
         this.router.navigate(['/'+this.user.rol+'/transaccion/list']);

@@ -13,6 +13,6 @@ export class PagoAnulaModel{
      public exonerados:number,
      public gravados:number,
      public otro:number,
-     public created_at:string
+     public fecha:string
     ){}
 }

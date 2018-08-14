@@ -87,7 +87,7 @@ export class PagoAddComponent implements OnInit{
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
-        this.pago= new PagoModel(null,this.codigo,null,null,'',null,'',null,0,0,0,0);
+        this.pago= new PagoModel(null,this.codigo,null,null,null,'',null,'',null,0,0,0,0);
 
         this.title="Compras";
         //----------impuestos
@@ -155,11 +155,11 @@ export class PagoAddComponent implements OnInit{
         },4000);
      }
 
-    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string){
+    onSubmit(id_proveedor:number,id_documento:number,recibo:string,id_almacen:number,tipo:string,fecha:Date){
         let subtotal=this.sumaTotal();
         //let impuesto=Number((this.total*this._impuesto).toFixed(2));
         //console.log(impuesto);
-        this.pago= new PagoModel(null,this.codigo,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.exoneracion,this.gravados,this.otro);
+        this.pago= new PagoModel(null,this.codigo,fecha,id_proveedor,id_documento,recibo,id_almacen,tipo,subtotal,this.igv,this.exoneracion,this.gravados,this.otro);
         this.pagoService.addPago(this.pago).subscribe(
             result=>{
                 console.log(result);
@@ -403,8 +403,12 @@ export class PagoAddComponent implements OnInit{
         this.a5=false;
         this.validar();
     }
+    validate6(){
+        this.a6=false;
+        this.validar();
+    }
     validar(){
-        if(this.a1==false && this.a2==false && this.a3==false && this.a4==false && this.a5==false){
+        if(this.a1==false && this.a2==false && this.a3==false && this.a4==false && this.a5==false && this.a6==false){
            this.validacion=true;
            if(this.val==true){
                     this.val=true;

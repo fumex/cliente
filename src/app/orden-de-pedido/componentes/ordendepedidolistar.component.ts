@@ -33,6 +33,7 @@ export class pedidolistarcomponent {
     public almacenes:almacen;
     public fecha2;
     public fechatrue;
+    public code:string;
     constructor(
         private _pedidoservice:OrdenPedidosService,
         private _detallepdidoservice:DetalleOrdenPedidosService,
@@ -45,7 +46,6 @@ export class pedidolistarcomponent {
         this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null,null)
         this.user=this.auth.getUser();
         this.title='Lista de Pedidos';
-        
         this.idpedido=0;
         this.mostareditar=null;
         this.mostrarformedit=null;
@@ -53,12 +53,24 @@ export class pedidolistarcomponent {
         
     }
     ngOnInit(){
-        console.log("asdasd"); 
+        //this.getCode(); 
         this.reconstruir();
         this.mostraralmacen();
         this.mostrarproveedor();
         this.fechaactual();
     }
+
+    /*getCode(){
+        this._pedidoservice.getCodigo().subscribe(
+            result=>{
+                console.log(result);
+                this.code=result;
+            },
+            error=>{
+                console.log(<any>error)
+            }
+        );
+    }*/
     fechaactual(){
         this._pedidoservice.getfecha().subscribe(
             result=>{
@@ -192,7 +204,8 @@ export class pedidolistarcomponent {
             }
         );
     }
-    mostrardetalle(id,index){
+    mostrardetalle(id,index,code){
+        this.code=code;
         this.mostrarformedit=1;
         this.idpedido=id;
         this.destruirdetalle();
@@ -293,6 +306,27 @@ export class pedidolistarcomponent {
             buttons: false,
             timer: 1500
           })
+    }
+    ReciboPDF(id){
+        this._pedidoservice.clear();
+        this.getPedido(id);
+    }
+
+    getPedido(id){
+        this._pedidoservice.dataPedido(id).subscribe(
+            result=>{
+                this.setPedido(result);
+                this.router.navigate(['/'+this.user.rol+'/pedido/recibo']);
+                console.log(result);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    setPedido(pedido:OrdenDePedidoModel){ 
+        this._pedidoservice.setOrdenPedido(pedido);
+        //this._router.navigate(['/'+this.usuario.rol+'/pedido/recibo']);
     }
 
 }

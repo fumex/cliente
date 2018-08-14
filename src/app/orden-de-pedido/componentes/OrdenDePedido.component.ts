@@ -25,6 +25,7 @@ declare var swal:any;
   providers: [OrdenPedidosService,AlmacenesService,ProductoService,DetalleOrdenPedidosService,ToastService]
 })
 export class OrdenDePedidoComponent{
+    public code:string;
     public titulo:string;
     public almacenes:almacen;
     public productos:producto;
@@ -83,13 +84,23 @@ export class OrdenDePedidoComponent{
         this.terminosycon=null;
     }
     ngOnInit(){
+        //this.getCode();
         this.mostraralmacen();
         this.mostrarproveedor();
         this.mostrarproducto();
         this.fechaactual();
-
-
-    }  
+    } 
+   /* getCode(){
+        this._ordenPedidoService.getCodigo().subscribe(
+            result=>{
+                this.code=result;
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        );
+    }
+    */ 
     mostraralmacen(){
         this._almacenesService.mostraalmacenusuario(this.usuario.id).subscribe(
             result=>{
@@ -234,13 +245,11 @@ export class OrdenDePedidoComponent{
         if(aprobado===true){
             this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
                 result=>{
-                    console.log(result);
-                    this.storagePedido(this.agregarOrdenPedido);//--------Almacenamiento en el local storage
-                    if(result.code===200){
-                        this.guardardetalleorden();
-                        this.guardaralerta();
-                        
-                    }
+                    let resultado=result;
+                    this.storagePedido(resultado);//--------Almacenamiento en el local storage
+                    this.guardardetalleorden();
+                    this.guardaralerta();
+                    this.limpiar();
                 },
                 error=>{
                     console.log(<any>error);
@@ -272,7 +281,7 @@ export class OrdenDePedidoComponent{
             ) 
             this.id=this.id+1
             if(this.id==this.pedidos.length){
-                this._router.navigate(['/'+this.usuario.rol+'/pedido/listar']);
+                this._router.navigate(['/'+this.usuario.rol+'/pedido/recibo']);
             }
         }
         this.id=0;

@@ -82,10 +82,10 @@ export  class PagoReciboComponent implements OnInit {
     }
     generatePDF(){
         kendo.pdf.defineFont({
-            "DejaVu Sans"             : "http://cdn.kendostatic.com/2014.3.1314/styles/fonts/DejaVu/DejaVuSans.ttf",
-            "DejaVu Sans|Bold"        : "http://cdn.kendostatic.com/2014.3.1314/styles/fonts/DejaVu/DejaVuSans-Bold.ttf",
-            "DejaVu Sans|Bold|Italic" : "http://cdn.kendostatic.com/2014.3.1314/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
-            "DejaVu Sans|Italic"      : "http://cdn.kendostatic.com/2014.3.1314/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf"
+            "DejaVu Sans"             : "../../assets/fonts/DejaVuSans.ttf",
+            "DejaVu Sans|Bold"        : "../../assets/fonts/DejaVuSans-Bold.ttf",
+            "DejaVu Sans|Bold|Italic" : "../../assets/fonts/DejaVuSans-Oblique.ttf",
+            "DejaVu Sans|Italic"      : "../../assets/fonts/DejaVuSans-Oblique1.ttf"
         });
         kendo.drawing.drawDOM($("#formConfirmation")).then(function(group) {
           kendo.drawing.pdf.saveAs(group, "Converted PDF.pdf");
@@ -104,7 +104,7 @@ export  class PagoReciboComponent implements OnInit {
         this.exonerados=pago.exonerados;
         this.gravados=pago.gravados;
         this.otros=pago.otro;
-        this.fecha=pago.created_at;
+        this.fecha=pago.fecha;
     }
 
     asignarProveedor(provee:ProveedorModel){

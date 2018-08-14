@@ -27,19 +27,20 @@
                                         <th>Almacen</th>
                                         <th style="width: 240px;">fecha</th>
                                         <th>fecha de entrega</th>
-                                        <th style="width: 80px"></th>
+                                        <th style="width: 99px"></th>
                                     </tr>
                                 </thead>
                                 <tbody  >
                                     <tr  *ngFor="let pedido of mostrapedido,let $index=index" >
-                                        <td>pedido n° <strong>{{pedido.id}}</strong></td>
+                                        <td>pedido n° <strong>{{pedido.code}}</strong></td>
                                         <td>{{pedido.nombre_proveedor}}</td>
                                         <td>{{pedido.nombre}}</td>
                                         <td style="width: 240px;">{{pedido.created_at}}</td>
                                         <td>{{pedido.fecha_estimada_entrega}}</td>
                                         <th style="width: 80px;text-align: center">
-                                            <a class="btn btn-sm btn-info " (click)="mostrardetalle(pedido.id,$index)" ><i class="fa fa-edit"></i></a>
-                                            <a class="btn btn-sm btn-danger " (click)="alertaeliminarpedido(pedido.id)" ><i class="fa fa-trash"></i></a>
+                                            <button class="btn btn-sm btn-success" (click)="ReciboPDF(pedido.id)"><i class="fa fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-info " (click)="mostrardetalle(pedido.id,$index,pedido.code)" ><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger " (click)="alertaeliminarpedido(pedido.id)" ><i class="fa fa-trash"></i></button>
                                         </th>
                                     </tr>
                                 </tbody>
@@ -58,6 +59,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 style="text-align: center"><strong><i class="fa fa-search-plus"></i>Detalle de Pedido</strong></h3>
+                        <h3 style="text-align: center"><strong>{{code}}</strong></h3>
                         <br>
                         <br>
                         <div class="form-horizonta">

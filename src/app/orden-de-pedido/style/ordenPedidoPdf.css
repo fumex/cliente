@@ -129,8 +129,8 @@
 .pdf-fecha{
     position: absolute;
     top: 3.0in;
-    left: 5.4in;
-    width: 2.1in;
+    left: 4.4in;
+    width: 4.4in;
 }
 .pdf-fecha p{
     color:#675a5a;
@@ -157,4 +157,10 @@
     left: 4.8in;
     width: 2.6in;
     border: 2px solid #555;
+}
+.autorizado{
+    position: absolute;
+    top: 5.4in;
+    left:0.3in;
+    width: 10.2in;
 }

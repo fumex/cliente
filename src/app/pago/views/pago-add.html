@@ -31,10 +31,21 @@
                                     <div class="col-lg-6">
                                         <div class="form-group row">
                                             <div class="col-sm-4">
-                                                <label class="control-label">Codigo:</label>    
+                                                <label class="control-label">Código:</label>    
                                             </div>
                                             <div class="col-sm-8">
                                                 <label class="control-label">{{codigo}}</label>   
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Fecha:</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="inner-addon left-addon">
+                                                    <i *ngIf="a6==false" style="color: green" class="fa fa-check"></i> 
+                                                </div>
+                                                <input type="date" class="form-control" #fecha name="fecha" (change)="validate6()"> 
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -45,7 +56,7 @@
                                                 <div class="inner-addon left-addon">
                                                     <i *ngIf="a1==false" style="color: green" class="fa fa-check"></i>
                                                     <select class="form-control custom-select" #idDocumento name="idDocumento" (change)="validate1()">
-                                                        <option disabled="disabled" hidden>Tipo de documento </option>
+                                                        <option disabled="disabled" hidden>Documento </option>
                                                         <option *ngFor="let documento of documentos" [value]="documento.id">
                                                             {{ documento.documento}}
                                                         </option>
@@ -56,12 +67,12 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4">
-                                                <label class="control-label">Nro </label>
+                                                <label class="control-label">Nro:</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="inner-addon left-addon">
                                                     <i *ngIf="a2==false" style="color: green" class="fa fa-check"></i>
-                                                    <input type="text" class="form-control" #recibo placeholder="Ingrese numero Resivo" (change)="validate2(recibo.value)" required>
+                                                    <input type="text" class="form-control" #recibo placeholder="Ingrese número de comprobante" (change)="validate2(recibo.value)" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,13 +96,13 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4">
-                                                <label class="control-label">Almacen</label>
+                                                <label class="control-label">Almacén</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="inner-addon left-addon">
                                                     <i *ngIf="a4==false" style="color: green" class="fa fa-check"></i>
                                                     <select class="form-control custom-select" #idAlmacen name="idAlmacen" (change)="validate4()">
-                                                        <option disabled="disabled" hidden>Seleccione almacen </option>
+                                                        <option disabled="disabled" hidden>Seleccione almacén </option>
                                                         <option *ngFor="let almacen of almacenes" [value]="almacen.id">
                                                             {{almacen.nombre}}
                                                         </option>
@@ -101,7 +112,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4">
-                                                <label class="control-label">Tipo Pago</label>
+                                                <label class="control-label">Medio de Pago</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="inner-addon left-addon">
@@ -109,7 +120,16 @@
                                                     <select class="form-control custom-select"(change)="validate5()" #tipo >
                                                         <option disabled="disabled" hidden>Tipo de pago </option>
                                                         <option>Efectivo</option>
-                                                        <option>Bancario</option>
+                                                        <option>Depósitos en cuenta</option>
+                                                        <option>Giros</option>
+                                                        <option>Transferencia de fondos</option>
+                                                        <option>Órdenes de Pago</option>
+                                                        <option>Tarjetas de débito</option>
+                                                        <option>Tarjetas de crédito</option>
+                                                        <option>Cheques no negociables</option>
+                                                        <option>Cheques intransferibles</option>
+                                                        <option>Cheques no a la orden</option>
+                                                        <option>Cheques otros</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -170,16 +190,16 @@
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>categoria</th>
-                                                <th>Codigo</th>
-                                                <th>¿Se puede Vender?</th>
+                                                <th>Categoría</th>
+                                                <th>Código</th>
+                                                <th>Vende</th>
                                                 <th>Unidad</th>
-                                                <th>Nombre Producto</th>
-                                                <th>Descripcion</th>
+                                                <th>Producto</th>
+                                                <th>Descripción</th>
                                                 <th>Cantidad</th>
                                                 <th>Precio</th>
-                                                <th>total</th>
-                                                <th>accion</th>
+                                                <th>Total</th>
+                                                <th>Acción</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -293,7 +313,7 @@
                             <div class="col-md-2">
                                 <div class="col-lg-12">
                                     <div class="form-goup">
-                                        <input type="button" (click)="onSubmit(idProveedor.value,idDocumento.value,recibo.value,idAlmacen.value,tipo.value)" class="btn btn-info btn-responsive" value="Guardar" [disabled]=" val==false || !formProveedor.form.valid">
+                                        <input type="button" (click)="onSubmit(idProveedor.value,idDocumento.value,recibo.value,idAlmacen.value,tipo.value,fecha.value)" class="btn btn-info btn-responsive" value="Guardar" [disabled]=" val==false || !formProveedor.form.valid">
                                     </div>
                                 </div> 
                             </div>
