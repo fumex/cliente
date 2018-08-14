@@ -30,7 +30,7 @@ export class ImpuestoService{
     }
 
 
-    getigv():Observable<any>{
+    getigv():Observable<any[]>{
         return this.http.get<any>(`${environment.api_url}/igv`).shareReplay();
     }
     getotro():Observable<any>{

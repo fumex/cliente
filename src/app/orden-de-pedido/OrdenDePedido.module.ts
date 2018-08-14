@@ -4,11 +4,13 @@ import { FormsModule } from "@angular/forms";
 import { OrdenPedidosService } from "./services/Ordendepedido.service";
 import { OrdenDePedidoComponent } from "./componentes/OrdenDePedido.component";
 import { pedidolistarcomponent } from "./componentes/ordendepedidolistar.component";
+import { OrdenPedidoPdf } from "./componentes/ordenPedidoPdf.component";
 
 @NgModule({
     declarations: [
         OrdenDePedidoComponent,
-        pedidolistarcomponent
+        pedidolistarcomponent,
+        OrdenPedidoPdf,
       ],
       imports: [
         CommonModule,

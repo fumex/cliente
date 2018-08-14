@@ -40,7 +40,11 @@ export class ProductosComponent{
     public cate:categoria;
     public categorias:categoria;
     public unidadmodelo:UnidadesModel;
+<<<<<<< HEAD
     public impuestoigv:ImpuestoModel;
+=======
+    public impuestoigv:any=[];
+>>>>>>> 18f88510a753abb26e1c29c3617219c5b86f38b5
     public impuestrootro:Array<ImpuestoModel>=[];
     public impuestroeditotro:Array<ImpuestoModel>=[];
 
@@ -140,7 +144,7 @@ export class ProductosComponent{
 
     ngOnInit(){
        
-        this.getigv();
+        this.getIgv();
         this.mostrar();
 
         this.mostrarcategoria(0);
@@ -324,11 +328,11 @@ export class ProductosComponent{
         this.imageUrl=this.url+'/imagenesproductos/'+name;
         console.log('get'+name);
     }
-    getigv(){
+    getIgv(){
         this._ImpuestoService.getigv().subscribe(
             res=>{
-                this.impuestoigv=res;
-                console.log(res);
+                this.impuestoigv=Object.values(res);
+                console.log(this.impuestoigv);
             },
             err=>{
                 console.log(<any>err)
@@ -513,7 +517,6 @@ export class ProductosComponent{
                 
                 this.editigv=res[0];
                 this.editarimpuestoigv.push(res[0])
-
                console.log(this.editarimpuestoigv)
             },
             err=>{

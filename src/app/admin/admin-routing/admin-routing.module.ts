@@ -58,6 +58,7 @@ import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbie
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
 import { PagoReciboComponent } from '../../pago/components/pago-recibo.component';
+import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf.component';
 
 
 
@@ -182,6 +183,7 @@ import { PagoReciboComponent } from '../../pago/components/pago-recibo.component
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
                     { path:'pedido',component:OrdenDePedidoComponent},
+                    { path:'pedido/recibo',component:OrdenPedidoPdf},
                     { path:'pedido/listar',component:pedidolistarcomponent},
                     { path:'inventario',component:InventarioComponent},
                     { path:'reporteInventario',component:InventarioListComponent}, 

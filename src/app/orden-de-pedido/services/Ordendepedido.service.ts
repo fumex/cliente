@@ -58,4 +58,18 @@ export class OrdenPedidosService{
     getfecha(){
         return this._http.get<any>(this.url+'/fecha').shareReplay();
     }
+    //------------------------Orden Pedido Local Storage---------------------------------
+    setOrdenPedido(ordenPedido:OrdenDePedidoModel){
+        if(ordenPedido){
+            localStorage.setItem('orden',btoa(JSON.stringify(ordenPedido)));
+            return true;
+        }
+        return false;
+    }
+    getOrdenPedido():OrdenDePedidoModel{
+        return localStorage.getItem('orden')?JSON.parse(atob(localStorage.getItem('orden'))):null;
+    }
+    clear():void{
+        localStorage.removeItem('orden');
+    }
 }
