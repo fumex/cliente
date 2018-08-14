@@ -11,5 +11,6 @@ export class DetalleVentasModel{
         public isc:number,
         public otro:number,
         public estado: boolean,
+        public descuento:number,
 	){}
 }

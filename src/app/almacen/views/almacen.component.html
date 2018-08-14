@@ -77,8 +77,9 @@
                                         <th>almacen</th>
                                         <th>producto</th>
                                         <th>stock</th>
+                                        <th style="width: 208px;">descuento</th>
                                         <th>compra</th>
-                                        <th>venta</th>
+                                        <th style="width: 208px;">venta</th>
                                         <td style="width: 80px;"></td>
                                     </tr>
                                 </thead>
@@ -87,9 +88,10 @@
                                         <th>almacen</th>
                                         <th>producto</th>
                                         <th>stock</th>
+                                        <th>descuento</th>
                                         <th>compra</th>
                                         <th>venta</th>
-                                        <td></td>
+                                        <td></td> 
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -97,6 +99,17 @@
                                         <td>{{cantidad.nombre}}</td>
                                         <td>{{cantidad.nombre_producto}}</td>
                                         <td>{{cantidad.stock}}</td>
+                                        <td *ngIf="idalmacen!=cantidad.id" >{{cantidad.descuento_maximo}}</td>
+                                        <td *ngIf="idalmacen==cantidad.id" style="padding: 0px;">
+                                            <div style="margin-right: 0px;">
+                                                <div style="padding-right: 0px;">
+                                                    <div class="inner-addon right-addon">
+                                                        <i style="color: #fd5f5f" class="fa fa-percent"></i>
+                                                        <input #descuento="ngModel" name="descuento" type="number" style="width:100%; height: 38px;text-align: right;font-size: 20px;" [(ngModel)]="editalmecen.descuento_maximo" >
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>{{cantidad.precio_compra}}</td>
                                         <td *ngIf="idalmacen!=cantidad.id">{{cantidad.precio_venta}}</td>
                                         <td *ngIf="idalmacen==cantidad.id" style="padding: 0px;">

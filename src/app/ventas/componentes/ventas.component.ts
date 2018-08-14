@@ -1,5 +1,5 @@
 import { Component,ViewContainerRef } from "@angular/core";
-import { DetalleCaja } from "../modelos/detalle_almacen";
+import { DetalleCaja } from "../modelos/detalle_cajas";
 import { DetalleCajasService } from '../services/DetalleCajas.service';
 import { DetalleCajasUsuarioService } from '../../cajas/services/detalle.cajas.usuarios.services';
 import { AlmaceneService} from '../../almacen/services/almacen.services';
@@ -17,7 +17,7 @@ import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { environment } from "../../../environments/environment";
 import { ProductoModule } from "../../productos/productos.module";
-
+import {inventario} from '../../inventario/modelos/inventario'
 import {VentasService} from '../services/Ventas.service';
 
 declare var jQuery:any;
@@ -59,12 +59,14 @@ export class VentasComponent{
     public igv:number;
     public autorizarboton=0;
     public total=0;
+    public inventario:inventario;
     public editarcant=null;
     public prodcant=null;
     public valorcant=null;
     public enviado=false;
     public verusuarios=null;
     public verpago=null;
+    public vercierre=null;
     public tipodepago=null;
     public combo=null;
     public tipotrageta=null;
@@ -96,10 +98,11 @@ export class VentasComponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.titulo="Ventas";
-        this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null);
-        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null);
+        this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null,null);
+        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0);
         this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
+        this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
         this.igv=0;
         this.letrado=this.conversor.NumeroALetras(0);
         this.iniciodeusuario();
@@ -108,9 +111,6 @@ export class VentasComponent{
     ngOnInit(){
         
         this.traercliente();
-       
-        //this.alertaapertura();
-        //this.data = [];
         for(var j=0;j<5;j++){
             this.inicio.push({
                 id:j+1,
@@ -120,6 +120,11 @@ export class VentasComponent{
         }
         console.log(this.inicio)
         this.obtenerdocuemntos();
+    }
+    cerrarcaja(){
+        this.tabs=document.getElementById('tabcierre');
+        this.tabs.click();
+        this.vercierre=1;
     }
     iniciodeusuario(){
         this._DetalleCajasService.buscarusuario(this.user.id).subscribe(
@@ -160,7 +165,25 @@ export class VentasComponent{
         }
         this.total=this.ventas.total+sumaimp;
     }
-    addproducto(indice,arreglopro){
+
+    alertaddproducto(indice,arreglopro){
+        swal({
+            title:"El producto tiene descuento ?:",
+            text:"(descuento maximo "+arreglopro.descuento_maximo+"%)",
+            content: "input",
+            button: "Agregar",
+          })
+          .then((value) => {
+            if(isNaN(parseInt(value)) || parseInt(value)>arreglopro.descuento_maximo || parseInt(value)<0){
+                this.toaste.WarningAlert('deve colocar un numero igual o menor que el descuento maximo','Error ');
+            }else{
+                this.addproducto(indice,arreglopro,parseInt(value));
+            }
+            
+          });
+    }
+    addproducto(indice,arreglopro,descuento){
+        console.log(this.productos);
         console.log(arreglopro);
         this.inps=document.getElementById('cantidadeditada');
         this.contador++;
@@ -193,21 +216,31 @@ export class VentasComponent{
                 this.detallev.id_producto=arreglopro.id;
                 this.detallev.precio_unitario=arreglopro.precio_venta;
                 this.detallev.cantidad=arreglopro.cantidad;
-                this.detallev.descripcion=arreglopro.nombre_producto;
+               
                 this.detallev.codigo=arreglopro.codigo;
-                for(let l=0;l< arreglopro.preg.length;l++){
-                    if(arreglopro.preg[l].tipo=="IGV"){
-                        this.detallev.igv=arreglopro.preg[l].porcentaje;
-                    }
-                    if(arreglopro.preg[l].tipo=="ISC"){
-                        this.detallev.isc=arreglopro.preg[l].porcentaje;
-                    }
-                    if(arreglopro.preg[l].tipo=="OTRO"){
-                        this.detallev.otro=arreglopro.preg[l].porcentaje;
+                if(arreglopro.descuento_maximo>0){
+                    this.detallev.descripcion=arreglopro.nombre_producto+" ("+arreglopro.descuento_maximo+"%)";
+                    this.detallev.descuento=arreglopro.descuento_maximo;
+                }else{
+                    this.detallev.descripcion=arreglopro.nombre_producto;
+                    this.detallev.descuento=0;
+                }
+                if(this.boleta!=true){
+                    for(let l=0;l< arreglopro.preg.length;l++){
+                        if(arreglopro.preg[l].tipo=="IGV"){
+                            this.detallev.igv=arreglopro.preg[l].porcentaje;
+                        }
+                        if(arreglopro.preg[l].tipo=="ISC"){
+                            this.detallev.isc=arreglopro.preg[l].porcentaje;
+                        }
+                        if(arreglopro.preg[l].tipo=="OTRO"){
+                            this.detallev.otro=arreglopro.preg[l].porcentaje;
+                        }
                     }
                 }
+               
                 this.detalleventas.push(this.detallev);
-                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null);
+                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null,0);
     
             }
             if(this.boleta==true){
@@ -270,6 +303,7 @@ export class VentasComponent{
         }
         
         console.log(this.detalleventas);
+        console.log(this.ventas);
     }
     agregartarjeta(){
         this.inps=document.getElementById('combotarjeta');
@@ -277,6 +311,9 @@ export class VentasComponent{
         console.log(this.inps.value)
     }
     guardarventa(){
+        this.tabs=document.getElementById('tabini');
+        this.tabs.click();
+        
         if(this.boleta==true){
             this.ventas.serie_venta=this.numerobol;
             this.total=this.ventas.total
@@ -314,9 +351,24 @@ export class VentasComponent{
                     console.log(<any>err);
                 }
             );
+            this.inventario=new inventario(null,null,null,this.detalleventas[i].id_producto,null,null,this.detalleventas[i].cantidad,null,this.detalleventas[i].precio_unitario,null,this.user.id,this.detalleventas[i].codigo);
+            this._DetalleVentasService.guardarmoveinv(this.inventario).subscribe(
+                res=>{
+                    if(res.code==200){
+                        this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
+                    }
+                },
+                err=>{
+                    console.log(<any>err);
+                }
+            );
             i++;
         }
-        
+    this.alertaventa();
+    this.limpiar(); 
+    this.vuelto=0;
+    this.verusuarios=null;
+    this.verpago=null;
     }
     seleccionartipo(){
         this.combo=document.getElementById('comboselect');
@@ -436,7 +488,10 @@ export class VentasComponent{
     pagar(){
         if(this.boleta==true){  
             this.total=this.ventas.total;
+        }else{
+            this.ventas.total=this.total;
         }
+        console.log(this.ventas);
         this.tabs=document.getElementById('tabpago')
         this.tabs.click();
         this.verpago=1;
@@ -682,7 +737,7 @@ export class VentasComponent{
         this.id_caja=id;
     }
     volveralascajas(){
-        this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null);
+        this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null);
     }
     sumartodaslasmonedas(){
         this.sumamonedas=0;
@@ -761,6 +816,72 @@ export class VentasComponent{
         console.log(this.DetalleCaja.monto_apertura);
         
         this.mostarproductos();
+    }
+    mandarmontocierre(){
+        this.DetalleCaja.monto_cierre_efectivo="";
+       
+        if(this.arreglocantidad.c10>0){
+            this.DetalleCaja.monto_cierre_efectivo+="c10|"+this.arreglocantidad.c10+"|";
+        }
+        if(this.arreglocantidad.c20>0){
+            this.DetalleCaja.monto_cierre_efectivo+="c20|"+this.arreglocantidad.c20+"|";
+        }
+        if(this.arreglocantidad.c50>0){
+            this.DetalleCaja.monto_cierre_efectivo+="c50|"+this.arreglocantidad.c50+"|";
+        }
+        if(this.arreglocantidad.m01>0){
+            this.DetalleCaja.monto_cierre_efectivo+="m01|"+this.arreglocantidad.m01+"|";
+        }
+        if(this.arreglocantidad.m02>0){
+            this.DetalleCaja.monto_cierre_efectivo+="m02|"+this.arreglocantidad.m02+"|";
+        }
+        if(this.arreglocantidad.m05>0){
+            this.DetalleCaja.monto_cierre_efectivo+="m05|"+this.arreglocantidad.m05+"|";
+        }
+        if(this.arreglocantidad.b10>0){
+            this.DetalleCaja.monto_cierre_efectivo+="b10|"+this.arreglocantidad.b10+"|";
+        }
+        if(this.arreglocantidad.b20>0){
+            this.DetalleCaja.monto_cierre_efectivo+="b20|"+this.arreglocantidad.b20+"|";
+        }
+        if(this.arreglocantidad.b50>0){
+            this.DetalleCaja.monto_cierre_efectivo+="b50|"+this.arreglocantidad.b50+"|";
+        }
+        if(this.arreglocantidad.c01>0){
+            this.DetalleCaja.monto_cierre_efectivo+="c01|"+this.arreglocantidad.c01+"|";
+        }
+        if(this.arreglocantidad.c02>0){
+            this.DetalleCaja.monto_cierre_efectivo+="c02|"+this.arreglocantidad.c02+"|";
+        }
+        console.log(this.DetalleCaja.monto_cierre_efectivo);
+        this.cierredecaja();
+    }
+    cierredecaja(){
+        this._DetalleCajasService.CierreCaja(this.DetalleCaja).subscribe(
+            res=>{
+                console.log(res);
+                if(res.code==200){
+                    this.limpiar();
+                    this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null);
+                    this.sumamonedas=0;
+                    this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
+                    this.apertura=null;
+                    this.detruirtcajas();
+                    this.detruirtclient();
+                    this.limpiarproductos();
+                    this.obtenercajas();
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+    }
+    limpiarproductos(){
+        let i=0;
+        while(i<this.productos.length){
+            this.productos.splice(0,1)
+        }
     }
     montoapertura(n){
         
@@ -882,6 +1003,8 @@ export class VentasComponent{
                 if(res.code==200){
                     
                     this.traerproductos();
+                    this.sumamonedas=0;
+                    this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
                 }
                 console.log(res);
             },
@@ -904,20 +1027,19 @@ export class VentasComponent{
                     imagen:res[indice].imagen,
                     nombre_producto:res[indice].nombre_producto,
                     descripcion:res[indice].descripcion,
-                    unidad:res[indice].unidad,
+                    abreviacion:res[indice].abreviacion,
                     nombre:res[indice].nombre,
                     precio_venta:res[indice].precio_venta,
                     stock:res[indice].stock,
                     codigo:res[indice].codigo,
                     cantidad:1,
+                    descuento_maximo:res[indice].descuento_maximo,
                     preg:[]});
                     this.mostrarimpuestosdeproductos(res[indice].id,indice);
                    indice=indice+1;
                }
                this.tablacajas();  
-    
                 console.log(this.productos);
-                console.log(this.productos[0].preg);
             },
             err=>{
                 console.log(<any>err);
@@ -946,6 +1068,7 @@ export class VentasComponent{
                 console.log(<any>err);
             }
         );
+        
     }
     obtenercajas(){
         this._DetalleCajasUsuarioService.selectusuariocajas(this.user.id).subscribe(
@@ -1007,12 +1130,12 @@ export class VentasComponent{
             timer: 3000
           })
     }
-    alertaecho(){
+    alertaventa(){
         swal({
             position: 'center',
             icon: "success",
-            title: 'Insertado',
-            text:'La Unidad se agrego correctamente',
+            title: 'Guardado',
+            text:'La venta se agrego correctamente',
             buttons: true,
             timer: 1500
           })

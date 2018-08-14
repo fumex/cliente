@@ -46,8 +46,8 @@ export class InventarioComponent{
     ){
         this.titulo = "Ajustes de inventario";
         //this.productos=new ProductosfiltradoporAlmacenModel(0,'','',0,0,'',0,0);
-        this.inventario=new inventario(null,'','',0,null,0,0,null,0,0,0);
-        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario=new inventario(null,'','',0,null,0,0,null,0,0,0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0,0);
         this.ident=null;
         this.tabla();
         this.almacenselec=0;
@@ -83,7 +83,7 @@ export class InventarioComponent{
         console.log(this.inventario);
         /*this.inventario2.id_producto=null;
         this.inventario2.cantidad=null;*/
-        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0,0);
         console.log(this.productos)
         console.log(this.movimientos);
 
@@ -192,8 +192,8 @@ export class InventarioComponent{
         this.almacenselec=0;
         this.mostarguardar=0;
         this.mostrabproductos=0;
-        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0);
-        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.inventario=new inventario(0,'','',0,0,0,0,'',0,0,0,0);
+        this.inventario2=new inventario(0,'','',0,0,0,0,'',0,0,0,0);
         let indice=0;
         while(indice<this.movimientos.length){
             this.movimientos.splice(0,1);

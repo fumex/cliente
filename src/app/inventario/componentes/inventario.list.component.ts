@@ -49,7 +49,7 @@ declare var swal:any;
         this.titulo = "reporte de almacen";
         this.tabla();
         //this.tabla2();
-        this.cojeinventarioi=new inventario(0,'','',0,0,0,0,'',0,0,0);
+        this.cojeinventarioi=new inventario(0,'','',0,0,0,0,'',0,0,0,0);
         this.mostrareporte=null;
         this.ident=null;
         this.almacenselec=0;

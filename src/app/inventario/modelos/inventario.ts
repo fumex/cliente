@@ -11,5 +11,6 @@ export class inventario{
         public precio:number,
         public escoja:number,
         public usuario:number,
+        public codigo:number,
 	){}
 }

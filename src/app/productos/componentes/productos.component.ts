@@ -40,7 +40,7 @@ export class ProductosComponent{
     public cate:categoria;
     public categorias:categoria;
     public unidadmodelo:UnidadesModel;
-    public impuestoigv:Array<ImpuestoModel>=[];
+    public impuestoigv:ImpuestoModel;
     public impuestrootro:Array<ImpuestoModel>=[];
     public impuestroeditotro:Array<ImpuestoModel>=[];
 

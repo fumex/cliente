@@ -28,7 +28,7 @@ export class CajasComponent{
     public detalle:DetalleCajasUsuariosModels;
     public detalletable:Array<DetalleCajasUsuariosModels>=[];
     public detallecajas:Array<DetalleCajasUsuariosModels>=[];
-    public usuarios:UsuarioModel;
+    public usuarios:Array<UsuarioModel>=[];
     public titulo;
     public user:User;
     public nombre;
@@ -78,31 +78,12 @@ export class CajasComponent{
     }
 
     mostrarusuario(id){
-        let indice=0;
-        let indice2=0;
+        
         this._DettaleUsuarioService.seleccionardetalleusuarioporsucursal(id).subscribe(
             res=>{
                 this.usuarios=res;
                 if(this.mostraeditcaja!=null){
-                    console.log(this.detalletable.length)
-                    while(indice<res.length){
-                        while(indice2<this.detalletable.length){
-                            if(this.detalletable[indice2].id_usuario===this.usuarios[indice].id){
-                              
-                                this.detalletable[indice2].id=indice;
-                                this.detalle.id=indice;
-                                this.detalle.id_caja=this.cajas.id;
-                                this.detalle.id_usuario=this.usuarios[indice].id;
-                                this.detalle.estado=true;
-                                this.detallecajas.push(this.detalle);
-                                this.detalle=new DetalleCajasUsuariosModels(null,null,null,null);
-                                this.usuarios[indice].id=null;
-                            }
-                            indice2=indice2+1;
-                        }
-                        indice2=0;
-                        indice=indice+1;
-                    }
+                    this.agregarusuarioactual();
                     console.log(this.detallecajas);
                 }
                 
@@ -112,7 +93,41 @@ export class CajasComponent{
             }
         );
     }
-
+    agregarusuarioactual(){
+        let i=0;
+        let indice=0;
+        let indice2=0;
+        this._DettaleUsuarioService.seleccionardetalleusuarioactual(this.mostraeditcaja).subscribe(
+            res=>{
+                while(i<res.length){
+                    this.usuarios.push(res[i]);
+                    i++;
+                }
+                while(indice<this.usuarios.length){
+                    console.log(this.usuarios[indice])
+                    while(indice2<this.detalletable.length){
+                        console.log(this.detalletable[indice2]);
+                        if(this.detalletable[indice2].id_usuario===this.usuarios[indice].id){
+                            this.detalletable[indice2].id=indice;
+                            this.detalle.id=indice;
+                            this.detalle.id_caja=this.cajas.id;
+                            this.detalle.id_usuario=this.usuarios[indice].id;
+                            this.detalle.estado=true;
+                            this.detallecajas.push(this.detalle);
+                            this.detalle=new DetalleCajasUsuariosModels(null,null,null,null);
+                            this.usuarios[indice].id=null;
+                        }
+                        indice2=indice2+1;
+                    }
+                    indice2=0;
+                    indice=indice+1;
+                }
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
     getdetallecajasusuario(id){
         this._DetalleCajasUsuarioService.selectcajasusuario(id).subscribe(
             res=>{
@@ -140,7 +155,7 @@ export class CajasComponent{
     }
     getcaja(id){
         
-        this.mostraeditcaja=1;
+        this.mostraeditcaja=id;
         this.campodetexto=document.getElementById('firstName');
         this._cajasservice.selectcajas(id).subscribe(
             res=>{
@@ -196,10 +211,30 @@ export class CajasComponent{
         this.cajas=new CajasModels(0,null,null,null,this.user.id);
         this.mostrauser=null;
     }
+
     eliminarcaja(id){
         this._cajasservice.deletecajas(id).subscribe(
             res=>{
-                console.log(res)
+                console.log(res);
+                if(res.code==200){
+                    this.eliminardetallecajausuario(id);
+                }
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
+    eliminardetallecajausuario(id){
+        this._DetalleCajasUsuarioService.eliminarusuarioporcaja(id).subscribe(
+            res=>{
+                console.log(res);
+                if(res.code==200){
+                    this.destruirtablacajas();
+                    this.reconstruirtablacajas();
+                    this.alertaeliminado();
+                    console.log("se elimino");
+                }
             },
             err=>{
                 console.log(<any>err)
@@ -257,6 +292,7 @@ export class CajasComponent{
     }
     guardardetallecajausuarios(){
         let ind=0;
+        console.log(this.detallecajas);
         while(ind<this.detallecajas.length){
             this._DetalleCajasUsuarioService.adddetallecajasusuario(this.detallecajas[ind]).subscribe(
                 res=>{
@@ -337,6 +373,30 @@ export class CajasComponent{
             buttons: false,
             timer: 3000
           })
+    }
+    alertaeliminado(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'Eliminado',
+            text:'La Caja se Elimino correctamente',
+            buttons: false,
+            timer: 3000
+          })
+    }
+    alertaeliminar(id){
+        swal({
+            title: "esta seguro de eliminar esta caja",
+            text: "se eliminaran los cambios relacionados con la caja",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                this.eliminarcaja(id);
+            }
+        });
     }
     tabla(){
         setTimeout(function(){

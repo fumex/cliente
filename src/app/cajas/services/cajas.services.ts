@@ -42,5 +42,16 @@ export class CajasService{
     deletecajas(id){
         return this._http.get<any>(this.url+'/cajas/eliminar/'+id).shareReplay();
     }
-
+    getcajasporsucursal(id){
+        return this._http.get<any>(this.url+'/cajasporsucursal/'+id).shareReplay();
+    }
+    getdetallecajas(id){
+        return this._http.get<any>(this.url+'/getdetallecajas/'+id).shareReplay();
+    }
+    getventas(id){
+        return this._http.get<any>(this.url+'/buscarventas/'+id).shareReplay();
+    }
+    getventasporsucursal(id){
+        return this._http.get<any>(this.url+'/buscarventasporsucursal/'+id).shareReplay();
+    }
 }

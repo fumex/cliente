@@ -293,13 +293,14 @@
                     <div class="row p-t-20">
                         <div class="col-sm-6">
                             <ul class="nav nav-tabs profile-tab" role="tablist" style="border-color: transparent;">
-                                <li [hidden]="verusuarios!=null || verpago!=null" class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
+                                <li [hidden]="verusuarios!=null || verpago!=null || vercierre!=null" class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
                                 <li [hidden]="verusuarios==null" class="nav-item"> <a id="tabcli"class="nav-link" data-toggle="tab" href="#usuarios" role="tab">Clientes</a> </li>
                                 <li [hidden]="verpago==null" class="nav-item"> <a id="tabpago" class="nav-link" data-toggle="tab" href="#pago" role="tab">Pago</a> </li>
+                                <li [hidden]="vercierre==null" class="nav-item"> <a id="tabcierre" class="nav-link" data-toggle="tab" href="#cierre" role="tab">Cerrar Caja</a> </li>
                             </ul>
                         </div>
-                        <div class="col-sm-6" style="text-align: right">
-                            <button class="botonariba" title="Salir"> <i class="fa fa-sign-out" ></i> </button>
+                        <div [hidden]="vercierre!=null" class="col-sm-6" style="text-align: right">
+                            <button class="botonariba" title="Salir" (click)="cerrarcaja()"> <i class="fa fa-sign-out" ></i> </button>
                         </div>
                     </div>
                 </div> 
@@ -399,7 +400,7 @@
                                                             <td style="width: 50px;height: 50px;"> <img  class="productos_ventas_imagen"   src="{{url}}/{{producto.imagen}}" > </td>
                                                             <td style="text-align: center"><a>{{producto.nombre_producto}}</a></td>
                                                             <td style="text-align: center"><a>{{producto.descripcion}}</a>
-                                                            <td style="text-align: center"> <a>{{producto.unidad}}</a></td>
+                                                            <td style="text-align: center"> <a>{{producto.abreviacion | uppercase}}</a></td>
                                                             <td style="text-align: center"> <a>{{producto.codigo}}</a></td>
                                                             <td style="text-align: center"><a>{{producto.nombre}}</a></td>
                                                             <td style="text-align: center"><a>{{producto.precio_venta}}</a></td>
@@ -414,7 +415,10 @@
                                                             </td>
                                                             <td *ngIf="producto.cantidad==null" style="text-align: center;color: #4b8bff" ><a>Enviado</a></td>
                                                             <td>
-                                                                <button *ngIf="producto.cantidad!=null" (click)="addproducto($index,producto)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
+                                                                <button *ngIf="producto.cantidad!=null && producto.descuento_maximo>0" (click)="alertaddproducto($index,producto)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
+                                                                    <i class="fa fa-circle"></i>
+                                                                </button>
+                                                                <button *ngIf="producto.cantidad!=null && producto.descuento_maximo <= 0" (click)="addproducto($index,producto,producto.descuento_maximo)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
                                                                     <i class="fa fa-circle"></i>
                                                                 </button>
                                                                 <button *ngIf="producto.cantidad==null"  class="btn btn-sm btn-info" >
@@ -482,7 +486,6 @@
                                                             <td *ngIf="factura==true" colspan="2" style="color:#99abb4">Subtotal</td>
                                                             <td *ngIf="factura==false" colspan="2" style="color:#99abb4">Total</td>
                                                             <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
-                                                           
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -565,7 +568,6 @@
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-9" >
-                                        
                                     </div>
                                     <div class="col-lg-3" >
                                         <div class="row p-t-20">
@@ -670,6 +672,261 @@
                                     </div>
                                     <div *ngIf="combo!=null" class="col-lg-3" style="margin-top: 10px">
                                         <button  (click)="guardarventa()"  [disabled]="combo.value!='Efectivo' && ventas.tarjeta==null"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="cierre" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-sm-8" >
+                                        <table  width="100%;">
+                                            <tbody >
+                                                <tr>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">0.10</h2>
+                                                    </td>
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(0.1)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(0.1)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='c10'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('c10')">{{arreglocantidad.c10}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='c10'" style="width: 80px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('c10')" min="1" max="99" #c10="ngModel" name="c10" [(ngModel)]="arreglocantidad.c10" required>
+                                                    </td>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;" >
+                                                        <h2 class="h2apertura">0.20</h2>
+                                                    </td >
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(0.2)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(0.2)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='c20'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('c20')">{{arreglocantidad.c20}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='c20'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('c20')" min="1" max="99" #c20="ngModel" name="c20" [(ngModel)]="arreglocantidad.c20" required>
+                                                    </td>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">0.50</h2>
+                                                    </td>
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(0.5)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(0.5)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='c50'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('c50')">{{arreglocantidad.c50}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='c50'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('c50')" min="1" max="99" #c50="ngModel" name="c50" [(ngModel)]="arreglocantidad.c50" required>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody >
+                                                <tr>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">1.00</h2>
+                                                    </td>
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(1)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(1)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='m01'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('m01')">{{arreglocantidad.m01}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='m01'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('m01')" min="1" max="99" #m01="ngModel" name="m01" [(ngModel)]="arreglocantidad.m01" required>
+                                                    </td>
+                                                    <td>
+                                                       <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;" >
+                                                        <h2 class="h2apertura">2.00</h2>
+                                                    </td >
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(2)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(2)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='m02'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('m02')">{{arreglocantidad.m02}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='m02'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('m02')" min="1" max="99" #m02="ngModel" name="m02" [(ngModel)]="arreglocantidad.m02" required>
+                                                    </td>
+                                                    <td>
+                                                       <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">5.00</h2>
+                                                    </td>
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(5)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(5)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='m05'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('m05')">{{arreglocantidad.m05}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='m05'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('m05')" min="1" max="99" #m05="ngModel" name="m05" [(ngModel)]="arreglocantidad.m05" required>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody >
+                                                <tr>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">10</h2>
+                                                    </td>
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(10)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(10)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='b10'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('b10')">{{arreglocantidad.b10}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='b10'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('b10')" min="1" max="99" #b10="ngModel" name="b10" [(ngModel)]="arreglocantidad.b10" required>
+                                                    </td>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;" >
+                                                        <h2 class="h2apertura">20</h2>
+                                                    </td >
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(20)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(20)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='b20'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('b20')">{{arreglocantidad.b20}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='b20'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('b20')" min="1" max="99" #b20="ngModel" name="b20" [(ngModel)]="arreglocantidad.b20" required>
+                                                    </td>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">50</h2>
+                                                    </td>
+                                                    <td style="width: 80px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(50)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(50)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='b50'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('b50')">{{arreglocantidad.b50}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='b50'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('b50')" min="1" max="99" #b50="ngModel" name="b50" [(ngModel)]="arreglocantidad.b50" required>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody >
+                                                <tr>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;">
+                                                        <h2 class="h2apertura">100</h2>
+                                                    </td>
+                                                    <td style="width: 80px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(100)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(100)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='c01'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('c01')">{{arreglocantidad.c01}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='c01'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('c01')" min="1" max="99" #c01="ngModel" name="c01" [(ngModel)]="arreglocantidad.b10" required>
+                                                    </td>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">S/. </strong>
+                                                    </td>
+                                                    <td style="width: 120px;
+                                                    text-align: left;" >
+                                                        <h2 class="h2apertura">200</h2>
+                                                    </td >
+                                                    <td style="width: 150px;">
+                                                        <i class="fa fa-plus" style="margin-top: 15px;color: green" (click)="montoapertura(200)"></i>
+                                                        <i class="fa fa-minus" style="color: red" (click)="quitarmoneda(200)"></i>
+                                                    </td>
+                                                    <td style="text-align: center;width: 150px;"  *ngIf="activin!='c02'">
+                                                        <label class="labelapertura" (dblclick)="activarinput('c02')">{{arreglocantidad.c02}}</label>
+                                                    </td>
+                                                    <td *ngIf="activin=='c02'" style="width: 150px;">
+                                                        <input type="number" class="inputapertura" (keyup)="ponermonedaenelimput('c02')" min="1" max="99" #c02="ngModel" name="c02" [(ngModel)]="arreglocantidad.c02" required>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td colspan="3" style="width: 420px;">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-4" style="margin-top: 10px;background: #d9dbde;text-align: center" >
+                                        <table style="width: 100%;margin-top: 20px">
+                                             <tbody >
+                                                <tr>
+                                                    <td>
+                                                        <label class="titlecierre"><strong>pagos con tarjeta</strong></label>
+                                                    </td>
+                                                    <td style="width: 120px;">
+                                                        <input type="number" style="width: 100%;text-align: center;color:#119ef3;background: #b4b7bd;
+                                                        border-color: lightgrey;
+                                                        font-size: 20px;"  #montotarjeta="ngModel" name="montotarjeta" [(ngModel)]="DetalleCaja.monto_cierre_tarjeta" >
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom:solid red 1px">
+                                                    <td>
+                                                        <label class="titlecierre"><strong>pago en efectivo</strong></label>
+                                                    </td>
+                                                    <td style="text-align: center">
+                                                        <label class="montocierre" >{{sumamonedas | number : '1.2-2'}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong style="font-size: 15px;">Total </strong>
+                                                    </td>
+                                                    <td  style="width: 120px;">
+                                                        <h2 style="font-size: 30px;
+                                                        margin-top: 20px;
+                                                        color: #5f90ff;text-align: center;">{{(sumamonedas+DetalleCaja.monto_cierre_tarjeta) | number : '1.2-2'}}</h2>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn  btn-info" (click)="volveralascajas()"><i class="fa fa-arrow-circle-left"></i> volver</button>
+                                        <button class="btn  btn-warning" (click)="mandarmontocierre()">Cerrar <i class="fa fa-save"></i></button>
                                     </div>
                                 </div>
                             </div>
