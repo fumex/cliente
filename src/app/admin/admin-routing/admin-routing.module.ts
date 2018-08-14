@@ -52,7 +52,8 @@ import { TipoPagoAddComponent } from '../../tipo_pago/components/tipo_pago-add.c
 import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit.component';
 
 import { CajasComponent } from '../../cajas/componentes/cajas.component';
-import { VentasComponent} from '../../ventas/componentes/ventas.component'
+import { VentasComponent} from '../../ventas/componentes/ventas.component';
+import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
@@ -191,6 +192,7 @@ import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf
                     { path:'editarusuario',component:EditarUsuarioPersonal},
                     { path:'cajas',component:CajasComponent},
                     { path:'ventas',component:VentasComponent},
+                    { path:'resumencajas',component:ResumenCajasAbiertasComponent},
                 ]
             }
         ]),

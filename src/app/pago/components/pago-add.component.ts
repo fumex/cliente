@@ -342,8 +342,8 @@ export class PagoAddComponent implements OnInit{
         let us=this.user.id;
         this.compras.forEach(function(value){
             let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
-            let d_almacen=new almacenstock(null,null,value.codigo,value.vendible,value.id,value.cantidad,value.precio,null);
-            let inven=new inventario(null,null,null,value.id,null,null,value.cantidad,null,value.precio,null,us);
+            let d_almacen=new almacenstock(null,null,value.codigo,value.vendible,value.id,value.cantidad,value.precio,null,null);
+            let inven=new inventario(null,null,null,value.id,null,null,value.cantidad,null,value.precio,null,us,parseInt(value.codigo));
                 pago.addPagoDetalle(pagoD).subscribe(
                     result=>{
                         console.log(result);

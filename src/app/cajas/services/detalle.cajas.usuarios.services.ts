@@ -28,6 +28,9 @@ export class DetalleCajasUsuarioService{
     selectcajasusuario(id){
         return this._http.get<any>(this.url+'/detalle_caja_usuarios/'+id).shareReplay();
     }
+    eliminarusuarioporcaja(id){
+        return this._http.get<any>(this.url+'/eliminarusuariosporcaja/'+id).shareReplay();
+    }
     selectusuariocajas(id){
         return this._http.get<any>(this.url+'/getcajasporusuario/'+id).shareReplay();
     }

@@ -4,7 +4,7 @@ import {HttpClient,HttpHeaders}from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/Observable';
-import {DetalleCaja}from '../modelos/detalle_almacen';
+import {DetalleCaja}from '../modelos/detalle_cajas';
 
 @Injectable()
 export class DetalleCajasService{
@@ -33,4 +33,5 @@ export class DetalleCajasService{
     buscarusuario(id){
         return this._http.get<any>(this.url+'/buscarusuarioencaja/'+id).shareReplay();
     }
+    
 }

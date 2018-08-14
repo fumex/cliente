@@ -40,4 +40,7 @@ export class DettaleUsuarioService{
     seleccionardetalleusuarioporsucursal(id){
         return this._http.get<any>(this.url+'/detalleusersucursal/'+id).shareReplay();
     }
+    seleccionardetalleusuarioactual(id){
+        return this._http.get<any>(this.url+'/detalleuseractual/'+id).shareReplay();
+    }
 }

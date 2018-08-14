@@ -7,6 +7,7 @@ export class almacenstock{
 		public id_producto: number,
 		public stock: number,
         public precio_compra: number,
-        public precio_venta: number
+        public precio_venta: number,
+        public descuento_maximo:number
 	){}
 }
