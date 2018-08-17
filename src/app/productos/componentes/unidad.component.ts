@@ -1,7 +1,6 @@
 import { Component,ViewContainerRef } from "@angular/core";
 import { UnidadesModel } from "../modelos/unidades";
 import { UnidadService } from '../services/unidad.service';
-import { ProductosComponent } from './productos.component';
 import { User } from "../../auth/interfaces/user.model";
 import { AuthService } from "../../auth/services/auth.service";
 
@@ -15,16 +14,17 @@ declare var swal:any;
 @Component({
     selector:'unidades',
     templateUrl:'../views/unidad.component.html',
-    providers:[UnidadService]
+    providers:[UnidadService,ToastService]
 })
 export class unidadcomponent{
     public unidades:UnidadesModel;
+    public unidadestab:UnidadesModel;
     public titulo;
     public user:User;
     public nombre;
+    public title="Unidades";
     constructor(
         private _UnidadService:UnidadService,
-        private _productoscomponent:ProductosComponent,
         private auth:AuthService,
         private toaste:ToastService,
         public toastr: ToastsManager,
@@ -35,8 +35,21 @@ export class unidadcomponent{
         this.unidades = new UnidadesModel(null,'','',this.user.id);
         this.titulo="agregar unidad";
     }
+    ngOnInit(){
+        this.getunidades();
+    }
+    getunidades(){
+        this._UnidadService.getunidad().subscribe(
+            res=>{
+                this.unidadestab=res;
+                console.log(res);
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
     exit(){
-        this._productoscomponent.getexituni();
     }
 
     guardarunidad(){
@@ -53,7 +66,6 @@ export class unidadcomponent{
                     this.unidades.abreviacion=null;
                 }else{
                     this.unidades = new UnidadesModel(null,'','',this.user.id);
-                    this._productoscomponent.mostarunidad();
                     //this.alertaecho();
                     this.exit();
                 }

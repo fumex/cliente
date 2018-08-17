@@ -134,11 +134,13 @@ export class ResumenCajasAbiertasComponent{
         this.vercajas=null;
         this.getcaja=this.cajas[index];
         console.log(this.getcaja)
+        this.destruirtablaventas();
        this.reconstruirtablaventas(arreglodetalle.id)
     }
     traerventastotales(id){
         this.vertodaslasventas=true;
         this.verventas=id;
+        this.destruirtablaventas();
         this.reconstruirtablaventas(id);
     }
     getventastotales(id){
@@ -186,6 +188,26 @@ export class ResumenCajasAbiertasComponent{
     
     cerrarmodal(){
         this.modal.style.display = "none";
+    }
+    limpiarcajas(){
+        let i =0;
+        while(i<this.cajas.length){
+            this.cajas.splice(0,1);
+        }
+    }
+    volverasucursales(){
+        this.limpiarcajas();
+        console.log(this.cajas);
+        this.vercajas=null;
+        this.verventas=null
+        this.vertodaslasventas=false;
+        this.destruirtablaventas();
+    }
+    volveracajs(){
+        this.destruirtablaventas();
+        this.vercajas=1;
+        this.verventas=null;
+        this.vertodaslasventas=false;
     }
     getdetalleventas(id){
         let i=0;
@@ -341,7 +363,8 @@ export class ResumenCajasAbiertasComponent{
         },3000);
     }
     destruirtablaventas(){	
-        var table = $('#tablaventas').DataTable(); table .clear() ;
+        var table = $('#tablaventas').DataTable();
+        table .clear() ;
         $('#tablaventas').DataTable().destroy();
     }
     reconstruirtablaventas(id){
