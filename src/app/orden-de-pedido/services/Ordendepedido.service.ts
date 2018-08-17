@@ -19,11 +19,8 @@ export class OrdenPedidosService{
         return this._http.get<any>(this.url+'/OrdenPedidos').shareReplay();
     }
     addOrdenPedido(orden:OrdenDePedidoModel):Observable<any>{
-        let json = JSON.stringify(orden);
-        
-        let params = "json="+json;
-        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
-       
+        let params = JSON.stringify(orden);
+        let headers = new HttpHeaders().set('Content-Type','application/json');
         return this._http.post(this.url+'/OrdenPedidos',params,{headers:headers});
             
     }
@@ -71,5 +68,17 @@ export class OrdenPedidosService{
     }
     clear():void{
         localStorage.removeItem('orden');
+    }
+    //----------------------------Detalle------------------------------------------------------------
+    getDetallePedido(id){
+        return this._http.get<any>(this.url+'/detalleordenselect/'+id).shareReplay();
+    }
+
+    //-------------------------Numero de Codigo----------------------------------------------------
+   /* getCodigo(){
+        return this._http.get<any>(this.url+'/orden/code').shareReplay();
+    }*/
+    dataPedido(id){
+        return this._http.get<any>(this.url+'/orden-list/'+id).shareReplay();
     }
 }
