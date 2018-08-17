@@ -59,7 +59,7 @@ import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
 import { PagoReciboComponent } from '../../pago/components/pago-recibo.component';
 import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf.component';
-
+import { unidadcomponent} from '../../productos/componentes/unidad.component'
 
 
 @NgModule({
@@ -192,7 +192,8 @@ import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf
                     { path:'editarusuario',component:EditarUsuarioPersonal},
                     { path:'cajas',component:CajasComponent},
                     { path:'ventas',component:VentasComponent},
-                    { path:'resumencajas',component:ResumenCajasAbiertasComponent},
+                    { path:'resumenventas',component:ResumenCajasAbiertasComponent},
+                    { path:'unidades',component:unidadcomponent},
                 ]
             }
         ]),

@@ -216,14 +216,15 @@ export class usuarioscomponent{
             this._UsuarioService.addusuario(this.usuario).subscribe(
             response=>{
                 this.nombre.focus();
-                console.log(response);
-                this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','',null);
+                //this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','',null);
                 if(response.code===300){
                     let text="Ese Email ya se encuentra registrado";
                     this.toaste.errorAlerta(text,'Error!');
                     this.usuario.password=null;
                     this.usuario.confirme=null;
+
                     this.nombre.select();
+                    console.log(this.usuario);
                 }else{
                     if(response.code===200){
                        this.guardardetalle();

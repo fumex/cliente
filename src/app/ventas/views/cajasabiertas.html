@@ -59,11 +59,17 @@
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-12" >
-                                        <div class="col-sm-12" style="text-align: center;margin-top: 30px">
-                                            <label for="card-title">
-                                                <i class="fa fa-money"></i>
-                                                 <strong>Resumen de cajas</strong>   
-                                            </label>
+                                        <div class="row p-t-1" style="text-align: center;" >
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-6" style="text-align: center">
+                                                <label for="card-title">
+                                                    <i class="fa fa-money"></i>
+                                                    <strong>Resumen de cajas</strong>   
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-3" style="text-align: right ;">
+                                                <button  class="btn  btn-info" title="Salir" (click)="volverasucursales()"><i class="fa fa-backward" ></i> Volver</button>
+                                            </div>
                                         </div>
                                         <div class="row p-t-1" style="text-align: center;" >
                                             <div class="col-sm-4" *ngFor="let caj of cajas; let $index=index">
@@ -93,6 +99,14 @@
                                                             <div class="row">
                                                                 <div class="col-lg-12">
                                                                     <h3> {{caj.monto_actual}}</h3>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                        <div *ngIf="caj.monto_actual==null"  class="row p-t-1">
+                                                            <strong style="font-size: 10px;color:#007bff" >Ventas (S/.)</strong>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <h3> 0.00</h3>
                                                                 </div>
                                                             </div> 
                                                         </div>
@@ -142,8 +156,16 @@
                                                                 </div>
                                                             </div> 
                                                         </div>
+                                                        <div *ngIf="caj.monto_actual==null"  class="row p-t-1">
+                                                            <strong style="font-size: 10px;color:#007bff" >Ventas (S/.)</strong>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <h3> 0.00</h3>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
                                                         <div class="row p-t-1">
-                                                            <strong style="font-size: 10px;color:#007bff" >Monto de caja actual(S/.)</strong>
+                                                            <strong style="font-size: 10px;color:#007bff" >Monto de cierre(S/.)</strong>
                                                             <div class="row">
                                                                 <div class="col-lg-12">
                                                                     <h3> {{caj.monto_cierre_efectivo}}</h3>
@@ -154,7 +176,7 @@
                                                     <div style="text-align: right">
                                                         <p style="font-size: 10px;color:#007bff">Fecha de Cierre:</p>
                                                         <h5 style="margin-top: -10px;font-size: 13px;">{{caj.updated_at}}</h5>
-                                                        <button type="button" class="btn btn-link"  (click)="traerventas(caj,$index)"><i class="fa fa-shopping-bag"> Ventas</i> </button>
+                                                        <button style=" margin-top: -7px;" type="button" class="btn btn-link"  (click)="traerventas(caj,$index)"><i class="fa fa-shopping-bag"> Ventas</i> </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,11 +202,20 @@
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-12" >
-                                        <div *ngIf="vertodaslasventas==false" class="col-sm-12" style="text-align: center;margin-top: 30px">
-                                            <label for="card-title">
-                                                <i class="fa fa-dropbox"></i>
-                                                <strong>{{getcaja.nombre}}</strong>   
-                                            </label>
+                                        <div class="row p-t-1" >
+                                            <div class="col-sm-3" ></div>
+                                            <div *ngIf="vertodaslasventas==false" class="col-sm-6" style="text-align: center;margin-top: 30px">
+                                                <label for="card-title">
+                                                    <i class="fa fa-dropbox"></i>
+                                                    <strong>{{getcaja.nombre}}</strong>   
+                                                </label>
+                                            </div>
+                                            <div *ngIf="vertodaslasventas==false"  class="col-sm-3" style="text-align: right ;">
+                                                <button  class="btn  btn-info" title="Salir" (click)="volveracajs()"><i class="fa fa-backward" ></i> Volver</button>
+                                            </div>
+                                            <div *ngIf="vertodaslasventas!=false"  class="col-sm-9" style="text-align: right ;">
+                                                <button  style="margin-bottom: 20px;" class="btn  btn-info" title="Salir" (click)="volverasucursales()"><i class="fa fa-backward" ></i> Volver</button>
+                                            </div>
                                         </div>
                                         <div *ngIf="vertodaslasventas==false" class="row p-t-1" >
                                             <div class="col-sm-6">

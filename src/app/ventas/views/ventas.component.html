@@ -415,16 +415,12 @@
                                                             </td>
                                                             <td *ngIf="producto.cantidad==null" style="text-align: center;color: #4b8bff" ><a>Enviado</a></td>
                                                             <td>
-                                                                <button *ngIf="producto.cantidad!=null && producto.descuento_maximo>0" (click)="alertaddproducto($index,producto)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
-                                                                    <i class="fa fa-circle"></i>
-                                                                </button>
-                                                                <button *ngIf="producto.cantidad!=null && producto.descuento_maximo <= 0" (click)="addproducto($index,producto,producto.descuento_maximo)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
+                                                                <button *ngIf="producto.cantidad!=null" (click)="addproducto($index,producto,producto.descuento_maximo)" [disabled]="autorizarboton<=$index" class="btn btn-sm btn-success" >
                                                                     <i class="fa fa-circle"></i>
                                                                 </button>
                                                                 <button *ngIf="producto.cantidad==null"  class="btn btn-sm btn-info" >
                                                                     <i class="fa fa-check-circle"></i>
                                                                 </button>
-                                                                <a *ngFor="let $index=index;let imp of producto.preg" title="{{imp.nombre}}:{{imp.porcentaje}}"><i class="fa fa-question-circle"></i></a>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -435,7 +431,7 @@
                                                 <button (click)="limpiar()"  class="btn btn-success"> <i class="fa fa-eraser"></i> Limpiar</button>
                                             </div>
                                             <br>
-                                            <br>
+                                            <br>    
                                             <div class="col-sm-12" style="text-align: center;margin-top: 30px">
                                                 <label for="card-title">
                                                     <i class="fa fa-shopping-cart"></i>
@@ -449,7 +445,8 @@
                                                     <thead style="border-bottom: solid 1px #88c8ff;">
                                                         <tr>
                                                             <th>N°</th>
-                                                            <th style="width: 495px">descripcion</th>
+                                                            <th style="width: 505px;">descripcion</th>
+                                                            <th style="width:110px;;">descuento</th>
                                                             <th>Precio Unitario</th>
                                                             <th style="width:110px;;">Cantidad</th>
                                                             <th style="text-align: center;width: 100px;">Valor de Venta</th>
@@ -461,9 +458,10 @@
                                                         <tr  *ngFor="let dventa of detalleventas;let $index=index;">
                                                             <td style="text-align: center">{{$index +1}}</td>
                                                             <td style="text-align: center">{{dventa.descripcion}}</td>
-                                                            <td style="text-align: center">{{dventa.precio_unitario}}</td>
-                                                            <td *ngIf="editarcant!=dventa.id_producto" style="text-align: center" >{{dventa.cantidad}}</td>
-                                                            <td style="text-align: center">{{dventa.cantidad*dventa.precio_unitario}}</td>
+                                                            <td style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}}</td>
+                                                            <td style="text-align: center">{{dventa.precio_unitario | number : '1.2-2'}}</td>
+                                                            <td style="text-align: center" >{{dventa.cantidad}}</td>
+                                                            <td style="text-align: center">{{dventa.cantidad*dventa.precio_unitario | number : '1.2-2'}}</td>
                                                             <td style="text-align: center">
                                                                 <a (click)="agregarunidadpro($index,dventa)" style="color:green" title="agregar una unidad"><i class="fa fa-plus"></i></a>
                                                                 <a (click)="quitarunidadpro($index,dventa)" style="color:red" title="quitar una unidad"><i class="fa fa-minus"></i></a>
@@ -483,8 +481,8 @@
                                                         </tr>
                                                         <tr >
                                                             <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
-                                                            <td *ngIf="factura==true" colspan="2" style="color:#99abb4">Subtotal</td>
-                                                            <td *ngIf="factura==false" colspan="2" style="color:#99abb4">Total</td>
+                                                            <td *ngIf="factura==true" colspan="3" style="color:#99abb4">Subtotal</td>
+                                                            <td *ngIf="factura==false" colspan="3" style="color:#99abb4">Total</td>
                                                             <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
                                                         </tr>
                                                     </tbody>
