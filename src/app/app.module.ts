@@ -43,6 +43,7 @@ import { TipoPagoModule } from './tipo_pago/tipo_pago.module';
 
 import { CajasModule} from './cajas/cajas.module';
 import { VentasModule} from './ventas/ventas.module';
+import { EmisorModule } from './emisor/emisor.module';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { VentasModule} from './ventas/ventas.module';
     TipoDocumentoModule,
     ServiciosModule,
     SucursalModule,
+    EmisorModule,
     //------------------------
     ClienteModule,
     EmpresaModule,
