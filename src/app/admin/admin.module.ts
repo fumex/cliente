@@ -6,6 +6,8 @@ import { AdminLeftSideComponent } from './admin-left-side/admin-left-side.compon
 import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 import { AdminRoutingModule } from './admin-routing/admin-routing.module';
 import { AdminContentComponent } from './admin-content/admin-content.component';
+import { GraficoDonaComponnent } from '../Graficos/grafico-dona/grafico-dona.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -14,7 +16,8 @@ import { AdminContentComponent } from './admin-content/admin-content.component';
 @NgModule({
     imports:[
         CommonModule,
-        AdminRoutingModule
+        AdminRoutingModule,
+        ChartsModule
     ],
     declarations:[
         AdminComponent,
@@ -22,6 +25,7 @@ import { AdminContentComponent } from './admin-content/admin-content.component';
         AdminLeftSideComponent,
         AdminFooterComponent,
         AdminContentComponent,
+        GraficoDonaComponnent
   
     ],
     exports:[AdminComponent]

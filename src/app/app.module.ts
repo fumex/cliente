@@ -46,6 +46,9 @@ import { VentasModule} from './ventas/ventas.module';
 import { EmisorModule } from './emisor/emisor.module';
 
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +77,8 @@ import { EmisorModule } from './emisor/emisor.module';
     ServiciosModule,
     SucursalModule,
     EmisorModule,
+    //------------------------
+ 
     //------------------------
     ClienteModule,
     EmpresaModule,
