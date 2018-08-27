@@ -61,6 +61,8 @@ import { PagoReciboComponent } from '../../pago/components/pago-recibo.component
 import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf.component';
 import { unidadcomponent} from '../../productos/componentes/unidad.component';
 import { EntidadFinancieraComponent} from '../../entidad_financiera/components/entidad_financiera.component';
+import { EmisorAddComponent } from '../../emisor/components/emisor-add.component';
+import { EmisorEditComponent } from '../../emisor/components/emisor-edit.component';
 
 
 @NgModule({
@@ -179,6 +181,14 @@ import { EntidadFinancieraComponent} from '../../entidad_financiera/components/e
                         path:'tipo_pago/edit/:id',
                         component:TipoPagoEditComponent
                     },
+                    {
+                        path:'emisor',
+                        component:EmisorAddComponent
+                    },
+                    {
+                        path:'emisor/edit',
+                        component:EmisorEditComponent
+                    },
                     { path:'productos',component:ProductosComponent},
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
@@ -212,7 +222,7 @@ export class AdminRoutingModule {
         private aurth:AuthService,
         private http:HttpClient,
         private router:Router,
-            private _route: ActivatedRoute,
+        private _route: ActivatedRoute,
         //private _login:LoginComponent,
     ){
         this.url=environment.url;
