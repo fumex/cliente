@@ -293,7 +293,7 @@
                     <div class="row p-t-20">
                         <div class="col-sm-6">
                             <ul class="nav nav-tabs profile-tab" role="tablist" style="border-color: transparent;">
-                                <li [hidden]="verusuarios!=null || verpago!=null || vercierre!=null" class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
+                                <li [hidden]="verusuarios!=null || verpago!=null || vercierre!=null" class="nav-item"> <a id="tabini" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Productos a vender</a> </li>
                                 <li [hidden]="verusuarios==null" class="nav-item"> <a id="tabcli"class="nav-link" data-toggle="tab" href="#usuarios" role="tab">Clientes</a> </li>
                                 <li [hidden]="verpago==null" class="nav-item"> <a id="tabpago" class="nav-link" data-toggle="tab" href="#pago" role="tab">Pago</a> </li>
                                 <li [hidden]="vercierre==null" class="nav-item"> <a id="tabcierre" class="nav-link" data-toggle="tab" href="#cierre" role="tab">Cerrar Caja</a> </li>
@@ -565,7 +565,19 @@
                         <div class="card-body">
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
-                                    <div class="col-lg-9" >
+                                    <div class="col-lg-6" >
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-4">
+                                                <label class="control-label">Moneda de pago</label>    
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <select id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  name="tiposelect" required>
+                                                    <option *ngFor="let mon of monedas" value="{{mon.id}}"><b>{{mon.moneda}}</b></option>                   
+                                                </select>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3" >
                                     </div>
                                     <div class="col-lg-3" >
                                         <div class="row p-t-20">
@@ -585,9 +597,7 @@
                                             <div class="col-sm-8">
                                                 <select id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  name="tiposelect" required>
                                                     <option disabled >--seleccione metodo de pago</option>
-                                                    <option value="Tarjeta" >Tarjeta</option> 
-                                                    <option value="Efectivo" >Efectivo</option>      
-                                                    <option value="Mixto" >Mixto</option>                    
+                                                    <option *ngFor="let pag of pago" value="{{pag.id}}"><b>{{pag.descripcion}}</b></option>                        
                                                 </select>   
                                             </div>
                                             <br>
@@ -599,9 +609,7 @@
                                             <div *ngIf="tipotrageta!=null" class="col-sm-8">
                                                 <select  id="combotarjeta" class="form-control custom-select" (change)="agregartarjeta()" name="tarjeta" required>
                                                     <option disabled >--seleccione la Tarjeta</option>
-                                                    <option value="Visa" >Visa</option> 
-                                                    <option value="Mastercard" >Mastercard</option>      
-                                                    <option value="American Express" >American Express</option>                    
+                                                    <option *ngFor="let ent of entidad" value="{{ent.id}}"><b>{{ent.descripcion}}</b></option>                       
                                                 </select>   
                                             </div>
                                         </div>
@@ -923,7 +931,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <button class="btn  btn-info" (click)="volveralascajas()"><i class="fa fa-arrow-circle-left"></i> volver</button>
+                                        <button class="btn  btn-info" (click)="volveraventas()"><i class="fa fa-arrow-circle-left"></i> volver</button>
                                         <button class="btn  btn-warning" (click)="mandarmontocierre()">Cerrar <i class="fa fa-save"></i></button>
                                     </div>
                                 </div>

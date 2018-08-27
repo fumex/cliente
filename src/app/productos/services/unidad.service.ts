@@ -40,5 +40,7 @@ export class UnidadService{
         return this._http.post(this.url+'/auth/unidad/'+id,params,{headers:headers});
     }
 
-
+    eliminar(id){
+        return this._http.get<any>(this.url+'auth/eliminarunidad/'+id).shareReplay();
+    }
 }

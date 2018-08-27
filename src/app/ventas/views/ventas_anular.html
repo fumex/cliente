@@ -1,0 +1,189 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{titulo}}</h3>
+    </div>
+</div>
+<div  class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div class="form-body">
+                        <div  class="container-fluid">
+                            <div class="table-responsive m-t-40">
+                                <div *ngIf="!sucursales">
+                                    cargando listado de sucursales....
+                                </div>
+                                <div *ngIf="sucursales">
+                                <table  style="width: 100%;text-align: center">
+                                    <thead>
+                                        <tr style="border-bottom: solid 1px #68a5da">
+                                            <th>Nombre</th>
+                                            <th>Direccion</th>
+                                            <th style="text-align: center">Telefono</th>
+                                            <!--<th style="width: 170px;"><br><hr style="margin-left: -10px;background: #68a5da;"></th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let suc of sucursales; let $index=index">  
+                                        <tr  *ngIf="cambiarcolor!=suc.id" (click)="selecttable(suc.id)" >
+                                            <td style="text-align: center">{{suc.nombre_sucursal}}</td>
+                                            <td style="text-align: center"><strong>{{suc.direccion}}</strong></td>
+                                            <td style="text-align: center">{{suc.telefono}}</td>
+                                            <!--<td style="text-align: center"> 
+                                                <button style="font-size: 8px" (click)="traerventastotales(suc.id)" class="btn btn-sm btn-success" title="ver ventas totales" >
+                                                    <i class="fa fa-shopping-bag">ver ventas</i> 
+                                                </button>
+                                                <button style="font-size: 8px" (click)="getcajas(suc.id)" class="btn btn-sm btn-info" title="mostrar cajas" >
+                                                    <i class="fa fa-dropbox">mostrar cajas</i> 
+                                                </button>
+                                            </td>-->
+                                        </tr>
+                                        <tr *ngIf="cambiarcolor==suc.id" style="background: grey" (click)="traerventastotales(suc.id)">
+                                            <td style="text-align: center;color: lightgrey;">{{suc.nombre_sucursal}}</td>
+                                            <td style="text-align: center;color: lightgrey;"><strong>{{suc.direccion}}</strong></td>
+                                            <td style="text-align: center;color: lightgrey;">{{suc.telefono}}</td>
+                                            <!--<td style="text-align: center"> 
+                                                <button style="font-size: 8px" (click)="traerventastotales(suc.id)" class="btn btn-sm btn-success" title="ver ventas totales" >
+                                                    <i class="fa fa-shopping-bag">ver ventas</i> 
+                                                </button>
+                                                <button style="font-size: 8px" (click)="getcajas(suc.id)" class="btn btn-sm btn-info" title="mostrar cajas" >
+                                                    <i class="fa fa-dropbox">mostrar cajas</i> 
+                                                </button>
+                                            </td>-->
+                                        </tr>
+                                        <tr *ngIf="cambiarcolor==suc.id">
+                                            <td colspan="3" style="text-align:center;height: 5px ">
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div [hidden]="verventas==null" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-primary">
+                <div class="card-body">
+                    <div class="form-body">
+                        <div  class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div  class="col-sm-12">
+                                            <table id="tablaventas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>fecha</th>
+                                                        <th>Serie de Documento</th>
+                                                        <th>Cliente</th>
+                                                        <th>Total</th>
+                                                        <th>Pago recivido</th>
+                                                        <th>Vuelto</th>
+                                                        <th style="width: 85px;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>  
+                                                    <tr  *ngFor="let ven of ventas; let $index=index">
+                                                        <td style="text-align: center">{{ven.created_at}}</td>
+                                                        <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
+                                                        <td style="text-align: center">{{ven.nombre}}</td>
+                                                        <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
+                                                        <td style="text-align: center">{{ven.pago_tarjeta+ven.pago_efectivo | number : '1.2-2'}}</td>
+                                                        <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
+                                                        <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total<0" style="text-align: center;color: red">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
+                                                        <td style="text-align: center"> 
+                                                            <button (click)="alertaeliminar(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                                <i class="fa fa-list-ul"></i> 
+                                                            </button>
+                                                            <button (click)="anularventa(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                                <i class="fa fa-ban"></i> 
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="col-sm-12 modal">
+    <div class="modal-contente" >
+        <span (click)="cerrarmodal()" class="close">&times;</span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-body">
+                        <div  class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-1" >
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-6" style="text-align: center">
+                                                <label>Serie: <strong>{{getventa.serie_venta}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-3"></div>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-6">
+                                                <label>Cliente: <strong>{{getventa.nombre}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-6" style="text-align: right">
+                                                <label>Fecha de cracion: <strong>{{getventa.created_at}}</strong></label>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>  
+                                        <table border=1 cellspacing=0 cellpadding=2 bordercolor="black" style="width: 100%;text-align: center">
+                                            <thead style="border-bottom: solid 1px #5d94c4;">
+                                                <tr >
+                                                    <th rowspan="2">nombre</th>
+                                                    <th rowspan="2">cantidad</th>
+                                                    <th rowspan="2">precio unitario(sin igv)</th>
+                                                    <th colspan="3">Impuestos</th>
+                                                    <th rowspan="2" style="text-align: center">total</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>IGV </th>
+                                                    <th>ISC </th>
+                                                    <th style="text-align: center">OTRO </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>  
+                                                <tr  *ngFor="let dventas of detalleventas; let $index=index">
+                                                    <td style="text-align: center">{{dventas.nombre_producto}}</td>
+                                                    <td style="text-align: center"><strong>{{dventas.cantidad}}</strong></td>
+                                                    <td style="text-align: center">{{dventas.precio_unitario | number : '1.2-2' }}</td>
+                                                    <td style="text-align: center">{{dventas.id | number : '1.2-2'}}({{dventas.igv}})</td>
+                                                    <td style="text-align: center">{{dventas.id_producto | number : '1.2-2'}}({{dventas.isc}})</td>
+                                                    <td style="text-align: center">{{dventas.codigo | number : '1.2-2'}}({{dventas.otro}})</td>
+                                                    <td style="text-align: center">{{dventas.id_venta}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

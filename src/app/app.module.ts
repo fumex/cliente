@@ -39,7 +39,7 @@ import { EmpresaModule } from './empresa/empresa.module';
 import { ImpuestoModule } from './impuesto/impuesto.module';
 import { MonedaModule } from './moneda/moneda.module';
 import { TipoPagoModule } from './tipo_pago/tipo_pago.module';
-
+import { entidadFinancieraModule } from './entidad_financiera/entidad_financiera.module';
 
 import { CajasModule} from './cajas/cajas.module';
 import { VentasModule} from './ventas/ventas.module';
@@ -90,6 +90,7 @@ import { EmisorModule } from './emisor/emisor.module';
     TipoPagoModule,
     CajasModule,
     VentasModule,
+    entidadFinancieraModule,
 
   ],
   providers: [

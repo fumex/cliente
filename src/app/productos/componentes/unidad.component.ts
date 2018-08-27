@@ -18,9 +18,11 @@ declare var swal:any;
 })
 export class unidadcomponent{
     public unidades:UnidadesModel;
-    public unidadestab:UnidadesModel;
+    public unidadestab:Array<UnidadesModel>=[];
+    public unidadobtenida:UnidadesModel;
     public titulo;
     public user:User;
+    public verbotiniciales=null;
     public nombre;
     public title="Unidades";
     constructor(
@@ -32,16 +34,112 @@ export class unidadcomponent{
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
-        this.unidades = new UnidadesModel(null,'','',this.user.id);
+        this.unidades = new UnidadesModel(null,'','',this.user.id,null);
+        this.unidadobtenida = new UnidadesModel(null,'','',this.user.id,null);
         this.titulo="agregar unidad";
     }
     ngOnInit(){
         this.getunidades();
+        this.tablaunidades();
+    }
+    quitarfilas(){
+        $(document).ready(function() {
+            var table = $('#example').DataTable();
+         
+            $('#example tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+         
+            $('#button').click( function () {
+                table.row('.selected').remove().draw( false );
+            } );
+        } );
+    }
+    borrarfilas(){
+        $(document).ready(function() {
+            var table = $('#tablaunidades').DataTable();
+                table.rows().remove().draw( false );
+        } );
+    }
+    limpiar(){
+        this.unidades=new UnidadesModel(null,null,null,null,null);
+    }
+    agregarfilas(){
+        let i=0;
+        while(i<this.unidadestab.length){
+            console.log(this.unidadestab[i].unidad)
+            $(document).ready(function() {
+                var t = $('#tablaunidades').DataTable();
+                    t.row.add( [
+                        "asas",
+                       "as",
+                        "this.unidadestab[0].abreviacion",
+                        "<div *ngIf='verbotiniciales!=uni.id'>"+
+                        "<button  type='button' (click)='editarunidad(uni.id)' class='btn btn-info  btn-flat btn-addon btn-xs m-b-10'>"+
+                            "<i class='fa fa-edit'></i></button>"+
+                        "<button  type='button' (click)='alertaDelete(documento.id)' class='btn btn-danger btn-flat btn-addon btn-xs m-b-10'>"+
+                            "<i class='fa fa-trash-o'></i></button>"+
+                        "</div>"+
+                        "<div *ngIf='verbotiniciales==uni.id'>"+
+                        "<button  type='button' (click)='actualizarunidad(uni)' class='btn btn-info  btn-flat btn-addon btn-xs m-b-10'>"+
+                            "<i class='fa fa-save'></i></button>"+
+                        "<button  type='button' (click)='cancelar()' class='btn btn-danger btn-flat btn-addon btn-xs m-b-10'>"+
+                            "<i class='fa fa-ban'></i></button>"+
+                    "</div>",
+                    ] ).draw( false );
+            } );
+
+            i++;
+        }
+        
     }
     getunidades(){
         this._UnidadService.getunidad().subscribe(
             res=>{
                 this.unidadestab=res;
+                console.log(res);
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
+    getunidad(id){
+        this._UnidadService.selectunidad(id).subscribe(
+            res=>{
+                this.unidadobtenida=res;
+                console.log(res);
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
+    editarunidad(id){
+        this.verbotiniciales=id;
+        this.getunidad(id);
+        //this.actualizarunidad(arreglo.id);
+    }
+    cancelar(){
+        this.verbotiniciales=null;
+        this.unidadobtenida = new UnidadesModel(null,'','',this.user.id,null);
+    }
+    actualizarunidad(arreglo){
+        this._UnidadService.updateunidad(arreglo.id,this.unidadobtenida).subscribe(
+            res=>{
+                if(res.code==200){
+                    this.modificaralerta();
+                    this.cancelar();
+                    this.destruirttablaunidades();
+                    this.recontruirtablaunidades();
+                    this.modificaralerta();
+                }
                 console.log(res);
             },
             err=>{
@@ -65,8 +163,11 @@ export class unidadcomponent{
                     this.unidades.unidad=null;
                     this.unidades.abreviacion=null;
                 }else{
-                    this.unidades = new UnidadesModel(null,'','',this.user.id);
+                    this.unidades = new UnidadesModel(null,'','',this.user.id,null);
                     //this.alertaecho();
+                    this.destruirttablaunidades();
+                    this.recontruirtablaunidades();
+                    this.alertaecho();
                     this.exit();
                 }
                 
@@ -82,6 +183,64 @@ export class unidadcomponent{
                 }
             }
         );
+    }
+    alertaDelete(id){
+        swal({
+            title: "esta seguro de eliminar esta unidad",
+            text: "se eliminaran los cambios relacionados con la unidad",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                this._UnidadService.eliminar(id).subscribe(
+                    res=>{
+                        console.log(res)
+                        this.destruirttablaunidades();
+                        this.recontruirtablaunidades();
+                    },
+                    err=>{
+                        console.log(<any>err)
+                    }
+                );
+            }
+        });
+    }
+    tablaunidades(){
+        //this.mostrar();
+       
+        setTimeout(function(){
+            $(function(){
+                 $('#tablaunidades').DataTable({
+                    "paging":   false,
+                    "ordering": false,
+                     dom: 'Bfrtip',
+                     buttons: [
+                         'copy', 'csv', 'excel', 'pdf', 'print'
+                     ]
+                 });
+            });
+        },3000);
+    }
+    destruirttablaunidades(){	
+        var table = $('#tablaunidades').DataTable();
+        table .clear() ;
+        $('#tablaunidades').DataTable().destroy();
+    }
+    recontruirtablaunidades(){
+        this.tablaunidades();
+        this.getunidades();
+        
+    }
+    modificaralerta(){
+        swal({
+            position: 'center',
+            icon: "success",
+            title: 'se guardo la undiad',
+            buttons: false,
+            timer: 3000
+          })
     }
     alertaerror(){
         swal({

@@ -34,7 +34,7 @@ export class MonedaEditComponent implements OnInit{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=auth.getUser();
         this.title='Editar Documento'
-        this.moneda= new MonedaModel(null,'',null,this.user.id);
+        this.moneda= new MonedaModel(null,'',null,this.user.id,null,null);
         this.confirmado=false;
         this.tabla();
     }

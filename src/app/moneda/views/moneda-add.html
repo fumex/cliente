@@ -13,12 +13,12 @@
                             <div class="card-body">
                                 <form class="form-horizontal" #formMoneda="ngForm" (ngSubmit)="onSubmit()">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-10">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 control-label" >
+                                                <label class="col-sm-4 control-label" >
                                                     Moneda
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-8">
                                                     <div class="inner-addon left-addon">
                                                         <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
@@ -29,12 +29,44 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-10">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 control-label" >
+                                                <label class="col-sm-4 control-label" >
+                                                    Codigo SUNAT
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="codigo.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!codigo.valid && codigo.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input  #codigo="ngModel" name="codigo" [(ngModel)]="moneda.codigo_sunat" placeholder="ingrese codigo" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 control-label" >
+                                                    País o Zona de Referencia
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="pais.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!pais.valid && pais.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input  #pais="ngModel" name="pais" [(ngModel)]="moneda.pais_referencia" placeholder="ingrese pais" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 control-label" >
                                                     Tasa
                                                 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-8">
                                                     <div class="inner-addon left-addon">
                                                         <i *ngIf="tasa.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!tasa.valid && tasa.touched" style="color: red" class="fa fa-times"></i>
@@ -46,7 +78,7 @@
                                     </div>  
                                     <div class="form-actions">
                                         <div class="row">
-                                            <div class="col-md-8">
+                                            <div class="col-md-10">
                                                 <div class="row">
                                                     <div class="offset-sm-3 col-md-9">
                                                         <button type="submit" [disabled]="!formMoneda.form.valid" class="btn btn-info"> <i class="fa fa-check"></i>Guardar</button>
@@ -69,7 +101,9 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Codigo SUNAT</th>
                                                 <th>Moneda</th>
+                                                <th>País</th>
                                                 <th>Tasa</th>
                                                 <th>Opciones</th>
                                             </tr>
@@ -77,7 +111,9 @@
                                         <tbody>
                                             <tr *ngFor="let moneda of monedas ; let $index=index">
                                                 <td>{{$index +1}}</td>
+                                                <td>{{moneda.codigo_sunat}}</td>
                                                 <td>{{moneda.moneda}}</td>
+                                                <td>{{moneda.pais_referencia}}</td>
                                                 <td>{{moneda.tasa}}</td>                    
                                                 <td>
                                                     <button  type="button" (click)="edit(moneda.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>

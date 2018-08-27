@@ -19,6 +19,9 @@ import { environment } from "../../../environments/environment";
 import { ProductoModule } from "../../productos/productos.module";
 import {inventario} from '../../inventario/modelos/inventario'
 import {VentasService} from '../services/Ventas.service';
+import {MonedaService} from '../../moneda/services/moneda.service';
+import {TipoPagoService} from '../../tipo_pago/services/tipo_pago.service';
+import {EntidadFinancieraService} from '../../entidad_financiera/services/entidad_financiera.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -31,6 +34,9 @@ declare var swal:any;
 export class VentasComponent{
     letrado: string;
     public contador=0;
+    public monedas:any;
+    public pago:any;
+    public entidad:any;
     public clientes :any;
     public DetalleCaja:DetalleCaja;
     public titulo;
@@ -83,6 +89,9 @@ export class VentasComponent{
     constructor(
         private _DetalleCajasService:DetalleCajasService,
         private _DetalleCajasUsuarioService:DetalleCajasUsuarioService,
+        private _monedaservice:MonedaService,
+        private _tipopagoservice:TipoPagoService,
+        private _entidadservice:EntidadFinancieraService,
         private  _AlmaceneService:AlmaceneService,
         private _DetalleVentasService:DetalleVentasService,
         private _detalleimpuestoservice:detalleimpuestoservice,
@@ -100,7 +109,7 @@ export class VentasComponent{
         this.titulo="Ventas";
         this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null,null);
         this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0);
-        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null);
+        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
         this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
         this.igv=0;
@@ -120,11 +129,23 @@ export class VentasComponent{
         }
         console.log(this.inicio)
         this.obtenerdocuemntos();
+        this.getentidad();
+        this.getmonedas();
+        this.gettipopago();
     }
     cerrarcaja(){
+        this.verpago=null;
         this.tabs=document.getElementById('tabcierre');
         this.tabs.click();
         this.vercierre=1;
+    }
+    volveraventas(){
+        this.tabs=document.getElementById('tabini');
+        this.tabs.click();
+        this.vercierre=null;
+        this.verpago=null;
+        this.DetalleCaja.monto_cierre_efectivo=null;
+        this.DetalleCaja.monto_cierre_tarjeta=null;
     }
     iniciodeusuario(){
         this._DetalleCajasService.buscarusuario(this.user.id).subscribe(
@@ -393,7 +414,6 @@ export class VentasComponent{
         this.guardarventas();
         
         this.ventas.total=Math.round(this.total*100)/100;
-        this.verpago==null;
         console.log(this.ventas)
         console.log(this.detalleventas)
     }
@@ -412,10 +432,18 @@ export class VentasComponent{
     }
     guardardetalleventas(){
         let i=0;
+        let respuesta=0;
         while(i<this.detalleventas.length){
             this._DetalleVentasService.guardardetalleventas(this.detalleventas[i]).subscribe(
                 res=>{
-                    console.log(res);
+                    
+                    if(res.code==200){
+                        console.log(res);
+                        
+                    }else{
+                        respuesta+=1;
+                        console.log(respuesta);
+                    }
                 },
                 err=>{
                     console.log(<any>err);
@@ -433,13 +461,17 @@ export class VentasComponent{
                 }
             );
             i++;
+            console.log(respuesta);
+            if(i==this.detalleventas.length && respuesta==0){
+                this.alertaventa();
+                this.obtenerdocuemntos();
+                this.limpiar(); 
+                this.vuelto=0;
+                this.verusuarios=null;
+                this.verpago=null;
+            }
         }
-    this.alertaventa();
-    this.obtenerdocuemntos();
-    this.limpiar(); 
-    this.vuelto=0;
-    this.verusuarios=null;
-    this.verpago=null;
+    
     }
     seleccionartipo(){
         this.combo=document.getElementById('comboselect');
@@ -472,6 +504,39 @@ export class VentasComponent{
         }
         
         console.log(this.ventas.pago_efectivo+this.ventas.pago_tarjeta)
+    }
+    getmonedas(){
+        this._monedaservice.getMonedas().subscribe(
+            res=>{
+                console.log(res);
+                this.monedas=res;
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+    }
+    gettipopago(){
+        this._tipopagoservice.getTipoPagos().subscribe(
+            res=>{
+                console.log(res);
+                this.pago=res;
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+    }
+    getentidad(){
+        this._entidadservice.entidades().subscribe(
+            res=>{
+                console.log(res);
+                this.entidad=res;
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
     }
     quitarproducto(indice,arreglo){
         console.log(arreglo);
@@ -591,7 +656,7 @@ export class VentasComponent{
         while(i<this.impuestos.length){
             this.impuestos.splice(0,1);
         }
-        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null);
+        this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id);
     }
 
 
@@ -612,8 +677,8 @@ export class VentasComponent{
                     }else{
                         while(j<this.productos[i].preg.length){
                             console.log(this.productos[i].preg[j].nombre);
-                            if(this.productos[i].preg[j].tipo==="IGV"){
-                                if(this.productos[i].preg[j].nombre==="gravados"){
+                            if(this.productos[i].preg[j].tipo.toUpperCase()==="IGV"){
+                                if(this.productos[i].preg[j].nombre.toUpperCase()==="GRAVADOS"){
                                     this.ventas.total=this.ventas.total+((arreglo.precio_unitario)/(1+this.productos[i].preg[j].porcentaje/100));
                                     while(k<this.impuestos.length){
                                         if(this.impuestos[k].nombre==="IGV"){
@@ -646,9 +711,9 @@ export class VentasComponent{
                     }
                  i=this.productos.length;
                 }
-                i++
                 j=0;
             }
+            i++
             this.sumartotal();
         }
         this.letrado=this.conversor.NumeroALetras(Math.round( this.ventas.total *100)/100);

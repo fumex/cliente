@@ -43,7 +43,7 @@
                                 <div *ngIf="llamarunidad==null" class="col-sm-4">
                                     <label class="control-label">Unidad de media</label>
                                 </div>
-                                <div *ngIf="llamarunidad==null" class="col-sm-6">
+                                <div *ngIf="llamarunidad==null" class="col-sm-8">
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
@@ -53,31 +53,19 @@
                                         </select>
                                     </div> 
                                 </div>  
-                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-2">
-                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm" style="margin-left: -30px;"> <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="unidad!=null" (click)="llamarunid(agregarpro.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
-                                </div>
                                 <br>
                                 <br>
                                 <br>
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-4">
+                                <div *ngIf="unidad!=null" class="col-sm-4">
                                     <label class="control-label">cantidad</label>
                                 </div>
-                                <div *ngIf="unidad!=null && llamarunidad==null" class="col-sm-8">
+                                <div *ngIf="unidad!=null " class="col-sm-8">
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
                                         <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
                                     </div> 
                                 </div>
-                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
-                                    <div class="form-group">
-                                        <unidades></unidades>
-                                    </div>
-                                </div>
-                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
-                                    <unidades-edit></unidades-edit> 
-                                </div>  
                             </div>
                         </div>
                        
@@ -167,31 +155,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!--<div class="table-responsive m-t-0">
-                                        <div *ngIf="!impuestrootro">
-                                            cargando impuestos ...
-                                        </div>
-                                        <div *ngIf="impuestrootro">
-                                            <table id="tablaimpuesto" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                                <thead style="text-align: center">
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>nombre</th>
-                                                        <th>descripcionm</th>
-                                                        <th style="width: 80px;">porcentage</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="text-align: center" > 
-                                                    <tr *ngFor="let otro of impuestrootro">
-                                                        <td><button  class="btn btn-sm btn-info "><i class="fa fa-circle"></i></button></td>
-                                                        <td >{{otro.nombre}}</td>
-                                                        <td >{{otro.descripcion}}</td>
-                                                        <td style="text-align: center" >{{otro.porcentaje}} %</td>   
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>-->
                                 </div>  
                             </div>
                         </div>
@@ -307,10 +270,10 @@
                                 <br>
                                 <br>
                                 <br>
-                                <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                <div  class="col-sm-4">
                                     <label class="control-label">Unidad de media</label>
                                 </div>
-                                <div *ngIf="llamarunidad==null" class="col-sm-5">
+                                <div class="col-sm-8">
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
@@ -320,18 +283,6 @@
                                         </select>
                                     </div> 
                                 </div>  
-                                <div *ngIf="llamarunidad==null" style="text-align: right;" class="col-sm-3">
-                                    <a (click)="llamarunid(1,null)" class="btn btn-success  btn-flat btn-addon btn-sm"> <i class="fa fa-plus"></i></a>
-                                    <a *ngIf="unidad!=null" (click)="llamarunid(editproducto.id_unidad,2)" class="btn btn-primary  btn-flat btn-addon btn-sm"> <i class="fa fa-edit"></i></a>
-                                </div>
-                                <div *ngIf="llamarunidad!=null && aparecereditunidad==null" class="col-sm-12" >
-                                    <div class="form-group">
-                                        <unidades></unidades>
-                                    </div>
-                                </div>
-                                <div *ngIf="aparecereditunidad==2" class="col-sm-12" >
-                                        <unidades-edit></unidades-edit>
-                                </div> 
                                 <br>
                                 <br>
                                 <br>
@@ -345,7 +296,6 @@
                                         <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="editproducto.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
                                     </div> 
                                 </div> 
-                                
                             </div>
                         </div>
                         <div class="col-lg-6">

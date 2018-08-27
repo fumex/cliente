@@ -16,13 +16,13 @@
                                         <div class="col-md-8">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 control-label" >
-                                                    Nombre
+                                                    Descripcion
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <div class="inner-addon left-addon">
-                                                        <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="tipo_pago.nombre" placeholder="ingrese nombre del impuesto" class="form-control" required/>
+                                                        <i *ngIf="descripcion.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!descripcion.valid && descripcion.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #descripcion="ngModel" name="descripcion" [(ngModel)]="tipo_pago.descripcion" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -32,13 +32,13 @@
                                         <div class="col-md-8">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 control-label" >
-                                                    Descripcion
+                                                    Codigo SUNAT
                                                 </label>
                                                 <div class="col-sm-9">
                                                     <div class="inner-addon left-addon">
-                                                        <i *ngIf="descripcion.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!descripcion.valid && descripcion.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #descripcion="ngModel" name="descripcion" [(ngModel)]="tipo_pago.descripcion" class="form-control" required/>
+                                                        <i *ngIf="codigo.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!codigo.valid && codigo.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #codigo="ngModel" name="codigo" [(ngModel)]="tipo_pago.codigo_sunat" placeholder="ingrese codigo del tipo de medio de pago" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,7 +89,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Nombre</th>
+                                                <th>Codigo SUNAT</th>
                                                 <th>Descripcion</th>
                                                 <th>Tipo</th>
                                                 <th></th>
@@ -99,7 +99,7 @@
                                         <tbody>
                                             <tr *ngFor="let tipo of tipo_pagos ; let $index=index">
                                                 <td>{{$index +1}}</td>
-                                                <td>{{tipo.nombre}}</td>
+                                                <td>{{tipo.codigo_sunat}}</td>
                                                 <td>{{tipo.descripcion}}</td>
                                                 <td>{{tipo.tipo}}</td>                   
                                                 <td>

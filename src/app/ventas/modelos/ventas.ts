@@ -10,5 +10,6 @@ export class VentasModel{
         public pago_tarjeta: number,
         public fecha:Date ,
         public estado: boolean,
+        public id_usuario:number,
 	){}
 }

@@ -61,9 +61,7 @@ export class ProductosComponent{
     public modificarunidad;
     public ident;
     public aparecereditcate;
-    public aparecereditunidad;
     public llamarcategoria;
-    public llamarunidad;
     public unidad;
     public modificarproducto;
     public user:User;
@@ -120,8 +118,6 @@ export class ProductosComponent{
         this.aparecereditcate=null;
 
         this.modificarunidad=null;
-        this.llamarunidad=null;
-        this.aparecereditunidad=null;
         
         this.modificarproducto=null;
         this.ident=null;
@@ -360,11 +356,6 @@ export class ProductosComponent{
         this.aparecereditcate=apa;
         console.log(this.llamarcategoria);
     }
-    llamarunid(id,apa){
-        this.llamarunidad=id;
-        this.aparecereditunidad=apa;
-        console.log(this.llamarunidad);
-    }
     confirmaractualizar(id){
         this.titulo='editar producto';
         this.modificarproducto=id;
@@ -590,9 +581,7 @@ export class ProductosComponent{
         this.aparecereditcate=null;
 
         this.modificarunidad=null;
-        this.llamarunidad=null;
-        this.aparecereditunidad=null;
-        
+    
         this.modificarproducto=null;
         this.ident=null;
         this.unidad=null;
@@ -723,13 +712,6 @@ export class ProductosComponent{
         this.aparecereditcate=null;
         //this.agregarpro.id_categoria=null;
         
-    }
-    getexituni(){
-        this.llamarunidad=null;
-        this.modificarunidad=null;
-        this.unidad=null;
-        this.aparecereditunidad=null;
-        this.agregarpro.id_unidad=null;
     }
     mostrarcategoria(code){
         
