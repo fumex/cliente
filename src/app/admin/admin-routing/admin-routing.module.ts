@@ -18,7 +18,6 @@ import{AlmacenComponent} from '../../almacen/componentes/almacen.component';
 import { PagoAddComponent } from '../../pago/components/pago-add.component';
 import { PagoListComponent } from '../../pago/components/pago-list.component';
 
-import {ProductosListarComponent} from '../../productos/componentes/productos-list.component';
 
 import { ProveedorEditComponent } from '../../proveedor/components/proveedor-edit.component';
 import { TipoDocumentoAddComponent } from '../../TipoDocumento/components/documento-add.component';
@@ -53,13 +52,15 @@ import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit
 
 import { CajasComponent } from '../../cajas/componentes/cajas.component';
 import { VentasComponent} from '../../ventas/componentes/ventas.component';
+import { AnularVentaComponent} from '../../ventas/componentes/ventas_anular.component';
 import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
 import { PagoReciboComponent } from '../../pago/components/pago-recibo.component';
 import { OrdenPedidoPdf } from '../../orden-de-pedido/componentes/ordenPedidoPdf.component';
-import { unidadcomponent} from '../../productos/componentes/unidad.component'
+import { unidadcomponent} from '../../productos/componentes/unidad.component';
+import { EntidadFinancieraComponent} from '../../entidad_financiera/components/entidad_financiera.component';
 
 
 @NgModule({
@@ -179,7 +180,6 @@ import { unidadcomponent} from '../../productos/componentes/unidad.component'
                         component:TipoPagoEditComponent
                     },
                     { path:'productos',component:ProductosComponent},
-                    { path:'productos/list',component:ProductosListarComponent},
                     { path:'almacenes',component:AlmacenesComponent},
                     { path:'almacen',component:AlmacenComponent},
                     { path:'pedido',component:OrdenDePedidoComponent},
@@ -194,6 +194,8 @@ import { unidadcomponent} from '../../productos/componentes/unidad.component'
                     { path:'ventas',component:VentasComponent},
                     { path:'resumenventas',component:ResumenCajasAbiertasComponent},
                     { path:'unidades',component:unidadcomponent},
+                    { path:'EntidadFinaciera',component:EntidadFinancieraComponent},
+                    { path:'anularventa',component:AnularVentaComponent},
                 ]
             }
         ]),

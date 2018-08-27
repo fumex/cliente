@@ -35,7 +35,7 @@ export class MonedaAddComponent implements OnInit{
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Moneda';
         this.user=this.auth.getUser();
-        this.moneda= new MonedaModel(null,'',null,this.user.id);
+        this.moneda= new MonedaModel(null,'',null,this.user.id,null,null);
         this.confirmado=true;
         this.tabla();
     }
@@ -43,6 +43,7 @@ export class MonedaAddComponent implements OnInit{
         this.getMonedas();
     }
     onSubmit(){
+        console.log(this.moneda);
         this.monedaService.addMoneda(this.moneda).subscribe(
             result=>{
                 console.log(result);
@@ -62,7 +63,7 @@ export class MonedaAddComponent implements OnInit{
         this.clearMoneda();
     }
     clearMoneda(){
-        this.moneda=new MonedaModel(null,'',null,this.user.id);
+        this.moneda=new MonedaModel(null,'',null,this.user.id,null,null);
     }
     //---------------------------------------------------------------------
     tabla(){

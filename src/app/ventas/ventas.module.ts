@@ -5,6 +5,7 @@ import { DetalleCajasService } from "./services/DetalleCajas.service";
 import { VentasService} from './services/Ventas.service';
 import { VentasComponent } from "./componentes/ventas.component";
 import { ResumenCajasAbiertasComponent} from './componentes/CajasAbiertas.component';
+import { AnularVentaComponent} from './componentes/ventas_anular.component';
 
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -12,6 +13,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     declarations: [
         VentasComponent,
         ResumenCajasAbiertasComponent,
+        AnularVentaComponent,
       ],
       imports: [
         CommonModule,

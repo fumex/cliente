@@ -22,20 +22,18 @@ declare var swal:any;
 
 @Component({
     selector:'cajasabiertas',
-    templateUrl:'../views/cajasabiertas.html',
+    templateUrl:'../views/ventas_anular.html',
     providers:[CajasService,ToastService,SucursalService,DetalleVentasService]
 })
-export class ResumenCajasAbiertasComponent{
+export class AnularVentaComponent{
+    public cambiarcolor=null;
     public user:any;
     public titulo;
     public sucursales:any;
-    public cajas:Array<any>=[];
     public ventas:Array<any>=[];
     public detalleventas:DetalleVentasModel;
-    public getcaja:DetalleCaja;
     public getventa:VentasModel;
     public modal;
-    public vercajas=null;
     public verventas=null;
     public vertodaslasventas=false;
     constructor(
@@ -49,14 +47,13 @@ export class ResumenCajasAbiertasComponent{
         public toastr: ToastsManager,
         vcr: ViewContainerRef
     ){
-        this.titulo="Sucursales Disponibles"
+        this.titulo="Anular Venta"
         this.toastr.setRootViewContainerRef(vcr);
         //this.tablaventas();
         this.user=this.auth.getUser();
     }
     ngOnInit(){
         this.getsucursales();
-        this.getcaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null);
         this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id);
         this.modal=document.getElementById('myModal');
         window.onclick = function(event) {
@@ -64,6 +61,9 @@ export class ResumenCajasAbiertasComponent{
                 this.document.getElementById('myModal').style.display = "none";
             }
         }
+    }
+    selecttable(id){
+       this.cambiarcolor=id;
     }
     getsucursales(){
         this._SucursalService.getsucursalporusuario(this.user.id).subscribe(
@@ -77,65 +77,8 @@ export class ResumenCajasAbiertasComponent{
             }
         );
     }
-    getcajas(id){
-        let i =0;
-        this.vercajas=id;
-        this._cajasservice.getcajasporsucursal(id).subscribe(
-            res=>{
-                
-                while(i < res.length){
-                    if(res[i][0].monto_cierre_tarjeta==null){
-                        res[i][0].monto_cierre_tarjeta=0;
-                    }
-                    
-                    res[i][0].monto_apertura=this.pasaranumero(res[i][0].monto_apertura);
-                    res[i][0].monto_cierre_efectivo=this.pasaranumero(res[i][0].monto_cierre_efectivo);
-                    res[i][0].monto_cierre_tarjeta=parseInt(res[i][0].monto_cierre_tarjeta);
-                    this.cajas.push(res[i][0])
-                    i++;
-                }
-                console.log(this.cajas)
-            },
-            err=>{
-                console.log(err);
-            }
-        );
-    }
-    traerdetallecaja(id){
-        let i=0;
-        console.log(id);
-        this._cajasservice.getdetallecajas(id).subscribe(
-            res=>{
-                
-                while(i < this.cajas.length){
-                    if(this.cajas[i].id==id){
-                        if(res[0].monto_cierre_tarjeta==null){
-                            res[0].monto_cierre_tarjeta=0;
-                        }
-                        res[0].monto_apertura=this.pasaranumero(res[0].monto_apertura);
-                        res[0].monto_cierre_efectivo=this.pasaranumero(res[0].monto_cierre_efectivo);
-                        res[0].monto_cierre_tarjeta=parseInt(res[0].monto_cierre_tarjeta);
-                        this.cajas[i]=res[0];
-                        console.log(res);
-                    }
-                    i++;
-                }
-                console.log(this.cajas)
-            },
-            err=>{
-                console.log(err);
-            }
-        );
-    }
-    traerventas(arreglodetalle,index){
-        this.vertodaslasventas=false;
-        console.log(this.vertodaslasventas);
-        this.verventas=arreglodetalle.id;
-        this.vercajas=null;
-        this.getcaja=this.cajas[index];
-        console.log(this.getcaja)
-        this.destruirtablaventas();
-       this.reconstruirtablaventas(arreglodetalle.id)
+    anularventa(ven){
+
     }
     traerventastotales(id){
         this.vertodaslasventas=true;
@@ -161,24 +104,6 @@ export class ResumenCajasAbiertasComponent{
             }
         )       
     }
-    getventas(id){
-        let i=0;
-        this._cajasservice.getventas(id).subscribe(
-            res=>{
-                while(i<res.length){
-                    res[i].total=parseFloat(res[i].total);
-                    res[i].pago_efectivo=parseFloat(res[i].pago_efectivo);
-                    res[i].pago_tarjeta=parseFloat(res[i].pago_tarjeta);
-                    i++;
-                }
-                this.ventas=res;
-                console.log(this.ventas)
-            },
-            err=>{
-                console.log(err);
-            }
-        );
-    }
     mostrardetalleventas(arregloventa){
         this.modal.style.display = "block";
         this.getdetalleventas(arregloventa.id);
@@ -188,26 +113,6 @@ export class ResumenCajasAbiertasComponent{
     
     cerrarmodal(){
         this.modal.style.display = "none";
-    }
-    limpiarcajas(){
-        let i =0;
-        while(i<this.cajas.length){
-            this.cajas.splice(0,1);
-        }
-    }
-    volverasucursales(){
-        this.limpiarcajas();
-        console.log(this.cajas);
-        this.vercajas=null;
-        this.verventas=null
-        this.vertodaslasventas=false;
-        this.destruirtablaventas();
-    }
-    volveracajs(){
-        this.destruirtablaventas();
-        this.vercajas=1;
-        this.verventas=null;
-        this.vertodaslasventas=false;
     }
     getdetalleventas(id){
         let i=0;
@@ -228,63 +133,6 @@ export class ResumenCajasAbiertasComponent{
                 console.log(err);
             }
         );
-    }
-    pasaranumero(palabra){
-        let grupnum=0;
-        let gruplet="";
-        let total=0;
-        let i=0;
-        if(palabra!=null){
-            var arreglopalabra = palabra.split("|");
-            while(i<arreglopalabra.length){
-                if(i+1!=arreglopalabra.length){
-                    if(i%2==0){
-                        gruplet=arreglopalabra[i];
-                        switch (gruplet) {
-                            case "c10":
-                                total+=parseInt(arreglopalabra[i+1])*0.1;
-                                break;
-                            case "c20":
-                                total+=parseInt(arreglopalabra[i+1])*0.2;
-                            
-                                break;
-                            case "c50":
-                                total+=parseInt(arreglopalabra[i+1])*0.5;
-                                break;
-                            case "m01":
-                                total+=parseInt(arreglopalabra[i+1])*1;
-                                break;
-                            case "m02":
-                                total+=parseInt(arreglopalabra[i+1])*2;
-                                break;
-                            case "m05":
-                                total+=parseInt(arreglopalabra[i+1])*5;
-                                break;
-                            case "b10":
-                                total+=parseInt(arreglopalabra[i+1])*10;
-                                break;
-                            case "b20":
-                                total+=parseInt(arreglopalabra[i+1])*20
-                                break;
-                            case "b50":
-                                total+=parseInt(arreglopalabra[i+1])*50;
-                                break;
-                            case "c01":
-                                total+=parseInt(arreglopalabra[i+1])*100;
-                                break;
-                            case "c02":
-                                total+=parseInt(arreglopalabra[i+1])*200;
-                                break;
-                        }
-                    }
-                }
-                i++;
-            }
-        }
-        console.log(total)  
-        return total;
-    }
-    limpiar(){
     }
     alertaerror(){
         swal({
@@ -326,10 +174,10 @@ export class ResumenCajasAbiertasComponent{
             timer: 3000
           })
     }
-    alertaeliminar(id){
+    alertaeliminar(ven){
         swal({
-            title: "esta seguro de eliminar esta caja",
-            text: "se eliminaran los cambios relacionados con la caja",
+            title: "esta seguro de anular esta venta",
+            text: "se anulara la venta en el sistema y se enviara un reporte a la SUNAT     ",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -369,11 +217,7 @@ export class ResumenCajasAbiertasComponent{
     }
     reconstruirtablaventas(id){
         this.tablaventas();
-        if(this.vertodaslasventas==false){
-            this.getventas(id);
-        }else{
-            this.getventastotales(id);
-        }
+        this.getventastotales(id);
         
     }
     destruir(){	

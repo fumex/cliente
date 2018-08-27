@@ -43,6 +43,7 @@ export class TipoPagoAddComponent implements OnInit{
         this.getTipoPagos();
     }
     onSubmit(){
+        console.log(this.tipo_pago);
         this.tipoPagoService.addTipoPago(this.tipo_pago).subscribe(
             result=>{
                 console.log(result);

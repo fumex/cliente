@@ -54,7 +54,7 @@
                                                     <div class="inner-addon left-addon">
                                                         <i *ngIf="abreviacion.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!abreviacion.valid && abreviacion.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.abreviacion" class="form-control " placeholder="abreviacion" required>
+                                                        <input type="text"  #abreviacion="ngModel" name="abreviacion" [(ngModel)]="unidades.codigo_sunat" class="form-control " placeholder="abreviacion" required>
                                                     </div>   
                                                 </div>
                                             </div>
@@ -65,13 +65,10 @@
                                             <div class="col-md-8">
                                                 <div class="row">
                                                     <div class="offset-sm-3 col-md-9" style="text-align: center">
-                                                        <button  *ngIf="titulo=='agregar unidad'" (click)="guardarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
-                                                            class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
-                                                                <i class="fa fa-upload"></i></button>
-                                                        <button  *ngIf="titulo!='agregar unidad'" (click)="actualizarunidad()" value="{{titulo}}" [disabled]="!formunidad.form.valid" 
-                                                            class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5">
-                                                                <i class="fa fa-save"></i></button>    
-                                                        <button type="button" (click)="exit()" class="btn btn-warning btn-flat btn-addon btn-sm m-b-10 m-l-5"><i class="fa fa-close"></i></button>
+                                                        <button (click)="guardarunidad()" [disabled]="!formunidad.form.valid" class="btn btn-info"> 
+                                                            <i class="fa fa-check"></i> Guardar</button>
+                                                        <button (click)="limpiar()" class="btn btn-success"> 
+                                                            <i class="fa fa-ban"></i> Cancelar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -86,27 +83,60 @@
                             <div class="card-body">
                                 <h4 class="card-title">Exportar Información</h4>
                                 <div class="table-responsive m-t-40">
-                                    <table  class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                    <table  id="tablaunidades" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>codigo Sunat</th>
                                                 <th>nombre</th>
                                                 <th>abreviacion</th>
-                                                <th></th>
+                                                <th style="width: 70px;text-align: center"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let uni of unidadestab ; let $index=index">
-                                                <td></td>
-                                                <td>{{uni.unidad}}</td>
-                                                <td>{{uni.abreviacion}}</td>                    
-                                                <td>
-                                                    <button  type="button" (click)="edit(documento.id)" class="btn btn-warning  btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-edit"></i></button>
-                                                    <button  type="button" (click)="alertaDelete(documento.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o"></i></button>
+                                                <td *ngIf="verbotiniciales!=uni.id" ></td>
+                                                <td *ngIf="verbotiniciales==uni.id"  style="padding: 0px;">
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input #sunat="ngModel" name="sunat" type="text" style="width:100%; height: 38px;" [(ngModel)]="unidadobtenida.codigo_sunat" >
+                                                        </div>
+                                                    </div>
+                                                </td>  
+                                                <td *ngIf="verbotiniciales!=uni.id" >{{uni.unidad}}</td>
+                                                <td *ngIf="verbotiniciales==uni.id"  style="padding: 0px;">
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input #unidad="ngModel" name="unidad" type="text" style="width:100%; height: 38px;" [(ngModel)]="unidadobtenida.unidad" >
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td *ngIf="verbotiniciales!=uni.id" >{{uni.abreviacion}}</td> 
+                                                <td *ngIf="verbotiniciales==uni.id"  style="padding: 0px;">
+                                                    <div style="margin-right: 0px;">
+                                                        <div style="padding-right: 0px;">
+                                                            <input #abreviacion="ngModel" name="abreviacion" type="text" style="width:100%; height: 38px;" [(ngModel)]="unidadobtenida.abreviacion" >
+                                                        </div>
+                                                    </div>
+                                                </td>                   
+                                                <td style="width: 70px;">
+                                                    <div *ngIf="verbotiniciales!=uni.id">
+                                                        <button  type="button" (click)="editarunidad(uni.id)" class="btn btn-info  btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-edit"></i></button>
+                                                        <button  type="button" (click)="alertaDelete(uni.id)" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-trash-o"></i></button>
+                                                    </div>
+                                                    <div *ngIf="verbotiniciales==uni.id">
+                                                        <button  type="button" (click)="actualizarunidad(uni)" class="btn btn-info  btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-save"></i></button>
+                                                        <button  type="button" (click)="cancelar()" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10">
+                                                            <i class="fa fa-ban"></i></button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table> 
+                                    <button (click)="borrarfilas()">limpioar</button>
+                                    <button (click)="agregarfilas()">agreegar</button>
                                 </div>
                             </div>
                         </div>
