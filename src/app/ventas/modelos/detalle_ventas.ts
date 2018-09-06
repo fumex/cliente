@@ -13,5 +13,6 @@ export class DetalleVentasModel{
         public estado: boolean,
         public descuento_maximo:number,
         public descuento:number,
+        public descuento_cant:number,
 	){}
 }

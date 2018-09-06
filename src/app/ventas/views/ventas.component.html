@@ -312,8 +312,8 @@
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-12" >
                                         <div class="row p-t-20">
-                                            <div class="col-sm-1"></div>
-                                            <div *ngIf="factura==true" class="col-sm-2">
+                                            <div class="col-sm-6"></div>
+                                            <!--<div *ngIf="factura==true" class="col-sm-2">
                                                 <label>Factura:</label>
                                             </div>
                                             <div *ngIf="factura!=true" class="col-sm-2">
@@ -338,7 +338,7 @@
                                                         </div>
                                                     </div> 
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="col-sm-5" style="text-align: right" >
                                                 <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
                                                     <i class="fa fa-sticky-note-o"></i> Factura
@@ -444,9 +444,10 @@
                                                 style="width: 100%;text-align: center;border-collapse:collapse;border-color:#ddd;">
                                                     <thead style="border-bottom: solid 1px #88c8ff;">
                                                         <tr>
-                                                            <th>N°</th>
+                                                            <th style="width: 30px;">N°</th>
                                                             <th style="width: 505px;">descripcion</th>
-                                                            <th style="width:110px;;">descuento</th>
+                                                            <th style="width:110px;;">descuento(%)</th>
+                                                            <th style="width:110px;;">descuento(cant.)</th>
                                                             <th>Precio Unitario</th>
                                                             <th style="width:110px;;">Cantidad</th>
                                                             <th style="text-align: center;width: 100px;">Valor de Venta</th>
@@ -458,10 +459,11 @@
                                                         <tr  *ngFor="let dventa of detalleventas;let $index=index;">
                                                             <td style="text-align: center">{{$index +1}}</td>
                                                             <td style="text-align: center">{{dventa.descripcion}}</td>
-                                                            <td style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}}</td>
+                                                            <td style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}} %</td>
+                                                            <td style="text-align: center" >{{dventa.descuento_cant}}</td>
                                                             <td style="text-align: center">{{dventa.precio_unitario | number : '1.2-2'}}</td>
                                                             <td style="text-align: center" >{{dventa.cantidad}}</td>
-                                                            <td style="text-align: center">{{dventa.cantidad*dventa.precio_unitario | number : '1.2-2'}}</td>
+                                                            <td style="text-align: center">{{(dventa.cantidad*dventa.precio_unitario) - (dventa.descuento_cant)  | number : '1.2-2'}}</td>
                                                             <td style="text-align: center">
                                                                 <a (click)="agregarunidadpro($index,dventa)" style="color:green" title="agregar una unidad"><i class="fa fa-plus"></i></a>
                                                                 <a (click)="quitarunidadpro($index,dventa)" style="color:red" title="quitar una unidad"><i class="fa fa-minus"></i></a>
@@ -474,6 +476,7 @@
                                                             <td style="color: transparent">{{ini.id }}</td>
                                                             <td>{{ini.descripcion}}</td>
                                                             <td >{{ini.precio_unitario}}</td>
+                                                            <td >{{ini.precio_unitario}}</td>
                                                             <td >{{ini.cantidad}}</td>
                                                             <td >{{ini.cantidad}}</td>
                                                             <td>{{ini.cantidad}}</td>
@@ -481,36 +484,19 @@
                                                         </tr>
                                                         <tr >
                                                             <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
-                                                            <td *ngIf="factura==true" colspan="3" style="color:#99abb4">Subtotal</td>
-                                                            <td *ngIf="factura==false" colspan="3" style="color:#99abb4">Total</td>
+                                                            <td *ngIf="factura==true" colspan="4" style="color:#99abb4">Subtotal</td>
+                                                            <td *ngIf="factura==false" colspan="4" style="color:#99abb4">Total</td>
                                                             <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
                                                         </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            
-                                            <div class="col-sm-7"></div>
-                                            <div class="col-sm-5" style="    margin-left: -40px;">
-                                                <table  width="100%;" style="margin-left: -20px;">
-                                                    <tbody style="border-bottom: solid">
-                                                        <tr *ngFor="let imp of impuestos;let $index=index;">
-                                                            <td>
-                                                                <li style="color: #99abb4" >{{imp.nombre }}({{imp.porcentaje}}%)</li>
-                                                            </td>
-                                                            <td style="text-align: center;width: 100px;" >
-                                                                <li style="color: #99abb4;text-align: center" >{{imp.cantidad | number : '1.2-2'}}</li>
-                                                            </td>
-                                                            
+                                                        <tr *ngFor="let imp of impuestos;let $index=index;" style="border-color: transparent" >
+                                                            <td colspan="2"></td>
+                                                            <td colspan="4" style="text-align: left">{{imp.nombre }}({{imp.porcentaje}}%)</td>
+                                                            <td style="text-align: center;">{{imp.cantidad | number : '1.2-2'}}</td>
                                                         </tr>
-                                                    </tbody>
-                                                     <tbody *ngIf="impuestos.length>0">
-                                                        <tr style="background: #88c8ff">
-                                                            <td>
-                                                                <li style="color: black" >Total</li>
-                                                            </td>
-                                                            <td style="text-align: center;width: 100px;" >
-                                                                <li style="color: black;text-align: center" >{{total | number : '1.2-2'}}</li>
-                                                            </td>
+                                                        <tr *ngIf="impuestos.length>0" style="border-color: transparent">
+                                                            <td colspan="2"></td>
+                                                            <td colspan="4" style="background:#88c8ff;border-top: solid black;color: black;text-align: left" >Total</td>
+                                                            <td style="text-align: center;background: #88c8ff;border-top: solid black;color: black">{{total | number : '1.2-2'}}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

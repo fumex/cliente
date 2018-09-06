@@ -123,9 +123,9 @@
                         </table>
                         </div>      
                     </div>
-                </div>
-                <div *ngIf="mostarguardar!=0 && otroalmacenvalid!=null" class="form-actions"  style="text-align: right;margin-right: 100px;">
-                    <button type="submit" [disabled]="!almacen.valid || (!descripcion2.valid && !descripcion.valid)  "  class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                </div> 
+                <div *ngIf="(ident != 'tranferencia entre almacenes'  && ident!=null)  || (ident == 'tranferencia entre almacenes' && otroalmacenvalid!=null)" class="form-actions"  style="text-align: right;margin-right: 100px;">
+                    <button type="submit" [disabled]="mostarguardar==0 || (!descripcion2.valid && !descripcion.valid)  "  class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
                 </div>
             </form>
             </div>

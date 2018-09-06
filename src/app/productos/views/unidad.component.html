@@ -94,7 +94,7 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let uni of unidadestab ; let $index=index">
-                                                <td *ngIf="verbotiniciales!=uni.id" ></td>
+                                                <td *ngIf="verbotiniciales!=uni.id" >{{uni.codigo_sunat}}</td>
                                                 <td *ngIf="verbotiniciales==uni.id"  style="padding: 0px;">
                                                     <div style="margin-right: 0px;">
                                                         <div style="padding-right: 0px;">

@@ -6,7 +6,7 @@ import { VentasService} from './services/Ventas.service';
 import { VentasComponent } from "./componentes/ventas.component";
 import { ResumenCajasAbiertasComponent} from './componentes/CajasAbiertas.component';
 import { AnularVentaComponent} from './componentes/ventas_anular.component';
-
+import { ReportesComponent} from './componentes/reportes.component';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         VentasComponent,
         ResumenCajasAbiertasComponent,
         AnularVentaComponent,
+        ReportesComponent,
       ],
       imports: [
         CommonModule,

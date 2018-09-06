@@ -54,6 +54,7 @@ import { CajasComponent } from '../../cajas/componentes/cajas.component';
 import { VentasComponent} from '../../ventas/componentes/ventas.component';
 import { AnularVentaComponent} from '../../ventas/componentes/ventas_anular.component';
 import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
+import { ReportesComponent} from '../../ventas/componentes/reportes.component';
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
 import { EmpresaEditComponent } from '../../empresa/components/empresa-edit.component';
@@ -206,6 +207,7 @@ import { EmisorEditComponent } from '../../emisor/components/emisor-edit.compone
                     { path:'unidades',component:unidadcomponent},
                     { path:'EntidadFinaciera',component:EntidadFinancieraComponent},
                     { path:'anularventa',component:AnularVentaComponent},
+                    { path:'reportes',component:ReportesComponent},
                 ]
             }
         ]),

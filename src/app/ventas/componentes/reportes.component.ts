@@ -22,20 +22,13 @@ declare var swal:any;
 
 @Component({
     selector:'cajasabiertas',
-    templateUrl:'../views/ventas_anular.html',
+    templateUrl:'../views/reportes.html',
     providers:[CajasService,ToastService,SucursalService,DetalleVentasService]
 })
-export class AnularVentaComponent{
-    public cambiarcolor=null;
+export class ReportesComponent{
     public user:any;
     public titulo;
-    public sucursales:any;
-    public ventas:Array<any>=[];
-    public detalleventas:DetalleVentasModel;
-    public getventa:VentasModel;
     public modal;
-    public verventas=null;
-    public vertodaslasventas=false;
     constructor(
         private _cajasservice:CajasService,
         private _SucursalService:SucursalService,
@@ -53,8 +46,6 @@ export class AnularVentaComponent{
         this.user=this.auth.getUser();
     }
     ngOnInit(){
-        this.getsucursales();
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id);
         this.modal=document.getElementById('myModal');
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('myModal')) {
@@ -62,78 +53,15 @@ export class AnularVentaComponent{
             }
         }
     }
-    selecttable(id){
-       this.cambiarcolor=id;
-    }
-    getsucursales(){
-        this._SucursalService.getsucursalporusuario(this.user.id).subscribe(
-            res=>{
-                console.log(res);
-                this.sucursales=res;
-                
-            },
-            err=>{
-                console.log(err);
-            }
-        );
-    }
-    anularventa(ven){
-
-    }
-    traerventastotales(id){
-        this.vertodaslasventas=true;
-        this.verventas=id;
-        this.destruirtablaventas();
-        this.reconstruirtablaventas(id);
-    }
-    getventastotales(id){
-        let i=0;
-        this._cajasservice.getventasporsucursal(id).subscribe(
-            res=>{
-                while(i<res.length){
-                    res[i].total=parseFloat(res[i].total);
-                    res[i].pago_efectivo=parseFloat(res[i].pago_efectivo);
-                    res[i].pago_tarjeta=parseFloat(res[i].pago_tarjeta);
-                    i++;
-                }
-                this.ventas=res;
-                console.log(this.ventas)
-            },
-            err=>{
-                console.log(err);
-            }
-        )       
-    }
-    mostrardetalleventas(arregloventa){
-        this.modal.style.display = "block";
-        this.getdetalleventas(arregloventa.id);
-        this.getventa=arregloventa;
-        console.log(this.getventa);
-    }
     
+   
+    
+    
+   
     cerrarmodal(){
         this.modal.style.display = "none";
     }
-    getdetalleventas(id){
-        let i=0;
-        this._DetalleVentasService.getdetalleventas(id).subscribe(
-            res=>{
-                this.detalleventas=res;
-                while(i<res.length){
-                    this.detalleventas[i].id=(parseFloat(res[i].precio_unitario)/(1+parseFloat(res[i].igv)/100))*parseFloat(res[i].igv)/100;
-                    this.detalleventas[i].id_producto=(parseFloat(res[i].precio_unitario)*parseFloat(res[i].isc))/100;
-                    this.detalleventas[i].codigo=(parseFloat(res[i].precio_unitario)*parseFloat(res[i].otro))/100
-                    this.detalleventas[i].precio_unitario=(parseFloat(res[i].precio_unitario)/(1+parseFloat(res[i].igv)/100));
-                    this.detalleventas[i].id_venta=(this.detalleventas[i].precio_unitario+this.detalleventas[i].id+this.detalleventas[0].codigo+this.detalleventas[i].id_producto)*parseFloat(res[i].cantidad);
-                    i++;
-                }
-                 console.log(this.detalleventas)
-            },
-            err=>{
-                console.log(err);
-            }
-        );
-    }
+   
     alertaerror(){
         swal({
             position: 'center',
@@ -215,9 +143,8 @@ export class AnularVentaComponent{
         table .clear() ;
         $('#tablaventas').DataTable().destroy();
     }
-    reconstruirtablaventas(id){
+    reconstruirtablaventas(){
         this.tablaventas();
-        this.getventastotales(id);
         
     }
     destruir(){	
