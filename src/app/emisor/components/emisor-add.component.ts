@@ -35,7 +35,7 @@ export class EmisorAddComponent implements OnInit{
             }
         );
     }
-
+    
     asignarEmpresa(empresa:EmpresaModel){
         this.razonSocial=empresa.nombre;
         this.ruc=empresa.ruc;

@@ -63,4 +63,24 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <app-grafico-dona
+                    [chartLabels]="graficos.grafico1.labels"
+                    [chartData]="graficos.grafico1.data"
+                    chartType="doughnut"
+                ></app-grafico-dona>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <app-grafico-dona
+                    [chartLabels]="graficos.grafico2.labels"
+                    [chartData]="graficos.grafico2.data"
+                    chartType="doughnut"
+                ></app-grafico-dona>
+            </div>
+        </div>
+    </div>
 </div>
