@@ -3,18 +3,18 @@ import { CajasModels } from "../../cajas/modelos/cajas";
 import { CajasService } from '../../cajas/services/cajas.services';
 import { DetalleCajasUsuarioService } from '../../cajas/services/detalle.cajas.usuarios.services';
 
-import { User } from "../../auth/interfaces/user.model";
-import { AuthService } from "../../auth/services/auth.service";
+import { User } from '../../auth/interfaces/user.model';
+import { AuthService } from '../../auth/services/auth.service';
 import {SucursalService} from '../../sucursales/services/sucursal.service';
 import {DettaleUsuarioService} from '../../usuarios/services/DetalleUsuario.service';
 import {SucursalModel} from '../../sucursales/modelos/sucursal';
 import {UsuarioModel} from '../../usuarios/modelos/usuarios';
 import {ToastService} from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import {DetalleCaja} from '../modelos/detalle_cajas'
+import {DetalleCaja} from '../modelos/detalle_cajas';
 import {DetalleVentasModel} from '../../ventas/modelos/detalle_ventas';
-import {DetalleVentasService} from '../services/DetalleVentas.service'
-import { VentasModel } from "../modelos/ventas";
+import {DetalleVentasService} from '../services/DetalleVentas.service';
+import { VentasModel } from '../modelos/ventas';
 
 declare var jQuery:any;
 declare var $:any;

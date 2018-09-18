@@ -54,4 +54,10 @@ export class CajasService{
     getventasporsucursal(id){
         return this._http.get<any>(this.url+'/buscarventasporsucursal/'+id).shareReplay();
     }
+    getcajaysucrsalporusuario(id){
+        return this._http.get<any>(this.url+'/getcajasusuario/'+id).shareReplay();
+    }
+    getdetallecaja(id){
+        return this._http.get<any>(this.url+'/getdetallecaja/'+id).shareReplay();
+    }
 }

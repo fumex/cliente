@@ -101,10 +101,10 @@
                                                         <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
                                                         <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total<0" style="text-align: center;color: red">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
                                                         <td style="text-align: center"> 
-                                                            <button (click)="alertaeliminar(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                            <button (click)="mostrardetalleventas(ven)" class="btn btn-sm btn-success" title="ver detalle" >
                                                                 <i class="fa fa-list-ul"></i> 
                                                             </button>
-                                                            <button (click)="anularventa(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                            <button (click)="alertaeliminar(ven)" class="btn btn-sm btn-success" title="ver detalle" >
                                                                 <i class="fa fa-ban"></i> 
                                                             </button>
                                                         </td>

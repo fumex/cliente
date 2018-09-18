@@ -17,6 +17,7 @@ export class VentasService{
     obtenerdocumentos():Observable<any>{
         return this._http.get<any>(this.url+'/documentosdeventas').shareReplay();
     }
+    
     GuardarVenta(ventas:VentasModel):Observable<any>{
         let json = JSON.stringify(ventas);
         
@@ -25,5 +26,7 @@ export class VentasService{
        
         return this._http.post(this.url+'/guardarventa',params,{headers:headers});
     }
-
+    getventasfecha(fecha):Observable<any>{
+        return this._http.get<any>(this.url+'/getventaporfecha/'+fecha).shareReplay();
+    }
 }

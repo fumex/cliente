@@ -1,0 +1,314 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{titulo}}</h3>
+    </div>
+</div>
+<div  class="container">
+    <div class="fluid">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="form-horizonta">
+                    <div class="row p-t-20">
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs profile-tab" role="tablist" style="border-color: transparent;">
+                                <li class="nav-item"> <a  class="nav-link active" (click)="cambio()" data-toggle="tab" href="#vpe" role="tab">ventas por empleado</a> </li>
+                                <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#vpd" role="tab">ventas por dia</a> </li>
+                                <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#ra" role="tab">resumen de apertura</a> </li>
+                                <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#me" role="tab">Movimientos empleados</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> 
+                <br>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="vpe" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-20">
+                                            <div class="col-sm-6"></div>
+                                           
+                                            <div class="col-sm-6"></div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="vpd" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-20">
+                                            
+                                            <div class="col-sm-2"></div>
+                                            <div *ngIf="year==2017 && mes==0 && vervpd==null" class="col-sm-2"  style="text-align: center"><</div>
+                                            <div *ngIf="(year>2017 || mes>0) && vervpd==null" class="col-sm-2"  style="text-align: center" (click)="retrocedermes()"><strong><</strong></div>
+                                            <div *ngIf="vervpd==null" class="col-sm-4"  style="text-align: center">{{nombremes}}</div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-8"  style="text-align: center"><strong>Ventas</strong></div>
+                                            <div *ngIf="cantidadcambiomes<1 && vervpd==null" class="col-sm-2"  style="text-align: center">></div>
+                                            <div *ngIf="cantidadcambiomes>0 && vervpd==null" class="col-sm-2"  style="text-align: center" (click)="avanzarmes()" ><strong>></strong></div>
+                                            <div class="col-sm-2"></div>
+
+                                            <div class="col-sm-4"></div>
+                                            <div *ngIf="vervpd==null" class="col-sm-4"  style="text-align: center"><strong>{{year}}</strong></div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-4"  style="text-align: center">{{nombredia}}, {{diaactual}} de {{nombremes}} del {{year}}</div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-4" style="text-align: right"><button type="button" class="btn btn-link" (click)="cambio()">volver</button></div>
+                                            <div *ngIf="vervpd==null" class="col-sm-4"></div>
+
+                                            <div class="col-sm-2"></div>
+                                            <div *ngIf="vervpd==null" class="col-sm-8">
+                                                <table style="width: 100%;">
+                                                    <thead>
+                                                        <tr style="font-size: 15px;text-align: center">
+                                                            <th><strong>Domingo</strong></th>
+                                                            <th ><strong>Lunes</strong></th>
+                                                            <th><strong>Martes</strong></th>
+                                                            <th><strong>Miercoles</strong></th>
+                                                            <th><strong>Jueves</strong></th>
+                                                            <th><strong>Viernes</strong></th>
+                                                            <th style="text-align: center"><strong>Sabado</strong></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody  > 
+                                                        <tr *ngFor="let semana of matriz;let $index=index;">
+                                                            <td *ngFor="let day of matriz[$index]"  style="text-align: center">
+                                                                <div *ngIf="dia>day" (click)="getventasfecha(day)">
+                                                                    {{day}}
+                                                                </div>
+                                                                <div *ngIf="dia==day" style="background: red"  (click)="getventasfecha(day)">
+                                                                    {{day}}
+                                                                </div>
+                                                                <div *ngIf="dia<day" style="background: #c2c1c1">
+                                                                    {{day}}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-12">
+                                                <table id="tablaventas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>fecha</th>
+                                                            <th>Serie de Documento</th>
+                                                            <th>Cliente</th>
+                                                            <th>Total</th>
+                                                            <th>Pago recivido</th>
+                                                            <th>Vuelto</th>
+                                                            <th style="width: 85px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <tr  *ngFor="let ven of ventas; let $index=index">
+                                                            <td style="text-align: center">{{ven.created_at}}</td>
+                                                            <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
+                                                            <td style="text-align: center">{{ven.nombre}}</td>
+                                                            <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
+                                                            <td style="text-align: center">{{ven.pago_efectivo | number : '1.2-2'}}</td>
+                                                            <td *ngIf="(ven.pago_efectivo)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
+                                                            <td *ngIf="(ven.pago_efectivo)-ven.total<0" style="text-align: center;color: red">{{(ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
+                                                            <td style="text-align: center"> 
+                                                                <button (click)="mostrardetalleventas(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                                    <i class="fa fa-list-ul"></i> 
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="ra" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-20">
+                                            <div [hidden]="verda!=null || vervpa!=null" *ngFor="let sucursales of sucursalesycajas;let $index=index;" class="col-sm-6">
+                                                <dl >
+                                                    <ul *ngIf="vercajas!=sucursales.id_suc" >
+                                                        <a class="fa fa-plus" (click)="mostrarcajas(sucursales.id_suc)"></a>
+                                                       
+                                                        <a style="color: black">{{sucursales.sucursal}} - {{sucursales.direccion}}</a>
+                                                    </ul>
+                                                    <ul  *ngIf="vercajas==sucursales.id_suc" style="background: #dfd8d8">
+                                                        <a class="fa fa-minus" (click)="ocultarcajas()"></a>
+                                                        <a style="color: gray; ">{{sucursales.sucursal}} - {{sucursales.direccion}}</a>
+                                                    </ul>
+                                                    <div *ngIf="vercajas==sucursales.id_suc" >
+                                                        <li  *ngFor="let cajas of sucursales.caja"  (click)="verdetallecajas(cajas.id)" style="margin-left: 20px;cursor: pointer;">
+                                                            {{cajas.nombre}} - {{cajas.descripcion}}
+                                                        </li>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            <div *ngIf="verda!=null" class="col-sm-12" style="text-align: right;">
+                                                <button style="font-size: 25px;" type="button" class="btn btn-link" (click)="cambio()">volver</button>
+                                            </div>
+                                            <div *ngIf="verda!=null" class="col-sm-12">
+                                                <table id="tabladcajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                    <thead>
+                                                        <tr style="text-align: center">
+                                                            <th>fecha de apertura</th>
+                                                            <th>monto de apertura</th>
+                                                            <th>caja</th>
+                                                            <th>Cantidad de venta</th>
+                                                            <th >estado</th>
+                                                            <th>monto cierre</th>
+                                                            <th style="width: 85px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <tr  *ngFor="let dcaja of detallecajas">
+                                                            <td style="text-align: center">{{dcaja.created_at}}</td>
+                                                            <td style="text-align: center"><strong>{{dcaja.monto_apertura}}</strong></td>
+                                                            <td style="text-align: center">{{dcaja.nombre}}</td>
+                                                            <td style="text-align: center">{{dcaja.monto_actual}}</td>
+                                                            <td *ngIf="dcaja.abierta==true" style="text-align: center;color: green">Abierto</td>
+                                                            <td *ngIf="dcaja.abierta!=true" style="text-align: center;color: red" title="{{dcaja.updated_at}}">cerrado</td>
+                                                            <td *ngIf="dcaja.abierta!=true" style="text-align: center">{{dcaja.monto_cierre_tarjeta + dcaja.monto_cierre_efectivo}}</td>
+                                                            <td *ngIf="dcaja.abierta==true" style="text-align: center">--</td>
+                                                            <td style="text-align: center"> 
+                                                                <button (click)="verventasporcaja(dcaja.id)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                                    <i class="fa fa-list-ul"></i> 
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div *ngIf="vervpa!=null" class="col-sm-12" style="text-align: right;">
+                                                <button style="font-size: 25px;" type="button" class="btn btn-link" (click)="volvera_d_cajas()">volver</button>
+                                            </div>
+                                            <div *ngIf="vervpa!=null" class="col-sm-12">
+                                                 <table id="tablaventas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>fecha</th>
+                                                            <th>Serie de Documento</th>
+                                                            <th>Cliente</th>
+                                                            <th>Total</th>
+                                                            <th>Pago recivido</th>
+                                                            <th>Vuelto</th>
+                                                            <th style="width: 85px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <tr  *ngFor="let ven of ventas; let $index=index">
+                                                            <td style="text-align: center">{{ven.created_at}}</td>
+                                                            <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
+                                                            <td style="text-align: center">{{ven.nombre}}</td>
+                                                            <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
+                                                            <td style="text-align: center">{{ven.pago_efectivo + ven.pago_tarjeta | number : '1.2-2'}}</td>
+                                                            <td *ngIf="(ven.pago_efectivo + ven.pago_tarjeta)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_efectivo + ven.pago_tarjeta)-ven.total | number : '1.2-2'}}</td>
+                                                            <td *ngIf="(ven.pago_efectivo + ven.pago_tarjeta)-ven.total<0" style="text-align: center;color: red">{{(ven.pago_efectivo + ven.pago_tarjeta)-ven.total | number : '1.2-2'}}</td>
+                                                            <td style="text-align: center"> 
+                                                                <button (click)="mostrardetalleventas(ven)" class="btn btn-sm btn-success" title="ver detalle" >
+                                                                    <i class="fa fa-list-ul"></i> 
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="tab-pane" id="me" role="tabpanel">
+                      
+                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="col-sm-12 modal">
+    <div class="modal-contente" >
+        <span (click)="cerrarmodal()" class="close">&times;</span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-body">
+                        <div  class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div class="row p-t-1" >
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-6" style="text-align: center">
+                                                <label>Serie: <strong>{{getventa.serie_venta}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-3"></div>
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-6">
+                                                <label>Cliente: <strong>{{getventa.nombre}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-6" style="text-align: right">
+                                                <label>Fecha de cracion: <strong>{{getventa.created_at}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-6" >
+                                                <label>Pago en efectivo: <strong>{{getventa.pago_efectivo}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-6" style="text-align: right">
+                                                <label>Pago con tarjeta: <strong>{{getventa.pago_tarjeta}}</strong></label>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>  
+                                        <table border=1 cellspacing=0 cellpadding=2 bordercolor="black" style="width: 100%;text-align: center">
+                                            <thead style="border-bottom: solid 1px #5d94c4;">
+                                                <tr >
+                                                    <th rowspan="2">nombre</th>
+                                                    <th rowspan="2">cantidad</th>
+                                                    <th rowspan="2">precio unitario(sin igv)</th>
+                                                    <th colspan="3">Impuestos</th>
+                                                    <th rowspan="2" style="text-align: center">total</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>IGV </th>
+                                                    <th>ISC </th>
+                                                    <th style="text-align: center">OTRO </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>  
+                                                <tr  *ngFor="let dventas of detalleventas; let $index=index">
+                                                    <td style="text-align: center">{{dventas.nombre_producto}}</td>
+                                                    <td style="text-align: center"><strong>{{dventas.cantidad}}</strong></td>
+                                                    <td style="text-align: center">{{dventas.precio_unitario | number : '1.2-2' }}</td>
+                                                    <td style="text-align: center">{{dventas.id | number : '1.2-2'}}({{dventas.igv}})</td>
+                                                    <td style="text-align: center">{{dventas.id_producto | number : '1.2-2'}}({{dventas.isc}})</td>
+                                                    <td style="text-align: center">{{dventas.codigo | number : '1.2-2'}}({{dventas.otro}})</td>
+                                                    <td style="text-align: center">{{dventas.id_venta}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

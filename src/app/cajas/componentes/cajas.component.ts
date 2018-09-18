@@ -49,7 +49,7 @@ export class CajasComponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.cajas = new CajasModels(0,null,null,null,this.user.id);
-        this.detalle=new DetalleCajasUsuariosModels(null,null,null,null);
+        this.detalle=new DetalleCajasUsuariosModels(null,null,null,null,this.user.id);
         this.titulo="Cajas";
         this.tablacajas();
     }
@@ -107,14 +107,14 @@ export class CajasComponent{
                     console.log(this.usuarios[indice])
                     while(indice2<this.detalletable.length){
                         console.log(this.detalletable[indice2]);
-                        if(this.detalletable[indice2].id_usuario===this.usuarios[indice].id){
+                        if(this.detalletable[indice2].id_vendedor===this.usuarios[indice].id){
                             this.detalletable[indice2].id=indice;
                             this.detalle.id=indice;
                             this.detalle.id_caja=this.cajas.id;
-                            this.detalle.id_usuario=this.usuarios[indice].id;
+                            this.detalle.id_vendedor=this.usuarios[indice].id;
                             this.detalle.estado=true;
                             this.detallecajas.push(this.detalle);
-                            this.detalle=new DetalleCajasUsuariosModels(null,null,null,null);
+                            this.detalle=new DetalleCajasUsuariosModels(null,null,null,null,this.user.id);
                             this.usuarios[indice].id=null;
                         }
                         indice2=indice2+1;
@@ -125,7 +125,7 @@ export class CajasComponent{
             },
             err=>{
                 console.log(<any>err)
-            }
+            } 
         );
     }
     getdetallecajasusuario(id){
@@ -255,12 +255,12 @@ export class CajasComponent{
         }
         if(count===0){
             this.detalle.id_caja=this.cajas.id;
-            this.detalle.id_usuario=id;
+            this.detalle.id_vendedor=id;
             this.detalle.id=index;
             this.detalle.estado=true;
             this.usuarios[index].id=null;
             this.detallecajas.push(this.detalle);
-            this.detalle=new DetalleCajasUsuariosModels(null,null,null,null);
+            this.detalle=new DetalleCajasUsuariosModels(null,null,null,null,this.user.id);
         }
         
         console.log(this.usuarios);
@@ -271,7 +271,7 @@ export class CajasComponent{
 
         while(indice<this.detallecajas.length){
             if(this.detallecajas[indice].id===index){
-                this.usuarios[index].id=this.detallecajas[indice].id_usuario;
+                this.usuarios[index].id=this.detallecajas[indice].id_vendedor;
                 if(this.mostraeditcaja!=null){
                     this.detallecajas[indice].estado=false;
                 }else{
