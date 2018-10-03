@@ -102,6 +102,7 @@ export class AlmacenComponent{
     editardetallealmacen(){
         console.log(this.editalmecen.id);
         console.log(this.idalmacen);
+        this.editalmecen.id_producto=this.usuario.id;
         this._almacenService.ActualizarAlmacen(this.idalmacen,this.editalmecen).subscribe(
             result=>{
                 this.limpiar();

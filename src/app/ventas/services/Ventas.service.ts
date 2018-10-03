@@ -26,7 +26,13 @@ export class VentasService{
        
         return this._http.post(this.url+'/guardarventa',params,{headers:headers});
     }
-    getventasfecha(fecha):Observable<any>{
-        return this._http.get<any>(this.url+'/getventaporfecha/'+fecha).shareReplay();
+    getventasfecha(fecha,id):Observable<any>{
+        return this._http.get<any>(this.url+'/getventaporfecha/'+fecha+'/'+id).shareReplay();
+    }
+    getventaporusuario(fecha,id):Observable<any>{
+        return this._http.get<any>(this.url+'/getventaporusuario/'+fecha+'/'+id).shareReplay();
+    }
+    getproductosvendidos(fecha,id):Observable<any>{
+        return this._http.get<any>(this.url+'/getproductosvendidos/'+fecha+'/'+id).shareReplay();
     }
 }

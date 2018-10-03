@@ -36,4 +36,7 @@ export class ImpuestoService{
     getotro():Observable<any>{
         return this.http.get<any>(`${environment.api_url}/otro`).shareReplay();
     }
+    getisc():Observable<any>{
+        return this.http.get<any>(`${environment.api_url}/isc`).shareReplay();
+    }
 }

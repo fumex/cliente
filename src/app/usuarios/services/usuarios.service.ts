@@ -79,4 +79,7 @@ export class UsuarioService{
        
         return this._http.post(this.url+'/modificarimagen/'+id,params,{headers:headers});
     }
+    getuserssucursals(id){
+        return this._http.get<any>(this.url+'/getusersporsucursal/'+id).shareReplay();
+    }
 }

@@ -32,7 +32,9 @@ export class detalleimpuestoservice{
     seleccionardetealleotro(id){
         return this._http.get<any>(this.url+'/detalleimpuestosotro/'+id).shareReplay();
     }
-
+    seleccionardetealleisc(id){
+        return this._http.get<any>(this.url+'/detalleimpuestosisc/'+id).shareReplay();
+    }
     seleccionardetealle(id){
         return this._http.get<any>(this.url+'/detalleimpuestos/'+id).shareReplay();
 

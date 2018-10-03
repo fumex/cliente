@@ -8,13 +8,28 @@
         <div  class="card card-outline-primary">
             <div class="card-body">
                 <form #formProducto="ngForm"  action="#">
-                        <!--<div   *ngIf="!formProducto.form.valid &&  nombre.touched &&  Descripcion.touched " class="alert alert-danger">
-                            <span style="color:black">rellenar todos los campo requeridos(<label style="color: red" >*</label>)</span>
-                        </div>-->
                 <div class="form-horizonta">
                     <div class="col-lg-12 row">
+                        <div class="col-lg-12" style="text-align: right">
+                            <ul class="navbar-nav my-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a style="font-size: 28px;
+                                    font-style: italic;
+                                    color: #3584f0;">Opciones</a> <a class="ti-menu" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 20px;
+                                    color: #3584f0;"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <ul class="dropdown-user">
+                                            <li *ngIf="mostratablaotros==null" (click)="mostratablaimpuestos()"><a ><i class="ti-arrow-circle-down" ></i> mas impuestos</a></li>
+                                            <li *ngIf="mostratablaotros!=null" (click)="ocultartablaimpuestos()"><a ><i class="ti-arrow-circle-up" ></i> Ocultar impuestos</a></li>
+                                            <li><a ><i class="ti-arrow-circle-down"></i> agregar mas datos</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="col-lg-6">
                             <div class="row p-t-20">
+                                
                                 <div class="col-sm-12" style="text-align: center" >
                                     <img  class="productos_imagen"   [src]="imageUrl" > 
                                 </div>
@@ -40,32 +55,6 @@
                                 <br>      
                                 <br>
                                 <br>            
-                                <div *ngIf="llamarunidad==null" class="col-sm-4">
-                                    <label class="control-label">Unidad de media</label>
-                                </div>
-                                <div *ngIf="llamarunidad==null" class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
-                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                <option disabled="disabled">--seleccione la unidad</option>    
-                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                        </select>
-                                    </div> 
-                                </div>  
-                                <br>
-                                <br>
-                                <br>
-                                <div *ngIf="unidad!=null" class="col-sm-4">
-                                    <label class="control-label">cantidad</label>
-                                </div>
-                                <div *ngIf="unidad!=null " class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
-                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="agregarpro.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
-                                    </div> 
-                                </div>
                             </div>
                         </div>
                        
@@ -110,6 +99,22 @@
                                 <br>
                                 <br>
                                 <br> 
+                                  <div *ngIf="llamarunidad==null" class="col-sm-4">
+                                    <label class="control-label">Unidad de media</label>
+                                </div>
+                                <div *ngIf="llamarunidad==null" class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(agregarpro.id_unidad)" name="unidadmedida" [(ngModel)]="agregarpro.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                    </div> 
+                                </div>  
+                                <br>
+                                <br>
+                                <br>
                                 <div  class="col-sm-4">
                                     <label class="control-label">IGV:</label>    
                                 </div>
@@ -126,51 +131,79 @@
                                 <br>
                                 <br>
                                 <br>
-                                <div *ngIf="mostratablaotros==null"  class="col-sm-4">
-                                    <button  class="btn btn-primary btn-sm" (click)="mostratablaimpuestos()" style="background: #3584f0;border: 1px solid #3636f6;" ><i class="fa fa-arrow-circle-down"></i> mas impuestos</button>
-                                </div>
-                               
-                                <div  *ngIf="mostratablaotros!=null" class="col-sm-12">
-                                    <div style="text-align: right" class="col-sm-12">
-                                        <table style="width: 100%;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th  style="text-align: center">
-                                                        Nombre
-                                                        <hr>
-                                                    </th>
-                                                    <th  style="text-align: center">porcentage<hr></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let imotro of impuestrootro;let $index=index">
-                                                    <td style="width : 50px;">
-                                                        <div *ngIf="imotro.id!=null"><button (click)="agregardetalleimpuestootro($index,imotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
-                                                        <div *ngIf="imotro.id==null" ><button (click)="quitardetalleimpuestootro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
-                                                    </td>
-                                                    <td  style="text-align: center"><a >{{imotro.nombre}}</a></td>
-                                                    <td  style="text-align: center"><a >{{imotro.porcentaje}}%</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>  
                             </div>
                         </div>
                 
                         <div class="col-lg-12" style="margin-left: -15px">
-                            
-                        </div>
-                        
-                        <div class="col-lg-6">
-                            <div class="row p-t-20">
-                                
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row p-t-20">
-                                
+                            <div class="row">
+                                <div class="col-md-6" *ngIf="mostratablaotros!=null">
+                                    <div class="row">
+                                        <div  class="col-sm-12" style="text-align: center">
+                                            <label class="control-label">Impuestos Selectivo al Consumidor</label>    
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <table style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th  style="text-align: center">
+                                                            Nombre
+                                                            <hr>
+                                                        </th>
+                                                        <th  style="text-align: center">
+                                                            porcentage
+                                                            <hr>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let imisc of impuestroisc;let $index=index">
+                                                        <td style="width : 50px;">
+                                                            <div *ngIf="imisc.descripcion!=null"><button (click)="agregardetalleimpuestoisc($index,imisc.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                            <div *ngIf="imisc.descripcion==null" ><button (click)="quitardetalleimpuestoisc($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                        </td>
+                                                        <td  style="text-align: center"><a >{{imisc.nombre}}</a></td>
+                                                        <td  style="text-align: center"><a >{{imisc.porcentaje}}%</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mostratablaotros!=null">
+                                    <div class="row">
+                                        <div  class="col-sm-12" style="text-align: center">
+                                            <label class="control-label">Otros Impuestos</label>    
+                                        </div>
+                                        <div class="col-sm-12">
+                                           <table style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th  style="text-align: center">
+                                                            Nombre
+                                                            <hr>
+                                                        </th>
+                                                        <th  style="text-align: center">
+                                                            porcentage
+                                                            <hr>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let imotro of impuestrootro;let $index=index">
+                                                        <td style="width : 50px;">
+                                                            <div *ngIf="imotro.id!=null"><button (click)="agregardetalleimpuestootro($index,imotro.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                            <div *ngIf="imotro.id==null" ><button (click)="quitardetalleimpuestootro($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                        </td>
+                                                        <td  style="text-align: center"><a >{{imotro.nombre}}</a></td>
+                                                        <td  style="text-align: center"><a >{{imotro.porcentaje}}%</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div> 
@@ -193,7 +226,6 @@
                             <thead style="text-align: center">
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>cantidad</th>
                                     <th>unidad de medida</th>
                                     <th>categoria</th>
                                     <th>descripcion</th>
@@ -203,7 +235,6 @@
                             <tfoot style="text-align: center">
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>cantidad</th>
                                     <th>unidad de medida</th>
                                     <th>categoria</th>
                                     <th>descripcion</th>
@@ -213,7 +244,6 @@
                             <tbody style="text-align: center" > 
                             <tr *ngFor="let producto of productos">
                                 <td >{{producto.nombre_producto}}</td>
-                                <td >{{producto.cantidad}}</td>
                                 <td >{{producto.abreviacion}}</td>
                                 <td >{{producto.nombre}}</td>
                                 <td >{{producto.descripcion}}
@@ -270,32 +300,35 @@
                                 <br>
                                 <br>
                                 <br>
-                                <div  class="col-sm-4">
-                                    <label class="control-label">Unidad de media</label>
+                                <div  class="col-sm-12" style="text-align: center">
+                                    <label class="control-label">Impuestos Selectivo al Consumidor</label>    
                                 </div>
-                                <div class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
-                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(editproducto.id_unidad)" name="unidadmedida" [(ngModel)]="editproducto.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
-                                                <option disabled="disabled">--seleccione la unidad</option>    
-                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
-                                        </select>
-                                    </div> 
+                                <div   class="col-sm-12">
+                                    <div style="text-align: right" class="col-sm-12">
+                                        <table style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th  style="text-align: center">
+                                                        Nombre
+                                                        <hr>
+                                                    </th>
+                                                    <th  style="text-align: center">porcentage<hr></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let idisc of impuestroeditisc;let $index=index">
+                                                    <td style="width : 50px;">
+                                                        <div *ngIf="idisc.descripcion!=null"><button (click)="agregardetalleisc($index,idisc.id)" class="btn btn-info btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-circle"></i></button></div>
+                                                        <div *ngIf="idisc.descripcion==null" ><button (click)="quitardetalleisc($index)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check-circle"></i></button></div>
+                                                    </td>
+                                                    <td  style="text-align: center"><a >{{idisc.nombre}}</a></td>
+                                                    <td  style="text-align: center"><a >{{idisc.porcentaje}}%</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>  
-                                <br>
-                                <br>
-                                <br>
-                                <div *ngIf="llamarunidad==null"class="col-sm-4">
-                                    <label class="control-label">cantidad</label>
-                                </div>
-                                <div *ngIf="llamarunidad==null" class="col-sm-8">
-                                    <div class="inner-addon left-addon">
-                                        <i *ngIf="cantidadunitaria.valid" style="color: green" class="fa fa-check"></i>
-                                        <i *ngIf="!cantidadunitaria.valid && cantidadunitaria.touched" style="color: red" class="fa fa-times"></i>
-                                        <input  id="cantida"  type="text" #cantidadunitaria="ngModel" name="cantidadunitaria" [(ngModel)]="editproducto.cantidad"  class="form-control"  required pattern="[0-9]+"/>                            
-                                    </div> 
-                                </div> 
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -340,6 +373,22 @@
                                 <br>
                                 <br>
                                 <div  class="col-sm-4">
+                                    <label class="control-label">Unidad de media</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="unidadmedida.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!unidadmedida.valid && unidadmedida.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="unidadselect" #unidadmedida="ngModel" (change)="aparecerunidad(editproducto.id_unidad)" name="unidadmedida" [(ngModel)]="editproducto.id_unidad" class="form-control custom-select " data-placeholder="Choose a Category" tabindex="0" SelectedIndex="-1" required>
+                                                <option disabled="disabled">--seleccione la unidad</option>    
+                                            <option *ngFor="let uni of unidadmodelo" value="{{uni.id}}"><b>{{uni.unidad}}</b></option>
+                                        </select>
+                                    </div> 
+                                </div>  
+                                <br>
+                                <br>
+                                <br>
+                                <div  class="col-sm-4">
                                     <label class="control-label">IGV:</label>    
                                 </div>
                                 <div class="col-sm-8">
@@ -355,6 +404,9 @@
                                 <br>
                                 <br>
                                 <br>
+                                <div  class="col-sm-12" style="text-align: center">
+                                    <label class="control-label">Otros Impuestos</label>    
+                                </div>
                                 <div   class="col-sm-12">
                                     <div style="text-align: right" class="col-sm-12">
                                         <table style="width: 100%;">

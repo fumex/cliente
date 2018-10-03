@@ -299,7 +299,7 @@
                                 <li [hidden]="vercierre==null" class="nav-item"> <a id="tabcierre" class="nav-link" data-toggle="tab" href="#cierre" role="tab">Cerrar Caja</a> </li>
                             </ul>
                         </div>
-                        <div [hidden]="vercierre!=null" class="col-sm-6" style="text-align: right">
+                        <div *ngIf="vercierre==null" class="col-sm-6" style="text-align: right">
                             <button class="botonariba" title="Salir" (click)="cerrarcaja()"> <i class="fa fa-sign-out" ></i> </button>
                         </div>
                     </div>
@@ -313,32 +313,6 @@
                                     <div class="col-lg-12" >
                                         <div class="row p-t-20">
                                             <div class="col-sm-6"></div>
-                                            <!--<div *ngIf="factura==true" class="col-sm-2">
-                                                <label>Factura:</label>
-                                            </div>
-                                            <div *ngIf="factura!=true" class="col-sm-2">
-                                                <label>Boleta:</label>
-                                            </div>
-                                            <div *ngIf="factura==true" class="col-sm-3">
-                                                <div class="row p-t-20">
-                                                    <strong>N°</strong>
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <h2 style="font-style: italic">{{numerofac}}</h2>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                            <div *ngIf="factura!=true" class="col-sm-3">
-                                                <div class="row p-t-20">
-                                                    <strong>N°</strong>
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <h2 style="font-style: italic">{{numerobol}}</h2>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>-->
                                             <div class="col-sm-5" style="text-align: right" >
                                                 <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
                                                     <i class="fa fa-sticky-note-o"></i> Factura
@@ -362,7 +336,6 @@
                                             <div class="col-sm-1"></div>
                                             <div  class="col-sm-10">
                                                 <div class="inner-addon right-addon">
-                                                    <!--<i  style="color: green" class="fa fa-check"></i>-->
                                                     <input type="text" 
                                                     style="background-color: white;
                                                     border-color: #0099f2;

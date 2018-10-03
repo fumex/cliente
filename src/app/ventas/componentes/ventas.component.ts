@@ -108,7 +108,7 @@ export class VentasComponent{
         this.user=this.auth.getUser();
         this.titulo="Ventas";
         this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null,null);
-        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0,0);
+        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0,0,0,0,0);
         this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
         this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
@@ -203,7 +203,8 @@ export class VentasComponent{
             sumaimp=sumaimp+Math.round(this.impuestos[k].cantidad*100)/100;
             k++
         }
-        this.total=this.ventas.total+sumaimp;
+        this.total=Math.round((this.ventas.total+sumaimp)*100)/100;
+        console.log(this.total);
     }
 
     agregardescuento(arreglopro){
@@ -245,7 +246,6 @@ export class VentasComponent{
                             
                             arreglopro.descuento_cant=(Math.round((precioreal * parseInt(value)/100)*100)/100)*arreglopro.cantidad;
                             this.ventas.total=this.ventas.total-(arreglopro.descuento_cant);
-                            //this.ventas.total+=arreglopro.precio_unitario*arreglopro.cantidad;
                         }else{
                             precioanterior=precioreal-arreglopro.descuento_cant;
                             arreglopro.descuento_cant=(Math.round((precioreal * parseInt(value)/100)*100)/100)*arreglopro.cantidad;
@@ -346,19 +346,22 @@ export class VentasComponent{
                 if(this.boleta!=true){
                     for(let l=0;l< arreglopro.preg.length;l++){
                         if(arreglopro.preg[l].tipo=="IGV"){
-                            this.detallev.igv=arreglopro.preg[l].porcentaje;
+                            this.detallev.igv=(parseFloat(arreglopro.precio_venta)/(1+parseFloat(arreglopro.preg[l].porcentaje)/100))*(parseFloat(arreglopro.preg[l].porcentaje)/100);
+                            this.detallev.igv_id=arreglopro.preg[l].id;
                         }
                         if(arreglopro.preg[l].tipo=="ISC"){
-                            this.detallev.isc=arreglopro.preg[l].porcentaje;
+                            this.detallev.isc=parseFloat(arreglopro.precio_venta)*(arreglopro.preg[l].porcentaje/100);
+                            this.detallev.isc_id=arreglopro.preg[l].id;
                         }
                         if(arreglopro.preg[l].tipo=="OTRO"){
-                            this.detallev.otro=arreglopro.preg[l].porcentaje;
+                            this.detallev.otro=parseFloat(arreglopro.precio_venta)*(arreglopro.preg[l].porcentaje/100);
+                            this.detallev.otro_id=arreglopro.preg[l].id;
                         }
                     }
                 }
                
                 this.detalleventas.push(this.detallev);
-                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null,0,0,0);
+                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null,0,0,0,0,0,0);
     
             }
             if(this.boleta==true){
@@ -444,6 +447,10 @@ export class VentasComponent{
             },
             err=>{
                 console.log(<any>err);
+                this.limpiar(); 
+                this.vuelto=0;
+                this.verusuarios=null;
+                this.verpago=null;
             }
         );  
     }
@@ -460,10 +467,15 @@ export class VentasComponent{
                     }else{
                         respuesta+=1;
                         console.log(respuesta);
+
                     }
                 },
                 err=>{
                     console.log(<any>err);
+                    this.limpiar(); 
+                    this.vuelto=0;
+                    this.verusuarios=null;
+                    this.verpago=null;
                 }
             );
             this.inventario=new inventario(null,null,null,this.detalleventas[i].id_producto,null,null,this.detalleventas[i].cantidad,null,this.detalleventas[i].precio_unitario,null,this.user.id,this.detalleventas[i].codigo);
@@ -475,6 +487,10 @@ export class VentasComponent{
                 },
                 err=>{
                     console.log(<any>err);
+                    this.limpiar(); 
+                    this.vuelto=0;
+                    this.verusuarios=null;
+                    this.verpago=null;
                 }
             );
             i++;
@@ -1212,7 +1228,8 @@ export class VentasComponent{
             res=>{
                 while(indice<res.length){
                     this.productos[index].preg.push({
-                        nombre:res[indice].nombre   ,
+                        id:res[indice].id,
+                        nombre:res[indice].nombre,
                         porcentaje:res[indice].porcentaje,
                         tipo:res[indice].tipo,
                     });

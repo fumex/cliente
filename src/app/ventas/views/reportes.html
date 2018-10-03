@@ -8,20 +8,22 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="form-horizonta">
-                    <div class="row p-t-20">
-                        <div class="col-sm-12">
+                    <div class="row p-t-20"> 
+                        <div class="col-sm-9">
                             <ul class="nav nav-tabs profile-tab" role="tablist" style="border-color: transparent;">
-                                <li class="nav-item"> <a  class="nav-link active" (click)="cambio()" data-toggle="tab" href="#vpe" role="tab">ventas por empleado</a> </li>
+                                <li class="nav-item"> <a  class="nav-link active" (click)="cambio()" data-toggle="tab" href="#rpu" role="tab">Reportes por usuarios</a> </li>
                                 <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#vpd" role="tab">ventas por dia</a> </li>
                                 <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#ra" role="tab">resumen de apertura</a> </li>
-                                <li class="nav-item"> <a  class="nav-link" (click)="cambio()" data-toggle="tab" href="#me" role="tab">Movimientos empleados</a> </li>
                             </ul>
+                        </div>
+                        <div  *ngIf="(vervpd==null && vermenuusu!=null) || (verda!=null)" class="col-sm-3" style="text-align: right">
+                            <button type="button" class="btn btn-link" (click)="cambio()">volver</button>
                         </div>
                     </div>
                 </div> 
                 <br>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="vpe" role="tabpanel">
+                    <div class="tab-pane " id="vpe" role="tabpanel">
                         <div class="card-body">
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
@@ -39,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    <div  class="tab-pane" id="vpd" role="tabpanel">
+                    <div  class="tab-pane " id="vpd" role="tabpanel">
                         <div class="card-body">
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
@@ -47,22 +49,19 @@
                                         <div class="row p-t-20">
                                             
                                             <div class="col-sm-2"></div>
-                                            <div *ngIf="year==2017 && mes==0 && vervpd==null" class="col-sm-2"  style="text-align: center"><</div>
-                                            <div *ngIf="(year>2017 || mes>0) && vervpd==null" class="col-sm-2"  style="text-align: center" (click)="retrocedermes()"><strong><</strong></div>
-                                            <div *ngIf="vervpd==null" class="col-sm-4"  style="text-align: center">{{nombremes}}</div>
-                                            <div *ngIf="vervpd!=null" class="col-sm-8"  style="text-align: center"><strong>Ventas</strong></div>
-                                            <div *ngIf="cantidadcambiomes<1 && vervpd==null" class="col-sm-2"  style="text-align: center">></div>
-                                            <div *ngIf="cantidadcambiomes>0 && vervpd==null" class="col-sm-2"  style="text-align: center" (click)="avanzarmes()" ><strong>></strong></div>
+                                            <div *ngIf="year==2017 && mes==0 && vervpd==null && vermenuusu==null" class="col-sm-2"  style="text-align: center"><</div>
+                                            <div *ngIf="(year>2017 || mes>0) && vervpd==null && vermenuusu==null" class="col-sm-2"  style="text-align: center;cursor: pointer" (click)="retrocedermes()"><strong><</strong></div>
+                                            <div *ngIf="vervpd==null && vermenuusu==null" class="col-sm-4"  style="text-align: center">{{nombremes}}</div>
+                                            <div *ngIf="cantidadcambiomes<1 && vervpd==null && vermenuusu==null" class="col-sm-2"  style="text-align: center">></div>
+                                            <div *ngIf="cantidadcambiomes>0 && vervpd==null && vermenuusu==null" class="col-sm-2"  style="text-align: center;cursor: pointer" (click)="avanzarmes()" ><strong>></strong></div>
                                             <div class="col-sm-2"></div>
 
                                             <div class="col-sm-4"></div>
-                                            <div *ngIf="vervpd==null" class="col-sm-4"  style="text-align: center"><strong>{{year}}</strong></div>
-                                            <div *ngIf="vervpd!=null" class="col-sm-4"  style="text-align: center">{{nombredia}}, {{diaactual}} de {{nombremes}} del {{year}}</div>
-                                            <div *ngIf="vervpd!=null" class="col-sm-4" style="text-align: right"><button type="button" class="btn btn-link" (click)="cambio()">volver</button></div>
-                                            <div *ngIf="vervpd==null" class="col-sm-4"></div>
+                                            <div *ngIf="vervpd==null && vermenuusu==null" class="col-sm-4"  style="text-align: center"><strong>{{year}}</strong></div>
+                                            <div *ngIf="vervpd==null && vermenuusu==null" class="col-sm-4"></div>
 
                                             <div class="col-sm-2"></div>
-                                            <div *ngIf="vervpd==null" class="col-sm-8">
+                                            <div *ngIf="vervpd==null && vermenuusu==null" class="col-sm-8">
                                                 <table style="width: 100%;">
                                                     <thead>
                                                         <tr style="font-size: 15px;text-align: center">
@@ -78,10 +77,10 @@
                                                     <tbody  > 
                                                         <tr *ngFor="let semana of matriz;let $index=index;">
                                                             <td *ngFor="let day of matriz[$index]"  style="text-align: center">
-                                                                <div *ngIf="dia>day" (click)="getventasfecha(day)">
+                                                                <div *ngIf="dia>day" (click)="getventasfecha(day)" style="cursor: pointer">
                                                                     {{day}}
                                                                 </div>
-                                                                <div *ngIf="dia==day" style="background: red"  (click)="getventasfecha(day)">
+                                                                <div *ngIf="dia==day" style="background: red;cursor: pointer"  (click)="getventasfecha(day)">
                                                                     {{day}}
                                                                 </div>
                                                                 <div *ngIf="dia<day" style="background: #c2c1c1">
@@ -92,24 +91,126 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <div class="col-sm-12" *ngIf="vermenuusu!=null">
+                                                <ul class="nav nav-pills m-t-30 justify-content-end m-b-30">
+                                                    <li class=" nav-item"> <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">ventas por usuarios</a> </li>
+                                                    <li class="nav-item"> <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">ventas por productos</a> </li>
+                                                    <li class="nav-item"> <a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true">total de ventas</a> </li>
+                                                </ul>
+                                                <div class="tab-content br-n pn">
+                                                    <div id="navpills-1" class="tab-pane active">
+                                                        <div class="row">
+                                                            <div class="card-body">
+                                                                <div class="form-horizonta">
+                                                                    <div class="col-lg-12 row">
+                                                                        <div class="col-lg-12" >
+                                                                            <div class="row p-t-20">
+                                                                               
+                                                                                <div *ngFor="let usuarios of usuariosventas" class="col-sm-4" style="margin-bottom: 20px;">
+                                                                                    <div style="border: solid 1px gray; border-radius: 10px;padding: 10px">
+                                                                                        <table style="margin-top: 10px;width: 100%;" >
+                                                                                            <tbody (click)="filtarporusuario(usuarios.id)" >
+                                                                                                <tr>
+                                                                                                    <td rowspan="4" >
+                                                                                                        <img class="usuarios_reportes_imagen"   src="{{url}}/{{usuarios.imagen}}">
+                                                                                                    </td>
+                                                                                                    <td style="color:#4083e7"><strong>Nombres</strong></td>
+                                                                                                    <td class="tablelastcolumn" >{{usuarios.name}}</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="color:#4083e7"><strong>Apellidos</strong></td>
+                                                                                                    <td class="tablelastcolumn">{{usuarios.apellidos}}</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="color:#4083e7"><strong>{{usuarios.documento}}</strong></td>
+                                                                                                    <td class="tablelastcolumn">{{usuarios.numero_documento}}</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="color:#4083e7"><strong>Telefono</strong></td>
+                                                                                                    <td class="tablelastcolumn">{{usuarios.telefono}}</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="color:#4083e7"><strong>Direccion</strong></td>
+                                                                                                    <td colspan="2" class="tablelastcolumn">{{usuarios.direccion}}</td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="navpills-2" class="tab-pane">
+                                                        <div class="row">
+                                                            <div class="col-md-12"> 
+                                                                <table id="tablaproductos" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 150px;">Nombre</th>
+                                                                            <th>Unidad</th>
+                                                                            <th>Categoria</th>
+                                                                            <th>Descripcion</th>
+                                                                            <th>Cantidad</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody *ngFor="let prod of productos; let $index=index">  
+                                                                        <tr (click)="mostrarventasdeproducto(prod.nombre_producto)" style="cursor: pointer">
+                                                                            <td style="text-align: center"><strong>{{prod.nombre_producto}}</strong></td>
+                                                                            <td style="text-align: center">{{prod.unidad}}</td>
+                                                                            <td style="text-align: center">{{prod.nombre_categoria}}</td>
+                                                                            <td style="text-align: center">{{prod.descripcion}}</td>
+                                                                            <td style="text-align: center">{{prod.cantidad}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="navpills-3" class="tab-pane">
+                                                         <div class="row">
+                                                            <div class="col-md-8"> Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.
+                                                                <p>
+                                                                    <br/> Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid.</p>
+                                                            </div>
+                                                            <div class="col-md-4"> <img src="images/c1.jpg" class="img-fluid thumbnail mr25"> </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4"></div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-4"  style="text-align: center"><strong>Ventas</strong></div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-4" style="text-align: right">
+                                                <button type="button" class="btn btn-link" (click)="volverusu()">Volver a usuarios</button>
+                                                <button type="button" class="btn btn-link" (click)="cambio()">Salir</button>
+                                            </div>
+                                            
+                                            <div class="col-sm-4"></div>
+                                            <div *ngIf="vervpd!=null" class="col-sm-4"  style="text-align: center">{{nombredia}}, {{diaactual}} de {{nombremes}} del {{year}}</div>
+                                            <div class="col-sm-4"></div>
+                                            
                                             <div *ngIf="vervpd!=null" class="col-sm-12">
                                                 <table id="tablaventas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
                                                     <thead>
                                                         <tr>
-                                                            <th>fecha</th>
+                                                            <th style="width: 150px;">fecha</th>
                                                             <th>Serie de Documento</th>
-                                                            <th>Cliente</th>
+                                                            <th>Vendedor</th>
                                                             <th>Total</th>
                                                             <th>Pago recivido</th>
                                                             <th>Vuelto</th>
                                                             <th style="width: 85px;"></th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>  
-                                                        <tr  *ngFor="let ven of ventas; let $index=index">
+                                                    <tbody *ngFor="let ven of ventas; let $index=index">  
+                                                        <tr *ngIf="ven.id_usuario!=null" >
                                                             <td style="text-align: center">{{ven.created_at}}</td>
                                                             <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
-                                                            <td style="text-align: center">{{ven.nombre}}</td>
+                                                            <td style="text-align: center">{{ven.name}} {{getventa.apellidos}}</td>
                                                             <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
                                                             <td style="text-align: center">{{ven.pago_efectivo | number : '1.2-2'}}</td>
                                                             <td *ngIf="(ven.pago_efectivo)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
@@ -155,9 +256,6 @@
                                                         </li>
                                                     </div>
                                                 </dl>
-                                            </div>
-                                            <div *ngIf="verda!=null" class="col-sm-12" style="text-align: right;">
-                                                <button style="font-size: 25px;" type="button" class="btn btn-link" (click)="cambio()">volver</button>
                                             </div>
                                             <div *ngIf="verda!=null" class="col-sm-12">
                                                 <table id="tabladcajas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
@@ -211,7 +309,7 @@
                                                         <tr  *ngFor="let ven of ventas; let $index=index">
                                                             <td style="text-align: center">{{ven.created_at}}</td>
                                                             <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
-                                                            <td style="text-align: center">{{ven.nombre}}</td>
+                                                            <td style="text-align: center">{{ven.name}} {{getventa.apellidos}}</td>
                                                             <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
                                                             <td style="text-align: center">{{ven.pago_efectivo + ven.pago_tarjeta | number : '1.2-2'}}</td>
                                                             <td *ngIf="(ven.pago_efectivo + ven.pago_tarjeta)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_efectivo + ven.pago_tarjeta)-ven.total | number : '1.2-2'}}</td>
@@ -231,9 +329,45 @@
                             </div>
                         </div>
                     </div>
-                    <div  class="tab-pane" id="me" role="tabpanel">
-                      
-                              
+                    <div  class="tab-pane active" id="rpu" role="tabpanel">
+                        <div class="vtabs">
+                            <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#ven" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Ventas</span> </a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#com" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Compras</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#mda" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Modificacion de Almacen</span></a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#mdc" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Modificacion de Cajas</span></a> </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="ven" role="tabpanel">
+                                    <div class="card-body">
+                                        <div class="form-horizonta">
+                                            <div class="col-lg-12 row">
+                                                <div class="col-lg-12" >
+                                                    <div class="row p-t-20">
+                                                        <div class="col-sm-6"></div>
+                                                    
+                                                        <div class="col-sm-6"></div>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane p-20" id="com" role="tabpanel">
+
+                                </div>
+                                <div class="tab-pane p-20" id="mda" role="tabpanel">
+
+                                </div>
+                                <div class="tab-pane p-20" id="mdc" role="tabpanel">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -260,7 +394,7 @@
                                             <br>
                                             <br>
                                             <div class="col-sm-6">
-                                                <label>Cliente: <strong>{{getventa.nombre}}</strong></label>
+                                                <label>Vendedor: <strong>{{getventa.nombre}}</strong> <strong></strong></label>
                                             </div>
                                             <div class="col-sm-6" style="text-align: right">
                                                 <label>Fecha de cracion: <strong>{{getventa.created_at}}</strong></label>
@@ -311,4 +445,176 @@
         </div>
     </div>
 </div>
+<div id="myModal2" class="col-sm-12 modal">
+    <div class="modal-contente" >
+        <span (click)="cerrarmodal()" class="close">&times;</span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-body">
+                        <div  class="card-body">
+                            <div class="form-horizonta">
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-12" >
+                                        <div *ngIf="getpventas.length==0" class="row p-t-1" >
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-4" style="text-align: center">
+                                                <label>Producto: <strong>{{nombreproducto}}</strong></label>
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                            <br>
+                                            <br> 
+                                            <div class="col-sm-12">
+                                                <table border=1 cellspacing=0 cellpadding=2 bordercolor="black" style="width: 100%;text-align: center">
+                                                    <thead style="border-bottom: solid 1px #5d94c4;">
+                                                        <tr >
+                                                            <th >Fecha</th>
+                                                            <th >N° de serie</th>
+                                                            <th >Caja</th>
+                                                            <th >Total</th>
+                                                            <th >Total Recivido</th>
+                                                            <th >Vuelto</th>
+                                                            <th ></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <tr  *ngFor="let pventas of ventasproductos; let $index=index">
+                                                            <td style="text-align: center">{{pventas.fecha}}</td>
+                                                            <td style="text-align: center"><strong>{{pventas.serie}}</strong></td>
+                                                            <td style="text-align: center">{{pventas.caja}}</td>
+                                                            <td style="text-align: center">{{pventas.total}}</td>
+                                                            <td style="text-align: center">{{pventas.total_recivido}}</td>
+                                                            <td *ngIf="pventas.vuelto<0" style="text-align: center" style="color: red">{{pventas.vuelto}}</td>
+                                                            <td *ngIf="pventas.vuelto>=0" style="text-align: center" style="color: green">{{pventas.vuelto}}</td>
+                                                            <td style="text-align: center">
+                                                                <button (click)="verdetalleproductos(pventas)" class="btn btn-sm btn-info" title="ver detalles" >
+                                                                    <i class="fa fa-chevron-circle-down"></i> 
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="getpventas.length>0" class="row p-t-1" >
+                                            <div class="col-sm-12">
+                                                <table  cellspacing=0 cellpadding=2 style="width: 100%;text-align: center">
+                                                    <tbody *ngFor="let gv of getpventas; let $index=index">  
+                                                        <tr>
+                                                            <td style="text-align: center;width: 50%;" colspan="2">{{gv.caja}}</td>
+                                                            <td style="text-align: center" colspan="2"><strong>{{nombreserie}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center" colspan="2">{{fechaventa}}</td>
+                                                            <td style="text-align: center" colspan="2"><strong>{{gv.serie}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <br>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center; width: 20%;">Nombre</td>
+                                                            <td style="text-align: center ;">
+                                                                <div style="width: 100%;border-bottom: solid 1px;">
+                                                                    <strong>{{gv.cliente}}</strong>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align: center; width: 20%;">N° de Documento</td>
+                                                            <td style="text-align: center ;border-bottom: solid 1px;"><strong>{{gv.numero_doc}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;    width: 20%;">Direccion</td>
+                                                            <td style="text-align: center;    border-bottom: solid 1px;" colspan="3"><strong>{{gv.direccion}}</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <table border=1 cellspacing=0 cellpadding=2 bordercolor="black" style="width: 100%;text-align: center">
+                                                    <thead style="border-bottom: solid 1px #5d94c4;">
+                                                        <tr >
+                                                            <th >N°</th>
+                                                            <th >DESCRIPCION</th>
+                                                            <th >DESCUENTO</th>
+                                                            <th >PRECIO UNITARIO</th>
+                                                            <th >CANTIDAD</th>
+                                                            <th style="text-align: center" >VALOR VENTA</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngFor="let dproductos of detalleproductos; let $index=index">  
+                                                        <tr *ngIf="dproductos.nombre!=nombreproducto" >
+                                                            <td style="text-align: center">{{$index+1}}</td>
+                                                            <td style="text-align: center"><strong>{{dproductos.nombre}}</strong></td>
+                                                            <td style="text-align: center">{{dproductos.descuento}}</td>
+                                                            <td style="text-align: center">{{dproductos.precio_unitario}}</td>
+                                                            <td style="text-align: center">{{dproductos.cantidad}}</td>
+                                                            <td style="text-align: center">{{dproductos.valor_venta}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="dproductos.nombre==nombreproducto" style="background: #505051;">
+                                                            <td style="text-align: center;color: white;">{{$index+1}}</td>
+                                                            <td style="text-align: center;color: white;"><strong>{{dproductos.nombre}}</strong></td>
+                                                            <td style="text-align: center;color: white;">{{dproductos.descuento}}</td>
+                                                            <td style="text-align: center;color: white;">{{dproductos.precio_unitario}}</td>
+                                                            <td style="text-align: center;color: white;">{{dproductos.cantidad}}</td>
+                                                            <td style="text-align: center;color: white;">{{dproductos.valor_venta}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody >  
+                                                        <tr >
+                                                            <td style="color: transparent">x</td>
+                                                            <td style="text-align: center"></td>
+                                                            <td style="text-align: center"></td>
+                                                            <td style="text-align: center"></td>
+                                                            <td style="text-align: center"></td>
+                                                            <td style="text-align: center"></td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td style="color: transparent;">x</td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody >  
+                                                        <tr >
+                                                            <td style="text-align: center" colspan="4">{{letrado}}</td>
+                                                            <td style="text-align: left ;">Subtotal :</td>
+                                                            <td style="text-align: center">{{subtotal}}</td>
+                                                        </tr>
+                                                        <tr *ngFor="let imp of impuestos; let $index=index" >
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td >{{imp.nombre}}({{imp.impuesto}}) | </td>
+                                                            <td >{{imp.total}}</td>
+                                                        </tr>
+                                                        <tr >
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td ></td>
+                                                            <td >Total</td>
+                                                            <td >{{total}}</td>
+                                                        </tr>
+                                                    </tbody>    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 

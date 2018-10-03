@@ -42,19 +42,26 @@ export class ProductosComponent{
     public unidadmodelo:UnidadesModel;
     public impuestoigv:any=[];
     public impuestrootro:Array<ImpuestoModel>=[];
+    public impuestroisc:Array<any>=[];
     public impuestroeditotro:Array<ImpuestoModel>=[];
+    public impuestroeditisc:Array<ImpuestoModel>=[];
 
     public detalleimpu:DetalleImpuestoModel;
     public detalleimpuesotro:DetalleImpuestoModel;
+    public detalleimpuesisc:DetalleImpuestoModel;
     public detalleimpuesigv:DetalleImpuestoModel;
 
     public detalleimpuestoigv:Array<DetalleImpuestoModel>=[];
     public detalleimpuestootro:Array<DetalleImpuestoModel>=[];
+    //public detalleimpuestoisc:Array<DetalleImpuestoModel>=[];
 
     public editigv:DetalleImpuestoModel;
     public editotro:DetalleImpuestoModel;
+    public editisc:DetalleImpuestoModel;
+
     public editarimpuestoigv:Array<DetalleImpuestoModel>=[];
     public editarimpuestootro:Array<DetalleImpuestoModel>=[];
+    public editarimpuestoisc:Array<DetalleImpuestoModel>=[];
 
     public otro:any;
     public modificarcategoria;
@@ -110,9 +117,11 @@ export class ProductosComponent{
 
         this.detalleimpuesotro=new DetalleImpuestoModel(null,null,null,null);
         this.detalleimpuesigv=new DetalleImpuestoModel(null,null,null,null);
+        this.detalleimpuesisc=new DetalleImpuestoModel(null,null,null,null);
 
         this.editigv=new DetalleImpuestoModel(null,null,null,null);
         this.editotro=new DetalleImpuestoModel(null,null,null,null);
+        this.editisc=new DetalleImpuestoModel(null,null,null,null);
         this.modificarcategoria=null;
         this.llamarcategoria=null;
         this.aparecereditcate=null;
@@ -135,9 +144,10 @@ export class ProductosComponent{
     }
 
     ngOnInit(){
-       
+        this.getotro();
         this.getIgv();
         this.mostrar();
+        this.getisc();
 
         this.mostrarcategoria(0);
         this.mostarunidad();
@@ -163,6 +173,7 @@ export class ProductosComponent{
         this.detalleimpuesotro=new DetalleImpuestoModel(null,null,null,null);
         console.log(this.detalleimpuestootro);
     }
+
     quitardetalleimpuestootro(index){
         let indice=0;
         while(indice<this.detalleimpuestootro.length){
@@ -174,6 +185,23 @@ export class ProductosComponent{
             indice=indice+1;
         }
         console.log(this.detalleimpuestootro);
+    }
+    agregardetalleimpuestoisc(indice,id){
+        let i=0;
+        this.detalleimpuesisc.id_impuesto=id;
+        while(i<this.impuestroisc.length){
+            if(this.impuestroisc[i].descripcion==null){
+                this.impuestroisc[i].descripcion="acepted";    
+            }
+            i++;
+        }
+        this.impuestroisc[indice].descripcion=null; 
+        console.log(this.detalleimpuesisc);
+        console.log(this.impuestroisc);
+    }
+    quitardetalleimpuestoisc(indice){
+        this.detalleimpuesisc.id_impuesto=null;
+        this.impuestroisc[indice].descripcion="acepted";   
     }
     mostarriname(file: FileList,fileInput: any){
         this.filear=document.getElementById('image');
@@ -243,9 +271,10 @@ export class ProductosComponent{
         }
     }
     mostratablaimpuestos(){
-        this.tablaimpuestos();
-        this.getotro();
         this.mostratablaotros=1;
+    }
+    ocultartablaimpuestos(){
+        this.mostratablaotros=null;
     }
     isertarimagen(nombre){
         nombre=this.agregarpro.nombre_producto;  
@@ -276,7 +305,7 @@ export class ProductosComponent{
     insertardetalleimpuesto(resimpu){
         this._detalleimpuestoservice.detalleimpuestosadd(resimpu).subscribe(
             res=>{
-
+                
             },
             err=>{
                 console.log(err);
@@ -294,6 +323,10 @@ export class ProductosComponent{
             this.insertardetalleimpuesto(this.detalleimpuestootro[indice])
             indice=indice+1;
         }
+    }
+    insertarisc(){
+        console.log(this.detalleimpuesisc);
+        this.insertardetalleimpuesto(this.detalleimpuesisc)
     }
     insertareditimage(id){
         if(this.filesToEdit==null){
@@ -342,6 +375,17 @@ export class ProductosComponent{
             }
         );
     }
+    getisc(){
+        this._ImpuestoService.getisc().subscribe(
+            res=>{
+                this.impuestroisc=res;
+                console.log(res);
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        );
+    }
     aparecerunidad(id){
         this.unidad=id;
         console.log(this.unidad);
@@ -364,13 +408,14 @@ export class ProductosComponent{
         {
             this.traerimpuestosotro(id);
             this.treerimpuestosigv(id);
+            this.traerimpuestosisc(id);
             this._productoservice.SeleccionarProducto(this.modificarproducto).subscribe(
                 result=>{
                     this.editproducto=result;
                     console.log(result);
                     this.imageedit=this.url+'/imagenesproductos/'+this.editproducto.imagen;
                     this.geteditotro();
-                    
+                    this.geteditisc();
                 },
                 error=>{
                     console.log(<any>error);
@@ -390,7 +435,6 @@ export class ProductosComponent{
             res=>{
                 this.impuestroeditotro=res;
                 
-                console.log(this.impuestroeditotro.length)
 
                 while(indice<this.impuestroeditotro.length){
                     while(indice2<this.editarimpuestootro.length){
@@ -412,6 +456,30 @@ export class ProductosComponent{
             }
         );
     }
+    geteditisc(){
+        let i=0;
+        this._ImpuestoService.getisc().subscribe(
+            res=>{
+                this.impuestroeditisc=res;
+                console.log(this.impuestroeditisc.length)
+                
+                while(i<this.impuestroeditisc.length){
+                    console.log(this.editisc[0].id_impuesto)
+                    if(this.impuestroeditisc[i].id==this.editisc[0].id_impuesto){
+                        console.log("entro");
+                        this.impuestroeditisc[i].descripcion=null;
+                    }
+                    i++;
+                }
+                console.log(this.impuestroeditisc)
+
+            },
+            err=>{
+                console.log(<any>err)
+            }
+            
+        );
+    }
     traerimpuestosotro(id){
         let indice=0;
    
@@ -423,7 +491,17 @@ export class ProductosComponent{
                     this.editarimpuestootro.push(this.editotro[indice])
                     indice=indice+1;
                 }
-                console.log(this.editarimpuestootro.length);
+            },
+            err=>{
+                console.log(err)
+            }
+        );
+    }
+    traerimpuestosisc(id){
+        this._detalleimpuestoservice.seleccionardetealleisc(id).subscribe(
+            res=>{
+                this.editisc=res;
+                console.log(this.editisc);
             },
             err=>{
                 console.log(err)
@@ -431,14 +509,11 @@ export class ProductosComponent{
         );
     }
     agregardetalleotro(index,id){
-        console.log(index+','+id);
         let indice=0;
         let repe=0;
         this.impuestroeditotro[index].id=null;
         while(indice<this.editarimpuestootro.length){
-            console.log(indice);
             if(this.editarimpuestootro[indice].id_impuesto===id){
-                console.log('entro');
                 this.editarimpuestootro[indice].estado=true;
                 repe=1;
             }
@@ -446,7 +521,6 @@ export class ProductosComponent{
         }
        
         if(repe===0){
-            console.log(repe);
             this.detalleimpuesotro.id=index;
             this.detalleimpuesotro.id_impuesto=id;
             this.detalleimpuesotro.id_producto=this.modificarproducto;
@@ -460,7 +534,6 @@ export class ProductosComponent{
     }
     quitardetalleotro(index){
         
-        console.log(index);
         let indice=0;
 
         while(indice<this.editarimpuestootro.length){
@@ -475,6 +548,87 @@ export class ProductosComponent{
         indice=0;
         console.log(this.editarimpuestootro);
         console.log(this.impuestroeditotro);
+    }
+    agregardetalleisc(indice,id){
+        let i=0,j=0,validar=null;
+        while(i<this.impuestroeditisc.length){
+            
+            if(this.impuestroeditisc[i].descripcion==null){
+                this.impuestroeditisc[i].descripcion="acepted"
+                while(j<this.editarimpuestoisc.length){
+                    if(this.impuestroisc[i].id==this.editarimpuestoisc[j].id_impuesto){
+                        validar=j;
+                    }
+                    j++;
+                }
+                j=0;
+                if(validar!=null){
+                    this.editarimpuestoisc[validar].estado=false;
+                }else{
+                    this.detalleimpuesisc.id_impuesto=this.impuestroisc[i].id;
+                    this.detalleimpuesisc.id_producto=this.modificarproducto;
+                    this.detalleimpuesisc.estado=false;
+                    this.editarimpuestoisc.push(this.detalleimpuesisc)
+                    this.detalleimpuesisc=new DetalleImpuestoModel(null,null,null,null);
+                }
+                validar=null;
+            }
+            
+            i++;
+        }
+        this.impuestroeditisc[indice].descripcion=null;
+        while(j<this.editarimpuestoisc.length){
+            if(this.editarimpuestoisc[j].id_impuesto==id){
+                validar=j;
+            }
+            j++;
+        }
+
+        if(validar!=null){
+            this.editarimpuestoisc[validar].estado=true
+        }else{
+            this.detalleimpuesisc.id_impuesto=id;
+            this.detalleimpuesisc.id_producto=this.modificarproducto;
+            this.detalleimpuesisc.estado=true;
+            this.editarimpuestoisc.push(this.detalleimpuesisc)
+            this.detalleimpuesisc=new DetalleImpuestoModel(null,null,null,null);
+        }
+        console.log(this.editarimpuestoisc);
+    }
+    quitardetalleisc(indice){
+        let i=0,validar=null;
+        this.impuestroeditisc[indice].descripcion="acepted";
+        while(i<this.editarimpuestoisc.length){
+            if(this.editarimpuestoisc[i].id_impuesto==this.impuestroisc[indice].id){
+                validar=i;
+            }
+            i++;
+        }
+        if(validar!=null){
+            this.editarimpuestoisc[validar].estado=false;
+        }else{
+            this.detalleimpuesisc.id_impuesto=this.impuestroisc[indice].id;
+            this.detalleimpuesisc.id_producto=this.modificarproducto;
+            this.detalleimpuesisc.estado=false;
+            this.editarimpuestoisc.push(this.detalleimpuesisc)
+            this.detalleimpuesisc=new DetalleImpuestoModel(null,null,null,null);
+        }
+        console.log(this.editarimpuestoisc);
+    }
+    modificaciondelisc(){
+        let indice=0;
+        while(indice<this.editarimpuestoisc.length){
+            this._detalleimpuestoservice.detalleimpuestoseditotro(this.editarimpuestoisc[indice]).subscribe(
+                res=>{
+                    console.log(res)
+                },
+                err=>{
+                    console.log(<any>err);
+                }
+            );
+
+            indice=indice+1;
+        }
     }
     modificaciondelotro(){
         let indice=0;
@@ -538,6 +692,13 @@ export class ProductosComponent{
             this.editarimpuestoigv.splice(0,1)
         }
     }
+    limpiarediciondelisc(){
+        this.editisc=new DetalleImpuestoModel(null,null,null,null);
+        let indice=0;
+        while(indice<this.editarimpuestoisc.length){
+            this.editarimpuestoigv.splice(0,1)
+        }
+    }
     editarproduto(id){
         this.nombre =document.getElementById('firstName');
         //this.productos=new producto(0,'','','','',null);
@@ -559,6 +720,7 @@ export class ProductosComponent{
                     if(result.code===200){
                         this.modificaciondeligv();
                         this.modificaciondelotro();
+                        this.modificaciondelisc();
                         this.limpiar();
                         this.reconstruir();
                         this.modificarproducto=null;
@@ -593,6 +755,7 @@ export class ProductosComponent{
 
         this.detalleimpuesotro=new DetalleImpuestoModel(null,null,null,null);
         this.detalleimpuesigv=new DetalleImpuestoModel(null,null,null,null);
+        this.detalleimpuesisc=new DetalleImpuestoModel(null,null,null,null);
 
 
         this.editotro=new DetalleImpuestoModel(null,null,null,null);
@@ -600,6 +763,7 @@ export class ProductosComponent{
        
         this.limpiartablaimpuestos();
         this.limpiarediciondeligv();
+        this.limpiarediciondelisc();
         this.limpiarediciondelotro();
 
         if(this.detalleimpuestoigv.length>0){
@@ -666,6 +830,9 @@ export class ProductosComponent{
                     if(result.code==200){
                         this.insertarigv();
                         this.insertarotro();
+                        if(this.detalleimpuesisc.id_impuesto!=null){
+                            this.insertarisc();
+                        }
                         this.limpiar();
                         this.agregaralerta();
                         this.destruir();
@@ -753,14 +920,6 @@ export class ProductosComponent{
         },3000);
     }
 
-    tablaimpuestos(){
-        setTimeout(function(){
-            $(function(){
-                 $('#tablaimpuesto').DataTable();
-            });
-        },3000);
-    }
-
     aralerta(id){
         this.ident=id;
         this.modificarproducto=null;
@@ -799,8 +958,8 @@ export class ProductosComponent{
         $('#tablaimpuesto').DataTable().destroy();
     }
     reconstruirimpuesto(){
-        this.tablaimpuestos();
         this.getotro();
+        this.getisc();
     }
     modificaralerta(){
         swal({

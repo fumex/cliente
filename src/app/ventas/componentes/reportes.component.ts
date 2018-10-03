@@ -15,6 +15,10 @@ import {DetalleCaja} from '../modelos/detalle_cajas'
 import {DetalleVentasModel} from '../../ventas/modelos/detalle_ventas';
 import {DetalleVentasService} from '../services/DetalleVentas.service'
 import { VentasModel } from "../modelos/ventas";
+import {UsuarioService} from '../../usuarios/services/usuarios.service';
+import { environment } from "../../../environments/environment";
+import {conversordenumerosaletras} from '../services/numeroaletras.service';
+import {ImpuestoService} from '../../impuesto/services/impuesto.service'
 
 declare var jQuery:any;
 declare var $:any;
@@ -23,12 +27,14 @@ declare var swal:any;
 @Component({
     selector:'cajasabiertas',
     templateUrl:'../views/reportes.html',
-    providers:[CajasService,ToastService,SucursalService,DetalleVentasService]
+    providers:[CajasService,ToastService,SucursalService,DetalleVentasService,conversordenumerosaletras]
 })
 export class ReportesComponent{
+    public fecha;
     public user:any;
     public titulo;
     public modal;
+    public modal2;
     public year=null;
     public mes=null;
     public nombremes=null;
@@ -39,12 +45,12 @@ export class ReportesComponent{
     public primerdia;
     public ultimodia;
     public cantidadcambiomes=0;
-    public ventas:VentasModel;
+    public ventas:Array<VentasModel>=[];
     public vervpd=null;
     public vervpa=null;
     public verda=null;
     public vercajas=null;
-
+    public verhomes=null;
     public diaactual=null;
     public nombredia=null
     public matrizdia=new Array(7);
@@ -54,13 +60,35 @@ export class ReportesComponent{
     public detcaja:DetalleCaja;
     public detallecajas:Array<DetalleCaja>=[];
     public mostarventas:Array<any>=[];
+    public usuariosventas:Array<any>=[];
+    public ventassinfiltro:Array<any>=[];
+    public url=environment.api_url+'/imagenes'; 
+
+    public vermenuusu=null;
+
+    public productos:Array<any>=[];
+    public ventasproductos:Array<any>=[];
+    public detalleproductos:Array<any>=[];
+    public totalproductos:Array<any>=[];
+    public nombreproducto;
+    public getpventas:Array<any>=[];
+    public impuestos:Array<any>=[];
+    public nombreserie=null;
+    public letrado=null;
+    public fechaventa=null;
+    public getimpuestos:Array<any>=[];
+    public total=0;
+    public subtotal=0;
     constructor(
         private _cajasservice:CajasService,
         private _SucursalService:SucursalService,
         private _DettaleUsuarioService:DettaleUsuarioService,
         public _DetalleCajasUsuarioService:DetalleCajasUsuarioService,
         private _DetalleVentasService:DetalleVentasService,
+        private conversor:conversordenumerosaletras,
         private _VentasService:VentasService,
+        private _UsuarioService:UsuarioService,
+        private _ImpuestoService:ImpuestoService,
         private auth:AuthService,
         private toaste:ToastService,
         public toastr: ToastsManager,
@@ -75,15 +103,26 @@ export class ReportesComponent{
         this.detcaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null)
         this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id);
         this.modal=document.getElementById('myModal');
+        this.modal2=document.getElementById('myModal2');
         window.onclick = function(event) {
-            if (event.target == this.document.getElementById('myModal')) {
+            if (event.target == this.document.getElementById('myModal') || event.target == this.document.getElementById('myModal2')) {
                 this.document.getElementById('myModal').style.display = "none";
+                this.document.getElementById('myModal2').style.display = "none";
             }
         }
+        var f=new Date();
+        this.dia=f.getDate();
+        this.mes=f.getMonth();
+        this.year=f.getFullYear();
         this.getsucursales();
         this.matrizdia=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
         this.matrizmeses[0]=["Enero",31];
-        this.matrizmeses[1]=["febrero",28];
+        if(this.mes==1 &&  this.year%4==0){
+            this.matrizmeses[1]=["febrero",29];
+        }else{
+            this.matrizmeses[1]=["febrero",28];
+        }
+       
         this.matrizmeses[2]=["marzo",31];
         this.matrizmeses[3]=["abril",30];
         this.matrizmeses[4]=["mayo",31];
@@ -96,20 +135,263 @@ export class ReportesComponent{
         this.matrizmeses[11]=["diciembre",31];
 
         this.meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-        var f=new Date();
         console.log(f.getDay() + ", " + f.getDate() + " de " + f.getMonth()+ " de " + f.getFullYear());
-        this.dia=f.getDate();
-        this.mes=f.getMonth();
-        this.year=f.getFullYear();
+        
         this.nombremes=this.meses[this.mes];
         this.calendario(f.getDay(),f.getDate(),f.getMonth(),f.getFullYear());
-        this.modal=document.getElementById('myModal');
-        window.onclick = function(event) {
-            if (event.target == this.document.getElementById('myModal')) {
-                this.document.getElementById('myModal').style.display = "none";
-            }
-        }
     }
+    volverusu(){
+        this.vervpd=null;
+        this.vermenuusu=1;
+        this.destruirtablaventas();
+    }
+    verproductos(){
+        let i=0,j=0,validado=null;
+        
+        this._VentasService.getproductosvendidos(this.fecha,this.user.id).subscribe(
+            res=>{
+                console.log(res)
+                this.totalproductos=res;
+                while(i<res.length){
+                    if(this.productos.length>0){
+                        while(j<this.productos.length){
+                            if(res[i].nombre_producto==this.productos[j].nombre_producto){
+                                validado=j;
+                            }
+                            j++;
+                        }
+
+                        if(validado!=null){
+                            this.productos[validado].cantidad+=res[i].cantidad;
+                        }else{
+                            this.productos.push({
+                                nombre_producto:res[i].nombre_producto,
+                                nombre_categoria:res[i].nombre_categoria,
+                                unidad:res[i].unidad,
+                                descripcion:res[i].descripcion,
+                                cantidad:res[i].cantidad
+                            })
+                        }
+                    }else{
+                        this.productos.push({
+                            nombre_producto:res[i].nombre_producto,
+                            nombre_categoria:res[i].nombre_categoria,
+                            unidad:res[i].unidad,
+                            descripcion:res[i].descripcion,
+                            cantidad:res[i].cantidad
+                        })
+                    }
+                    j=0;
+                    i++;
+                }
+                this.tablaproductos();
+                console.log(this.productos)
+                console.log(this.totalproductos);
+            },
+            err=>{
+                console.log(<any>err)
+            }
+        )
+        
+
+    }
+    traerimpuestos(){
+        this._ImpuestoService.getImpuestos().subscribe(
+            res=>{
+                this.getimpuestos=res;
+                console.log(this.getimpuestos)
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
+    }
+    verdetalleproductos(array){
+        let i=0,j=0,k=0,validar=null,valortot=0;
+        this._ImpuestoService.getImpuestos().subscribe(
+            res=>{
+                this.getimpuestos=res;
+                console.log(this.getimpuestos)
+                if(array.serie.charAt(0)=="B"){
+                    this.nombreserie="BOLETA"
+                }else{
+                    this.nombreserie="FACTURA"
+                }
+                console.log(array);
+                this.letrado=this.conversor.NumeroALetras(parseFloat(array.total));
+                this.fechaventa=array.fecha.charAt(8)+array.fecha.charAt(9)+' de '+this.matrizmeses[parseInt(array.fecha.charAt(5)+array.fecha.charAt(6))][0]+' del ' +
+            
+                array.fecha.slice(0,-15);
+                while(i<this.totalproductos.length){
+                    if(this.totalproductos[i].serie_venta==array.serie){
+                    
+                        valortot=parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad);
+                        if(this.totalproductos[i].igv_id > 0 ){
+                                
+                            while(j<this.getimpuestos.length){
+                                if(this.getimpuestos[j].id==this.totalproductos[i].igv_id){
+                                    console.log('entro');
+                                    if(this.getimpuestos[j].nombre.toUpperCase()=="GRAVADOS"){
+                                        
+                                        while(k<this.impuestos.length){
+                                            if(this.impuestos[j].nombre.toUpperCase()=="IGV"){
+                                                validar=k;
+                                            }
+                                            k++
+                                        }
+                                        k=0;
+                                        valortot=(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))/(1+parseFloat(this.totalproductos[i].igv)/100);
+                                        this.subtotal+=valortot;
+                                        console.log(this.subtotal);
+                                        if(validar!=null){
+                                            this.impuestos[validar].total+=((parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))/(1+parseFloat(this.totalproductos[i].igv)/100))*(this.totalproductos[i].igv/100)
+                                        }else{
+                                            this.impuestos.push({
+                                                nombre:"IGV",
+                                                impuesto:this.totalproductos[i].igv,
+                                                total:(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))
+                                            })
+                                        }
+                                        validar=null;
+                                    }else{
+                                        while(k<this.impuestos.length){
+                                            if(this.impuestos[j].nombre==this.getimpuestos[j].nombre){
+                                                validar=k;
+                                            }
+                                            k++
+                                        }
+                                        k=0;
+                                        
+                                        if(validar!=null){
+                                            this.impuestos[validar].total+=parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad)
+                                        }else{
+                                            this.impuestos.push({
+                                                nombre:this.getimpuestos[j].nombre,
+                                                impuesto:this.totalproductos[i].igv,
+                                                total:parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad)
+                                            })
+                                        }
+                                        validar=null;
+                                    }
+                                
+                                }
+                                j++;
+                            }
+                            j=0;
+                        
+                        }
+                        if(this.totalproductos[i].isc_id > 0 ){
+                            while(j<this.getimpuestos.length){
+                                if(this.getimpuestos[j].id==this.totalproductos[i].isc_id){
+                                    while(k<this.impuestos.length){
+                                        if(this.impuestos[j].nombre==this.getimpuestos[j].nombre){
+                                            validar=k;
+                                        }
+                                            k++
+                                    }
+                                    k=0;
+                                    this.subtotal+=parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad)
+                                    if(validar!=null){
+                                        this.impuestos[validar].total+=(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))*(parseFloat(this.totalproductos[i].isc)/100);
+                                    }else{
+                                        this.impuestos.push({
+                                            nombre:this.getimpuestos[j].nombre,
+                                            impuesto:this.totalproductos[i].isc,
+                                            total:(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))*(parseFloat(this.totalproductos[i].isc)/100),
+                                        })
+                                    }
+                                    validar=null;
+                                }
+                                j++;
+                            }
+                            j=0;
+                        
+                        }
+                        if(this.totalproductos[i].otro_id > 0 ){
+                            while(j<this.getimpuestos.length){
+                                if(this.getimpuestos[j].id==this.totalproductos[i].otro_id  ){
+                                    while(k<this.impuestos.length){
+                                        if(this.impuestos[j].nombre==this.getimpuestos[j].nombre){
+                                            validar=k;
+                                        }
+                                            k++
+                                    }
+                                    k=0;
+                                    this.subtotal+=parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad)
+                                    if(validar!=null){
+                                        this.impuestos[validar].total+=(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))*(parseFloat(this.totalproductos[i].isc)/100);
+                                    }else{
+                                        this.impuestos.push({
+                                            nombre:this.getimpuestos[j].nombre,
+                                            impuesto:this.totalproductos[i].isc,
+                                            total:(parseFloat(this.totalproductos[i].precio_unitario)*parseFloat(this.totalproductos[i].cantidad))*(parseFloat(this.totalproductos[i].isc)/100),
+                                        })
+                                    }
+                                    validar=null;
+                                }
+                                j++;
+                            }
+                            j=0;
+                        
+                        }
+                        this.detalleproductos.push({
+                            nombre:this.totalproductos[i].nombre_producto,
+                            descuento:this.totalproductos[i].descuento,
+                            precio_unitario:this.totalproductos[i].precio_unitario,
+                            cantidad:this.totalproductos[i].cantidad,
+                            valor_venta:valortot,
+
+                        }) 
+                    }
+                    i++;
+                }
+                this.sumartotall();
+                console.log(this.detalleproductos)
+                console.log(this.letrado)
+                this.getpventas.push(array);
+                console.log(this.getpventas)
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+    }
+    sumartotall(){
+        let i=0;
+        this.total=this.subtotal;
+        while(i<this.impuestos.length){
+            this.total+=this.impuestos[i].total;
+            i++;
+        }
+
+    }
+    filtarporusuario(id){
+        this.vervpd=1;
+        this.vermenuusu=null;
+        let i=0;
+        let j=0;
+        while(0<this.ventas.length){
+            this.ventas.splice(0,1);
+        }
+        this._VentasService.getventaporusuario(this.fecha,id).subscribe(
+            res=>{
+                this.destruirtablaventas();
+                console.log(res);
+                while(i<res.length){
+                    res[i].pago_efectivo=parseFloat(res[i].pago_tarjeta)+parseFloat(res[i].pago_efectivo);
+                    this.ventassinfiltro.push(res[i]);
+                    this.ventas.push(res[i]);
+                    i++;
+                }
+                this.reconstruirtablaventas();
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+        
+    }
+    
     getsucursales(){
         let i=0;
         let j=0;
@@ -170,6 +452,14 @@ export class ReportesComponent{
     ocultarcajas(){
         this.vercajas=null;
     }
+    verhome(){
+        
+        if(this.verhomes==1){
+            this.verhomes=null;
+        }else{
+            this.verhomes=1;
+        }
+    }
     verventasporcaja(id){
         let i=0;
         console.log(id);
@@ -181,9 +471,10 @@ export class ReportesComponent{
                 while(i<res.length){
                     res[i].pago_efectivo=parseInt(res[i].pago_efectivo);
                     res[i].pago_tarjeta=parseInt(res[i].pago_tarjeta);
+                    this.ventas.push(res[i]);
                     i++;
                 }
-                this.ventas=res;
+               
             },
             err=>{
                 console.log(<any>err)
@@ -196,8 +487,24 @@ export class ReportesComponent{
         this.vervpd=null;
         this.verda=null;
         this.vercajas=null;
+        this.vermenuusu=null;
+        this.limpiarventas();   
+        this.limpiarproductos();
         this.destruirtabladcajas();
-        this.destruirtabladcajas();
+        this.destruirtablaventas();
+    }
+    limpiarproductos(){
+        while(0<this.productos.length){
+            this.productos.splice(0,1);
+        }
+    }
+    limpiarventas(){
+        while(0<this.ventas.length){
+            this.ventas.splice(0,1);
+        }
+        while(0<this.ventassinfiltro.length){
+            this.ventassinfiltro.splice(0,1);
+        }
     }
     volvera_d_cajas(){
         this.verda=1;
@@ -229,6 +536,41 @@ export class ReportesComponent{
         );
         this.destruirtabladcajas();
         this.tabladetallecajas();
+    }
+    traerusuariosporsucursal(){
+        let i=0,j=0,k=0,ver=0;
+        this._UsuarioService.getuserssucursals(this.user.id).subscribe(
+            res=>{
+                while(i<res.length){
+                    while(j<res[i].length){
+                        if(this.usuariosventas.length>0){
+                            while(k <this.usuariosventas.length){
+                                if(this.usuariosventas[k].id==res[i][j].id){
+                                    ver++
+                                }
+                               
+                                k++;
+                            }
+                            if(ver<1){
+                                this.usuariosventas.push(res[i][j])
+                            }
+                            ver=0;
+                            k=0;
+                        }else{
+                            this.usuariosventas.push(res[i][j])
+                        }
+                        
+                        j++
+                    }
+                    j=0;
+                    i++;
+                }
+                console.log(this.usuariosventas);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
     }
     pasaranumero(palabra){
         let grupnum=0;
@@ -360,13 +702,13 @@ export class ReportesComponent{
     }
     
     getventasfecha(dia){
-        console.log(this.primerdia,'-',this.ultimodia);
-        console.log(this.matrizdia);
-        console.log((this.primerdia+dia-1)%7);
+        
+        this.traerusuariosporsucursal();
+        let i=0;
         this.nombredia=this.matrizdia[(this.primerdia+dia-1)%7];
         this.diaactual=dia;
-        console.log(this.nombredia);
-        this.vervpd=1;
+        //this.vervpd=1;
+        this.vermenuusu=1;
         let nmes=null;
         let ndia=null;
         if(this.mes+1>9){
@@ -379,27 +721,69 @@ export class ReportesComponent{
         }else{
             ndia="0"+parseInt(this.dia+1);
         }
-        let fecha=this.year+'-'+nmes+'-'+dia;
-        this._VentasService.getventasfecha(fecha).subscribe(
+        this.fecha=this.year+'-'+nmes+'-'+dia;
+        this.verproductos();
+        this._VentasService.getventasfecha(this.fecha,this.user.id).subscribe(
             res=>{
                 
-                this.ventas=res;
-                this.ventas.pago_efectivo+=this.ventas.pago_tarjeta;
-
+                while(i<res.length){
+                    res[i].pago_efectivo=parseFloat(res[i].pago_tarjeta)+parseFloat(res[i].pago_efectivo);
+                    this.ventassinfiltro.push(res[i]);
+                    this.ventas.push(res[i]);
+                    i++;
+                }
+                
                 console.log(this.ventas);
             },
             err=>{
                 console.log(<any>err);
             }
         );
-        this.destruirtablaventas();
-        this.reconstruirtablaventas();
     }
     mostrardetalleventas(arregloventa){
         this.modal.style.display = "block";
         this.getdetalleventas(arregloventa.id);
         this.getventa=arregloventa;
         console.log(this.getventa);
+    }
+    mostrarventasdeproducto(nombre){
+        let i=0;
+        this.nombreproducto=nombre;
+        this.limpiarventasproductos();
+        this.modal2.style.display = "block";
+        while(i<this.totalproductos.length){
+            if(this.totalproductos[i].nombre_producto==nombre){
+                this.ventasproductos.push({
+                    fecha:this.totalproductos[i].created_at,
+                    serie:this.totalproductos[i].serie_venta,
+                    caja:this.totalproductos[i].nombre_caja,
+                    total:this.totalproductos[i].total,
+                    total_recivido:parseFloat(this.totalproductos[i].pago_efectivo)+parseFloat(this.totalproductos[i].pago_tarjeta),
+                    vuelto:(parseFloat(this.totalproductos[i].pago_efectivo)+parseFloat(this.totalproductos[i].pago_tarjeta))-parseFloat(this.totalproductos[i].total),
+                    numero_doc:this.totalproductos[i].nro_documento,
+                    direccion:this.totalproductos[i].direccion,
+                    cliente:this.totalproductos[i].nombre_cliente
+                })
+            }
+            i++;
+        }
+        
+
+        console.log(nombre)
+    }
+    limpiarventasproductos(){
+        while(0<this.ventasproductos.length){
+            this.ventasproductos.splice(0,1);
+        }
+    }
+    limpiardetalleproductos(){
+        while(0<this.detalleproductos.length){
+            this.detalleproductos.splice(0,1)
+        }
+    }
+    cerrarmodal(){
+        this.modal.style.display = "none";
+        this.modal2.style.display = "none";
     }
     getdetalleventas(id){
         let i=0;
@@ -421,9 +805,7 @@ export class ReportesComponent{
             }
         );
     }
-    cerrarmodal(){
-        this.modal.style.display = "none";
-    }
+    
    
     alertaerror(){
         swal({
@@ -486,8 +868,6 @@ export class ReportesComponent{
         },2000);
     }
     tablaventas(){
-        //this.mostrar();
-       
         setTimeout(function(){
             $(function(){
                  $('#tablaventas').DataTable({
@@ -497,7 +877,19 @@ export class ReportesComponent{
                      ]
                  });
             });
-        },3000);
+        },1500);
+    }
+    tablaproductos(){
+        setTimeout(function(){
+            $(function(){
+                 $('#tablaproductos').DataTable({
+                     dom: 'Bfrtip',
+                     buttons: [
+                         'copy', 'csv', 'excel', 'pdf', 'print'
+                     ]
+                 });
+            });
+        },1500);
     }
     tabladetallecajas(){
         //this.mostrar();
@@ -514,6 +906,11 @@ export class ReportesComponent{
             });
         },3000);
     }
+    destruirtablaproductos(){
+        var table = $('#tablaproductos').DataTable();
+        table .clear() ;
+        $('#tablaproductos').DataTable().destroy();
+    }
     destruirtabladcajas(){
         var table = $('#tabladcajas').DataTable();
         table .clear() ;
@@ -528,7 +925,9 @@ export class ReportesComponent{
         this.tablaventas();
         
     }
-    
+    reconstruirtablaproductos(){
+        this.tablaproductos();  
+    }
     destruir(){	
         var table = $('#mytable').DataTable(); table .clear() ;
         $('#mytable').DataTable().destroy();

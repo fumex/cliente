@@ -70,6 +70,7 @@
 42. responsive
 
 */
+
 @media (min-width: 1301px){
   .modal {
     display: none;
@@ -141,7 +142,12 @@
   text-decoration: none;
   cursor: pointer;
 }
-
+.tablelastcolumn{
+  font-family: cursive;
+  font-style: italic;
+  font-size: 15px;
+  text-align: left !important;
+}
 .montocierre{
   font-size: 20px;
   color: #119ef1;
@@ -220,6 +226,11 @@
   width: 142px;
   height: 142px;
   border-radius: 50%;
+}
+.usuarios_reportes_imagen{
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
 }
 .productos_ventas_imagen{
   width: 50px;

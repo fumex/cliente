@@ -14,5 +14,8 @@ export class DetalleVentasModel{
         public descuento_maximo:number,
         public descuento:number,
         public descuento_cant:number,
+        public igv_id:number,
+        public isc_id:number,
+        public otro_id:number,
 	){}
 }
