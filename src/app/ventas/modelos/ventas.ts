@@ -11,5 +11,10 @@ export class VentasModel{
         public fecha:Date ,
         public estado: boolean,
         public id_usuario:number,
+        public id_moneda:number,
+        public igv:number,
+        public isc:number,
+        public otro:number,
+        public tipopago:number,
 	){}
 }

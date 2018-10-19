@@ -9,5 +9,8 @@ export class producto{
 		public id_user:number,
 		public id_unidad: number,
 		public imagen: string,
+		public marca: string,
+		public modelo: string,
+		public observaciones: string,
 	){}
 }

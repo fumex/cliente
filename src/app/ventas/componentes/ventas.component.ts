@@ -108,8 +108,8 @@ export class VentasComponent{
         this.user=this.auth.getUser();
         this.titulo="Ventas";
         this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null,null);
-        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0,0,0,0,0);
-        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id);
+        this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0,0,0,0,0,0,0,0);
+        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id,0,null,null,null,0);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
         this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
         this.igv=0;
@@ -133,6 +133,7 @@ export class VentasComponent{
         this.getmonedas();
         this.gettipopago();
     }
+    
     cerrarcaja(){
         this.verpago=null;
         this.tabs=document.getElementById('tabcierre');
@@ -348,20 +349,23 @@ export class VentasComponent{
                         if(arreglopro.preg[l].tipo=="IGV"){
                             this.detallev.igv=(parseFloat(arreglopro.precio_venta)/(1+parseFloat(arreglopro.preg[l].porcentaje)/100))*(parseFloat(arreglopro.preg[l].porcentaje)/100);
                             this.detallev.igv_id=arreglopro.preg[l].id;
+                            this.detallev.igv_porcentage=arreglopro.preg[l].porcentaje;
                         }
                         if(arreglopro.preg[l].tipo=="ISC"){
                             this.detallev.isc=parseFloat(arreglopro.precio_venta)*(arreglopro.preg[l].porcentaje/100);
                             this.detallev.isc_id=arreglopro.preg[l].id;
+                            this.detallev.isc_porcentage=arreglopro.preg[l].porcentaje;
                         }
                         if(arreglopro.preg[l].tipo=="OTRO"){
                             this.detallev.otro=parseFloat(arreglopro.precio_venta)*(arreglopro.preg[l].porcentaje/100);
                             this.detallev.otro_id=arreglopro.preg[l].id;
+                            this.detallev.otro_porcentage=arreglopro.preg[l].porcentaje;
                         }
                     }
                 }
                
                 this.detalleventas.push(this.detallev);
-                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null,0,0,0,0,0,0);
+                this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,null,null,null,null,0,0,0,0,0,0,0,0,0);
     
             }
             if(this.boleta==true){
@@ -438,6 +442,7 @@ export class VentasComponent{
        
     }
     guardarventas(){
+        console.log(this.impuestos)
         this._VentasService.GuardarVenta(this.ventas).subscribe(
             res=>{
                 console.log(res);
@@ -506,23 +511,44 @@ export class VentasComponent{
         }
     
     }
+    vermoneda(){
+        console.log(this.ventas);
+    }
     seleccionartipo(){
-        this.combo=document.getElementById('comboselect');
-        console.log(this.combo.value);
-        this.nombretipo=this.combo.value;
-        if(this.combo.value==="Efectivo"){
+        let i=0;
+        while(i<this.pago.length){
+            console.log(this.pago[i]);
+            if(this.ventas.tipopago==this.pago[i].id){
+                this.combo=this.pago[i].tipo;
+                this.nombretipo=this.pago[i].tipo.toUpperCase();
+            }
+            i++;
+        }
+        console.log(this.nombretipo);
+        console.log(this.combo.toUpperCase());
+        if(this.combo.toUpperCase()=="EFECTIVO"){
+            console.log('entro');
             this.tipotrageta=null;
             this.ventas.pago_tarjeta=0;
         }else{
+            this.ventas.pago_tarjeta=Math.round( this.total *100)/100;
+            this.ventas.pago_efectivo=0;
+            this.tipotrageta=1;
+        }
+        /*
+        console.log(this.combo.value);
+        
+        if(this.combo.value==="Efectivo"){
+            
+        }else{
             if(this.combo.value==='Tarjeta'){
-                this.ventas.pago_tarjeta=Math.round( this.total *100)/100;
-                this.ventas.pago_efectivo=0;
+                
             }else{
                 this.ventas.pago_tarjeta=0;
                 this.ventas.pago_efectivo=0;
             }
-            this.tipotrageta=1;
-        }
+            
+        }*/
         
     }
     sumarcuadros(){
@@ -669,6 +695,13 @@ export class VentasComponent{
         this.gettipopago();
         this.verpago=1;
     }
+    volveraproductos(){
+        this.ventas.id_moneda=0;
+        this.tabs=document.getElementById('tabini');
+        this.tabs.click();
+        this.verpago=null;
+        
+    }
     limpiar(){
         this.inps=document.getElementById('firstName');
         this.inps.value="";
@@ -693,7 +726,7 @@ export class VentasComponent{
         while(i<this.impuestos.length){
             this.impuestos.splice(0,1);
         }
-        this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id);
+        this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id,0,null,null,null,0);
     }
 
 

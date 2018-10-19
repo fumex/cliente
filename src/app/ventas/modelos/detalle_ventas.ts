@@ -16,6 +16,9 @@ export class DetalleVentasModel{
         public descuento_cant:number,
         public igv_id:number,
         public isc_id:number,
-        public otro_id:number,
+        public otro_id:number, 
+        public igv_porcentage:number,
+        public isc_porcentage:number,
+        public otro_porcentage:number, 
 	){}
 }

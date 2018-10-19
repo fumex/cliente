@@ -110,20 +110,24 @@
                                                     <tr>
                                                     <th></th>
                                                     <th>producto</th>
-                                                    <th>cantidad de medida</th>
                                                     <th>unidad de medida</th>
+                                                    <th>Marca</th>
+                                                    <th>Modelo</th>
                                                     <th>categoria</th>
                                                     <th>descripcion</th>
+                                                    <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tfoot>
                                                     <tr>
                                                     <th></th>
                                                     <th>producto</th>
-                                                    <th>cantidad de medida</th>
                                                     <th>unidad de medida</th>
+                                                    <th>Marca</th>
+                                                    <th>Modelo</th>
                                                     <th>categoria</th>
                                                     <th>descripcion</th>
+                                                    <th></th>
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>  
@@ -133,10 +137,17 @@
                                                         <div *ngIf="producto.id==quitar"><button (click)="deletepedido($indice)" class="btn btn-success btn-flat btn-addon btn-sm m-b-5 m-l-5"><i class="fa fa-check"></i></button></div>
                                                     </td>
                                                     <td >{{producto.nombre_producto}} </td>
-                                                    <td style="text-align: center">{{producto.cantidad}}</td>
+                                                    <td *ngIf="producto.marca!=null">{{producto.marca}}</td>
+                                                    <td *ngIf="producto.modelo!=null">{{producto.modelo}}</td>
+                                                    <td *ngIf="producto.marca==null" style="text-align: center">---</td>
+                                                    <td *ngIf="producto.modelo==null" style="text-align: center">---</td>
                                                     <td style="text-align: center"><strong>{{producto.abreviacion}}</strong></td>
                                                     <td style="text-align: center">{{producto.nombre}}</td>
                                                     <td style="text-align: center">{{producto.descripcion}}</td>
+                                                    <td style="border:solid 0px;background: white;text-align: center">
+                                                        <a class="fa fa-question-circle" style="color: green" *ngIf="producto.observaciones!=null" title="Observaciones :{{producto.observaciones}}"></a> 
+                                                        <a class="fa fa-question-circle" style="color: gray" *ngIf="producto.observaciones==null" title="no hay observaciones"></a>
+                                                    </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
