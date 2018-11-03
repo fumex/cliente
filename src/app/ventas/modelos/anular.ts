@@ -9,5 +9,9 @@ export class AnularModel{
 		public correccion_ruc: string,
 		public id_usuario:number, 
 		public serie_nota:string,
+		public descuento: number,
+		public serie_venta_remplazo:string,
+		public email:string,
+		public letrado:string,
 	){}
 }

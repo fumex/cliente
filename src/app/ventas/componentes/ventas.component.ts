@@ -347,9 +347,15 @@ export class VentasComponent{
                 if(this.boleta!=true){
                     for(let l=0;l< arreglopro.preg.length;l++){
                         if(arreglopro.preg[l].tipo=="IGV"){
-                            this.detallev.igv=(parseFloat(arreglopro.precio_venta)/(1+parseFloat(arreglopro.preg[l].porcentaje)/100))*(parseFloat(arreglopro.preg[l].porcentaje)/100);
-                            this.detallev.igv_id=arreglopro.preg[l].id;
-                            this.detallev.igv_porcentage=arreglopro.preg[l].porcentaje;
+                            if(arreglopro.preg[l].nombre.toUpperCase()==="GRAVADOS"){
+                                this.detallev.igv=(parseFloat(arreglopro.precio_venta)/(1+parseFloat(arreglopro.preg[l].porcentaje)/100))*(parseFloat(arreglopro.preg[l].porcentaje)/100);
+                                this.detallev.igv_id=arreglopro.preg[l].id;
+                                this.detallev.igv_porcentage=arreglopro.preg[l].porcentaje;
+                            }else{
+                                this.detallev.igv=parseFloat(arreglopro.precio_venta);
+                                this.detallev.igv_id=arreglopro.preg[l].id;
+                                this.detallev.igv_porcentage=arreglopro.preg[l].porcentaje;
+                            }
                         }
                         if(arreglopro.preg[l].tipo=="ISC"){
                             this.detallev.isc=parseFloat(arreglopro.precio_venta)*(arreglopro.preg[l].porcentaje/100);

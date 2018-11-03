@@ -15,19 +15,11 @@
                                 <div class="col-sm-4">
                                     <label class="control-label">Tipo de Nota de Credito:</label>    
                                 </div>
-                                <div class="col-sm-6" *ngIf="veritems==null">
+                                <div class="col-sm-6" >
                                     <div class="inner-addon left-addon">
                                         <i *ngIf="anular.tipo_nota!=null && tipo.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="anular.tipo_nota==null && tipo.touched" style="color: red" class="fa fa-times"></i>
-                                        <select class="form-control custom-select" #tipo="ngModel" name="tipo" [(ngModel)]="anular.tipo_nota" required>
-                                            <option *ngFor="let tip of tiponotas ; let $index=index"  value='{{tip[1]}}' >{{tip[0]}}</option>   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" *ngIf="veritems!=null">
-                                    <div class="inner-addon left-addon">
-                                        <i style="color: green" class="fa fa-check"></i>
-                                        <select class="form-control custom-select" #tipo="ngModel" name="tipo"  [(ngModel)]="anular.tipo_nota" disabled>
+                                        <select id="combotipo" class="form-control custom-select" #tipo="ngModel" name="tipo" [(ngModel)]="anular.tipo_nota" required>
                                             <option *ngFor="let tip of tiponotas ; let $index=index"  value='{{tip[1]}}' >{{tip[0]}}</option>   
                                         </select>
                                     </div>
@@ -83,9 +75,38 @@
                         <div class="col-lg-12">
                             <hr>
                         </div>
-                        <div class="col-sm-12" style="text-align: center" *ngIf="veritems==null">
+                        <div class="col-sm-12" style="text-align: center" *ngIf="veritems==null && vernuevoruc==null">
                             <button (click)="verificarserie('ir')" [disabled]="anular.serie==null || anular.numero==null || anular.motivo==null || anular.tipo_nota==null" class="btn btn-info"> <i class="fa fa-check"></i> Continuar</button>
                             <button (click)="limpiar()" class="btn btn-danger"> <i class="fa fa-ban"></i> limpiar</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 row" *ngIf="vernuevoruc!=null && verresumenfinal==null">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-12">
+                            <div class="row p-t-1">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <a style="font-size: 12px"><strong>Ingrese el RUC coregido</strong></a>
+                                </div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-3" >RUC :</div>
+                                <div class="col-sm-5" >
+                                    <div class="inner-addon left-addon" >
+                                        <i *ngIf="anular.correccion_ruc!=null && ruc.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="ruc.touched && !ruc.valid" style="color: red" class="fa fa-times"></i>
+                                        <input type="number" max="12" #ruc="ngModel" name="ruc" [(ngModel)]="anular.correccion_ruc" class="form-control" required  pattern="[0-9]{12}"> 
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="col-sm-12" style="text-align: center" >
+                            <button (click)="cancelar02()" class="btn btn-danger"> <i class="fa fa-ban"></i> Cancelar</button>
+                            <button (click)="finalizar2()" class="btn btn-success" [disabled]="!ruc.valid"> <i class="ti-arrow-right"></i> Continuar</button>
                         </div>
                     </div>
                     <div class="col-lg-12 row" *ngIf="veritems!=null && verresumenfinal==null">
@@ -113,8 +134,10 @@
                                                     style="text-align: center;cursor: pointer;box-shadow: inset 0px -4px 10px 0.3px #70fa4555"></i>
                                                 </td>
                                                 <td *ngIf="veritems==7">
-                                                    <i class="fa fa-square-o" 
+                                                    <i *ngIf="dproductos.id_venta!=null" class="fa fa-square-o" (click)="adddevolucion(dproductos)"
                                                     style="text-align: center;cursor: pointer;box-shadow: inset 0px -4px 10px 0.3px #3e8ff855"></i>
+                                                    <i *ngIf="dproductos.id_venta==null" class="fa fa-check-square-o" (click)="quitardevolvucion(dproductos)"
+                                                    style="text-align: center;cursor: pointer;box-shadow: inset 0px -4px 10px 0.3px #70fa4555"></i>
                                                 </td>
                                                 <td style="text-align: center"><strong>{{dproductos.nombre_producto}}</strong></td>
                                                 <td style="text-align: center">{{dproductos.cantidad}}</td>
@@ -199,59 +222,62 @@
                                             <tr >
                                                 <th >N°</th>
                                                 <th >DESCRIPCION</th>
-                                                <th >CANTIDAD</th>
+                                                <th *ngIf="anular.tipo_nota!='05'">CANTIDAD</th>
                                                 <th >DESCUENTO</th>
                                                 <th >PRECIO UNITARIO</th>
                                                 <th style="text-align: center" >VALOR VENTA</th>
                                             </tr>
                                         </thead>
-                                        <tbody *ngFor="let dproductos of d_ventas; let $index=index">  
+                                        <tbody *ngFor="let dproductos of d_ventasvarante; let $index=index">  
                                             <tr>
                                                 <td style="text-align: center">{{$index+1}}</td>
                                                 <td style="text-align: center"><strong>{{dproductos.nombre_producto}}</strong></td>
-                                                <td style="text-align: center">{{dproductos.cantidad}}</td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='05'">{{dproductos.cantidad}}</td>
                                                 <td style="text-align: center">{{dproductos.descuento}}</td>
                                                 <td style="text-align: center">{{dproductos.precio_unitario}}</td>
-                                                <td style="text-align: center">{{dproductos.precio_unitario*dproductos.cantidad}}</td>
+                                                <td style="text-align: center">{{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100}}</td>
                                             </tr>
                                         </tbody>
                                         <tbody >  
                                             <tr >
                                                 <td style="color: transparent">x</td>
                                                 <td style="text-align: center"></td>
-                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='05'"></td>
                                                 <td style="text-align: center"></td>
                                                 <td style="text-align: center"></td>
                                             </tr>
                                             <tr >
                                                 <td style="color: transparent;">x</td>
                                                 <td ></td>
-                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
                                                 <td ></td>
                                                 <td ></td>
                                             </tr>
                                             <tr >
                                                 <td style="color: transparent;">x</td>
                                                 <td ></td>
-                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
                                                 <td ></td>
                                                 <td ></td>
                                             </tr>
                                         </tbody>
                                         <tbody >  
                                             <tr *ngIf="tipoventa!='BOLETA'">
-                                                <td style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="3">{{letrado}}</td>
+                                                <td *ngIf="anular.tipo_nota!='05'" style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="4">{{letrado}}</td>
+                                                <td *ngIf="anular.tipo_nota=='05'" style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="3">{{letrado}}</td>
                                                 <td style="text-align: center ;">Subtotal :</td>
                                                 <td style="text-align: center">{{subtotal | number : '1.2-2'}}</td>
                                             </tr>
                                             <tr *ngIf="tipoventa=='BOLETA'">
-                                                <td style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="3">{{letrado}}</td>
-                                                <td style="text-align: center ;">total :</td>
-                                                <td style="text-align: center">{{Total | number : '1.2-2'}}</td>
+                                                <td *ngIf="anular.tipo_nota!='05'" style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="4">{{letrado}}</td>
+                                                <td *ngIf="anular.tipo_nota=='05'" style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="3">{{letrado}}</td>
+                                                <td style="text-align: center ;">Total :</td>
+                                                <td style="text-align: center">{{total | number : '1.2-2'}}</td>
                                             </tr>
                                             <tr *ngFor="let imp of impuestos; let $index=index" >
                                                 <td ></td>
                                                 <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
                                                 <td ></td>
                                                 <td  style="text-align: center ;">{{imp.nombre}} ({{imp.porcentage}}):</td>
                                                 <td *ngIf="$index<impuestos.length-1" style="text-align: center;">{{imp.cantidad | number : '1.2-2'}} </td>
@@ -259,8 +285,12 @@
                                             </tr>
                                             <tr *ngIf="tipoventa!='BOLETA'">
                                                 <td ></td>
-                                                <td ></td>
-                                                <td ></td>
+                                                <td colspan="2" >
+                                                    <button (click)="volveratras()" class="btn btn-success"> <i class="fa fa-arrow-left"></i> Volver</button>
+                                                    <button (click)="abrirmodalemail()" class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
+                                                    <button (click)="limpiartodo()" class="btn btn-danger"> <i class="fa fa-trash-alt"></i> Cancelar</button>
+                                                </td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
                                                 <td style="text-align: center">Total</td>
                                                 <td style="text-align: center">{{total}}</td>
                                             </tr>
@@ -333,7 +363,7 @@
                                     <div class="col-sm-6">
                                         <div class="inner-addon left-addon" >
                                             <i style="color: green" class="fa fa-dollar"></i>
-                                            <input id="textvalidar" type="number" (keyup)="calcularcantidaddescuntoitem()" #itemcantidad="ngModel" name="itemcantidad" 
+                                            <input id="txtval" type="number" (keyup)="calcularcantidaddescuntoitem()" #itemcantidad="ngModel" name="itemcantidad" 
                                             [(ngModel)]="anulardetalle.cantidad" class="form-control" required pattern="[0-9]+.[0-9]+">
                                         </div> 
                                     </div>
@@ -343,9 +373,9 @@
                                     </div>
                                     <br>
                                     <br>
-                                    <div class="col-sm-5"><strong>isc</strong>({{detalletenporal.isc_porcentage}}%)<strong>:</strong></div>
+                                    <div class="col-sm-5"><strong>cantidad sin IGV</strong></div>
                                     <div class="col-sm-6">
-                                        <input  #isc="ngModel" name="isc" [(ngModel)]="anulardetalle.isc" class="form-control" disabled>
+                                        <a style="margin-left: 12px"><strong>{{anulardetalle.cantidad_sinigv}}</strong></a>
                                     </div>
                                     <div class="col-sm-1"></div>
                                     <br>
@@ -353,6 +383,13 @@
                                     <div class="col-sm-5"><strong>igv</strong>({{detalletenporal.igv_porcentage}}%)<strong>:</strong></div>
                                     <div class="col-sm-6">
                                         <input  #igv="ngModel" name="igv" [(ngModel)]="anulardetalle.igv" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                    <br>
+                                    <br>
+                                    <div class="col-sm-5"><strong>isc</strong>({{detalletenporal.isc_porcentage}}%)<strong>:</strong></div>
+                                    <div class="col-sm-6">
+                                        <input  #isc="ngModel" name="isc" [(ngModel)]="anulardetalle.isc" class="form-control" disabled>
                                     </div>
                                     <div class="col-sm-1"></div>
                                     <br>
@@ -371,7 +408,7 @@
                                     <div class="col-sm-1"></div>
                                 </div>
                                 <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
-                                    <button *ngIf="veritems==3" (click)="adddetallenota()" [disabled]="anulardetalle.nombre_producto==null || !desc.valid" class="btn btn-info"> <i class="fa fa-save"></i> Continuar</button>
+                                    <button *ngIf="veritems==3" (click)="adddetallenota()" [disabled]="anulardetalle.correccion==null || !desc.valid" class="btn btn-info"> <i class="fa fa-save"></i> Continuar</button>
                                     <button *ngIf="veritems==5 && editardetalleanular==null" (click)="adddetallenota()" [disabled]="validarnumero!=true" class="btn btn-info"> <i class="fa fa-save"></i> Continuar</button>
                                     <button *ngIf="veritems==5 && editardetalleanular!=null" (click)="adddetallenota()" [disabled]="validarnumero!=true" class="btn btn-info"> <i class="ti-pencil"></i>  editar</button>
                                     <button *ngIf="veritems==5 && editardetalleanular!=null" (click)="quitardetallenota()" class="btn btn-warning"> <i class="fa fa-ban"></i> quitar</button>
@@ -385,187 +422,79 @@
         </div>
     </div>
 </div>
-<!--<div  class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-outline-primary">
-                <div class="card-body">
-                    <div class="form-body">
-                        <div  class="container-fluid">
-                            <div class="table-responsive m-t-40">
-                                <div *ngIf="!sucursales">
-                                    cargando listado de sucursales....
-                                </div>
-                                <div *ngIf="sucursales">
-                                <table  style="width: 100%;text-align: center">
-                                    <thead>
-                                        <tr style="border-bottom: solid 1px #68a5da">
-                                            <th>Nombre</th>
-                                            <th>Direccion</th>
-                                            <th style="text-align: center">Telefono</th>
-                                            <th style="width: 170px;"><br><hr style="margin-left: -10px;background: #68a5da;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngFor="let suc of sucursales; let $index=index">  
-                                        <tr  *ngIf="cambiarcolor!=suc.id" (click)="selecttable(suc.id)" >
-                                            <td style="text-align: center">{{suc.nombre_sucursal}}</td>
-                                            <td style="text-align: center"><strong>{{suc.direccion}}</strong></td>
-                                            <td style="text-align: center">{{suc.telefono}}</td>
-                                            <td style="text-align: center"> 
-                                                <button style="font-size: 8px" (click)="traerventastotales(suc.id)" class="btn btn-sm btn-success" title="ver ventas totales" >
-                                                    <i class="fa fa-shopping-bag">ver ventas</i> 
-                                                </button>
-                                                <button style="font-size: 8px" (click)="getcajas(suc.id)" class="btn btn-sm btn-info" title="mostrar cajas" >
-                                                    <i class="fa fa-dropbox">mostrar cajas</i> 
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="cambiarcolor==suc.id" style="background: grey" (click)="traerventastotales(suc.id)">
-                                            <td style="text-align: center;color: lightgrey;">{{suc.nombre_sucursal}}</td>
-                                            <td style="text-align: center;color: lightgrey;"><strong>{{suc.direccion}}</strong></td>
-                                            <td style="text-align: center;color: lightgrey;">{{suc.telefono}}</td>
-                                            <td style="text-align: center"> 
-                                                <button style="font-size: 8px" (click)="traerventastotales(suc.id)" class="btn btn-sm btn-success" title="ver ventas totales" >
-                                                    <i class="fa fa-shopping-bag">ver ventas</i> 
-                                                </button>
-                                                <button style="font-size: 8px" (click)="getcajas(suc.id)" class="btn btn-sm btn-info" title="mostrar cajas" >
-                                                    <i class="fa fa-dropbox">mostrar cajas</i> 
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="cambiarcolor==suc.id">
-                                            <td colspan="3" style="text-align:center;height: 5px ">
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+<div id="modaldescuentoglobal" class="col-sm-12 modal">
+    <div class="modal-detalles" >
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12" >
+                        <div class="row p-t-1" >
+                            <div class="col-sm-12" style=" background: #dfd9d9;
+                            height: 30px;
+                            box-shadow: inset 0px -4px 14px 0.3px #747373">
+                                <div class="row">
+                                    <div class="col-sm-11" style="text-align: left;">{{nombretiponota}}</div>
+                                    <div class="col-sm-1" style="text-align: center;cursor: pointer;"><i class="ti-close" (click)="cerrarmodalemail()"></i></div>
                                 </div>
                             </div>
-                        </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Descuento:</strong></div>
+                            <div class="col-sm-6">
+                                <div class="inner-addon left-addon" >
+                                    <i *ngIf="anular.descuento!=null && descglo.valid" style="color: green" class="fa fa-check"></i>
+                                    <i *ngIf="descglo.touched && !descglo.valid" style="color: red" class="fa fa-times"></i>
+                                    <input  #descglo="ngModel" name="descglo" [(ngModel)]="anular.descuento" class="form-control" required  pattern="[0-9]+.[0-9]+"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
+                                <button (click)="contunuarfinal4()" [disabled]="!descglo.valid" class="btn btn-info" > <i class="fa fa-save"></i> Continuar</button>
+                                <button (click)="cancelar4()"  class="btn btn-info" > <i class="fa fa-save"></i> Cancelar</button>
+                            </div>
+                        </div>         
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<div [hidden]="verventas==null" class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card card-outline-primary">
-                <div class="card-body">
-                    <div class="form-body">
-                        <div  class="card-body">
-                            <div class="form-horizonta">
-                                <div class="col-lg-12 row">
-                                    <div class="col-lg-12" >
-                                        <div  class="col-sm-12">
-                                            <table id="tablaventas" class="table table-bordered table-striped"  cellpadding="0" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>fecha</th>
-                                                        <th>Serie de Documento</th>
-                                                        <th>Cliente</th>
-                                                        <th>Total</th>
-                                                        <th>Pago recivido</th>
-                                                        <th>Vuelto</th>
-                                                        <th style="width: 85px;"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>  
-                                                    <tr  *ngFor="let ven of ventas; let $index=index">
-                                                        <td style="text-align: center">{{ven.created_at}}</td>
-                                                        <td style="text-align: center"><strong>{{ven.serie_venta}}</strong></td>
-                                                        <td style="text-align: center">{{ven.nombre}}</td>
-                                                        <td style="text-align: center">{{ven.total | number : '1.2-2' }}</td>
-                                                        <td style="text-align: center">{{ven.pago_tarjeta+ven.pago_efectivo | number : '1.2-2'}}</td>
-                                                        <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total>=0" style="text-align: center;color: #042ef8">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
-                                                        <td *ngIf="(ven.pago_tarjeta+ven.pago_efectivo)-ven.total<0" style="text-align: center;color: red">{{(ven.pago_tarjeta+ven.pago_efectivo)-ven.total | number : '1.2-2'}}</td>
-                                                        <td style="text-align: center"> 
-                                                            <button (click)="mostrardetalleventas(ven)" class="btn btn-sm btn-success" title="ver detalle" >
-                                                                <i class="fa fa-list-ul"></i> 
-                                                            </button>
-                                                            <button (click)="alertaeliminar(ven)" class="btn btn-sm btn-success" title="ver detalle" >
-                                                                <i class="fa fa-ban"></i> 
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+<div id="modalemail" class="col-sm-12 modal">
+    <div class="modal-detalles" >
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12" >
+                        <div class="row p-t-1" >
+                            <div class="col-sm-12" style=" background: #dfd9d9;
+                            height: 30px;
+                            box-shadow: inset 0px -4px 14px 0.3px #747373">
+                                <div class="row">
+                                    <div class="col-sm-11" style="text-align: left;">{{nombretiponota}}</div>
+                                    <div class="col-sm-1" style="text-align: center;cursor: pointer;"><i class="ti-close" (click)="cerrarmodalemail()"></i></div>
                                 </div>
                             </div>
-                        </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Email:</strong></div>
+                            <div class="col-sm-6">
+                                <div class="inner-addon left-addon" >
+                                    <i *ngIf="anular.email!=null && email.valid" style="color: green" class="fa fa-check"></i>
+                                    <i *ngIf="email.touched && !email.valid" style="color: red" class="fa fa-times"></i>
+                                    <input  type="email" #email="ngModel" name="email" [(ngModel)]="anular.email" class="form-control" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
+                                <button (click)="gurardarnotacredito()" [disabled]="!email.valid" class="btn btn-info" 
+                                title="se guardara la nota de credito y se enviara al email del cliente el resumen de la nota"> <i class="fa fa-save"></i> Guardar y enviar</button>
+                                <button (click)="guardarnotasinemail()"  class="btn btn-info" 
+                                title="se guardara la nota de credito pero no se enviara una copia al cliente"> <i class="fa fa-save"></i> Guardar sin enviar</button>
+                            </div>
+                        </div>         
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div id="myModal" class="col-sm-12 modal">
-    <div class="modal-contente" >
-        <span (click)="cerrarmodal()" class="close">&times;</span>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form-body">
-                        <div  class="card-body">
-                            <div class="form-horizonta">
-                                <div class="col-lg-12 row">
-                                    <div class="col-lg-12" >
-                                        <div class="row p-t-1" >
-                                            <div class="col-sm-3"></div>
-                                            <div class="col-sm-6" style="text-align: center">
-                                                <label>Serie: <strong>{{getventa.serie_venta}}</strong></label>
-                                            </div>
-                                            <div class="col-sm-3"></div>
-                                            <br>
-                                            <br>
-                                            <div class="col-sm-6">
-                                                <label>Cliente: <strong>{{getventa.nombre}}</strong></label>
-                                            </div>
-                                            <div class="col-sm-6" style="text-align: right">
-                                                <label>Fecha de cracion: <strong>{{getventa.created_at}}</strong></label>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <br>  
-                                        <table border=1 cellspacing=0 cellpadding=2 bordercolor="black" style="width: 100%;text-align: center">
-                                            <thead style="border-bottom: solid 1px #5d94c4;">
-                                                <tr >
-                                                    <th rowspan="2">nombre</th>
-                                                    <th rowspan="2">cantidad</th>
-                                                    <th rowspan="2">precio unitario(sin igv)</th>
-                                                    <th colspan="3">Impuestos</th>
-                                                    <th rowspan="2" style="text-align: center">total</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>IGV </th>
-                                                    <th>ISC </th>
-                                                    <th style="text-align: center">OTRO </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>  
-                                                <tr  *ngFor="let dventas of detalleventas; let $index=index">
-                                                    <td style="text-align: center">{{dventas.nombre_producto}}</td>
-                                                    <td style="text-align: center"><strong>{{dventas.cantidad}}</strong></td>
-                                                    <td style="text-align: center">{{dventas.precio_unitario | number : '1.2-2' }}</td>
-                                                    <td style="text-align: center">{{dventas.id | number : '1.2-2'}}({{dventas.igv}})</td>
-                                                    <td style="text-align: center">{{dventas.id_producto | number : '1.2-2'}}({{dventas.isc}})</td>
-                                                    <td style="text-align: center">{{dventas.codigo | number : '1.2-2'}}({{dventas.otro}})</td>
-                                                    <td style="text-align: center">{{dventas.id_venta}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->

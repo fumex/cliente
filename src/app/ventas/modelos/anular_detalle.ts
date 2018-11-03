@@ -9,5 +9,6 @@ export class AnularDetalleModel{
 		public igv: number,
 		public isc: number,
 		public otro:number,  
+		public cantidad_sinigv:number,
 	){}
 }
