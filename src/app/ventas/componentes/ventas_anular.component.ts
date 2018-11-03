@@ -712,22 +712,24 @@ export class AnularVentaComponent{
     }
     finalizar2(){
         if(this.anular.correccion_ruc==this.d_ventas[0].nro_documento){
-            this.toaste.errorAlerta('Es el mismo Ruc','Error');
+            this.toaste.errorAlerta('Es el mismo RUC','Error');
+        }else{
+            let i=0;
+            this.vernuevoruc=null;
+            while(i<this.d_ventas.length){
+                this.anulardetalle.cantidad=parseFloat(this.d_ventas[i].precio_unitario);
+                this.anulardetalle.igv=parseFloat(this.d_ventas[i].igv);
+                this.anulardetalle.isc=parseFloat(this.d_ventas[i].isc);
+                this.anulardetalle.otro=parseFloat(this.d_ventas[i].otro);
+                this.anulardetalle.id_detalle_venta=this.d_ventas[i].id;
+                this.anular_detalle.push(this.anulardetalle);
+                this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
+                i++ 
+            }
+            this.notafinal(this.d_ventas);
+            this.verresumenfinal=1;
         }
-        let i=0;
-        this.vernuevoruc=null;
-        while(i<this.d_ventas.length){
-            this.anulardetalle.cantidad=parseFloat(this.d_ventas[i].precio_unitario);
-            this.anulardetalle.igv=parseFloat(this.d_ventas[i].igv);
-            this.anulardetalle.isc=parseFloat(this.d_ventas[i].isc);
-            this.anulardetalle.otro=parseFloat(this.d_ventas[i].otro);
-            this.anulardetalle.id_detalle_venta=this.d_ventas[i].id;
-            this.anular_detalle.push(this.anulardetalle);
-            this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
-            i++
-        }
-        this.notafinal(this.d_ventas);
-        this.verresumenfinal=1;
+        
     }
     notafinal(res){
         let i=0,j=0,k=0,validar=null,validar2=null;
