@@ -98,6 +98,14 @@
     border-radius: 20px;
     border: solid 2px #42bcf6;
   }
+  .modal-detalles {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    margin-top: 10%;
+    width: 50%;
+    margin-left: 18%;
+    border: solid 1px #0ba5ff;
+  }
 }
 @media (max-width: 1300px){
   .modal {
@@ -123,6 +131,14 @@
     margin-top: 10%;
     border-radius: 20px;
     border: solid 2px #42bcf6;
+  }
+  .modal-detalles {
+    background-color: #fefefe;
+    border: 1px solid #888;
+    margin-top: 10%;
+    width: 50%;
+    margin-left: 28%;
+    border: solid 1px #0ba5ff;
   }
 
 }

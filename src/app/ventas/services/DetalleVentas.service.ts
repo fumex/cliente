@@ -34,4 +34,7 @@ export class DetalleVentasService{
     getdetalleventas(id){
         return this._http.get<any>(this.url+'/getdetalleventas/'+id).shareReplay();
     }
+    getdetalleventasporserie(id){
+        return this._http.get<any>(this.url+'/getventaporserie/'+id).shareReplay();
+    }
 }

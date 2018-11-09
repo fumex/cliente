@@ -80,7 +80,7 @@ export class ProductosComponent{
     public filesToEdit:File[];
     public text;
     public mostratablaotros;
-
+    public mostrarrestodatos=null;
 
     public url;
     public ruta;
@@ -109,9 +109,9 @@ export class ProductosComponent{
         this.toastr.setRootViewContainerRef(vcr);
         this.titulo = "productos";
         this.user=this.auth.getUser();
-        this.producto=new producto(0,null,'','','',null,this.user.id,null,null);
-        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null);
-        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null,null);
+        this.producto=new producto(0,null,'','','',null,this.user.id,null,null,null,null,null); 
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null,null,null,null);
+        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null,null,null,null,null);
         this.categorias=new categoria(0,'',this.user.id);
         this.detalleimpu=new DetalleImpuestoModel(null,null,null,null);
 
@@ -140,6 +140,7 @@ export class ProductosComponent{
         this.tabla();
 
        this.mostratablaotros=null;
+       
 
     }
 
@@ -182,7 +183,7 @@ export class ProductosComponent{
                 this.impuestrootro[index].id=this.detalleimpuestootro[indice].id_impuesto;
                 this.detalleimpuestootro.splice(indice,1);
             }
-            indice=indice+1;
+            indice=indice+1; 
         }
         console.log(this.detalleimpuestootro);
     }
@@ -275,6 +276,12 @@ export class ProductosComponent{
     }
     ocultartablaimpuestos(){
         this.mostratablaotros=null;
+    }
+    mostrarotrasdescripciones(){
+        this.mostrarrestodatos=1;
+    }
+    ocultarotrasdescripciones(){
+        this.mostrarrestodatos=null;
     }
     isertarimagen(nombre){
         nombre=this.agregarpro.nombre_producto;  
@@ -464,8 +471,7 @@ export class ProductosComponent{
                 console.log(this.impuestroeditisc.length)
                 
                 while(i<this.impuestroeditisc.length){
-                    console.log(this.editisc[0].id_impuesto)
-                    if(this.impuestroeditisc[i].id==this.editisc[0].id_impuesto){
+                    if(this.impuestroeditisc[i].id==this.editisc.id_impuesto){
                         console.log("entro");
                         this.impuestroeditisc[i].descripcion=null;
                     }
@@ -615,8 +621,9 @@ export class ProductosComponent{
         }
         console.log(this.editarimpuestoisc);
     }
-    modificaciondelisc(){
+    modificaciondelisc(){ 
         let indice=0;
+        console.log(this.editarimpuestoisc);
         while(indice<this.editarimpuestoisc.length){
             this._detalleimpuestoservice.detalleimpuestoseditotro(this.editarimpuestoisc[indice]).subscribe(
                 res=>{
@@ -632,6 +639,7 @@ export class ProductosComponent{
     }
     modificaciondelotro(){
         let indice=0;
+        console.log(this.editarimpuestootro)
         while(indice<this.editarimpuestootro.length){
             this._detalleimpuestoservice.detalleimpuestoseditotro(this.editarimpuestootro[indice]).subscribe(
                 res=>{
@@ -675,6 +683,7 @@ export class ProductosComponent{
         this.detalleimpuesigv=new DetalleImpuestoModel(null,null,null,null);
     }
     modificaciondeligv(){
+        console.log(this.editarimpuestoigv)
         this._detalleimpuestoservice.detalleimpuestoseditigv(this.editarimpuestoigv[0]).subscribe(
             res=>{
                 console.log(res);
@@ -695,8 +704,8 @@ export class ProductosComponent{
     limpiarediciondelisc(){
         this.editisc=new DetalleImpuestoModel(null,null,null,null);
         let indice=0;
-        while(indice<this.editarimpuestoisc.length){
-            this.editarimpuestoigv.splice(0,1)
+        while(0<this.editarimpuestoisc.length){
+            this.editarimpuestoisc.splice(0,1)
         }
     }
     editarproduto(id){
@@ -748,8 +757,8 @@ export class ProductosComponent{
         this.ident=null;
         this.unidad=null;
 
-        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null);
-        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null,null);
+        this.editproducto=new producto(0,null,'','','',null,this.user.id,null,null,null,null,null);
+        this.agregarpro=new producto(0,null,'','','',null,this.user.id,null,null,null,null,null);
 
         this.detalleimpu=new DetalleImpuestoModel(null,null,null,null);
 
@@ -759,7 +768,8 @@ export class ProductosComponent{
 
 
         this.editotro=new DetalleImpuestoModel(null,null,null,null);
-
+        this.ocultarotrasdescripciones();
+        this.ocultartablaimpuestos();
        
         this.limpiartablaimpuestos();
         this.limpiarediciondeligv();

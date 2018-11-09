@@ -530,7 +530,8 @@
                                                 <label class="control-label">Moneda de pago</label>    
                                             </div>
                                             <div class="col-sm-8">
-                                                <select id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  name="tiposelect" required>
+                                                <select id="comboselect" (change)="vermoneda()" class="form-control custom-select"  name="moneda" [(ngModel)]="ventas.id_moneda"  required>
+                                                    <option  disabled value="0"><b>--escoja una moneda--</b></option>  
                                                     <option *ngFor="let mon of monedas" value="{{mon.id}}"><b>{{mon.moneda}}</b></option>                   
                                                 </select>   
                                             </div>
@@ -554,9 +555,9 @@
                                                 <label class="control-label">Tipo de pago:</label>    
                                             </div>
                                             <div class="col-sm-8">
-                                                <select id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  name="tiposelect" required>
-                                                    <option disabled >--seleccione metodo de pago</option>
-                                                    <option *ngFor="let pag of pago" value="{{pag.id}}"><b>{{pag.descripcion}}</b></option>                        
+                                                <select  id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  [(ngModel)]="ventas.tipopago"  name="tiposelect" required>
+                                                    <option disabled value="0">--seleccione metodo de pago</option>
+                                                    <option  *ngFor="let pag of pago" value="{{pag.id}}"><b>{{pag.descripcion}}</b></option>                        
                                                 </select>   
                                             </div>
                                             <br>
@@ -566,7 +567,7 @@
                                                 <label class="control-label">Tarjeta:</label>    
                                             </div>
                                             <div *ngIf="tipotrageta!=null" class="col-sm-8">
-                                                <select  id="combotarjeta" class="form-control custom-select" (change)="agregartarjeta()" name="tarjeta" required>
+                                                <select  id="combotarjeta" class="form-control custom-select" (change)="agregartarjeta()" [(ngModel)]="ventas.tarjeta" name="tarjeta" required>
                                                     <option disabled >--seleccione la Tarjeta</option>
                                                     <option *ngFor="let ent of entidad" value="{{ent.id}}"><b>{{ent.descripcion}}</b></option>                       
                                                 </select>   
@@ -581,7 +582,7 @@
                                             <div class="col-sm-7">
                                                 <input style="    border-color: #7abcf4;
                                                 box-shadow: inset 0px 0px 2px 2px #58c0fd;
-                                                text-align: center;" type="text" id="pagotarjeta"  (keyup)="sumarcuadros()" #targeta="ngModel" [disabled]="nombretipo==='Efectivo' || nombretipo==='Tarjeta' "  name="targeta" [(ngModel)]="ventas.pago_tarjeta"  class="form-control"  required/>
+                                                text-align: center;" type="text" id="pagotarjeta"  (keyup)="sumarcuadros()" #targeta="ngModel" [disabled]="nombretipo==='EFECTIVO' || nombretipo==='TARJETA' "  name="targeta" [(ngModel)]="ventas.pago_tarjeta"  class="form-control"  required/>
                                             </div>
                                             <br>
                                             <br>
@@ -592,7 +593,7 @@
                                             <div class="col-sm-7">
                                                 <input style=" border-color: #7abcf4;
                                                 box-shadow: inset 0px 0px 2px 2px #58c0fd;
-                                                text-align: center" type="text" id="pagoefectivo"  (keyup)="sumarcuadros()"  #efectivo="ngModel" [disabled]="nombretipo==='Tarjeta'  "  name="efectivo" [(ngModel)]="ventas.pago_efectivo"  class="form-control"required/>
+                                                text-align: center" type="text" id="pagoefectivo"  (keyup)="sumarcuadros()"  #efectivo="ngModel" [disabled]="nombretipo==='TARJETA'  "  name="efectivo" [(ngModel)]="ventas.pago_efectivo"  class="form-control"required/>
                                             </div>
                                             <br>
                                             <br>
@@ -633,10 +634,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-9" >
+                                    <div class="col-lg-6" >
                                     </div>
-                                    <div *ngIf="combo!=null" class="col-lg-3" style="margin-top: 10px">
+                                    <div *ngIf="combo!=null" class="col-lg-6" style="margin-top: 10px;text-align: center">
+                                        <button  (click)="volveraproductos()"  class="btn btn-danger"> <i class="fa fa-cloud-upload"></i> volver</button>
                                         <button  (click)="guardarventa()"  [disabled]="combo.value!='Efectivo' && ventas.tarjeta==null"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
+                                        
                                     </div>
                                 </div>
                             </div>
