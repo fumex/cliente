@@ -20,7 +20,8 @@
                 </div>
                 <ul class="nav nav-tabs profile-tab" role="tablist">
                     <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#comprobante" role="tab">Comprobante</a> </li>
-                    <li class="nav-item" [hidden]=" validacion!==true"> <a class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
+                    <li class="nav-item" [hidden]=" validacion!==true" (click)="tabla()"> <a class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>
+                    <!--<li class="nav-item"  (click)="tabla()"> <a class="nav-link" data-toggle="tab" href="#producto" role="tab">Productos</a> </li>-->
                 </ul>
                 <br>
                 <div class="tab-content">
@@ -157,8 +158,9 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let producto of productos; let $index=index;">
-                                                <th *ngIf="confirmado[$index]==true"><button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="addCompra($index,producto.id,producto.nombre,producto.unidad,producto.nombre_producto,producto.descripcion)"><i class="fa fa-cloud-download"></i></button></th>
+                                                <th *ngIf="confirmado[$index]==true"><button class="btn btn-info btn-flat btn-addon btn-xs m-b-10" (click)="abrirmodaldetalles($index,producto.id,producto.nombre,producto.unidad,producto.nombre_producto,producto.descripcion)"><i class="fa fa-cloud-download"></i></button></th>
                                                 <th *ngIf="confirmado[$index]==false"><button class="btn btn-success btn-flat btn-addon btn-xs m-b-10" (click)="marcar($index)"><i class="fa fa-check"></i></button></th>
+                                                <!--<th><button class="btn btn-success btn-flat btn-addon btn-xs m-b-10" (click)="abrirmodaldetalles($index,producto.id,producto.nombre,producto.unidad,producto.nombre_producto,producto.descripcion)"><i class="fa fa-check"></i></button></th>-->
                                                 <th>{{ $index+1 }}</th>
                                                 <th>{{producto.nombre}}</th>
                                                 <th>{{producto.unidad}}</th>
@@ -187,6 +189,87 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <form #formProveedor="ngForm">
+                                    <table *ngFor="let comp of compras; let $index=index" class="table table-bordered table-striped">
+                                        <thead style="text-align: center;">
+                                            <tr *ngIf="comp.estado==false">
+                                                <th>Categoría</th>
+                                                <th>Vende</th>
+                                                <th>Producto</th>
+                                                <th>Fecha de Vencimiento</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                                <th>Total</th>
+                                                <th style="text-align: center;">Acción</th>
+                                            </tr>
+                                            <tr *ngIf="comp.estado==true">
+                                                <th style="text-align: center;"><strong>{{comp.nombre_producto}}</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="text-align: center;">
+                                            <tr *ngIf="comp.estado==false">
+                                                <td>{{comp.nombre}}</td>
+                                                <td>{{comp.vendible}}</td>
+                                                <td>{{comp.nombre_producto}}</td>   
+                                                <td>{{comp.fecha}}</td>   
+                                                <td>{{comp.cantidad}}</td>
+                                                <td>{{comp.precio}}</td>
+                                                <td>{{comp.cantidad * comp.precio | number:'1.2' }}</td>
+                                                <td style="text-align: center;">
+                                                    <button *ngIf="comp.estado==false" class="btn btn-success btn-flat btn-addon btn-xs m-b-10" (click)="abrirdetalles($index)">
+                                                        <i class="fa fa-angle-double-down"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-flat btn-addon btn-xs m-b-10" (click)="exitCompra(comp.ind,$index,comp.id)">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="comp.estado==true">
+                                                <td >
+                                                    <table class="table table-bordered table-striped">
+                                                        <thead style="text-align: center;">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>codigo de barras</th>
+                                                                <th>codigo interno</th>
+                                                                <th>
+                                                                    <button class="btn btn-success btn-flat btn-addon btn-xs m-b-10" (click)="cerrardetalles($index)">
+                                                                        <i class="fa fa-angle-double-up"></i>
+                                                                    </button>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngFor="let codi of producto_codigos; let $index2=index"  style="text-align: center;">
+                                                            <tr *ngIf="comp.id==codi.id_producto">
+                                                                <td style="width: 4%">{{codi.id}}</td>
+                                                                <td *ngIf="codserie!=$index2" (click)="vertextoserie($index2)" style="width: 46%">{{codi.numero_de_serie}}</td>  
+                                                                <td *ngIf="codserie==$index2" style="width: 46%"> 
+                                                                    <div style="margin-right: 0px;width: 100%">
+                                                                        <div style="padding-right: 0px;">
+                                                                            <input id="inputserie" #serie="ngModel" name="serie" (keydown)="verprecionadoserie($event)" [(ngModel)]="codi.numero_de_serie"  class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </td> 
+                                                                <td *ngIf="codinterno!=$index2" (click)="vertextointerno($index2)" style="width: 46%">{{codi.codigo_interno}}</td>
+                                                                <td *ngIf="codinterno==$index2" style="width: 46%"> 
+                                                                    <div style="margin-right: 0px;width: 100%">
+                                                                        <div style="padding-right: 0px;">
+                                                                            <input id="inputinterno" #interno="ngModel" name="interno" (keydown)="verprecionadointerno($event)" [(ngModel)]="codi.codigo_interno"  class="form-control" autofocus/>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 4%">
+                                                                    <button class="btn btn-danger btn-flat btn-addon btn-xs m-b-10" (click)="quitarproductocodigo($index2,$index)">
+                                                                        <i class="fa fa-minus-square-o"> </i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -245,7 +328,7 @@
                                                 <td><button class="btn btn-danger btn-flat btn-addon btn-xs m-b-10" (click)="exitCompra(comp.ind,$index,comp.id)"><i class="fa fa-trash-o"></i></button></td>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table>-->
                                 </form>         
                             </div>
                         </div>
@@ -318,6 +401,84 @@
                                 </div> 
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalpagodetalles" class="col-sm-12 modal">
+    <div class="modal-detalles" >
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12" >    
+                        <div class="row p-t-1" >
+                            <div class="col-sm-12" style=" background: #dfd9d9;
+                            height: 30px;
+                            box-shadow: inset 0px -4px 14px 0.3px #747373">
+                                <div class="row">
+                                    <div class="col-sm-11" style="text-align: left;">agregar datos de Compra</div>
+                                    <div class="col-sm-1" style="text-align: center;cursor: pointer;"><i class="ti-close" (click)="cerrarmodaldetalle()"></i></div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>cantidad</strong></div>
+                            <div class="col-sm-6">
+                                <div >
+                                    <input  type="number"  #canti="ngModel" name="canti" [(ngModel)]="compra.cantidad" class="form-control" required  pattern="[0-9]+"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-2" >
+                                <i *ngIf="compra.cantidad!=null && canti.valid" style="color: green" class="fa fa-check-circle"></i>
+                                <i title="solo se aceptan numeros enteros mayores a 1" *ngIf="canti.touched && !canti.valid" style="color: red" class="fa fa-times-circle"></i>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>se usara para la venta</strong></div>
+                            <div class="col-sm-6">
+                                <div >
+                                    <select id="vendible" class="form-control custom-select" #vendi="ngModel" name="vendi"  (change)="camviarvenmdiable()" [(ngModel)]="selectvendible" required>
+                                        <option value=1 >si</option>   
+                                        <option value=0 >no</option>   
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" >
+                                <i *ngIf="selectvendible!=null && vendi.valid"  style="color: green" class="fa fa-check-circle"></i>
+                                <i *ngIf="selectvendible==null && vendi.touched" style="color: red" class="fa fa-times-circle"></i>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Precio Unitario(con IGV.)</strong></div>
+                            <div class="col-sm-6">
+                                <div  >
+                                    <input  type="number" step="0.1" #precio="ngModel" name="precio" [(ngModel)]="compra.precio" class="form-control" required  pattern="[0-9]+([\.][0-9]+)?"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-2" >
+                                <i *ngIf="compra.precio!=null && precio.valid"  style="color: green" class="fa fa-check-circle"></i>
+                                <i title="solo se aceptan numeros mayores a 0.1" *ngIf="precio.touched && !precio.valid" style="color: red" class="fa fa-times-circle"></i>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Fecha de Vencimiento</strong></div>
+                            <div class="col-sm-6">
+                                <div  >
+                                    <input  type="date" min="{{fecha2}}"  #fvenci="ngModel" name="fvenci" [(ngModel)]="compra.fecha" class="form-control"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-2" >
+                                <i title="no es necesario" style="color: green" class="fa fa-check-circle"></i>
+                            </div>
+                            <br>
+                            <br>
+                            <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
+                                <button   class="btn btn-danger" > <i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+                                <button (click)="addCompra(idAlmacen.value)"  [disabled]="!canti.valid && vendi.valid && precio.valid" class="btn btn-success" > <i class="fa fa-check"></i> Agregar</button>
+                            </div>
+                        </div>    
                     </div>
                 </div>
             </div>

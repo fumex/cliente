@@ -51,8 +51,10 @@ import { TipoPagoAddComponent } from '../../tipo_pago/components/tipo_pago-add.c
 import { TipoPagoEditComponent } from '../../tipo_pago/components/tipo_pago-edit.component';
 
 import { CajasComponent } from '../../cajas/componentes/cajas.component';
+import { NotaDevitoComponent } from '../../nota_devito/components/nota_devito.component';
 import { VentasComponent} from '../../ventas/componentes/ventas.component';
 import { AnularVentaComponent} from '../../ventas/componentes/ventas_anular.component';
+import { ImprimirNotaCreditoComponent} from '../../ventas/componentes/imprimirnota.component';
 import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
 import { ReportesComponent} from '../../ventas/componentes/reportes.component';
 
@@ -206,8 +208,10 @@ import { EmisorEditComponent } from '../../emisor/components/emisor-edit.compone
                     { path:'resumenventas',component:ResumenCajasAbiertasComponent},
                     { path:'unidades',component:unidadcomponent},
                     { path:'EntidadFinaciera',component:EntidadFinancieraComponent},
-                    { path:'anularventa',component:AnularVentaComponent},
+                    { path:'nota/credito',component:AnularVentaComponent},
                     { path:'reportes',component:ReportesComponent},
+                    { path:'imprimir/nota',component:ImprimirNotaCreditoComponent},
+                    { path:'nota/debito',component:NotaDevitoComponent},
                 ]
             }
         ]),

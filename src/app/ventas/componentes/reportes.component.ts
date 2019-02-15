@@ -101,7 +101,7 @@ export class ReportesComponent{
     }
     ngOnInit(){
         this.detcaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null)
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
         this.modal=document.getElementById('myModal');
         this.modal2=document.getElementById('myModal2');
         window.onclick = function(event) {
@@ -463,6 +463,7 @@ export class ReportesComponent{
     verventasporcaja(id){
         let i=0;
         console.log(id);
+        this.limpiarventas();
         this.vervpa=id;
         this.verda=null;
         this._cajasservice.getventas(id).subscribe(

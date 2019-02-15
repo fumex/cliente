@@ -57,7 +57,7 @@ export class ResumenCajasAbiertasComponent{
     ngOnInit(){
         this.getsucursales();
         this.getcaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null);
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
         this.modal=document.getElementById('myModal');
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('myModal')) {
@@ -100,7 +100,7 @@ export class ResumenCajasAbiertasComponent{
                 console.log(err);
             }
         );
-    }
+    } 
     traerdetallecaja(id){
         let i=0;
         console.log(id);

@@ -299,7 +299,7 @@
                                 <li [hidden]="vercierre==null" class="nav-item"> <a id="tabcierre" class="nav-link" data-toggle="tab" href="#cierre" role="tab">Cerrar Caja</a> </li>
                             </ul>
                         </div>
-                        <div *ngIf="vercierre==null" class="col-sm-6" style="text-align: right">
+                        <div *ngIf="vercierre==null && verpago==null && verusuarios==null" class="col-sm-6" style="text-align: right">
                             <button class="botonariba" title="Salir" (click)="cerrarcaja()"> <i class="fa fa-sign-out" ></i> </button>
                         </div>
                     </div>
@@ -357,11 +357,10 @@
                                                     <thead>
                                                         <tr style="font-size: 12px;">
                                                             <th></th>
-                                                            <th><strong>producto</strong></th>
-                                                            <th><strong>Descripcion</strong></th>
-                                                            <th><strong>Unidad</strong></th>
                                                             <th><strong>Codigo</strong></th>
-                                                            <th><strong>categoria</strong></th>
+                                                            <th><strong>producto</strong></th>
+                                                            <th ><strong>numero de serie</strong></th>
+                                                            <th ><strong>codigo interno</strong></th>
                                                             <th ><strong>precio de venta</strong></th>
                                                             <th ><strong>stock</strong></th>
                                                             <th ><strong>cantidad</strong></th>
@@ -371,15 +370,14 @@
                                                     <tbody>  
                                                         <tr  *ngFor="let producto of productos;let $index=index;"> 
                                                             <td style="width: 50px;height: 50px;"> <img  class="productos_ventas_imagen"   src="{{url}}/{{producto.imagen}}" > </td>
-                                                            <td style="text-align: center"><a>{{producto.nombre_producto}}</a></td>
-                                                            <td style="text-align: center"><a>{{producto.descripcion}}</a>
-                                                            <td style="text-align: center"> <a>{{producto.abreviacion | uppercase}}</a></td>
-                                                            <td style="text-align: center"> <a>{{producto.codigo}}</a></td>
-                                                            <td style="text-align: center"><a>{{producto.nombre}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.codigo}}</a></td>
+                                                            <td style="text-align: center"><a>{{producto.nombre_producto}}</a>
+                                                            <td style="text-align: center"> <a>{{producto.numero_de_serie}}</a></td>
+                                                            <td style="text-align: center"> <a>{{producto.codigo_interno}}</a></td>
                                                             <td style="text-align: center"><a>{{producto.precio_venta}}</a></td>
                                                             <td style="text-align: center"><a>{{producto.stock}}</a></td>
-                                                            <td *ngIf="prodcant!=producto.id && producto.cantidad!=null" style="text-align: center" (dblclick)="editarcantpro(producto.id,producto.cantidad)"><a>{{producto.cantidad}}</a></td>
-                                                            <td *ngIf="prodcant==producto.id && producto.cantidad!=null" style="padding: 0px;">
+                                                            <td *ngIf="prodcant!=producto.id_codigo && producto.cantidad!=null" style="text-align: center" (dblclick)="editarcantpro(producto.id_codigo,producto.cantidad)"><a>{{producto.cantidad}}</a></td>
+                                                            <td *ngIf="prodcant==producto.id_codigo && producto.cantidad!=null" style="padding: 0px;">
                                                                 <div style="margin-right: 0px;">
                                                                     <div style="padding-right: 0px;">
                                                                     <input #cantidad="ngModel" id="cantidadeditada" name="cantidad" type="text" style="width:100%; height: 28px;" [(ngModel)]="producto.cantidad" >
@@ -410,7 +408,7 @@
                                                     <i class="fa fa-shopping-cart"></i>
                                                      <strong>Productos</strong>   
                                                 </label>
-                                            </div>
+                                            </div> 
                                             <br>
                                             <div class="col-sm-12">
                                                 <table  width="100%" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000" 
@@ -424,8 +422,7 @@
                                                             <th>Precio Unitario</th>
                                                             <th style="width:110px;;">Cantidad</th>
                                                             <th style="text-align: center;width: 100px;">Valor de Venta</th>
-                                                            <th style="width: 40px;"></th>
-                                                            <th style="width: 20px;"></th>
+                                                            <th style="width: 60px;" colspan="2"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody >
@@ -433,11 +430,11 @@
                                                             <td style="text-align: center">{{$index +1}}</td>
                                                             <td style="text-align: center">{{dventa.descripcion}}</td>
                                                             <td style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}} %</td>
-                                                            <td style="text-align: center" >{{dventa.descuento_cant}}</td>
+                                                            <td style="text-align: center" >{{dventa.descuento_cant | number : '1.2-2'}}</td>
                                                             <td style="text-align: center">{{dventa.precio_unitario | number : '1.2-2'}}</td>
                                                             <td style="text-align: center" >{{dventa.cantidad}}</td>
                                                             <td style="text-align: center">{{(dventa.cantidad*dventa.precio_unitario) - (dventa.descuento_cant)  | number : '1.2-2'}}</td>
-                                                            <td style="text-align: center">
+                                                            <td style="text-align: center;width: 40px;">
                                                                 <a (click)="agregarunidadpro($index,dventa)" style="color:green" title="agregar una unidad"><i class="fa fa-plus"></i></a>
                                                                 <a (click)="quitarunidadpro($index,dventa)" style="color:red" title="quitar una unidad"><i class="fa fa-minus"></i></a>
                                                             </td>
@@ -453,13 +450,15 @@
                                                             <td >{{ini.cantidad}}</td>
                                                             <td >{{ini.cantidad}}</td>
                                                             <td>{{ini.cantidad}}</td>
-                                                            <td>{{ini.cantidad}}</td>
+                                                            <td style="width: 40px;">{{ini.cantidad}}</td>
+                                                            <td style="width: 20px;">{{ini.cantidad}}</td>
                                                         </tr>
                                                         <tr >
                                                             <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
                                                             <td *ngIf="factura==true" colspan="4" style="color:#99abb4">Subtotal</td>
                                                             <td *ngIf="factura==false" colspan="4" style="color:#99abb4">Total</td>
                                                             <td style="text-align: center;color:#99abb4">{{ventas.total | number : '1.2-2'}}</td>
+                                                            <td colspan="2"></td>
                                                         </tr>
                                                         <tr *ngFor="let imp of impuestos;let $index=index;" style="border-color: transparent" >
                                                             <td colspan="2"></td>
@@ -501,7 +500,7 @@
                                             <tr *ngFor="let cliente of clientes;"> 
                                                 <td >
                                                     <button *ngIf="clientselec==cliente.id" class="btn btn-sm btn-success" ><i class="fa fa-check-circle"></i></button>
-                                                    <button *ngIf="clientselec!=cliente.id" class="btn btn-sm btn-info" (click)="seleccionarcliente(cliente.id,cliente.nombre,cliente.documento,cliente.nro_documento)"><i class="fa fa-circle"></i></button>
+                                                    <button *ngIf="clientselec!=cliente.id" class="btn btn-sm btn-info" (click)="seleccionarcliente(cliente.id,cliente.nombre,cliente.documento,cliente.nro_documento,cliente.email,cliente.direccion)"><i class="fa fa-circle"></i></button>
                                                 </td>
                                                 <td style="text-align: center"><a>{{cliente.nombre}}</a></td>
                                                 <td style="text-align: center"><a>{{cliente.documento}}</a>
@@ -523,6 +522,28 @@
                     <div  class="tab-pane" id="pago" role="tabpanel">
                         <div class="card-body">
                             <div class="form-horizonta">
+                                <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                                    <div class="navbar-collapse" >
+                                        <ul class="navbar-nav mr-auto mt-md-0">
+                                            <li class="nav-item">  </li>
+                                            <li class="nav-item m-l-10"></li>
+                                            <li class="nav-item hidden-sm-down search-box"></li>
+                                        </ul>
+                                        <ul class="navbar-nav my-lg-0">
+                                            <li class="nav-item dropdown">
+                                                <a ></a> 
+                                                <a class="ti-menu" href="#" data-toggle="dropdown" aria-haspopup="true" 
+                                                aria-expanded="false" ></a>
+                                                <div class=" dropdown-menu dropdown-menu-right  animated zoomIn " style="width: 230px;">
+                                                    <ul class="dropdown-user">
+                                                        <li (click)="abrirmodalventa()" style="cursor: pointer"><a ><i class="fa fa-address-card"></i> ver venta</a></li>
+                                                        <li (click)="volveraventadepagos()" style="cursor: pointer"><a ><i class="fa fa-angle-double-left"></i> volver</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-6" >
                                         <div class="row p-t-20">
@@ -532,7 +553,7 @@
                                             <div class="col-sm-8">
                                                 <select id="comboselect" (change)="vermoneda()" class="form-control custom-select"  name="moneda" [(ngModel)]="ventas.id_moneda"  required>
                                                     <option  disabled value="0"><b>--escoja una moneda--</b></option>  
-                                                    <option *ngFor="let mon of monedas" value="{{mon.id}}"><b>{{mon.moneda}}</b></option>                   
+                                                    <option *ngFor="let mon of monedas" value="{{mon.id}}" ><b>{{mon.moneda}}</b></option>                   
                                                 </select>   
                                             </div>
                                         </div>
@@ -549,14 +570,14 @@
                                             </div> 
                                         </div>
                                     </div>
-                                    <div class="col-lg-6" >
+                                    <!--<div class="col-lg-6" >
                                         <div class="row p-t-20">
                                             <div class="col-sm-4">
                                                 <label class="control-label">Tipo de pago:</label>    
                                             </div>
                                             <div class="col-sm-8">
                                                 <select  id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  [(ngModel)]="ventas.tipopago"  name="tiposelect" required>
-                                                    <option disabled value="0">--seleccione metodo de pago</option>
+                                                    <option disabled value="0">seleccione metodo de pago</option>
                                                     <option  *ngFor="let pag of pago" value="{{pag.id}}"><b>{{pag.descripcion}}</b></option>                        
                                                 </select>   
                                             </div>
@@ -568,13 +589,13 @@
                                             </div>
                                             <div *ngIf="tipotrageta!=null" class="col-sm-8">
                                                 <select  id="combotarjeta" class="form-control custom-select" (change)="agregartarjeta()" [(ngModel)]="ventas.tarjeta" name="tarjeta" required>
-                                                    <option disabled >--seleccione la Tarjeta</option>
+                                                    <option disabled >seleccione la Tarjeta</option>
                                                     <option *ngFor="let ent of entidad" value="{{ent.id}}"><b>{{ent.descripcion}}</b></option>                       
                                                 </select>   
                                             </div>
                                         </div>
-                                    </div>
-                                    <div *ngIf="combo!=null" class="col-lg-6"  style="background: #dcdcdc" >
+                                    </div>-->
+                                    <div  class="col-lg-6"  style="background: #dcdcdc" >
                                         <div class="row p-t-20">  
                                             <div class="col-sm-5">
                                                 <label>cantidad con trajeta</label>
@@ -636,9 +657,9 @@
                                     </div>
                                     <div class="col-lg-6" >
                                     </div>
-                                    <div *ngIf="combo!=null" class="col-lg-6" style="margin-top: 10px;text-align: center">
-                                        <button  (click)="volveraproductos()"  class="btn btn-danger"> <i class="fa fa-cloud-upload"></i> volver</button>
-                                        <button  (click)="guardarventa()"  [disabled]="combo.value!='Efectivo' && ventas.tarjeta==null"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
+                                    <div  class="col-lg-6" style="margin-top: 10px;text-align: center">
+                                        <button  (click)="volveraventadepagos()"  class="btn btn-danger"> <i class="fa fa-cloud-upload"></i> volver</button>
+                                        <button  (click)="abrirmodalventas()"  [disabled]="(ventas.id_moneda==null || ventas.id_moneda==0)"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
                                         
                                     </div>
                                 </div>
@@ -896,6 +917,247 @@
                                         <button class="btn  btn-info" (click)="volveraventas()"><i class="fa fa-arrow-circle-left"></i> volver</button>
                                         <button class="btn  btn-warning" (click)="mandarmontocierre()">Cerrar <i class="fa fa-save"></i></button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalventa" class="col-sm-12 modal2">
+    <div class="modal-contente animated zoomIn" style="text-align: right">
+        <a (click)="cerramodalventa()" style="cursor: pointer" class="fa fa-remove"></a>
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-1"></div>
+                            <div class="col-lg-12">
+                                <div class="row p-t-20">
+                                    <table style="width: 100%;text-align: center;border:solid 1px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;">
+                                                    <table style="width: 100%;">
+                                                        <tbody>
+                                                            <tr >
+                                                                <td style="text-align: center">
+                                                                    <img id="mostrada" style="width: 180px;
+                                                                    height: 90px;" [src]="imageUrl"/>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.nombre}}</div>
+                                                                        <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.direccion}}</div>
+                                                                        <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.departamento}}-{{empresa.provincia}}-{{empresa.distrito}}</div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>      
+                                                    </table> 
+                                                </td>
+                                                <td style="width: 50%">
+                                                    <table style="width: 100%; border:solid 2px #7798f5">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width: 25%"></td>
+                                                                <td *ngIf="boleta!=true"  style="text-align: center;font-size: 25px;width: 50%" >FACTURA</td>
+                                                                <td *ngIf="boleta==true"  style="text-align: center;font-size: 25px;width: 50%" >BOLETA</td>
+                                                                <td style="width: 25%"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: center;font-size: 17px" colspan="3">RUC : {{empresa.ruc}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: center;font-size: 16px;color: rgb(82, 136, 253)" colspan="3">{{ventas.serie_venta}} ELECTRONICA</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="col-sm-12" style="border:solid 1px gray;margin-top:10px">
+                                        <table style="width: 100%;text-align: center;margin-bottom: 10px;margin-top:10px">
+                                            <tbody>
+                                                <tr style="font-size: 15px">
+                                                    <td style="text-align: left;width: 20%" colspan="3"><strong>Direccion  :</strong></td>
+                                                    <td style="text-align: center   ;width: 80%;border-bottom: solid 1px;" colspan="9">{{ventas.direccion}}</td>
+                                                </tr>
+                                                <tr style="font-size: 15px">
+                                                    <td style="text-align: left;width: 20%" colspan="3"><strong>Señor(es):</strong></td>
+                                                    <td style="text-align: center;width: 30%;border-bottom: solid 1px" colspan="3"> {{ventas.nombre_cliente}}</td>
+                                                    <td style="text-align: left;width: 20%" colspan="3"><strong>N° de {{ventas.tipo_documento_cliente}}:</strong></td>
+                                                    <td style="text-align: center;width: 30%;border-bottom: solid 1px" colspan="3"> {{ventas.nro_documento}}</td>
+                                                </tr>
+                                                
+                                                <tr style="font-size: 15px">
+                                                    <td style="text-align: left;width: 20%" colspan="3"><strong>Moneda:</strong></td>
+                                                    <td style="text-align: center;width: 30%;border-bottom: solid 1px" colspan="3"> {{ventas.moneda}}</td>
+                                                    <td style="text-align: left;width: 20%" colspan="3"><strong>Guia de Remicion:</strong></td>
+                                                    <td style="text-align: center;width: 30%;border-bottom: solid 1px" colspan="3"> null</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <div class="col-sm-12" style="margin-top: 20px">
+                                    <table  width="100%" border="1" cellpadding="0" cellspacing="1" bordercolor="#000000" 
+                                    style="width: 100%;text-align: center;border-collapse:collapse;border-color:#ddd;">
+                                        <thead style="border-bottom: solid 1px #b1b5b8;font-size: 10px">
+                                            <tr >
+                                                <th >N°</th>
+                                                <th style="width: 500px;">DESCRIPCION</th>
+                                                <th >CANTIDAD</th>
+                                                <th >DESCUENTO</th>
+                                                <th >PRECIO UNITARIO</th>
+                                                <th style="text-align: center">VALOR VENTA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let dproductos of detalleventas; let $index=index">  
+                                            <tr >
+                                                <td style="text-align: center;vertical-align: top">{{$index+1}}</td>
+                                                <td style="text-align: center">
+                                                    <div class="row"  >
+                                                        <div class="col-sm-12">
+                                                            <strong>{{dproductos.descripcion}}</strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row"  >
+                                                        <div  *ngIf="dproductos.estado==true " class="col-sm-12" style="text-align: left; font-size: 10px;">
+                                                            S/N
+                                                        </div>
+                                                        <ng-container *ngFor="let codigos of codigo_productos; let $index=index">
+                                                            <div class="col-sm-4"  *ngIf="codigos.id_detalle_pago==dproductos.id_producto && codigos.serie!=null">
+                                                                <div >
+                                                                    {{codigos.serie}}
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: center;vertical-align: top" >{{dproductos.cantidad}}</td>
+                                                <td style="text-align: center;vertical-align: top">{{dproductos.descuento}}%</td>
+                                                <td style="text-align: center;vertical-align: top">{{dproductos.precio_unitario}}</td>
+                                                <td style="text-align: center;vertical-align: top" >{{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr >
+                                                <td style="color: transparent">x</td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" ></td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center"></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td style="text-align: center"></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td style="text-align: center"></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr >
+                                                <td style="color: #060606;background: #c9c3c3;" colspan="2">{{letrado}}</td>
+                                                <td *ngIf="factura==true" colspan="3" style="color:#99abb4">Subtotal</td>
+                                                <td *ngIf="factura==false" colspan="3" style="color:#99abb4">Total</td>
+                                                <td style="text-align: center;color:#99abb4">{{antsubtotal | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngFor="let imp of impuestos;let $index=index;" style="border-color: transparent" >
+                                                <td colspan="2"></td>
+                                                <td colspan="3" style="text-align: left">{{imp.nombre }}({{imp.porcentaje}}%)</td>
+                                                <td style="text-align: center;">{{imp.cantidad | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngIf="impuestos.length>0" style="border-color: transparent">
+                                                <td colspan="2">
+                                                    <div class="row" *ngIf="emailvalidado==null">
+                                                        <div class="col-sm-4" style="text-align: left">
+                                                            <button (click)="validaremail()" class="btn btn-sm btn-success" >
+                                                                <i class="fa fa-edit"></i> cambiar correo
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-8" style="text-align: left;">
+                                                            {{ventas.email}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="emailvalidado!=null">
+                                                        <div class="col-sm-9" style="text-align: left">
+                                                            <div  class="inner-addon right-addon">
+                                                                <i style="color: green" class="fa fa-question-circle" title="puede no agregar un email"></i>
+                                                                <input type="email"  #email="ngModel" name="email" class="form-control" [(ngModel)]="ventas.email" required>
+                                                            </div> 
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <button (click)="guardaremailvalid()"  class="btn btn-sm btn-info" >
+                                                                <i class="fa fa-save"></i> 
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <button (click)="cancelareditemail()" class="btn btn-sm btn-danger" >
+                                                                <i class="fa fa-ban"></i> 
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td colspan="3" style="background:#88c8ff;border-top: solid black;color: black;text-align: left" >Total</td>
+                                                <td style="text-align: center;background: #88c8ff;border-top: solid black;color: black">{{total | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngIf="impuestos.length<1" style="border-color: transparent">
+                                                <td colspan="2">
+                                                    <div class="row" *ngIf="emailvalidado==null">
+                                                        <div class="col-sm-4" style="text-align: left">
+                                                            <button (click)="validaremail()" class="btn btn-sm btn-success" >
+                                                                <i class="fa fa-edit"></i> cambiar correo
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-8" style="text-align: left;">
+                                                            {{ventas.email}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="emailvalidado!=null">
+                                                        <div class="col-sm-9" style="text-align: left">
+                                                            <div  class="inner-addon right-addon">
+                                                                <i style="color: green" class="fa fa-question-circle" title="puede no agregar un email"></i>
+                                                                <input type="email"  #email="ngModel" name="email" class="form-control" [(ngModel)]="ventas.email" required>
+                                                            </div> 
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <button (click)="guardaremailvalid()"  class="btn btn-sm btn-info" >
+                                                                <i class="fa fa-save"></i> 
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <button (click)="cancelareditemail()" class="btn btn-sm btn-danger" >
+                                                                <i class="fa fa-ban"></i> 
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td colspan="4" ></td>
+                                            </tr>
+                                        </tbody>    
+                                    </table>
+                                </div>
+                                <div  class="col-lg-12" style="margin-top: 10px;text-align: center">
+                                    <button  (click)="cerramodalventa()"  class="btn btn-danger"> <i class="fa fa-cloud-upload"></i> Cancelar</button>
+                                    <button  (click)="abrirmodalventas()"  [disabled]="(ventas.id_moneda==null || ventas.id_moneda==0)"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
                                 </div>
                             </div>
                         </div>

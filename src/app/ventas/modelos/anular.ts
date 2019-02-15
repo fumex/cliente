@@ -13,5 +13,8 @@ export class AnularModel{
 		public serie_venta_remplazo:string,
 		public email:string,
 		public letrado:string,
+		public subtotal:number,
+		public total:number,
+		public fecha:string,
 	){}
 }

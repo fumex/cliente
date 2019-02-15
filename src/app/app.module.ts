@@ -35,6 +35,7 @@ import { EmpleadoComponent } from './empleado/empleado.component';
 import { EmpleadoModule } from './empleado/empleado.module';
 import { SucursalModule } from './sucursales/sucursal.module';
 import { ClienteModule } from './cliente/cliente.module';
+import { nota_debitoModule } from './nota_devito/nota_devito.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { ImpuestoModule } from './impuesto/impuesto.module';
 import { MonedaModule } from './moneda/moneda.module';
@@ -77,6 +78,7 @@ import { EmisorModule } from './emisor/emisor.module';
     ServiciosModule,
     SucursalModule,
     EmisorModule,
+    nota_debitoModule,
     //------------------------
  
     //------------------------

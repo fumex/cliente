@@ -1,0 +1,223 @@
+<div class="row page-titles">
+    <div class="col-md-12 " style="text-align: right">
+        <button (click)="imprimir()" class="btn btn-info"> <i class="fa fa-print"></i> </button>
+        <button (click)="pdf()" class="btn btn-info"> <i class="fa fa-file-pdf-o"></i> </button>
+    </div>
+</div>
+<div class="container-fluid" >
+    <div class="card card-outline-primary" >
+        <div class="card-body">
+            <div class="form-horizonta" >
+                <div class="col-lg-12 row" id="imprimir">
+                    <div class="col-lg-1"></div>
+                        <div class="col-lg-12">
+                            <div class="row p-t-20">
+                                <table style="width: 100%;text-align: center;border:solid 1px">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 50%;">
+                                                <table style="width: 100%;">
+                                                    <tbody>
+                                                        <tr >
+                                                            <td style="text-align: center">
+                                                                <img id="mostrada" style="width: 180px;
+                                                                height: 90px;" [src]="imageUrl"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.nombre}}</div>
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.direccion}}</div>
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.departamento}}-{{empresa.provincia}}-{{empresa.distrito}}</div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>      
+                                                </table> 
+                                            </td>
+                                            <td style="width: 50%">
+                                                <table style="width: 100%; border:solid 2px #7798f5">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width: 25%"></td>
+                                                            <td style="text-align: center;font-size: 25px;width: 50%">NOTA DE CREDITO ELECTRONICA</td>
+                                                            <td style="width: 25%"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 17px" colspan="3">RUC : {{empresa.ruc}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 16px;color: rgb(82, 136, 253)" colspan="3">{{seriedenota}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!--<div class="col-sm-6">
+                                    <label class="control-label">/*aca van datos de la empresa*/</label>    
+                                </div>
+                                <div class="col-sm-6" style="border:solid 2px #7798f5">
+                                    <div class="row"> 
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-6" style="text-align: center">
+                                            NOTA DE CREDITO ELECTRONICA
+                                        </div>
+                                        <div class="col-sm-3"></div>
+                                        <br>
+                                        <br>
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4" style="text-align: center">
+                                            {{seriedenota}}
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+                                </div>-->
+                                <a style="font-size: 12px"><strong>Documento que Modifica:</strong></a>
+                                <div class="col-sm-12" style="border:solid 1px gray">
+                                    <table style="width: 100%;text-align: center">
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: left;width: 25%;font-size: 10px" colspan="3">Fecha de emicion :{{anular.fecha}}</td>
+                                                <td style="text-align: center;width: 50%;font-size: 20px" colspan="6"><strong>{{tipoventa}}</strong> {{ventas.serie_venta}}</td>
+                                                <td style="text-align: right;width: 25%;font-size: 12px" colspan="3"><a style="background: #73d7fe;color: black"> <strong>{{nombretiponota}}</strong></a></td>
+                                            </tr>
+                                            <tr style="font-size: 15px">
+                                                <td style="text-align: left;width: 25%" colspan="3"><strong>Señor(es)</strong></td>
+                                                <td style="text-align: left;width: 25%" colspan="3">: {{ventas.nombre_cliente}}</td>
+                                                <td style="text-align: left;width: 25%" colspan="3"><strong>N° de documento</strong></td>
+                                                <td style="text-align: left;width: 25%" colspan="3">: {{ventas.nro_documento}}</td>
+                                            </tr>
+                                            <tr style="font-size: 15px">
+                                                <td style="text-align: left;width: 25%" colspan="3"><strong>Moneda</strong></td>
+                                                <td style="text-align: left;width: 25%" colspan="3">: {{ventas.moneda}}</td>
+                                                <td style="text-align: left;width: 25%" colspan="3"><strong>Motivo o sustento</strong></td>
+                                                <td style="text-align: left;width: 25%" colspan="3">: {{anular.motivo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--<div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4" style="text-align: center;font-size: 20px"><strong>{{tipoventa}}</strong> {{ventas.serie_venta}}</div>
+                                        <div class="col-sm-4" style="text-align: right"><a style="background: #73d7fe;
+                                            color: black"> <strong>{{nombretiponota}}</strong></a></div>
+                                        <br>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Señor(es)</strong></div>
+                                        <div class="col-sm-3">: {{ventas.nombre_cliente}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>N° de documento</strong></div>
+                                        <div class="col-sm-3">: {{ventas.nro_documento}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Moneda</strong></div>
+                                        <div class="col-sm-3">:{{ventas.moneda}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Motivo o sustento</strong></div>
+                                        <div class="col-sm-3" style="margin-bottom: 10px">: {{anular.motivo}}</div>
+                                        <br>
+                                    </div>-->
+                                </div>
+                                <div class="col-sm-12" style="margin-top: 20px">
+                                    <table style="width: 100%;text-align: center">
+                                        <thead style="border-bottom: solid 1px #b1b5b8;">
+                                            <tr >
+                                                <th >N°</th>
+                                                <th >DESCRIPCION</th>
+                                                <th *ngIf="anular.tipo_nota!='05'">CANTIDAD</th>
+                                                <th >DESCUENTO</th>
+                                                <th style="text-align: center" >PRECIO UNITARIO</th>
+                                                <th style="text-align: center" *ngIf="anular.tipo_nota!='04'"   >VALOR VENTA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let dproductos of d_ventasvarante; let $index=index">  
+                                            <tr>
+                                                <td style="text-align: center">{{$index+1}}</td>
+                                                <td style="text-align: center"><strong>{{dproductos.nombre_producto}}</strong></td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='05'">{{dproductos.cantidad}}</td>
+                                                <td style="text-align: center">{{dproductos.descuento}}%</td>
+                                                <td style="text-align: center">{{dproductos.precio_unitario}}</td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='04'">{{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr >
+                                                <td style="color: transparent">x</td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='05'"></td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" *ngIf="anular.tipo_nota!='04'"></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
+                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='04'"></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05'"></td>
+                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='04'"></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr *ngIf="tipoventa!='BOLETA'">
+                                                <td *ngIf="anular.tipo_nota!='05' && anular.tipo_nota!='04'" style="text-align: center;color: #2a2626;background: #c0bebe;border: solid 1px;" colspan="4">{{anular.letrado}}</td>
+                                                <td *ngIf="anular.tipo_nota=='05' || anular.tipo_nota=='04'" style="text-align: center;color: #2a2626;background: #c0bebe;border: solid 1px;" colspan="3">{{anular.letrado}}</td>
+                                                <td style="text-align: center ;">Subtotal :</td>
+                                                <td style="text-align: center">{{anular.subtotal | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngIf="tipoventa=='BOLETA'">
+                                                <td *ngIf="anular.tipo_nota!='05' && anular.tipo_nota!='04'" style="text-align: center;color: #2a2626;background: #c0bebe;border: solid 1px;" colspan="4">{{anular.letrado}}</td>
+                                                <td *ngIf="anular.tipo_nota=='05' || anular.tipo_nota=='04'" style="text-align: center;color: #2a2626;background: #c0bebe;border: solid 1px;" colspan="3">{{anular.letrado}}</td>
+                                                <td style="text-align: center ;">Total :</td>
+                                                <td style="text-align: center">{{anular.total | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngFor="let imp of impuestos; let $index=index" >
+                                                <td ></td>
+                                                <td ></td>
+                                                <td *ngIf="anular.tipo_nota!='05' && anular.tipo_nota!='04'"></td>
+                                                <td ></td>
+                                                <td  style="text-align: center ;">{{imp.nombre}} ({{imp.porcentage}}):</td>
+                                                <td *ngIf="$index<impuestos.length-1" style="text-align: center;">{{imp.cantidad | number : '1.2-2'}} </td>
+                                                <td *ngIf="$index==impuestos.length-1" style="text-align: center;border-bottom: solid 1px blue">{{imp.cantidad | number : '1.2-2'}} </td>
+                                            </tr>
+                                            <tr *ngIf="tipoventa!='BOLETA'">
+                                                <td colspan="3" ></td>
+                                                <td *ngIf="anular.tipo_nota!='05' && anular.tipo_nota!='04'"></td>
+                                                <td style="text-align: center">Total</td>
+                                                <td style="text-align: center">{{anular.total}}</td>
+                                            </tr>
+                                        </tbody>    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="container-fluid" >
+    <div class="col-lg-12">
+        <div class="card card-outline-primary">
+            <div class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-12" style="text-align: center">
+                            <button (click)="imprimir()" class="btn btn-info"> <i class="fa fa-ban"></i> Imprimir</button>
+                            <button (click)="pdf()" class="btn btn-info"> <i class="ti-arrow-right"></i> Exportar en Pdf</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->

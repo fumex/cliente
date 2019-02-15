@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../interfaces/user.model';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';3
+import { environment } from '../../../environments/environment';
 import { LoginComponent} from '../login/login.component';
 import { UsuarioService} from '../../usuarios/services/usuarios.service';
 import { UsuarioModel} from '../../usuarios/modelos/usuarios'

@@ -16,5 +16,12 @@ export class VentasModel{
         public isc:number,
         public otro:number,
         public tipopago:number,
+        public letrado: string,
+        public direccion:string,
+        public nombre_cliente:string,
+        public nro_documento:string,
+        public moneda:string,
+        public email:string,
+        public tipo_documento_cliente:string,
 	){}
 }

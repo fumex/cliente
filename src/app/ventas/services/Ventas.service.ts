@@ -17,7 +17,10 @@ export class VentasService{
     obtenerdocumentos():Observable<any>{
         return this._http.get<any>(this.url+'/documentosdeventas').shareReplay();
     }
-    
+
+    getcodigo_productos(id):Observable<any>{
+        return this._http.get<any>(this.url+'/getcodigo_productosporcaja/'+id).shareReplay();
+    }
     GuardarVenta(ventas:VentasModel):Observable<any>{
         let json = JSON.stringify(ventas);
         
@@ -34,5 +37,8 @@ export class VentasService{
     }
     getproductosvendidos(fecha,id):Observable<any>{
         return this._http.get<any>(this.url+'/getproductosvendidos/'+fecha+'/'+id).shareReplay();
+    }
+    getventasporid(id):Observable<any>{
+        return this._http.get<any>(this.url+'/getventaporid/'+id).shareReplay();
     }
 }

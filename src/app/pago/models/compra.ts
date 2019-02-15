@@ -9,6 +9,8 @@ export class CompraModel{
      public nombre_producto:string,
      public descripcion:string,
      public cantidad:number,
-     public precio:number
+     public precio:number,
+     public estado:boolean,
+     public fecha:Date
     ){}
 }

@@ -179,7 +179,7 @@
                                         <td>producto n°{{$index + 1}}</td>
                                         <td>{{pedido.id_producto}}</td>
                                         <td *ngIf="texto!=$index">{{pedido.cantidad}}</td>
-                                        <td *ngIf="texto==$index" style="width: 280px">
+                                        <td *ngIf="texto==$index" style="width: 280px"> 
                                             <div style="margin-right: 0px;width: 280px">
                                                 <div style="padding-right: 0px;">
                                                     <input type="number" min="1" id="pruebacantidad" #cantidad="ngModel" name="cantidad" [(ngModel)]="pedido.cantidad"  class="form-control" />
@@ -187,8 +187,7 @@
                                             </div>
                                         </td>
                                         <div *ngIf="editar!=$index">                                         
-                                            <a class="btn btn-sm btn-danger " (click)="exitCompra($index,pedido.id)" ><i class="fa fa-trash"></i></a>            
-                                            
+                                            <a class="btn btn-sm btn-danger " (click)="exitCompra($index,pedido.id)" ><i class="fa fa-trash"></i></a>
                                         </div>
                                     </tr>
                                 </tbody>

@@ -72,8 +72,18 @@ export class PagoService{
     anularPagoDetalle(id):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/pagos_d/`+id).shareReplay();
     }
+    ingresarIyManulacion(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/Anulacion_insertarIyM/`+id).shareReplay();
+    }
+    borrardealmacen(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/Anulacion_borradealmacen/`+id).shareReplay();
+    }
     getCompra(cod):Observable<any>{
         return this.http.get(`${environment.api_url}/auth/compra-get/`+cod).shareReplay();
+    }
+
+    getdetallepagoanulacion(id):Observable<any>{
+        return this.http.get(`${environment.api_url}/getdetallepagosanulacion/`+id).shareReplay();
     }
     //--------------------Pago Recibo-----------------------------------------------------
     setPago(pago:PagoAnulaModel){

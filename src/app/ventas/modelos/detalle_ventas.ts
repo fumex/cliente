@@ -20,5 +20,7 @@ export class DetalleVentasModel{
         public igv_porcentage:number,
         public isc_porcentage:number,
         public otro_porcentage:number, 
+        public id_codigo_producto:number,
+        public cantidad_maxima:number,
 	){}
 }

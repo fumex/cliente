@@ -24,7 +24,7 @@ export class PagoAnularComponent implements OnInit{
     public pagos:PagoAnulaModel[];
     public pago:PagoAnulaModel;
     public id_compra:number;
-
+    public detallepagosid:Array<any>=[];
     //-------------------------------------------
     public nombre_proveedor:string;
     public documento:string;
@@ -41,7 +41,6 @@ export class PagoAnularComponent implements OnInit{
     public user:User;
     public confirmado;
     public val:boolean;
-    
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
@@ -90,19 +89,29 @@ export class PagoAnularComponent implements OnInit{
                 this.id_compra=result;
                 console.log(this.id_compra);
                 this.anularComp(this.id_compra);
-                this.list();
-                
+                this.getdetalle(this.code)
             }, 
             error=>{
                 console.log(<any>error);
             }
         );
     }
+    getdetalle(cod){
+        this.pagoService.getdetallepagoanulacion(cod).subscribe(
+            res=>{
+                this.detallepagosid=res;
+                console.log(this.detallepagosid);
+                this.anularPagoDetalle();
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
+    }
     anularComp(id){
         this.pagoService.anularPago(id).subscribe(
             result=>{
                 console.log(result);
-                this.anularPagoDetalle();
             },
             error=>{
                 console.log(<any>error);
@@ -110,19 +119,55 @@ export class PagoAnularComponent implements OnInit{
         )
     }
     anularPagoDetalle(){
-       let compra_service=this.pagoService;
+        let i=0;
+        console.log(this.detallepagosid.length);
+        while(i<this.detallepagosid.length){
+            console.log(this.detallepagosid[i].id);
+            this.anulard_pago(this.detallepagosid[i].id);
+            this.insertarainventarioymovimientos(this.detallepagosid[i].id);
+
+            i++;
+        }
+        //this.list();
+        /*let compra_service=this.pagoService;
         this.compras.forEach(function(value){
             compra_service.anularPagoDetalle(value.id).subscribe(
-                result=>{
-                    console.log(result);
-                },
-                error=>{
-                    console.log()
-                }
+               
             );                 
-        });
+        });*/
     }
-
+    anulard_pago(id){
+        console.log(id)
+        this.pagoService.anularPagoDetalle(id).subscribe(
+            result=>{
+                console.log(result);
+            },
+            error=>{
+                console.log()
+            }
+        );
+    }
+    insertarainventarioymovimientos(id){
+        console.log(id)
+        this.pagoService.ingresarIyManulacion(id).subscribe(
+            result=>{
+                console.log(result);
+                    
+            },
+            error=>{
+                console.log()
+            }
+        );
+        this.pagoService.borrardealmacen(id).subscribe(
+            result=>{
+                console.log(result);
+            },
+            error=>{
+                console.log()
+            }
+        );  
+       
+    }
     listaPagos(){
         this.pagoService.listPago(this.user.id).subscribe(
             result=>{

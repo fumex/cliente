@@ -7,11 +7,13 @@ import { VentasComponent } from "./componentes/ventas.component";
 import { ResumenCajasAbiertasComponent} from './componentes/CajasAbiertas.component';
 import { AnularVentaComponent} from './componentes/ventas_anular.component';
 import { ReportesComponent} from './componentes/reportes.component';
+import { ImprimirNotaCreditoComponent} from './componentes/imprimirnota.component';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
     declarations: [
         VentasComponent,
+        ImprimirNotaCreditoComponent,
         ResumenCajasAbiertasComponent,
         AnularVentaComponent,
         ReportesComponent,

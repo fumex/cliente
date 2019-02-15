@@ -1,0 +1,463 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-primary">{{titulo}}</h3>
+    </div>
+</div>
+<div class="container-fluid" >
+    <div class="col-lg-12">
+        <div class="card card-outline-primary">
+            <div class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-10">
+                            <div class="row p-t-20">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Tipo de Nota de Debito:</label>    
+                                </div>
+                                <div class="col-sm-6" >
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nota_debito.tipo_nota!=null && tipo.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="nota_debito.tipo_nota==null && tipo.touched" style="color: red" class="fa fa-times"></i>
+                                        <select id="combotipo" class="form-control custom-select" #tipo="ngModel" name="tipo" [(ngModel)]="nota_debito.tipo_nota" required>
+                                            <option *ngFor="let tip of tiponotas"  value='{{tip[1]}}' >{{tip[0]}}</option>   
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">N° de Factura:</label>
+                                </div>
+                                <div class="col-sm-2" >
+                                    <div class="inner-addon left-addon" >
+                                        <i *ngIf="nota_debito.serie!=null && serie.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!serie.valid && serie.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="textserie" (keyup)="limitarserie()" maxlength="4" #serie="ngModel" name="serie" [(ngModel)]="nota_debito.serie" class="form-control" required pattern="[A-Za-z0-9]{4,20}">
+                                    </div> 
+                                </div> 
+                                <div class="col-sm-3" >
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nota_debito.numero!=null && numero.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!numero.valid && numero.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="textnumero" (keyup)="cambionumero()" maxlength="8" #numero="ngModel" name="numero" [(ngModel)]="nota_debito.numero" class="form-control" required pattern="[0-9]{1,20}">
+                                    </div> 
+                                </div> 
+                                <div class="col-md-3" *ngIf="cargando==null && d_ventas.length<1 " style="margin-top: 7px;">
+                                    <button (click)="verificarserie('verificar')"  class="btn btn-sm btn-info" >
+                                        <i></i> Verificar
+                                    </button>
+                                </div> 
+                                <div class="col-md-3" *ngIf="cargando!=null && d_ventas.length<1 " style="margin-top: 7px;">
+                                    <button  class="btn btn-sm btn-success" >
+                                        <i class="fa fa-spinner fa-spin"></i> Verificando
+                                    </button>
+                                </div> 
+                                <div class="col-md-3" *ngIf="cargando!=null && d_ventas.length>0">
+                                    <button (click)="abrirmodalventa()" type="button" class="btn btn-link" style="color: green">
+                                        <i class="fa fa-check-circle"></i> Ver Factura
+                                    </button>
+                                </div> 
+                                <br>
+                                <br>
+                                <div class="col-sm-4">
+                                    <label class="control-label">Motivo por el cual se emitira la nota de credito</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="inner-addon left-addon">
+                                        <i *ngIf="nota_debito.motivo!=null && motivo.valid" style="color: green" class="fa fa-check"></i>
+                                        <i *ngIf="!motivo.valid && motivo.touched" style="color: red" class="fa fa-times"></i>
+                                        <input id="textmotivo" #motivo="ngModel" name="motivo" [(ngModel)]="nota_debito.motivo" class="form-control" required>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
+                        <div class="col-sm-12" style="text-align: center" *ngIf="veritems==null && vernuevoruc==null">
+                            <button (click)="verificarserie('ir')" [disabled]="nota_debito.serie==null || nota_debito.numero==null || nota_debito.motivo==null || nota_debito.tipo_nota==null" class="btn btn-info"> <i class="fa fa-check"></i> Continuar</button>
+                            <button (click)="limpiar()" class="btn btn-danger"> <i class="fa fa-ban"></i> limpiar</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 row" *ngIf="veritems!=null && verresumenfinal==null">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-12">
+                            <div class="row p-t-20">
+                                <a style="font-size: 12px"><strong>Seleccione el item de la factura que {{tipodeitem}}</strong></a>
+                                <div class="col-sm-12" >
+                                    <table cellpadding=2   style="width: 100%;text-align: center">
+                                        <thead  >
+                                            <tr style="background: #dbdbdb;box-shadow: inset 0px -4px 10px 0.3px #70707055">
+                                                <th style="border: solid 1px gray;"></th>
+                                                <th style="font-weight: 600;border: solid 1px gray;">DESCRIPCION</th>
+                                                <th style="font-weight: 600;border: solid 1px gray;">CANTIDAD</th>
+                                                <th style="font-weight: 600;border: solid 1px gray;">PRECIO UNITARIO</th>
+                                                <th style="font-weight: 600;border: solid 1px gray;text-align: center" >VALOR VENTA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let dproductos of d_ventas; let $index=index">  
+                                            <tr>
+                                                <td >
+                                                    <i *ngIf="dproductos.id_venta!=null" class="ti-pencil-alt" (click)="vermodaldetallenota(dproductos)"
+                                                    style="text-align: center;cursor: pointer;box-shadow: inset 0px -4px 10px 0.3px #3e8ff855"></i>
+                                                    <i *ngIf="dproductos.id_venta==null"class="ti-check-box" (click)="verdetalleagregado(dproductos)"
+                                                    style="text-align: center;cursor: pointer;box-shadow: inset 0px -4px 10px 0.3px #70fa4555"></i>
+                                                </td>
+                                                <td style="text-align: center"><strong>{{dproductos.nombre_producto}}</strong></td>
+                                                <td style="text-align: center">{{dproductos.cantidad}}</td>
+                                                <td style="text-align: center">{{dproductos.precio_unitario}}</td>
+                                                <td style="text-align: center">{{dproductos.precio_unitario*dproductos.cantidad}}</td>
+                                            </tr>
+                                        </tbody>  
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="text-align: center" >
+                            <button (click)="cancelar()" class="btn btn-danger"> <i class="fa fa-ban"></i> Cancelar</button>
+                            <button (click)="finalizar02()" class="btn btn-success" [disabled]="nota_debito_detalle.length<1"> <i class="ti-arrow-right"></i> Continuar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="verresumenfinal!=null">
+    <div class="col-lg-12">
+        <div class="card card-outline-primary">
+            <div class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-12">
+                            <div class="row p-t-20">
+                                <table style="width: 100%;text-align: center;border:solid 1px">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 50%;">
+                                                <table style="width: 100%;">
+                                                    <tbody>
+                                                        <tr >
+                                                            <td style="text-align: center">
+                                                                <img id="mostrada" style="width: 180px;
+                                                                height: 90px;" [src]="imageUrl"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.nombre}}</div>
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.direccion}}</div>
+                                                                    <div class="col-sm-12" style="text-align: center;font-size: 10px">{{empresa.departamento}}-{{empresa.provincia}}-{{empresa.distrito}}</div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>      
+                                                </table> 
+                                            </td>
+                                            <td style="width: 50%">
+                                                <table style="width: 100%; border:solid 2px #7798f5">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width: 25%"></td>
+                                                            <td style="text-align: center;font-size: 25px;width: 50%">NOTA DE CREDITO ELECTRONICA</td>
+                                                            <td style="width: 25%"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 17px" colspan="3">RUC : {{empresa.ruc}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 16px;color: rgb(82, 136, 253)" colspan="3">{{seriedenota}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <a style="font-size: 12px"><strong>Documento que Modifica:</strong></a>
+                                <div class="col-sm-12" style="border:solid 1px gray">
+                                    <div class="row">
+                                        <div class="col-sm-4" style="text-align: left;font-size: 10px">Fecha de emicion :{{nota_debito.fecha}}</div>
+                                        <div class="col-sm-4" style="text-align: center;font-size: 20px"><strong>{{tipoventa}}</strong> {{ventas.serie_venta}}</div>
+                                        <div class="col-sm-4" style="text-align: right"><a style="background: #73d7fe;
+                                            color: black"> <strong>{{nombretiponota}}</strong></a></div>
+                                        <br>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Señor(es)</strong></div>
+                                        <div class="col-sm-3">: {{ventas.nombre_cliente}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>N° de documento</strong></div>
+                                        <div class="col-sm-3">: {{ventas.nro_documento}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Moneda</strong></div>
+                                        <div class="col-sm-3">: {{ventas.moneda}}</div>
+                                        <br>
+                                        <div class="col-sm-3"><strong>Motivo o sustento</strong></div>
+                                        <div class="col-sm-3" style="margin-bottom: 10px">: {{nota_debito.motivo}}</div>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" style="margin-top: 20px">
+                                    <table style="width: 100%;text-align: center">
+                                        <thead style="border-bottom: solid 1px #b1b5b8;">
+                                            <tr >
+                                                <th >N°</th>
+                                                <th >DESCRIPCION</th>
+                                                <th >CANTIDAD</th>
+                                                <th >DESCUENTO</th>
+                                                <th style="text-align: center">PRECIO UNITARIO</th>
+                                                <th style="text-align: center"    >VALOR VENTA</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let dproductos of d_ventasvarante; let $index=index">  
+                                            <tr>
+                                                <td style="text-align: center">{{$index+1}}</td>
+                                                <td style="text-align: center"><strong>{{dproductos.nombre_producto}}</strong></td>
+                                                <td style="text-align: center" >{{dproductos.cantidad}}</td>
+                                                <td style="text-align: center">{{dproductos.descuento}}</td>
+                                                <td style="text-align: center">{{dproductos.precio_unitario | number : '1.2-2'}}</td>
+                                                <td style="text-align: center" >{{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100 | number : '1.2-2'}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr >
+                                                <td style="color: transparent">x</td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" ></td>
+                                                <td style="text-align: center"></td>
+                                                <td style="text-align: center" ></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                            </tr>
+                                            <tr >
+                                                <td style="color: transparent;">x</td>
+                                                <td ></td>
+                                                <td></td>
+                                                <td ></td>
+                                                <td ></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody >  
+                                            <tr *ngIf="tipoventa!='BOLETA'">
+                                                <td style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="4">{{letrado}}</td>
+                                                <td style="text-align: center ;">Subtotal :</td>
+                                                <td style="text-align: center">{{subtotal | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngIf="tipoventa=='BOLETA'">
+                                                <td style="text-align: center;color: #2a2626;background: #c0bebe;" colspan="4">{{letrado}}</td>
+                                                <td style="text-align: center ;">Total :</td>
+                                                <td style="text-align: center">{{total | number : '1.2-2'}}</td>
+                                            </tr>
+                                            <tr *ngFor="let imp of impuestos; let $index=index" >
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td ></td>
+                                                <td  style="text-align: center ;">{{imp.nombre}} ({{imp.porcentage}}):</td>
+                                                <td *ngIf="$index<impuestos.length-1" style="text-align: center;">{{imp.cantidad | number : '1.2-2'}} </td>
+                                                <td *ngIf="$index==impuestos.length-1" style="text-align: center;border-bottom: solid 1px blue">{{imp.cantidad | number : '1.2-2'}} </td>
+                                            </tr>
+                                            <tr *ngIf="tipoventa!='BOLETA'">
+                                                <td ></td>
+                                                <td colspan="2" >
+                                                    <button (click)="volveratras()" class="btn btn-success"> <i class="fa fa-arrow-left"></i> Volver</button>
+                                                    <button (click)="abrirmodalemail()" class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
+                                                    <button (click)="limpiartodo()" class="btn btn-danger"> <i class="fa fa-trash-alt"></i> Cancelar</button>
+                                                </td>
+                                                <td></td>
+                                                <td style="text-align: center">Total</td>
+                                                <td style="text-align: center">{{total}}</td>
+                                            </tr>
+                                        </tbody>    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modaldetalles" class="col-sm-12 modal2">
+    <div class="modal-detalles" >
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12" >
+                        <div class="row p-t-1" >
+                            <div class="col-sm-12" style=" background: #dfd9d9;
+                            height: 30px;
+                            box-shadow: inset 0px -4px 14px 0.3px #747373">
+                                <div class="row">
+                                    <div class="col-sm-11" style="text-align: left;">{{nombretiponota}}</div>
+                                    <div class="col-sm-1" style="text-align: center;cursor: pointer;"><i class="ti-close" (click)="cerrarmodaldetalles()"></i></div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <!--<div class="col-sm-8" ></div>
+                            <div class="col-sm-4" style="text-align: right">
+                                <button type="button" class="btn btn-link btn-xs" (click)="disgregarimpuesto()">agregar impuestos impuestos 
+                                <i *ngIf="aimpiestos==false" class="fa fa-circle-thin"></i>
+                                <i *ngIf="aimpiestos==true" class="fa fa-circle"></i></button>
+                            </div>
+                            <br>
+                            <br>-->
+                            <div class="col-sm-4" ><strong>Cantidad:</strong></div>
+                            <div class="col-sm-6">
+                                <input readonly="readonly" #cant="ngModel" name="cant" [(ngModel)]="detalletenporal.cantidad" class="form-control"> 
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Categoria:</strong></div>
+                            <div class="col-sm-6">
+                                <input readonly="readonly" #cat="ngModel" name="cat" [(ngModel)]="detalletenporal.nombre_categoria" class="form-control"> 
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <br>
+                            <br>
+                            <div class="col-sm-4" ><strong>Descripcion:</strong></div>
+                            <div class="col-sm-8">
+                                <textarea readonly="readonly" rows="4"  #desc="ngModel" name="desc" [(ngModel)]="detalletenporal.nombre_producto" class="form-control">
+                                </textarea> 
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-12 row" >
+                                <div class="col-sm-5"><strong>Aumento adicional por item:</strong></div>
+                                <div class="col-sm-6">
+                                    <div class="inner-addon left-addon" >
+                                        <i style="color: green" class="fa fa-dollar"></i>
+                                        <input id="txtval" (keyup)="calcularcantidadaumentoitem()" #itemcantidad="ngModel" name="itemcantidad" 
+                                        [(ngModel)]="nota_debito_detalle.cantidad_total" class="form-control" required pattern="[0-9]+.[0-9]+">
+                                    </div> 
+                                </div>
+                                <div class="col-sm-1">
+                                    <i *ngIf="nota_debito_detalle.cantidad!=null && validarnumero==true" style="color: green" class="fa fa-check-circle"></i>
+                                    <i *ngIf="validarnumero==false" style="color: red" class="fa fa-times-circle"></i>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="col-sm-5"><strong>Cantidad sin impuestos:</strong></div>
+                                <div class="col-sm-6">
+                                    <a style="margin-left: 12px"><strong>{{nota_debito_detalle.cantidad | number : '1.2-2'}}</strong></a>
+                                </div>
+                                <div class="col-sm-1"></div>
+                                <br>
+                                <br>
+                                <div class="col-sm-5"><strong>cantidad sin IGV</strong></div>
+                                <div class="col-sm-6">
+                                    <a style="margin-left: 12px"><strong>{{nota_debito_detalle.cantidad_sinigv }}</strong></a>
+                                </div>
+                                <div class="col-sm-1"></div>
+                                <br>
+                                <br>
+                                <div class="col-sm-5"><strong>igv</strong>({{detalletenporal.igv_porcentage}}%)<strong>:</strong></div>
+                                <div class="col-sm-6">
+                                    <input  #igv="ngModel" name="igv" [(ngModel)]="nota_debito_detalle.igv" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-1"></div>
+                                <br>
+                                <br>
+                                <div class="col-sm-5"><strong>isc</strong>({{detalletenporal.isc_porcentage}}%)<strong>:</strong></div>
+                                <div class="col-sm-6">
+                                    <input  #isc="ngModel" name="isc" [(ngModel)]="nota_debito_detalle.isc" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-1"></div>
+                                <br>
+                                <br>
+                                <div class="col-sm-5"><strong>otro</strong>({{detalletenporal.otro_porcentage}}%)<strong>:</strong></div>
+                                <div class="col-sm-6">
+                                    <input  #otro="ngModel" name="otro" [(ngModel)]="nota_debito_detalle.otro" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
+                            <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
+                                <button *ngIf="editardetallenotadebito==null" (click)="adddetallenota()" [disabled]="validarnumero!=true" class="btn btn-info"> <i class="fa fa-save"></i> Continuar</button>
+                                <button *ngIf="editardetallenotadebito!=null" (click)="adddetallenota()" [disabled]="validarnumero!=true" class="btn btn-info"> <i class="ti-pencil"></i>  editar</button>
+                                <button *ngIf="editardetallenotadebito!=null" (click)="quitardetallenota()" class="btn btn-warning"> <i class="fa fa-ban"></i> quitar</button>
+                                <button *ngIf="editardetallenotadebito==null" (click)="cerrarmodaldetalles()" class="btn btn-danger"> <i class="fa fa-ban"></i> Cancelar</button>
+                            </div>
+                        </div>         
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div id="modalaumento" class="col-sm-12 modal">
+    <div class="modal-detalles" >
+        <div class="form-body">
+            <div  class="card-body">
+                <div class="form-horizonta">
+                    <div class="col-lg-12" >
+                        <div class="row p-t-1" >
+                            <div class="col-sm-12" style=" background: #dfd9d9;
+                            height: 30px;
+                            box-shadow: inset 0px -4px 14px 0.3px #747373">
+                                <div class="row">
+                                    <div class="col-sm-11" style="text-align: left;">{{nombretiponota}}</div>
+                                    <div class="col-sm-1" style="text-align: center;cursor: pointer;"><i class="ti-close" (click)="cancelar04()"></i></div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-sm-5" ><strong>Descuento:</strong></div>
+                            <div class="col-sm-6">
+                                <div class="inner-addon left-addon" >
+                                    <i *ngIf="anulardetalle.cantidad!=null && descglo.valid && validarglobal!=false" style="color: green" class="fa fa-check"></i>
+                                    <i *ngIf="descglo.touched && !descglo.valid && validarglobal==false" style="color: red" class="fa fa-times"></i>
+                                    <input style="text-align: center" id="textdesglobal" #descglo="ngModel" type="number" min="1" name="descglo" (keyup)="calcularimpuestos()"
+                                     [(ngModel)]="anulardetalle.cantidad_total" class="form-control" required> 
+                                </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                            <br>
+                            <br>
+                            <div class="col-sm-5"><strong>descuento sin impuestos</strong></div>
+                            <div class="col-sm-6" style="text-align: center">{{anulardetalle.cantidad | number : '1.2-2'}}</div>
+                            <div class="col-sm-1"></div>
+                            <br>
+                            <br>
+                            <div class="col-sm-5"><strong>descuento sin igv </strong></div>
+                            <div class="col-sm-6" style="text-align: center">{{anulardetalle.cantidad_sinigv | number : '1.2-2'}}</div>
+                            <div class="col-sm-1"></div>
+                        </div>         
+                    </div>
+                    <div class="col-lg-12" *ngFor="let imp of impuestos">
+                        <div class="row p-t-20" >
+                            <div class="col-sm-5"><strong>{{imp.nombre}} ({{imp.porcentage}}%):</strong></div>
+                            <div class="col-sm-6" style="text-align: center">{{imp.cantidad | number : '1.2-2'}}</div>
+                            <div class="col-sm-1"></div>
+                        </div>         
+                    </div>
+                    <div class="col-lg-12" >
+                        <div class="row p-t-20" >
+                            <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
+                                <button (click)="finalizar04()" [disabled]="!descglo.valid || validarglobal==false" class="btn btn-info" > <i class="fa fa-save"></i> Continuar</button>
+                                <button (click)="cancelar04()"  class="btn btn-info" > <i class="fa fa-save"></i> Cancelar</button>
+                            </div>
+                            
+                        </div>         
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->

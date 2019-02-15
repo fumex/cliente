@@ -1,8 +1,7 @@
 import { Component,ViewContainerRef } from "@angular/core";
 import { CajasModels } from "../../cajas/modelos/cajas";
-import { CajasService } from '../../cajas/services/cajas.services';
 import { DetalleCajasUsuarioService } from '../../cajas/services/detalle.cajas.usuarios.services';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 import {SucursalService} from '../../sucursales/services/sucursal.service';
@@ -16,13 +15,15 @@ import {DetalleVentasModel} from '../../ventas/modelos/detalle_ventas';
 import {DetalleVentasService} from '../services/DetalleVentas.service';
 import {VentasService} from '../services/Ventas.service';
 import { VentasModel } from '../modelos/ventas';
-import {AnularDetalleModel} from '../modelos/anular_detalle'
-
+import {AnularDetalleModel} from '../modelos/anular_detalle';
+import {EmpresaService} from '../../empresa/services/empresa.service';
+import {EmpresaModel} from '../../empresa/models/empresa';
 import{AnularModel} from '../modelos/anular'
 import {AnularService} from '../services/notadecredito.service';
 
 import { ImpuestoService } from "../../impuesto/services/impuesto.service";
 
+import { environment } from '../../../environments/environment';
 import{conversordenumerosaletras} from '../services/numeroaletras.service';
 import { isNumber } from "util";
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
@@ -32,9 +33,9 @@ declare var $:any;
 declare var swal:any;
 
 @Component({
-    selector:'cajasabiertas',
+    selector:'nota-credito',
     templateUrl:'../views/ventas_anular.html',
-    providers:[CajasService,ToastService,SucursalService,DetalleVentasService,AnularService,ImpuestoService,conversordenumerosaletras,VentasService]
+    providers:[ToastService,SucursalService,DetalleVentasService,AnularService,ImpuestoService,conversordenumerosaletras,VentasService,EmpresaService]
 })
 export class AnularVentaComponent{
     public id_venta=null;
@@ -42,11 +43,14 @@ export class AnularVentaComponent{
     public user:any;
     public titulo;
     public sucursales:any;
-    public ventas:Array<VentasModel>=[];;
+    public ventas:VentasModel;
     public d_ventas:Array<any>=[];                                  
     public d_ventasvarante:Array<any>=[];
     public ventasfinal:Array<any>=[];
     public impuestos:Array<any>=[];
+    public impuestosventas:Array<any>=[];
+    public subtotalventas=0;
+    public totalventas=0;
     public tiponotas=new Array();
     public detalleventas:DetalleVentasModel;
     public getventa:any;
@@ -55,7 +59,7 @@ export class AnularVentaComponent{
     public modaldetalles;
     public modalemail;
     public modal_d_global;
-    public modalimp;
+    public modalventa;
     public verventas=null;
     public nombretiponota=null;
     public vertodaslasventas=false;
@@ -63,6 +67,7 @@ export class AnularVentaComponent{
     public textnumero=null;
     public textmotivo=null;
     public textvalidar=null;
+    public textglobal;
     public combotipos=null;
     public cargando=null;
     public getimpuestos:Array<any>=[];
@@ -85,8 +90,16 @@ export class AnularVentaComponent{
     public validarnumero=null;
     public editardetalleanular=null;
     public arregloparaelfinal:Array<any>=[];
+    public contenido=null;
+    public contenidoOriginal=null;
+    public total04=0;
+    public fecha=null;
+    public empresa:EmpresaModel;
+    public totalventa=0;
+    public validarglobal=false;
+    public url;
+    imageUrl: string = "assets/images/1.png";
     constructor(
-        private _cajasservice:CajasService,
         private _SucursalService:SucursalService,
         private _AnularService:AnularService,
         private _DettaleUsuarioService:DettaleUsuarioService,
@@ -94,18 +107,29 @@ export class AnularVentaComponent{
         private _DetalleVentasService:DetalleVentasService,
         private conversor:conversordenumerosaletras,
         private auth:AuthService,
+        private router:Router,
         private _ImpuestoService:ImpuestoService,
         private _VentasService:VentasService,
         private toaste:ToastService,
+        private _EmpresaService:EmpresaService,
         public toastr: ToastsManager,
         vcr: ViewContainerRef
+        
     ){
-        this.titulo="Anular Venta"
+        this.titulo="Notas de Credito"
         this.toastr.setRootViewContainerRef(vcr);
         //this.tablaventas();
         this.user=this.auth.getUser();
+        this.url=environment.api_url; 
+        this.imageUrl=this.url+'/imagenes/2.png';
+        this.textserie=document.getElementById('textserie');
+        this.textnumero=document.getElementById('textnumero');
+        this.textmotivo=document.getElementById('textmotivo');
+        this.combotipos=document.getElementById('combotipo');
+        this.textglobal=document.getElementById('textdesglobal');
     }
     ngOnInit(){
+        
         this.tiponotas[0]=['Anulacion de la Operacion','01'];
         this.tiponotas[1]=['Anulacion por error en el RUC','02'];
         this.tiponotas[2]=['Correccion por error en la descripcion','03'];
@@ -118,36 +142,65 @@ export class AnularVentaComponent{
         this.textnumero=document.getElementById('textnumero');
         this.textmotivo=document.getElementById('textmotivo');
         this.combotipos=document.getElementById('combotipo');
-        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null);
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0);
+        this.textglobal=document.getElementById('textdesglobal');
+        var f=new Date();
+        let mes=f.getMonth()*1+1;
+        this.fecha=f.getDate()+'/'+mes+'/'+f.getFullYear();
+        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
         this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
-        this.detalletenporal=new DetalleVentasModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-        this.ventas=null;
+        this.detalletenporal=new DetalleVentasModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
+        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.getempresa();
         this.modal=document.getElementById('myModal');
         this.modaldetalles=document.getElementById('modaldetalles');
         this.modalemail=document.getElementById('modalemail');
         this.modal_d_global=document.getElementById('modaldescuentoglobal');
+        this.modalventa=document.getElementById('modalventa');
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('myModal') ) {
                 this.document.getElementById('myModal').style.display = "none";
             }
         }
-        window.onclick = function(event) {
-            if (event.target == this.document.getElementById('modaldetalles')) {
-                this.document.getElementById('modaldetalles').style.display = "none";
-                
-            }
-        }
+
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('modalemail')) {
                 this.document.getElementById('modalemail').style.display = "none";
             }
         }
+
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('modaldescuentoglobal')) {
                 this.document.getElementById('modaldescuentoglobal').style.display = "none";
             }
         }
+        
+        window.onclick = function(event) {
+            
+            if (event.target == this.document.getElementById('modalventa')) {
+                this.document.getElementById('modalventa').style.display = "none";
+                
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == this.document.getElementById('modaldetalles') ) {
+                this.document.getElementById('modaldetalles').style.display = "none";
+            }
+        }
+    }
+    getempresa(){
+        this._EmpresaService.dataEmpresa().subscribe(
+            res=>{
+                this.empresa=res;
+                console.log(this.empresa);
+                this.imageUrl=this.url+'/empresa-img/'+this.empresa.imagen;
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
     }
     getimp(){
         this._ImpuestoService.getImpuestos().subscribe(
@@ -199,6 +252,9 @@ export class AnularVentaComponent{
                 console.log(this.seriedenota);
 
                 this.anular.serie_nota=this.seriedenota;
+                this.anular.letrado=this.letrado;
+                this.anular.subtotal=this.subtotal;
+                this.anular.total=this.total;
                 this._AnularService.guardarnotas(this.anular).subscribe(
                     res=>{
                         console.log(res);
@@ -207,7 +263,7 @@ export class AnularVentaComponent{
                                 console.log(this.anular_detalle.length);
                                 this.guardardetallenotacredito();
                             }else{
-                                this.alertaecho();
+                                //this.alertaecho();
                             }
         
                         }
@@ -227,61 +283,60 @@ export class AnularVentaComponent{
         /*var numero=this.anulardetalle.cantidad.toString();
         let cant=numero.charAt(0);*/
         this.textvalidar=document.getElementById('txtval');
-        let numeroigv=0,i=0,validado=null;
+        let numeroigv=0,i=0,validado=null,numeromaximo=0;
         console.log(this.textvalidar.value);
         
 
-        console.log(this.anulardetalle.cantidad*(this.detalletenporal.igv_porcentage/100));
-        numeroigv=this.anulardetalle.cantidad*(18/100)
-        if(this.anulardetalle.cantidad>(this.detalletenporal.precio_unitario*this.detalletenporal.cantidad*(100-this.detalletenporal.descuento)/100)-0.1){
-            this.toaste.WarningAlert('Alerta!!!!!!','La cantidad de descuento excedió el importe del item')
-            this.anulardetalle.cantidad=Math.round(((this.detalletenporal.precio_unitario*(100-this.detalletenporal.descuento)/100)-0.1)*100)/100;
-            this.anulardetalle.igv=0;
-            this.anulardetalle.isc=0;
-            this.anulardetalle.otro=0; 
-            this.anulardetalle.cantidad_total=0
+        console.log(this.anulardetalle.cantidad_total*(this.detalletenporal.igv_porcentage/100));
+        numeroigv=this.anulardetalle.cantidad_total*(18/100)
+        numeromaximo=(this.detalletenporal.precio_unitario*((100-this.detalletenporal.descuento)/100)*1+this.detalletenporal.isc*1+this.detalletenporal.otro*1)*this.detalletenporal.cantidad;
+        console.log(numeromaximo);
+        if(this.anulardetalle.cantidad_total>numeromaximo){
+            this.toaste.WarningAlert('La cantidad de descuento excedió el importe del item','Alerta!!!!!!')
+            this.anulardetalle.cantidad_total=Math.round(numeromaximo*100)/100;
             this.textvalidar.focus();
-        }else{
-            if(this.anular.serie.charAt(0)=="F"){
-                if(numeroigv==0){
-                    console.log('invalñdo')
-                    this.validarnumero=false;
-                    this.anulardetalle.igv=0;
-                    this.anulardetalle.isc=0;
-                    this.anulardetalle.otro=0;
-                    this.anulardetalle.cantidad_total=0
-                    /*this.textvalidar.focus();
-                    this.textvalidar.select();*/
-                }else{
-                    console.log('validao')
-                    this.anulardetalle.igv=Math.round(this.anulardetalle.cantidad*100)/100;
-                    while(i<this.getimpuestos.length){
-                        if(this.detalletenporal.igv_id==this.getimpuestos[i].id){
-                            if(this.getimpuestos[i].nombre.toUpperCase()=="GRAVADOS"){
-                                this.anulardetalle.cantidad_sinigv=Math.round(this.anulardetalle.cantidad/(1+(this.detalletenporal.igv_porcentage*1/100))*100)/100;
-                                this.anulardetalle.igv=Math.round((this.anulardetalle.cantidad/(1+(this.detalletenporal.igv_porcentage*1/100)))*(this.detalletenporal.igv_porcentage/100)*100)/100;
-                                validado=i;
-                            }
-                        }
-                        i++
-                    }
-                    this.validarnumero=true;
-                    
-                    this.anulardetalle.isc=Math.round(this.anulardetalle.cantidad*(this.detalletenporal.isc_porcentage/100)*100)/100;
-                    this.anulardetalle.otro=Math.round(this.anulardetalle.cantidad*(this.detalletenporal.otro_porcentage/100)*100)/100;
-
-                    if(validado!=null){
-                        this.anulardetalle.cantidad_total=Math.round((this.anulardetalle.cantidad_sinigv*1+this.anulardetalle.igv*1+this.anulardetalle.isc*1+this.anulardetalle.otro*1)*100)/100; 
-                    }else{
-                        this.anulardetalle.cantidad_total=Math.round((this.anulardetalle.igv*1+this.anulardetalle.isc*1+this.anulardetalle.otro*1)*100)/100; 
-                    }
-                    
-                }
+        }
+        
+        if(this.anular.serie.charAt(0)=="F"){
+            if(numeroigv==0){
+                console.log('invalñdo')
+                this.validarnumero=false;
+                this.anulardetalle.igv=0;
+                this.anulardetalle.isc=0;
+                this.anulardetalle.otro=0;
+                this.anulardetalle.cantidad=0;  
+                this.anulardetalle.cantidad_sinigv=0;
+                /*this.textvalidar.focus();
+                this.textvalidar.select();*/
             }else{
-                if(this.anulardetalle.cantidad>0){
-                    this.validarnumero=true;
-    
+                console.log('validao')
+                this.anulardetalle.cantidad=this.anulardetalle.cantidad_total*1/(1+(this.detalletenporal.isc_porcentage*1+this.detalletenporal.otro_porcentage*1)/100);
+                this.anulardetalle.igv=Math.round(this.anulardetalle.cantidad*100)/100;
+                while(i<this.getimpuestos.length){
+                    if(this.detalletenporal.igv_id==this.getimpuestos[i].id){
+                        if(this.getimpuestos[i].nombre.toUpperCase()=="GRAVADOS"){
+                            this.anulardetalle.cantidad_sinigv=Math.round(this.anulardetalle.cantidad/(1+(this.detalletenporal.igv_porcentage*1/100))*100)/100;
+                            this.anulardetalle.igv=Math.round((this.anulardetalle.cantidad/(1+(this.detalletenporal.igv_porcentage*1/100)))*(this.detalletenporal.igv_porcentage/100)*100)/100;
+                            validado=i;
+                        }
+                    }
+                    i++
                 }
+                this.validarnumero=true;
+                
+                this.anulardetalle.isc=Math.round(this.anulardetalle.cantidad*(this.detalletenporal.isc_porcentage/100)*100)/100;
+                this.anulardetalle.otro=Math.round(this.anulardetalle.cantidad*(this.detalletenporal.otro_porcentage/100)*100)/100;
+
+                /*if(validado!=null){
+                    this.anulardetalle.cantidad_total=Math.round((this.anulardetalle.cantidad_sinigv*1+this.anulardetalle.igv*1+this.anulardetalle.isc*1+this.anulardetalle.otro*1)*100)/100; 
+                }else{
+                    this.anulardetalle.cantidad_total=Math.round((this.anulardetalle.igv*1+this.anulardetalle.isc*1+this.anulardetalle.otro*1)*100)/100; 
+                }*/
+                
+            }
+        }else{
+            if(this.anulardetalle.cantidad>0){
+                this.validarnumero=true;
             }
         }
        
@@ -292,6 +347,7 @@ export class AnularVentaComponent{
     }
     gurardarnotacredito(){
         console.log(this.anular);
+        this.anular.letrado=this.letrado;
         if(this.anular.tipo_nota=="02"){
             this._VentasService.obtenerdocumentos().subscribe(
                 res=>{
@@ -333,14 +389,17 @@ export class AnularVentaComponent{
                 }
             );
             i++
+            if(validart==null && i==this.anular_detalle.length){
+                console.log(i+" entro "+this.anular_detalle.length)
+                this.alertaecho();
+               
+                //this.limpiartodo();
+                
+            }
         }
-        /*if(validart==null){
-            this.alertaecho();
-            this.cerrarmodalemail();
-            this.limpiartodo();
-            
-        }*/
+        
     }
+    
     completardetallenotas(array:AnularDetalleModel){
         this._AnularService.guardarmoveinvendencredito(array).subscribe(
             res=>{
@@ -370,6 +429,7 @@ export class AnularVentaComponent{
         }
     }
     limpiartodo(){
+        this.total04=0;
         this.cargando=null;
         this.limpiarventas();
         this.limpiarimpuestos();
@@ -384,7 +444,7 @@ export class AnularVentaComponent{
         this.verresumenfinal=null;
         this.total=0;
         this.subtotal=0
-        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null);
+        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha);
     }
     volveratras(){
         let i=0,j=0;
@@ -392,6 +452,7 @@ export class AnularVentaComponent{
         this.verresumenfinal=null;
         this.total=0;
         this.subtotal=0;
+        this.total04=0;
         this.limpiarimpuestos();
         this.limpiardventasvar();
         if(this.anular.tipo_nota=="01" || this.anular.tipo_nota=="02" || this.anular.tipo_nota=="04" || this.anular.tipo_nota=="06"){
@@ -434,7 +495,40 @@ export class AnularVentaComponent{
         this.textnumero.disabled = false;
         this.textmotivo.disabled=false;
         this.combotipos.disabled=false;
-        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null);
+        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha);
+    }
+    
+    finalizar04(){
+        let i=0;
+        this.cerrarmodaldglobal();
+        console.log(this.anulardetalle);
+        this.verresumenfinal=1;
+        this.d_ventasvarante.push({
+            cantidad:0,
+            nombre_producto:this.anular.motivo,
+            descuento:0,
+            precio_unitario:Math.round(this.anulardetalle.cantidad*100)/100,
+        })
+        this.subtotal=this.anulardetalle.cantidad_sinigv;
+        this.total=this.anulardetalle.cantidad_total;
+        
+        while(i<this.impuestos.length){
+            if(this.impuestos[i].tipo.toUpperCase()=="IGV"){
+                this.anulardetalle.igv+=parseFloat(this.impuestos[i].cantidad);
+            }
+            if(this.impuestos[i].tipo.toUpperCase()=="ISC"){
+                this.anulardetalle.isc+=parseFloat(this.impuestos[i].cantidad);
+            }
+            if(this.impuestos[i].tipo.toUpperCase()=="OTRO"){
+                this.anulardetalle.otro+=parseFloat(this.impuestos[i].cantidad);
+            }
+            i++;
+        } 
+        this.anulardetalle.id_detalle_venta=0;
+        this.anular_detalle.push(this.anulardetalle);
+        console.log(this.anular_detalle);
+        this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
+        this.letrado=this.conversor.NumeroALetras(this.anular_detalle[0].cantidad_total);
     }
     finalizar3y5y7(){
         this.verresumenfinal=1;
@@ -473,7 +567,7 @@ export class AnularVentaComponent{
         this.detalletenporal=array;
         array.id_venta=null;
         this.anulardetalle.id_detalle_venta=array.id
-        this.anulardetalle.cantidad=array.precio_unitario;
+        this.anulardetalle.cantidad=array.precio_unitario*((100-array.descuento)/100);
         this.anulardetalle.igv=array.igv;
         this.anulardetalle.isc=array.isc;
         this.anulardetalle.otro=array.otro;
@@ -538,10 +632,106 @@ export class AnularVentaComponent{
     abrirmodalemail(){
         this.modalemail.style.display = "block";
     }
-    modaldescuentoglobal
+    abrirmodalglobal(){
+        this.modal_d_global.style.display = "block";
+    }
+    abrirmodalventa(){
+        this.totalventa=0;
+        this.subtotalventas=0;
+        while(0<this.impuestosventas.length){
+            this.impuestosventas.splice(0,1);
+        }
+        let i=0,j=0,k=0,validar=null,nombreigv;
+        this.modalventa.style.display = "block";
+        //this.detalletenporal=this.d_ventas;
+        while(i<this.d_ventas.length){
+            while(j<this.getimpuestos.length){
+                if(this.d_ventas[i].igv_id==this.getimpuestos[j].id){
+                    if(this.getimpuestos[j].nombre.toUpperCase()=="GRAVADOS"){
+                        this.subtotalventas=this.subtotalventas*1+(this.d_ventas[i].precio_unitario*((100-this.d_ventas[i].descuento)/100)*1-this.d_ventas[i].igv*1)*this.d_ventas[i].cantidad;
+                        nombreigv="IGV";
+                    }else{
+                        nombreigv=this.getimpuestos[j].nombre;
+                    }
+                    while(k<this.impuestosventas.length){
+                        if(this.d_ventas[i].igv_id==this.impuestosventas[k].id){
+                            validar=k;
+                            this.impuestosventas[k].cantidad=this.impuestosventas[k].cantidad*1+this.d_ventas[i].igv*this.d_ventas[i].cantidad;
+                        }
+                        k++;
+                    }
+                    if(validar==null){
+                        this.impuestosventas.push({
+                            id:this.d_ventas[i].igv_id,
+                            nombre:nombreigv,
+                            cantidad:this.d_ventas[i].igv*this.d_ventas[i].cantidad,
+                            porcentage:this.d_ventas[i].igv_porcentage,
+                            tipo:this.getimpuestos[j].tipo
+                        })
+                    }
+                }
+                if(this.d_ventas[i].isc_id==this.getimpuestos[j].id){
+                    while(k<this.impuestosventas.length){
+                        if(this.getimpuestos[j].id==this.impuestosventas[k].id){
+                            validar=k;
+                            this.impuestosventas[k].cantidad=this.impuestosventas[k].cantidad*1+this.d_ventas[i].isc*this.d_ventas[i].cantidad;
+                        }
+                        k++;
+                    }
+                    if(validar==null){
+                        this.impuestosventas.push({
+                            id:this.d_ventas[i].isc_id,
+                            nombre:this.getimpuestos[j].nombre,
+                            cantidad:this.d_ventas[i].isc*this.d_ventas[i].cantidad,
+                            porcentage:this.d_ventas[i].isc_porcentage,
+                            tipo:this.getimpuestos[j].tipo
+                        })
+                    }
+                }
+                if(this.d_ventas[i].otro_id==this.getimpuestos[j].id){
+                    while(k<this.impuestosventas.length){
+                        if(this.getimpuestos[j].id==this.impuestosventas[k].id){
+                            validar=k;
+                            this.impuestosventas[k].cantidad=this.impuestosventas[k].cantidad*1+this.d_ventas[i].otro*this.d_ventas[i].cantidad;
+                        }
+                        k++;
+                    }
+                    if(validar==null){
+                        this.impuestosventas.push({
+                            id:this.d_ventas[i].otro_id,
+                            nombre:this.getimpuestos[j].nombre,
+                            cantidad:this.d_ventas[i].otro*this.d_ventas[i].cantidad,
+                            porcentage:this.d_ventas[i].otro_porcentage,
+                            tipo:this.getimpuestos[j].tipo
+                        })
+                    }
+                }
+                validar=null;
+                k=0;
+                j++;
+            }
+            validar=null;
+            k=0;
+            j=0
+            i++;
+        }
+        this.totalventa=this.subtotalventas*1;
+        while(k<this.impuestosventas.length){
+            this.totalventa=this.totalventa*1+this.impuestosventas[k].cantidad*1
+            k++
+        }
+        this.letrado=this.conversor.NumeroALetras(this.totalventa);
+        console.log(this.impuestosventas)
+        console.log(this.totalventa+'-'+this.subtotalventas)
+    }
     cerrarmodalemail(){
         this.anular.email=null;
         this.modalemail.style.display = "none";
+    }
+    cerramodalventa(){
+        //this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha);
+        this.modalventa.style.display = "none";
+        
     }
     cerrarmodaldglobal(){
         this.anular.descuento=null;
@@ -577,8 +767,8 @@ export class AnularVentaComponent{
         this.anular.id_venta=null;
         this.cargando=null;
         this.anular.serie=this.anular.serie.toUpperCase();
-        if(this.textserie.value.length==4){
-            console.log(this.textserie.value.length);
+        this.textnumero=document.getElementById('textnumero')
+        if(this.anular.serie.length==4){
             this.textnumero.focus();
         }
     }
@@ -586,6 +776,8 @@ export class AnularVentaComponent{
         this.anular.id_venta=null;
         this.cargando=null;
         this.limpiarventas();
+        this.textserie=document.getElementById('textserie')
+        this.textnumero=document.getElementById('textnumero')
         if(this.textnumero.value.length==0){
             console.log(this.textnumero.value.length)
             this.textserie.focus();
@@ -599,16 +791,23 @@ export class AnularVentaComponent{
         }
     }
     verificarserie(botton){
+        this.textserie=document.getElementById('textserie');
+        this.textnumero=document.getElementById('textnumero');
+        this.textmotivo=document.getElementById('textmotivo');
+        this.combotipos=document.getElementById('combotipo');
+        this.textglobal=document.getElementById('textdesglobal');
+        this.limpiardventasvar();
         this.cargando=1;
-        let i=0;
+        let i=0,fechaarreglo:Array<any>=[],mes:Array<any>=[],aceptar=null,dia=0,nrodia=0,diamax=0,lk=0;
+        var f=new Date();
         if(this.textserie.value.length<4){
             this.textserie.select();
             this.textserie.focus();
             this.toaste.errorAlerta('La serie del documento deve tener 4 digitos','Error')
             this.cargando=null;
         }else{
-            if(this.textnumero.value.length<6){
-                this.toaste.errorAlerta('El numero del documento deve tener 6 digitos','Error')
+            if(this.textnumero.value.length>8){
+                this.toaste.errorAlerta('El numero del documento deve tener maximo 8 digitos','Error')
                 
                 this.textnumero.select();
                 this.textnumero.focus();
@@ -629,64 +828,186 @@ export class AnularVentaComponent{
                                 this.ventas=res[0];
                                 this.d_ventas=res;
                                 this.anular.id_venta=res[0].id_venta;
-                                
+                                this.totalventa=res[0].total;
                                 console.log(this.ventas);
                                 console.log(this.d_ventas);
                                 console.log(this.anular);
+                                if(this.anular.serie.charAt(0)=="B"){
+                                    this.tipoventa="BOLETA"
+                                }else{
+                                    this.tipoventa="FACTURA";
+                                }
                                 if(botton=='ir'){
-                                    if(this.anular.serie.charAt(0)=="B"){
-                                        this.tipoventa="BOLETA"
-                                    }else{
-                                        this.tipoventa="FACTURA";
-                                    }
                                     //this.getserie(this.anular.serie.charAt(0));
-                                    this.anular.serie_nota=this.seriedenota;
-                                    this.nombretiponota=this.tiponotas[parseInt(this.anular.tipo_nota)-1][0];
-                                    console.log(this.nombretiponota);
-                                    console.log(this.anular);
-                                    this.veritems=parseInt(this.anular.tipo_nota);
-                                    this.textserie.disabled = true;
-                                    this.textnumero.disabled = true;
-                                    this.textmotivo.disabled=true;
-                                    this.combotipos.disabled=true;
-                                    if(this.anular.tipo_nota=="01"  || this.anular.tipo_nota=="06"){
-                                        //this.total=res[0].total
-                                        while(i<res.length){
-                                            this.anulardetalle.cantidad=parseFloat(res[i].precio_unitario);
-                                            this.anulardetalle.igv=parseFloat(res[i].igv);
-                                            this.anulardetalle.isc=parseFloat(res[i].isc);
-                                            this.anulardetalle.otro=parseFloat(res[i].otro);
-                                            this.anulardetalle.id_detalle_venta=res[i].id;
-                                            this.anular_detalle.push(this.anulardetalle);
-                                            this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
-                                            i++
+                                    if(this.anular.tipo_nota=="02" || this.anular.tipo_nota=="03"){
+                                        fechaarreglo=res[0].created_at.split(' ')
+                                        console.log(fechaarreglo);
+                                        mes=fechaarreglo[0].split('-');
+                                        nrodia=f.getDate()%7;
+                                        console.log(nrodia)
+                                        if(f.getDay()<nrodia){
+                                            dia=f.getDay()+7-nrodia;
+                                        }else{
+                                            dia=f.getDay()-nrodia;
                                         }
-                                        this.d_ventasvarante=res;
-                                        this.notafinal(this.d_ventas);
-                                       
-                                        console.log(this.letrado);
-                                        this.verresumenfinal=1;
+                                        console.log(dia)
+
+                                        do{
+                                            lk++;
+                                            if(dia!=6 && dia!=7){
+                                                diamax++
+                                            }
+                                            if(dia==7){
+                                                dia=0;
+                                            }
+                                            dia++;
+                                        }while(lk<f.getDate());
+                                        console.log(diamax)
+                                        console.log(dia)
+                                        console.log(lk)
+                                        if(f.getMonth()+1 > parseInt(mes[1])+1 || (f.getMonth()==parseInt(mes[1]) && diamax>15 )){
+                                            this.toaste.WarningAlert('las notas de crédito que se realice por error en el RUC o por error en la descripción solo tienen como plazo el décimo quinto (15) día hábil del mes siguiente de emitida la factura electrónica o boleta de venta electrónica objeto de anulación o corrección.','Error')
+                                            this.textnumero.select();
+                                            this.textnumero.focus();
+                                        }else{
+                                            aceptar=1;
+                                            console.log('its ok');
+                                        }
+                                    }else{
+                                        aceptar=1;
                                     }
-                                    if(this.anular.tipo_nota=="02"){
-                                        this.vernuevoruc=1;
-                                        this.verresumenfinal=null;
-                                        this.veritems=null;
-                                        this.d_ventasvarante=res;
+                                    if(aceptar!=null){
+                                        this.anular.serie_nota=this.seriedenota;
+                                        this.nombretiponota=this.tiponotas[parseInt(this.anular.tipo_nota)-1][0];
+                                        console.log(this.nombretiponota);
+                                        console.log(this.anular);
+                                        this.veritems=parseInt(this.anular.tipo_nota);
+                                        this.textserie.disabled = true;
+                                        this.textnumero.disabled = true;
+                                        this.textmotivo.disabled=true;
+                                        this.combotipos.disabled=true;
+                                        if(this.anular.tipo_nota=="01"  || this.anular.tipo_nota=="06"){
+                                            //this.total=res[0].total
+                                            while(i<res.length){
+                                                this.anulardetalle.cantidad=parseFloat(res[i].precio_unitario);
+                                                this.anulardetalle.igv=parseFloat(res[i].igv);
+                                                this.anulardetalle.isc=parseFloat(res[i].isc);
+                                                this.anulardetalle.otro=parseFloat(res[i].otro);
+                                                this.anulardetalle.id_detalle_venta=res[i].id;
+                                                this.anular_detalle.push(this.anulardetalle);
+                                                this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
+                                                i++
+                                            }
+                                            this.d_ventasvarante=res;
+                                            this.notafinal(this.d_ventas);
+                                           
+                                            console.log(this.letrado);
+                                            this.verresumenfinal=1;
+                                        }
+                                        if(this.anular.tipo_nota=="02"){
+                                            this.vernuevoruc=1;
+                                            this.verresumenfinal=null;
+                                            this.veritems=null;
+                                            this.d_ventasvarante=res;
+                                        }
+                                        if(this.anular.tipo_nota=="03"){
+                                            this.verresumenfinal=null;
+                                            this.tipodeitem="modificara"
+                                        };
+                                        if(this.anular.tipo_nota=="04"){
+                                            let j=0,k=0,validar=null,validar2=null,validar3=null;
+                                            while(i<res.length){
+                                                this.total04+=res[i].precio_unitario*res[i].cantidad*((100-res[i].descuento)/100)/(1+(res[i].igv_porcentage/100));
+                                                i++;
+                                            }
+                                            console.log(this.total04);
+                                            i=0; 
+                                            let preciosinigv=0;
+                                            while(i<this.d_ventas.length){
+                                                preciosinigv=this.d_ventas[i].precio_unitario*this.d_ventas[i].cantidad*((100-this.d_ventas[i].descuento)/100)/(1+(this.d_ventas[i].igv_porcentage/100));
+                                                this.d_ventas[i].total=(preciosinigv*100)/this.total04;
+                                                while(k<this.impuestos.length){
+                                                    if(this.impuestos[k].id==this.d_ventas[i].igv_id || this.impuestos[k].id==this.d_ventas[i].isc_id || this.impuestos[k].id==this.d_ventas[i].otro_id){
+                                                        validar=k;
+                                                    }
+                                                    if( this.impuestos[k].id==this.d_ventas[i].isc_id ){
+                                                        validar2=k;
+                                                    }
+                                                    if( this.impuestos[k].id==this.d_ventas[i].otro_id){
+                                                        validar3=k;
+                                                    }
+                                                    k++
+                                                }
+                                                k=0;
+                                                while(j<this.getimpuestos.length){
+                                                    if(validar==null){
+                                                        if(this.d_ventas[i].igv_id==this.getimpuestos[j].id){
+                                                            if(this.getimpuestos[j].nombre.toUpperCase()=="GRAVADOS"){
+                                                                this.impuestos.push({
+                                                                    id:this.d_ventas[i].igv_id,
+                                                                    nombre:"IGV",
+                                                                    cantidad:0,
+                                                                    porcentage:this.d_ventas[i].igv_porcentage,
+                                                                    tipo:this.getimpuestos[j].tipo
+                                                                });
+                                                            }else{
+                                                                this.impuestos.push({
+                                                                    id:this.d_ventas[i].igv_id,
+                                                                    nombre:this.getimpuestos[j].nombre,
+                                                                    cantidad:0,
+                                                                    porcentage:this.d_ventas[i].igv_porcentage,
+                                                                    tipo:this.getimpuestos[j].tipo
+                                                                });
+                                                            }
+                                                                
+                                                        }
+                                                    }
+                                                    if(validar2==null){
+                                                        if(this.d_ventas[i].isc_id==this.getimpuestos[j].id){
+                                                            this.impuestos.push({
+                                                            id:this.d_ventas[i].isc_id,
+                                                                    nombre:this.getimpuestos[j].nombre,
+                                                                cantidad:0,
+                                                                porcentage:this.d_ventas[i].isc_porcentage,
+                                                                tipo:this.getimpuestos[j].tipo
+                                                            });                        
+                                                        }
+                                                    }
+                                                    if(validar3==null){
+                                                        if(this.d_ventas[i].otro_id==this.getimpuestos[j].id){
+                                                            this.impuestos.push({
+                                                                id:this.d_ventas[i].otro_id,
+                                                                nombre:this.getimpuestos[j].nombre,
+                                                                cantidad:0,
+                                                                porcentage:this.d_ventas[i].otro_porcentage,
+                                                                tipo:this.getimpuestos[j].tipo
+                                                            });                        
+                                                        }
+                                                    }   
+                                                    j++;
+                                                }
+                                                j=0;
+                                                validar=null;
+                                                validar2=null;
+                                                validar3=null;
+                                                i++;
+                                            }  
+                                            console.log(this.d_ventas); 
+                                            console.log(this.impuestos);
+                                            console.log(this.ventas);  
+                                            this.abrirmodalglobal();
+                                            this.veritems=null;
+                                        };
+                                        if(this.anular.tipo_nota=="05"){
+                                            this.verresumenfinal=null;
+                                            this.tipodeitem="Descontara"
+                                        };
+                                        if(this.anular.tipo_nota=="07"){
+                                            this.verresumenfinal=null;
+                                            this.tipodeitem="Devolvera";
+                                        }
                                     }
-                                    if(this.anular.tipo_nota=="03"){
-                                        this.verresumenfinal=null;
-                                        this.tipodeitem="modificara"
-                                    };
-                                    if(this.anular.tipo_nota=="04"){
-                                    };
-                                    if(this.anular.tipo_nota=="05"){
-                                        this.verresumenfinal=null;
-                                        this.tipodeitem="Descontara"
-                                    };
-                                    if(this.anular.tipo_nota=="07"){
-                                        this.verresumenfinal=null;
-                                        this.tipodeitem="Devolvera";
-                                    }
+                                   
                                 }
                             }else{
                                 this.toaste.errorAlerta('El numero del documento no existe','Error')
@@ -706,6 +1027,78 @@ export class AnularVentaComponent{
                
             }
         }
+    }
+    calcularimpuestos(){
+        let i =0,j=0,k=0,porcentage=0,porcentagetotal=0,cantidad=0,cantidad_sinigv=0;
+        console.log(this.totalventa)
+        this.validarglobal=true;
+        if(this.anulardetalle.cantidad_total<0.1){
+            this.toaste.WarningAlert('La cantidad de descuento debe ser mayor a 0','Alerta!!!!!!')
+            this.validarglobal=false;
+            this.textglobal.select();
+            this.textglobal.focus();
+        }
+        if(this.anulardetalle.cantidad_total>this.totalventa){
+            this.toaste.WarningAlert('La cantidad de descuento excedió el importe total','Alerta!!!!!!')
+            this.anulardetalle.cantidad_total=this.totalventa;
+            this.validarglobal=false;
+            this.textglobal.focus();
+        }
+
+        while(k<this.impuestos.length){
+            this.impuestos[k].cantidad=0;
+            k++;
+        }
+        this.anulardetalle.cantidad_sinigv=0;
+        while(i<this.d_ventas.length){
+            while(j<this.impuestos.length){
+                if(this.d_ventas[i].isc_id==this.impuestos[j].id){
+                    porcentage=this.d_ventas[i].isc_porcentage*this.d_ventas[i].total/100;
+                    porcentagetotal+=this.d_ventas[i].isc_porcentage*this.d_ventas[i].total/100;
+                    this.impuestos[j].cantidad+=(this.anulardetalle.cantidad_total/(1+(porcentage)/100))*(porcentage/100);
+                    
+                }
+                if(this.d_ventas[i].otro_id==this.impuestos[j].id){
+                    porcentage=this.d_ventas[i].otro_porcentage*this.d_ventas[i].total/100;
+                    porcentagetotal+=this.d_ventas[i].otro_porcentage*this.d_ventas[i].total/100;
+                    this.impuestos[j].cantidad+=(this.anulardetalle.cantidad_total/(1+(porcentage)/100))*(porcentage/100);
+                }
+                j++
+            }
+            j=0;
+            i++
+        }
+        i=0;
+        
+        cantidad_sinigv=this.anulardetalle.cantidad_total/(1+(porcentagetotal/100));
+        this.anulardetalle.cantidad=cantidad_sinigv;
+        console.log(cantidad_sinigv);
+        while(i<this.d_ventas.length){
+            cantidad=cantidad_sinigv*this.d_ventas[i].total/100;
+            while(j<this.impuestos.length){
+                if(this.d_ventas[i].igv_id==this.impuestos[j].id){
+                    if(this.impuestos[j].nombre.toUpperCase()=="IGV"){
+                        this.anulardetalle.cantidad_sinigv+=cantidad/(1+(this.d_ventas[i].igv_porcentage)/100);
+                        this.impuestos[j].cantidad+=cantidad/(1+(this.d_ventas[i].igv_porcentage)/100)*((this.d_ventas[i].igv_porcentage)/100);
+                    }else{
+                        this.impuestos[j].cantidad+=cantidad;
+                    }
+                }
+                j++
+            }
+            j=0;
+            i++
+        }
+    }
+    cancelar04(){
+        this.total04=0;
+        this.cerrarmodaldglobal();
+        this.limpiarimpuestos();
+        this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
+        this.textmotivo.disabled=false;
+        this.textnumero.disabled=false;
+        this.textserie.disabled=false;
+        this.combotipos.disabled=false;
     }
     cancelar02(){
         this.limpiartodo();
@@ -883,7 +1276,7 @@ export class AnularVentaComponent{
         }
         
         this.letrado=this.conversor.NumeroALetras(parseFloat(this.total));
-        this.anular.letrado=this.letrado;
+        
         console.log(this.total);
         console.log(this.impuestos);
     }
@@ -898,7 +1291,7 @@ export class AnularVentaComponent{
     limpiar(){
         this.cargando=null;
         this.limpiarventas();
-        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null);
+        this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha );
         
     }
     anularventa(ven){
@@ -941,7 +1334,10 @@ export class AnularVentaComponent{
             text:'La nota se genero corectamente',
             buttons: false,
             timer: 3000
-          })
+        })
+        this._AnularService.clear();
+        this._AnularService.almacenarnotacredito(this.anular,this.ventas,this.d_ventasvarante,this.impuestos);
+        this.router.navigate(['/'+this.user.rol+'/imprimir/nota']);
     }
     alertaactualizado(){
         swal({

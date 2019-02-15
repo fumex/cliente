@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   errorCredentials=false;
   public user:any;
   public rol;
+  imageUrl: string = "assets/images/logo.jpg";
   constructor(
     private formBuilder:FormBuilder,
     private authService:AuthService,

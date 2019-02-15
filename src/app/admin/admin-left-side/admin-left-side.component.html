@@ -3,25 +3,30 @@
     <div class="scroll-sidebar">
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
-            <ul id="sidebarnav">
+            <ul id="sidebarnav" >
                 <li class="nav-devider"></li>
-                <li class="nav-label">Home</li>
-                <li> <a [routerLink]="['']" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Inicio</span></a>
+                <li class="nav-label" style="color: white">Home</li>
+                <li style="color: white"> <a [routerLink]="['']" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Inicio</span></a>
                 </li>
-                <li> <a class="has-arrow"   aria-expanded="false"><i class="fa fa-columns"></i><span class="hide-menu">Ventas</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a [routerLink]="['/admin/ventas']">Ventas</a></li>
+
+                <li> <a class="has-arrow"   aria-expanded="false"><i class="fa fa-columns" style="color: white"></i><span class="hide-menu" style="color: white">Ventas</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
+                        <li><a [routerLink]="['/admin/ventas']">Realizar una venta</a></li>
                         <li><a [routerLink]="['/admin/resumenventas']">Resumen de Ventas</a></li>
-                        <li><a [routerLink]="['/admin/anularventa']">Anular Venta</a></li>
                         <li><a [routerLink]="['/admin/reportes']">Reportes de Ventas</a></li>
                         <li><a >Ventas Recurretes</a></li>
                         <li><a >Pagos Recibo</a></li>
-                        <li><a >Notas de Credito</a></li>
                     </ul>
                 </li>
-                <li class="nav-label">Procesos</li>
-                <li> <a  class="has-arrow" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Gastos</span></a>
-                    <ul aria-expanded="false" class="collapse">
+                <li> <a class="has-arrow"   aria-expanded="false"><i class="fa fa-columns"  style="color: white"></i><span class="hide-menu"  style="color: white">Notas</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
+                        <li><a [routerLink]="['/admin/nota/credito']">Notas de Credito</a></li>
+                        <li><a [routerLink]="['/admin/nota/debito']">Notas de Debito</a></li>
+                    </ul>
+                </li>
+                <li class="nav-label" style="color: white">Procesos</li>
+                <li > <a  class="has-arrow" aria-expanded="false"><i class="fa fa-envelope" style="color: white"></i><span class="hide-menu" style="color: white">Gastos</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
                         <li><a [routerLink]="['/admin/transaccion/list']">Compras</a></li>
                         <li><a [routerLink]="['/admin/servicio/list']">Pagos Servicios</a></li>
                         <li><a [routerLink]="['/admin/transaccion/anular']">Anular Pago Proveedor</a></li>
@@ -29,16 +34,16 @@
                         <li><a [routerLink]="['/admin/pedido/listar']">Orden Compra</a></li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Contactos</span></a>
-                    <ul aria-expanded="false" class="collapse">
+                <li > <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-bar-chart" style="color: white"></i><span class="hide-menu" style="color: white">Contactos</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
                         <li><a [routerLink]="['/admin/proveedor']">Proveedores</a></li>
                         <li><a [routerLink]="['/admin/cliente']" >Clientes</a></li>
                     </ul>
                 </li>
-                <li> <a [routerLink]="['profile']" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Profile</span></a></li>
-                <li class="nav-label">Almacen</li>
-                <li> <a class="has-arrow" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Inventarios</span></a>
-                    <ul aria-expanded="false" class="collapse">
+                <li style="color: white"> <a [routerLink]="['profile']" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">Profile</span></a></li>
+                <li class="nav-label" style="color: white">Almacen</li>
+                <li> <a class="has-arrow" aria-expanded="false"><i class="fa fa-suitcase" style="color: white"></i><span class="hide-menu" style="color: white">Inventarios</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
                         <li><a [routerLink]="['/admin/reporteInventario']">Valor de inventario</a></li>
                         <li><a [routerLink]="['/admin/inventario']">Ajustes inventario</a></li>
                         <li><a [routerLink]="['/admin/almacen']">Lista de Precios</a></li>
@@ -46,9 +51,9 @@
                         <li><a [routerLink]="['/admin/cajas']">Cajas</a></li>
                     </ul>
                 </li>
-                <li class="nav-label">GENERALES</li>
-                <li> <a class="has-arrow  " aria-expanded="false"><i class="fa fa-book"></i><span class="hide-menu">AJUSTES GENERALES</span></a>
-                    <ul aria-expanded="false" class="collapse">
+                <li class="nav-label" style="color: white">GENERALES</li>
+                <li> <a class="has-arrow  " aria-expanded="false"><i class="fa fa-book" style="color: white"></i><span class="hide-menu" style="color: white">AJUSTES GENERALES</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
                         <li><a [routerLink]="['/admin/documento']" >Documentos</a></li>
                         <li><a [routerLink]="['/admin/productos']" >Productos</a></li>
                         <li><a [routerLink]="['/admin/sucursal']" >Sucursal</a></li>
@@ -60,8 +65,8 @@
                         <li><a [routerLink]="['/admin/EntidadFinaciera']" >Entidad Financiera</a></li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-map-marker"></i><span class="hide-menu">Usuarios</span></a>
-                    <ul aria-expanded="false" class="collapse">
+                <li > <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-map-marker" style="color: white"></i><span class="hide-menu" style="color: white">Usuarios</span></a>
+                    <ul aria-expanded="false" class="collapse" style="color: white">
                         <li><a [routerLink]="['/admin/usuarios']" > Crear Usuarios</a></li>
                         <li><a [routerLink]="['/admin/editarusuario']"> Editar Usuarios</a></li>
                         <li><a>inhabilitar Usuario</a></li>

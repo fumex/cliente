@@ -9,6 +9,7 @@ import { almacenstock } from '../../almacen/modelos/almacen';
 import { DocumentoModel } from '../../TipoDocumento/models/documento';
 import { DocumentoService } from '../../TipoDocumento/services/documento.service';
 import { CompraModel } from '../models/compra';
+import { codproMdel } from '../models/codigo_productos';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
@@ -24,16 +25,18 @@ import { ImpuestoModel } from '../../impuesto/models/impuesto';
 import { ProductoDetalleModel } from '../../productos/modelos/producto_detalle';
 import { ProductoService } from '../../productos/services/producto.service';
 
+import { CodigoProductoService } from '../services/codigo_producto.service';
+
 declare var jQuery:any;
 declare  var $:any;
 declare var swal:any;
 @Component({
     selector:'pago-add',
     templateUrl:'../views/pago-add.html',
-    providers:[PagoService,InventarioService, ToastService]
+    providers:[PagoService,InventarioService, ToastService,CodigoProductoService]
 })
 export class PagoAddComponent implements OnInit{
-
+    public modalpagodetalles;
     public title:string;
     public codigo:any;
     public pago:PagoModel;
@@ -42,14 +45,23 @@ export class PagoAddComponent implements OnInit{
     public compra:CompraModel;
     public id_pro:number;
     public compras:Array<CompraModel>=[];
+    public compradd:CompraModel;
     public almacenes:almacen[];
     public total:number;
     public productos:any=[];
-    
+    public pagoD:PagoDetalleModel;
+    public codserie=null;
+    public codinterno=null;
+
     public prods_d:Array<ProductoDetalleModel>=[];
     public produ_ds:ProductoDetalleModel[];
     public pro_im:ProductoDetalleModel;
     
+    public textserie=null;
+    public textinterno=null;
+
+    public producto_codigos:Array<codproMdel>=[];
+    public producto_codigo:codproMdel;
 
     public confirmado:any=[];
     public user:User;
@@ -67,13 +79,17 @@ export class PagoAddComponent implements OnInit{
     public a6:boolean;
     public validacion:boolean;
     public val:boolean;
-
+    public detallepago:PagoDetalleModel;
+    public arreglodetallepagos:Array<PagoDetalleModel>=[];
     public inventario:inventario;
     public inventarios:Array<inventario>=[];
+    public fecha2=null;
+    public selectvendible=null;
     constructor(
         private pagoService:PagoService,
         private productoService:ProductoService,
         private almacenService:AlmacenesService,
+        private _CodigoProductoService:CodigoProductoService,
         private route:ActivatedRoute,
         private router:Router,
         private documentoService:DocumentoService,
@@ -88,7 +104,7 @@ export class PagoAddComponent implements OnInit{
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.pago= new PagoModel(null,this.codigo,null,null,null,'',null,'',null,0,0,0,0);
-
+        
         this.title="Compras";
         //----------impuestos
         this.igv=0;
@@ -96,6 +112,7 @@ export class PagoAddComponent implements OnInit{
         this.otro=0;
         //---------
         this.total=0;
+        this.destruir();
         this.tabla();
         this.sumaTotal();
         this.a1=true;
@@ -108,11 +125,26 @@ export class PagoAddComponent implements OnInit{
         this.val=false;
     }
     ngOnInit(){
+        var f=new Date();
+        this.fecha2=f.getFullYear()+"-"+f.getMonth()+1+"-"+f.getDate();
+        console.log(this.fecha2)
         this.getProveedor();
         this.getCodigo();
         this.getAlmacenes();
         this.listProducto();
         this.getDocumentos();
+
+        this.textserie=document.getElementById('inputserie');
+        this.textinterno=document.getElementById('inputinterno');
+
+        this.compra=new CompraModel(null,null,null,null,null,null,null,null,null,null,false,null)
+        this.producto_codigo=new codproMdel(null,null,null,null,null,null,null,null,null,null,this.user.id,null);
+        this.modalpagodetalles=document.getElementById('modalpagodetalles');
+        window.onclick = function(event) {
+            if (event.target == this.document.getElementById('modalpagodetalles')) {
+                this.document.getElementById('modalpagodetalles').style.display = "none";
+            }
+        }
     }
     getProveedor(){
         this.pagoService.getProveedor().subscribe(
@@ -147,6 +179,7 @@ export class PagoAddComponent implements OnInit{
 
         );
     }
+    
     tabla(){
         setTimeout(function(){
             $(function(){
@@ -164,7 +197,6 @@ export class PagoAddComponent implements OnInit{
             result=>{
                 console.log(result);
                 this.addDetalles();
-                this.list();
                 this.alertaSave();
             },
             error=>{
@@ -226,36 +258,88 @@ export class PagoAddComponent implements OnInit{
         this.confirmado[index]=false;
     }
     //detalles
-    addCompra(index,id,categoria,unidad_medida,articulo,descripcion){
-        
-        this.confirmado[index]=false;
-        this.compra= new CompraModel(index,id,categoria,unidad_medida,null,null,articulo,descripcion,null,null);
-        if(!this.existeCompra(id,this.compras)){
-            this.compras.push(this.compra);
-            console.log(this.compras);
-            this.lisDetalleProduc(id);
-            this.val=true;
-            this.validar();
-        }
-        else{
-            console.log('ya esta agregado');
+    enfocarserie(){
+        $('#inputserie').select(); 
+        $('#inputserie').focus(); 
+    }
+    enfocarinterno(){
+        $('#inputinterno').select(); 
+        $('#inputinterno').focus(); 
+    }
+    verprecionadoserie(event){
+        this.textserie=document.getElementById('clickserie');
+        if(event.keyCode == 13) {;
+            if(this.codserie+1>=this.producto_codigos.length){
+                this.codinterno=0;
+                this.codserie=null;
+                setTimeout(this.enfocarinterno, 300);
+                
+            }else{
+                this.codserie+=1; 
+                setTimeout(this.enfocarserie, 300);
+                /*setTimeout(this.enfocarserie(),1000);
+                this.enfocarserie()*/
+            }
         }
     }
-
+    verprecionadointerno(event){
+        if(event.keyCode == 13) {
+            //alert('you just clicked enter');
+            if(this.codinterno+1>=this.producto_codigos.length){
+                this.codinterno=null
+                this.codserie=null
+            }else{
+                this.codinterno+=1;
+                setTimeout(this.enfocarinterno, 300);
+            }
+        }
+    }
     addDetalleProduct(_prods_d:ProductoDetalleModel[]){
         this.prods_d=this.prods_d.concat(_prods_d);
         console.log(this.prods_d);
     }
 
+    vertextoserie(id){
+        console.log(id)
+        this.codserie=id;
+        this.codinterno=null;
+        setTimeout(this.enfocarserie, 300);
+    }
+    vertextointerno(id){
+        console.log(id)
+        this.codinterno=id;
+        this.codserie=null;
+        setTimeout(this.enfocarinterno, 300);
+    }
+    quitarproductocodigo(indexcodigo,indexproducto){
+        let i=0,j=1;
+        this.producto_codigos.splice(indexcodigo,1);
+        this.compras[indexproducto].cantidad-=1;
+        while(i<this.producto_codigos.length){
+            if(this.producto_codigos[i].id_producto==this.compras[indexproducto].id){
+                this.producto_codigos[i].id=j;
+                j++
+            }
+            i++
+        }
+        //console.log(this.producto_codigos,'-',this.compras);
+        this.sumaTotal();
+    }
 
-   
-    existeCompra( id,_compras:CompraModel[]){
-        for(let i=0; i<_compras.length;i++){
-            if(_compras[i].id===id){
-                return true;
+    eleminarcodigoindex(id){
+        let i=0,number;
+        while(i<this.producto_codigos.length){
+            if(this.producto_codigos[i].id_producto==id){
+                //console.log(this.producto_codigos[i]);
+                this.producto_codigos.splice(i,1)
+            }else{
+                i++;
             }
         }
+        console.log(this.producto_codigos)
+
     }
+    
     exitCompra(ind,index,id_pro){
         this.compras.splice(index,1);
         //console.log(this.compras);
@@ -271,6 +355,7 @@ export class PagoAddComponent implements OnInit{
             this.val=true;
             this.validar();
         } 
+        this.eleminarcodigoindex(id_pro);
     }
     
     exitDetallePro(id_prod){
@@ -293,20 +378,23 @@ export class PagoAddComponent implements OnInit{
         let total=0;
         let gravados=0;
         let impues=this.prods_d;
+        console.log(this.prods_d)
         let precio=0;
         let exoneracion=0;
         this.compras.forEach(function(comp){
             total=total+(comp.cantidad*comp.precio);
             console.log(total);
             precio=comp.cantidad*comp.precio;
+            console.log(impues)
             impues.forEach(function(value){
-                if(value.tipo=='IGV'){
-                    if(value.nombre=='gravados'){
+                console.log(value.nombre);
+                if(value.tipo.toUpperCase()=='IGV'){
+                    if(value.nombre.toUpperCase()=='GRAVADOS'){
                         if(comp.nombre_producto==value.nombre_producto){
                             gravados=gravados + (precio/(1+ (value.porcentaje/100)))*(value.porcentaje/100);
                         }
                     }else{
-                        if(value.nombre=='exonerados'){
+                        if(value.nombre.toUpperCase()=='EXONERADOS'){
                             if(comp.nombre_producto==value.nombre_producto){
                                 exoneracion=exoneracion + precio;
                             }
@@ -318,7 +406,7 @@ export class PagoAddComponent implements OnInit{
                     } 
                 }
                 else{
-                    if(value.tipo=='OTRO'){
+                    if(value.tipo.toUpperCase()=='OTRO'){
                         if(comp.nombre_producto==value.nombre_producto){
                             otro=otro + precio*value.porcentaje/100;
                         }
@@ -335,13 +423,114 @@ export class PagoAddComponent implements OnInit{
         return this.total;
     }
     //guardar todo
+    existeCompra( id,_compras:CompraModel[]){
+        for(let i=0; i<_compras.length;i++){
+            if(_compras[i].id==id){
+                return true;
+            }
+        }
+    }
+    addCompra(id_almacen){
+        console.log(this.compras);
+        this.confirmado[this.compra.ind]=false;
+        console.log('entro')
+        this.compras.push(this.compra);
+        console.log(this.compras);
+        this.val=true;
+        this.validar();
+        this.generararraycodigo(id_almacen);
+        this.cerrarmodaldetalle(); 
+        
+    }
+    generararraycodigo(id_almacen){
+        let i=1;
+        while(i<=this.compra.cantidad){
+            this.producto_codigo=new codproMdel(i,this.compra.id,this.compra.nombre_producto,null,null,null,null,this.compra.vendible,null,id_almacen,this.user.id,null);
+            this.producto_codigos.push(this.producto_codigo);
+            i++;
+        }
+        console.log(this.producto_codigos)
+        this.producto_codigo=new codproMdel(null,null,null,null,null,null,null,null,null,null,this.user.id,null);
+    }
+    abrirmodaldetalles(index,id,categoria,unidad_medida,articulo,descripcion){
+        
+        if(!this.existeCompra(id,this.compras)){
+            this.modalpagodetalles.style.display = "block";
+            this.compra= new CompraModel(index,id,categoria,unidad_medida,null,null,articulo,descripcion,null,null,false,null);
+            console.log(this.compra);
+            console.log(this.compradd);
+            this.lisDetalleProduc(this.compra.id);
+        }
+        else{
+           this.toaste.errorAlerta('Ya existe','Error') 
+        }
+        //this.addCompra(index,id,categoria,unidad_medida,articulo,descripcion);
+    }
+    cerrarmodaldetalle(){
+        this.modalpagodetalles.style.display = "none";
+        this.compra=new CompraModel(null,null,null,null,null,null,null,null,null,null,false,null);
+        this.sumaTotal();
+    }
+    abrirdetalles(indice){
+        console.log(indice);
+        this.compras[indice].estado=true;
+        console.log(this.compras);
+    }
+    cerrardetalles(indice){
+        this.compras[indice].estado=false;
+        
+    }
     addDetalles(){
         let pago=this.pagoService;
         let cod= this.codigo;
         let inventa=this._inventarioservice;
         let us=this.user.id;
-        this.compras.forEach(function(value){
-            let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio);
+        let i=0;
+        let valorv=true;
+        let id=0;
+        console.log(this.compras)
+        while(i<this.compras.length){
+            console.log(this.compras[i].vendible,i);
+            valorv=this.compras[i].vendible;
+            id=this.compras[i].id;
+            this.pagoD=new PagoDetalleModel(cod,this.compras[i].id,this.compras[i].cantidad,this.compras[i].precio,this.compras[i].vendible);
+            let d_almacen=new almacenstock(null,null,this.compras[i].codigo,this.compras[i].vendible,this.compras[i].id,this.compras[i].cantidad,this.compras[i].precio,null,null);
+            let inven=new inventario(null,null,null,this.compras[i].id,null,null,this.compras[i].cantidad,null,this.compras[i].precio,null,us,parseInt(this.compras[i].codigo));
+                this.pagoService.addPagoDetalle(this.pagoD).subscribe(
+                    result=>{
+                        console.log(result);
+                    },
+                    error=>{
+                        console.log(<any>error);
+                    }
+                );
+                this._inventarioservice.addinventariopago(inven).subscribe(
+                    result=>{
+                        console.log(result);
+                        console.log(valorv);
+                        if(result.code==200){
+                            this.pagoService.creUpDetalleAlmacen(d_almacen).subscribe(
+                                result=>{
+                                    console.log(result);
+                                    if(result.code==200){
+                                        this.guardarcodigoproductos(id);
+                                    }
+                                },
+                                error=>{
+                                    console.log(<any>error);
+                                }
+                            ); 
+                            
+                        }
+                    },
+                    error=>{
+                        console.log(<any>error);
+                    }
+                );
+            i++;
+        }
+        /*this.compras.forEach(function(value){
+            let pagoD=new PagoDetalleModel(cod,value.id,value.cantidad,value.precio,value.vendible);
             let d_almacen=new almacenstock(null,null,value.codigo,value.vendible,value.id,value.cantidad,value.precio,null,null);
             let inven=new inventario(null,null,null,value.id,null,null,value.cantidad,null,value.precio,null,us,parseInt(value.codigo));
                 pago.addPagoDetalle(pagoD).subscribe(
@@ -355,23 +544,65 @@ export class PagoAddComponent implements OnInit{
                 inventa.addinventariopago(inven).subscribe(
                     result=>{
                         console.log(result);
+                        if(result.code==200 ){
+                            if(value.vendible==true){
+                                pago.creUpDetalleAlmacen(d_almacen).subscribe(
+                                    result=>{
+                                        console.log(result);
+                                        if(result.code==200){
+                                            this.guardarcodigoproductos();
+                                        }
+                                    },
+                                    error=>{
+                                        console.log(<any>error);
+                                    }
+                                ); 
+                                
+                            }
+                            if(value.vendible==false){
+                                
+                            }
+                        }
                     },
                     error=>{
                         console.log(<any>error);
                     }
                 );
-                pago.creUpDetalleAlmacen(d_almacen).subscribe(
-                    result=>{
-                        console.log(result);
-                    },
-                    error=>{
-                        console.log(<any>error);
-                    }
-                ); 
+               
             }   
-        );
+        );*/
     }
-    
+    camviarvenmdiable(){
+        console.log(this.selectvendible);
+        if(this.selectvendible==1){
+            this.compra.vendible=true;
+        }else{
+            this.compra.vendible=false;
+        }
+    }
+    guardarcodigoproductos(id){
+        let i=0;
+
+        while(i<this.producto_codigos.length){
+        
+            if(this.producto_codigos[i].id_producto==id){
+                console.log(this.producto_codigos[i]);
+                this._CodigoProductoService.guardarcodigosproducto_vendible(this.producto_codigos[i]).subscribe(
+                    res=>{
+                        console.log(res);
+                        this.list();
+                       
+                    },
+                    err=>{
+                        console.log(err);
+                    }
+                )
+               
+            }
+            i++
+        }
+    }
+
     list(){
         this.router.navigate(['/'+this.user.rol+'/transaccion/list']);
     }
@@ -412,7 +643,7 @@ export class PagoAddComponent implements OnInit{
            this.validacion=true;
            if(this.val==true){
                     this.val=true;
-              //this.destruir();
+                //this.destruir();
            }else{
                this.val=false;
            }
@@ -430,5 +661,10 @@ export class PagoAddComponent implements OnInit{
             buttons: false,
             timer: 6000,
         })   
+    }
+    destruir(){
+        var table = $('#pagoadd').DataTable();
+        table .clear() ;
+        $('#pagoadd').DataTable().destroy();
     }
 }

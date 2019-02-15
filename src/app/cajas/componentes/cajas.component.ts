@@ -69,7 +69,7 @@ export class CajasComponent{
         );
     }
     obtenerusuario(id){
-        this.getdetallecajasusuario(this.cajas.id);
+        this.getdetallecajasusuario(this.cajas.id); 
         this.mostrauser=id;
         this.destruir();
         this.reconstruir(id);
@@ -82,6 +82,7 @@ export class CajasComponent{
         this._DettaleUsuarioService.seleccionardetalleusuarioporsucursal(id).subscribe(
             res=>{
                 this.usuarios=res;
+                console.log(res);
                 if(this.mostraeditcaja!=null){
                     this.agregarusuarioactual();
                     console.log(this.detallecajas);
@@ -132,7 +133,7 @@ export class CajasComponent{
         this._DetalleCajasUsuarioService.selectcajasusuario(id).subscribe(
             res=>{
                 this.detalletable=res;
-                console.log(this.detalletable);
+                console.log(res);
             },
             err=>{
                 console.log(<any>err)
@@ -401,7 +402,32 @@ export class CajasComponent{
     tabla(){
         setTimeout(function(){
             $(document).ready(function() {
-                 $('#mytable').DataTable();
+                 $('#mytable').DataTable({
+                    "language": {
+                        "decimal":        "",
+                        "emptyTable":     "No existen datos en la tabla",
+                        "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
+                        "infoEmpty":      "Showing 0 to 0 of 0 entries",
+                        "infoFiltered":   "(filtered from _MAX_ total entries)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Show _MENU_ entries",
+                        "loadingRecords": "Loading...",
+                        "processing":     "Processing...",
+                        "search":         "Busqueda:",
+                        "zeroRecords":    "1",
+                        "paginate": {
+                            "first":      "Primero",
+                            "last":       "Ultimo",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        "aria": {
+                            "sortAscending":  ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        }
+                    }
+                 });
             });
         },2000);
     }
@@ -411,10 +437,40 @@ export class CajasComponent{
         setTimeout(function(){
             $(function(){
                  $('#tablacajas').DataTable({
-                     dom: 'Bfrtip',
-                     buttons: [
-                         'copy', 'csv', 'excel', 'pdf', 'print'
-                     ]
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "language": {
+
+                        "decimal":        "",
+                        "emptyTable":     "No existen datos en la tabla",
+                        "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
+                        "infoEmpty":      "Showing 0 to 0 of 0 entries",
+                        "infoFiltered":   "(filtered from _MAX_ total entries)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Show _MENU_ entries",
+                        "loadingRecords": "cargando...",
+                        "processing":     "prosesando...",
+                        "search":         "Busqueda:",
+                        "zeroRecords":    "1",
+                        "paginate": {
+                            "first":      "Primero",
+                            "last":       "Ultimo",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        "aria": {
+                            "sortAscending":  ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        buttons: {
+                            copy:'copiar', 
+                            csv:'exportar CSV',
+                            print:'Imprimir'
+                        }
+                    },
                  });
             });
         },3000);
