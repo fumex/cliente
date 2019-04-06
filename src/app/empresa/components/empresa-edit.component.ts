@@ -25,6 +25,9 @@ export class EmpresaEditComponent implements OnInit{
     public filear;
     public filesToUpload:File[];
     public fileToUpload:File=null;
+    public departamento:Array<any>=[];
+    public provincia:Array<any>=[];
+    public distrito:Array<any>=[];
     constructor(
         private auth:AuthService,
         private route:ActivatedRoute,
@@ -38,17 +41,73 @@ export class EmpresaEditComponent implements OnInit{
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Editar Empresa';
         this.user=this.auth.getUser();
-        this.empresa= new EmpresaModel(null,'','','','','','','','','','','',this.user.id);
+        this.empresa= new EmpresaModel(null,'','','','','','','','','','','',this.user.id,null,false,false,null);
     }
     ngOnInit(){
         this.getEmpresa();
     }
-
+    selectdepartamento(departamento){
+        this.empresa.ubigeo=null;
+        let i=0
+        let j=0;
+        while(j<this.distrito.length){
+            this.distrito.splice(j,1);
+        }
+        this.empresaService.getprovincia().subscribe(
+            res=>{
+                this.provincia=res;
+                while(i<this.provincia.length){
+                    if(this.provincia[i].departamento==departamento){
+                        i++;
+                    }else{
+                        this.provincia.splice(i,1);
+                    }
+                }
+                console.log(this.provincia);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+        
+    }
+    selectprovincia(provincia){
+        let i=0;
+        this.empresa.ubigeo=null;
+        this.empresaService.getall().subscribe(
+            res=>{
+                console.log(res);
+                this.distrito=res;
+                while(i<this.distrito.length){
+                    if(this.distrito[i].provincia==provincia){
+                        i++;
+                    }else{
+                        this.distrito.splice(i,1);
+                    }
+                }
+                console.log(this.distrito);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+        
+    }
+    selectdistrito(distrito){
+        let i=0;
+        while(i<this.distrito.length){
+            if(this.distrito[i].distrito==distrito){
+                this.empresa.ubigeo=this.distrito[i].ubigeo;
+            }
+            i++;
+        }
+        console.log(this.distrito);
+    }
     getEmpresa(){
         this.route.params.forEach((params:Params)=>{
             let id=params['id'];
             console.log(id);
-            this.empresaService.getEmpresa(id).subscribe(
+            this.empresaService.dataEmpresa().subscribe(
                 result=>{
                     this.empresa=result;
                     this.image(this.empresa.imagen);
@@ -60,6 +119,12 @@ export class EmpresaEditComponent implements OnInit{
                 }
             );
         });
+    }
+    percepcionfalse(){
+        this.empresa.percepcion=false;
+    }
+    percepciontrue(){
+        this.empresa.percepcion=true;
     }
     image(imagen:string){
         this.img_up=imagen;

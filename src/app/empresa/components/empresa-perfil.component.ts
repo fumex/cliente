@@ -64,10 +64,16 @@ export class EmpresaPerfilComponent implements OnInit{
     getEmpresa(){
         this.empresaService.dataEmpresa().subscribe(
             result=>{
-                this.empresa=result;
-                this.asignacionCampos(this.empresa);
-                this.imageUrl=this.url+'/empresa-img/'+this.image;
-                console.log(this.imageUrl);
+                console.log(result)
+                if(result==false){
+                    this.router.navigate(['/'+this.user.rol+'/empresa']);
+                }else{
+                    this.empresa=result;
+                    this.asignacionCampos(this.empresa);
+                    this.imageUrl=this.url+'/empresa-img/'+this.image;
+                    console.log(this.imageUrl);
+                }
+                
             },
             error=>{
                 console.log(<any>error);
@@ -76,7 +82,7 @@ export class EmpresaPerfilComponent implements OnInit{
     }
     asignacionCampos(empresa:EmpresaModel){
         this.id=empresa.id;
-        this.nombre=empresa.nombre;
+        this.nombre=empresa.razon_social;
         this.ruc=empresa.ruc;
         this.direccion=empresa.direccion;
         this.departamento=empresa.departamento;

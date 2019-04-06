@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import {Observable}from'rxjs/Observable';
 import {DetalleVentasModel}from '../modelos/detalle_ventas';
 import {inventario} from '../../inventario/modelos/inventario';
+import {codigoProductosModel} from '../modelos/codigo_productos';
 
 @Injectable()
 export class DetalleVentasService{
@@ -36,5 +37,13 @@ export class DetalleVentasService{
     }
     getdetalleventasporserie(id){
         return this._http.get<any>(this.url+'/getventaporserie/'+id).shareReplay();
+    }
+    editarcodigoproductos(cod:codigoProductosModel):Observable<any>{
+        let json = JSON.stringify(cod);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/editarcodigo_producto',params,{headers:headers});
     }
 }

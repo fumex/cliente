@@ -17,11 +17,10 @@
                                             <div class="row">
                                                 <div class="col-md-2"></div>
                                                 <div class="col-md-8" style="text-align: center">
-                                                    <img  class="productos_imagen" [src]="imageUrl" >
+                                                    <img  class="empresa_imagen" [src]="imageUrl" >
                                                 </div>
                                                 <div class="col-md-2"></div>
                                             </div>
-                                            <br>
                                             <div class="row ">
                                                 <div class="col-md-2"></div>
                                                 <div class="col-md-8" style="text-align: center">
@@ -40,7 +39,22 @@
                                                     <div class="inner-addon left-addon">
                                                         <i *ngIf="nombre.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!nombre.valid && nombre.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="empresa.nombre" placeholder="Nombre de Empresa" class="form-control" required/>
+                                                        <input type="text" #nombre="ngModel" name="nombre" [(ngModel)]="empresa.razon_social" placeholder="Nombre de Empresa" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        Nombre Comercial
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon left-addon">
+                                                        <i *ngIf="comer.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!comer.valid && comer.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="text" #comer="ngModel" name="comer" [(ngModel)]="empresa.nombre_comercial" placeholder="Ingrese el Nombre Comercial" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,8 +88,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                            <br>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <label for="control-label">
@@ -102,6 +115,23 @@
                                                         <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
                                                         <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
                                                         <input type="text" #email="ngModel" name="email" [(ngModel)]="empresa.email" placeholder="correo@empresa.com" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="control-label">
+                                                        es agente de percepcion?
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-6" style="text-align: center">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button *ngIf="empresa.percepcion!=false" style="background: #67757c;color: white" type="button" class="btn btn-secondary" (click)="percepciontrue()">Si</button>
+                                                        <button *ngIf="empresa.percepcion==false"  type="button" class="btn btn-secondary" (click)="percepciontrue()">Si</button>
+                                                        <button *ngIf="empresa.percepcion==false" style="background: #67757c;color: white" type="button" class="btn btn-secondary" (click)="percepcionfalse()">No</button>
+                                                        <button *ngIf="empresa.percepcion!=false"  type="button" class="btn btn-secondary" (click)="percepcionfalse()">No</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,9 +174,12 @@
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="inner-addon left-addon">
-                                                        <i *ngIf="departamento.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!departamento.valid && departamento.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #departamento="ngModel" name="departamento" [(ngModel)]="empresa.departamento" placeholder="Ingrese Departamento" class="form-control" required/>
+                                                        <i *ngIf="depar.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!depar.valid && depar.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select id="depselect" #depar="ngModel" (change)="selectdepartamento(empresa.departamento)" name="depar" [(ngModel)]="empresa.departamento" class="form-control custom-select" required>
+                                                                <option   disabled="disabled">--seleccione el departamento</option>    
+                                                            <option *ngFor="let deps of departamento" value="{{deps.departamento}}"><b>{{deps.departamento}}</b></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,9 +192,12 @@
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="inner-addon left-addon">
-                                                        <i *ngIf="provincia.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!provincia.valid && provincia.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #provincia="ngModel" name="provincia" [(ngModel)]="empresa.provincia" placeholder="Ingrese Provincia" class="form-control" required/>
+                                                        <i *ngIf="prov.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!prov.valid && prov.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select id="provselect" #prov="ngModel" (change)="selectprovincia(empresa.provincia)" name="prov" [(ngModel)]="empresa.provincia" class="form-control custom-select" required>
+                                                                <option   disabled="disabled">--seleccione la provincia</option>    
+                                                            <option *ngFor="let provs of provincia" value="{{provs.provincia}}"><b>{{provs.provincia}}</b></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,19 +210,53 @@
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="inner-addon left-addon">
-                                                        <i *ngIf="distrito.valid" style="color: green" class="fa fa-check"></i>
-                                                        <i *ngIf="!distrito.valid && distrito.touched" style="color: red" class="fa fa-times"></i>
-                                                        <input type="text" #distrito="ngModel" name="distrito" [(ngModel)]="empresa.distrito" placeholder="Ingrese Distrito" class="form-control" required/>
+                                                        <i *ngIf="dist.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!dist.valid && dist.touched" style="color: red" class="fa fa-times"></i>
+                                                        <select id="disselect" #dist="ngModel" (change)="selectdistrito(empresa.distrito)" name="dist" [(ngModel)]="empresa.distrito" class="form-control custom-select" required>
+                                                                <option   disabled="disabled">--seleccione el distrito</option>    
+                                                            <option *ngFor="let distt of distrito" value="{{distt.distrito}}"><b>{{distt.distrito}}</b></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        PFX
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon right-addon">
+                                                        <i *ngIf="archToUpload!=null" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="archToUpload==null" style="color: red" class="fa fa-times"></i>
+                                                        <input type="file" id="archivosunat" (change)="viewpfx($event.target.files,$event)"  name="archivosunat" class="form-control" accept="archivosunat/pfx" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="control-label">
+                                                        clave sol
+                                                    </label> 
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="inner-addon right-addon">
+                                                        <i *ngIf="pass.valid" style="color: green" class="fa fa-check"></i>
+                                                        <i *ngIf="!pass.valid && pass.touched" style="color: red" class="fa fa-times"></i>
+                                                        <input type="password" id="pass" name="pass" #pass="ngModel" [(ngModel)]="clave_sol" placeholder="clave sol" class="form-control" required pattern="[A-Za-z0-9]{8,50}"/>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                     <br>
                                     <div class="col-lg-12 row">
                                         <div class="col-md-4"></div>
                                         <div class="col-md-4" style="text-align: center">
-                                            <button type="submit" class="btn btn-info">Guardar</button>
+                                            <button type="submit" [disabled]="!formEmpresa.form.valid || empresa.ubigeo==null" class="btn btn-info">Guardar</button>
                                             <button type="button" (click)="onCancel()" class="btn btn-inverse">Cancelar</button>
                                         </div>
                                         <div class="col-md-4"></div>

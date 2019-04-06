@@ -445,7 +445,7 @@ export class PagoAddComponent implements OnInit{
     generararraycodigo(id_almacen){
         let i=1;
         while(i<=this.compra.cantidad){
-            this.producto_codigo=new codproMdel(i,this.compra.id,this.compra.nombre_producto,null,null,null,null,this.compra.vendible,null,id_almacen,this.user.id,null);
+            this.producto_codigo=new codproMdel(i,this.compra.id,this.compra.nombre_producto,null,null,null,null,this.compra.vendible,this.compra.fecha,id_almacen,this.user.id,null);
             this.producto_codigos.push(this.producto_codigo);
             i++;
         }

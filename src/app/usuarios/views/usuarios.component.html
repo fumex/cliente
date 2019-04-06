@@ -205,25 +205,71 @@
                         <div class="form-body">
                             <div class="form-horizonta">
                                 <div class="col-lg-12 row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
+                                        <div class="row p-t-20">
+                                            <div  class="col-sm-12" style="text-align: center">
+                                                <h3 class="box-title m-t-15">Permisos</h3>    
+                                                <hr class="m-t-0 m-b-40">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
                                         <div class="row p-t-20">
                                             <div  class="col-sm-2">
-                                                <label class="control-label">Rol</label>    
+                                                <p class="card-title">Permisos predeterminados</p>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="inner-addon left-addon">
                                                     <i *ngIf="rol.valid" style="color: green" class="fa fa-check"></i>
                                                     <i *ngIf="!rol.valid && rol.touched" style="color: red" class="fa fa-times"></i>
-                                                    <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select" required>
+                                                    <select #rol="ngModel" name="rol" [(ngModel)]="usuario.rol" class="form-control custom-select" >
                                                         <option disabled="disabled" >--seleccione el rol</option>    
-                                                        <option  ><b>admin</b></option>
-                                                        <option  ><b>vendedor</b></option>
+                                                        <option  ><b>Administrador</b></option>
+                                                        <option  ><b>Vendedor</b></option>
                                                         <option  ><b>Supervisor</b></option>
                                                         <option  ><b>Encargado de Almacen</b></option>
                                                     </select>
                                                 </div>  
                                             </div>
                                         </div>
+                                    </div>
+                                    <div *ngFor="let enca of encabezados; let $index=index" class="col-lg-4">
+                                        <div class="row p-t-20" >
+                                            <div  class="col-sm-8" style="text-align: left;margin-top: 12px;">
+                                                <label class="control-label"> 
+                                                    <i *ngIf="enca.abrir==false" class="fa fa-circle-o"></i>
+                                                    <i *ngIf="enca.abrir!=false" class="fa fa-dot-circle-o"></i>
+                                                     {{enca.nombre}}
+                                                </label>    
+                                            </div>
+                                            <div *ngIf="enca.estado==false" class="col-sm-2" style="text-align: center;">
+                                                <button  type="button" (click)="marcarencabezado($index)" class="btn btn-link"><i class="fa fa-square-o"></i></button>   
+                                            </div>
+                                            <div *ngIf="enca.estado!=false" class="col-sm-2" style="text-align: center;">
+                                                <button  type="button" (click)="desmarcarencabezado($index)" class="btn btn-link"><i class="fa fa-check-square-o"></i></button>   
+                                            </div>
+                                            <div  *ngIf="enca.abrir==false" class="col-sm-2" style="text-align: center;">
+                                                <button  type="button" (click)="abrirencabezado($index)" class="btn btn-link"><i class="fa fa fa-angle-down"></i></button>   
+                                            </div>
+                                            <div *ngIf="enca.abrir!=false" class="col-sm-2" style="text-align: center;">
+                                                <button  type="button" (click)="cerrarencabezado($index)" class="btn btn-link"><i class="fa fa fa-angle-up"></i></button>   
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="enca.abrir!=false">
+                                            <div *ngFor="let comp of encabezados[$index].componentes; let $index2=index" class="row p-t-20">
+                                                <div  class="col-sm-1"></div>
+                                                <div  class="col-sm-7" style="text-align: left;">
+                                                    <label class="control-label">{{comp.nombre}}</label> 
+                                                </div>
+                                                <div *ngIf="comp.estado==false" class="col-sm-2" style="text-align: center;">
+                                                    <button  type="button" (click)="marcaropcion($index,$index2)" class="btn btn-link"><i class="fa fa-square-o"></i></button>   
+                                                </div>
+                                                <div *ngIf="comp.estado!=false" class="col-sm-2" style="text-align: center;">
+                                                    <button  type="button" (click)="desmarcaropcion($index,$index2)" class="btn btn-link"><i class="fa fa-check-square-o"></i></button>   
+                                                </div>
+                                                <div  class="col-sm-2"></div>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
@@ -272,7 +318,7 @@
                             <div  *ngIf="titulo!='Mantenimiento de Usuarios'" style="text-align: right;padding-right: 50px;">
                                 <button style="margin-right: 10px"  (click)="atras()" [disabled]="!fordatos.form.valid " class="btn btn-success btn-flat btn-addon ">
                                     <i class="fa fa-arrow-circle-left"> volver atras</i></button>
-                                <button *ngIf="siguiente!=0" [disabled]="!formap.form.valid " (click)="alimentararegloap()" class="btn btn-success btn-flat btn-addon ">
+                                <button *ngIf="siguiente!=0 && siguientepermisosurl!=0" [disabled]="!formap.form.valid " (click)="alimentararegloap()" class="btn btn-success btn-flat btn-addon ">
                                     siguiente <i class="fa fa-arrow-circle-right"></i></button>
                             </div>
 

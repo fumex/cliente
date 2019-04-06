@@ -139,10 +139,10 @@ export class NotaDevitoComponent{
         this.combotipos=document.getElementById('combotipo');
         this.nota_debito=new NotaDevitoModel(null,null,null,null,null,null,this.user.id,null,null,null,null,0,0,this.fecha);
         this.nota_debito_detalle=new DetalleNotaDevitoModel(null,null,null,null,null,null,null,null,null,0);
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
         this.detalletenporal=new DetalleVentasModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
-        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
+        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,false,false,null)
         this.getempresa();
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('modaldetalles') ) {

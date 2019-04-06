@@ -1,4 +1,4 @@
-import { Component,ViewContainerRef } from "@angular/core";
+import { Component,ViewContainerRef } from "@angular/core" ;
 import { UsuarioService } from "../../usuarios/services/usuarios.service";
 import { UsuarioModel } from '../../usuarios/modelos/usuarios';
 import {DocumentoModel} from '../../TipoDocumento/models/documento';
@@ -11,14 +11,14 @@ import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 import {OrdenPedidosService} from '../../orden-de-pedido/services/Ordendepedido.service';
 import {Router,ActivatedRoute,Params}from '@angular/router';
+import { environment } from "../../../environments/environment";
 
 
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { environment } from "../../../environments/environment";
 
 declare var jQuery:any;
-declare var $:any;
+declare var $:any; 
 declare var swal:any;
 
 @Component({
@@ -27,6 +27,7 @@ declare var swal:any;
     providers:[UsuarioService,DocumentoService,SucursalService,DettaleUsuarioService,ToastService,OrdenPedidosService]
 })
 export class usuarioscomponent{
+    [x: string]: any;
     public paswor;
     public confirmar;
     public usuario:UsuarioModel;
@@ -40,6 +41,7 @@ export class usuarioscomponent{
     public ap;
     public id;
     public siguiente;
+    public siguientepermisosurl;
     public user:User;
     public nombre;
     public fecha;
@@ -53,6 +55,7 @@ export class usuarioscomponent{
     public res:any;
     imageUrl: string = "assets/images/1.png";
     fileToUpload:File = null;
+    public encabezados:Array<any>=[];
     constructor(
         private _UsuarioService:UsuarioService,
         private _DocumentoService:DocumentoService,
@@ -77,18 +80,138 @@ export class usuarioscomponent{
         this.cuenta=0;
         this.ap=0;
         this.siguiente=0;
+        this.siguientepermisosurl=0;
         this.id=0;
         this.fecha=null;
         this.iguales=false;
-        this.url=environment.api_url; 
+        this.url=environment.url+'admin/'; 
         this.filesToUpload=null;  
         this.image=this.url+'/imagenes/2.png';
+        this.encabezados.push({nombre:"Inicio",abrir:false,estado:false,componentes:[]})
+        this.encabezados[0].componentes.push({nombre:"Reportes de Inicio",estado:false,url:this.url});
+        this.encabezados.push({nombre:"Proveedor",abrir:false,estado:false,componentes:[]})
+        this.encabezados[1].componentes.push({nombre:"Agregar proveedor",estado:false,url:this.url+"Proveedor"});
+        this.encabezados[1].componentes.push({nombre:"Modificar proveedor",estado:false,url:this.url+"Proveedor"});
+        this.encabezados[1].componentes.push({nombre:"Eliminar proveedor",estado:false,url:this.url+"Proveedor"});
+        this.encabezados.push({nombre:"Compras",abrir:false,estado:false,componentes:[]})
+        this.encabezados[2].componentes.push({nombre:"Agregar compra",estado:false,url:this.url+"transaccion"});
+        this.encabezados[2].componentes.push({nombre:"Lista de compras",estado:false,url:this.url+"transaccion/list"});
+        this.encabezados[2].componentes.push({nombre:"Anular compra",estado:false,url:this.url+"transaccion/anular"});
+        this.encabezados[2].componentes.push({nombre:"Imprimir/exportar(pdf) compra",estado:false,url:this.url+"transaccion/recibo"});
+        this.encabezados.push({nombre:"Servicios",abrir:false,estado:false,componentes:[]})
+        this.encabezados[3].componentes.push({nombre:"Agregar servicio",estado:false,url:this.url+"servicio"});
+        this.encabezados[3].componentes.push({nombre:"Anular servicio",estado:false,url:this.url+"servicio/anular"});
+        this.encabezados[3].componentes.push({nombre:"Lista de Servicios",estado:false,url:this.url+"servicio/list"});
+        this.encabezados.push({nombre:"Cliente",abrir:false,estado:false,componentes:[]})
+        this.encabezados[4].componentes.push({nombre:"Agregar cliente",estado:false,url:this.url+"cliente"});
+        this.encabezados[4].componentes.push({nombre:"Modificar cliente",estado:false,url:this.url+"cliente/edit/:id"});
+        this.encabezados[4].componentes.push({nombre:"Eliminar cliente",estado:false,url:this.url+"cliente"});
+        this.encabezados.push({nombre:"Empresa",abrir:false,estado:false,componentes:[]})
+        this.encabezados[5].componentes.push({nombre:"Modificar Empresa",estado:false,url:this.url+"empresa/edit"});
+        this.encabezados.push({nombre:"Productos",abrir:false,estado:false,componentes:[]})
+        this.encabezados[6].componentes.push({nombre:"Agregar productos",estado:false,url:this.url+"productos"});
+        this.encabezados[6].componentes.push({nombre:"Modificar productos",estado:false,url:this.url+"productos"});
+        this.encabezados[6].componentes.push({nombre:"Eliminar productos",estado:false,url:this.url+"productos"});
+        this.encabezados.push({nombre:"Almacenes",abrir:false,estado:false,componentes:[]})
+        this.encabezados[7].componentes.push({nombre:"Agregar almacen",estado:false,url:this.url+"almacenes"});
+        this.encabezados[7].componentes.push({nombre:"Modificar almacen",estado:false,url:this.url+"almacenes"});
+        this.encabezados[7].componentes.push({nombre:"Eliminar almacen",estado:false,url:this.url+"almacenes"});
+        this.encabezados.push({nombre:"Precios de productos",abrir:false,estado:false,componentes:[]})
+        this.encabezados[8].componentes.push({nombre:"modificar precios",estado:false,url:this.url+"almacen"}); 
+        this.encabezados[8].componentes.push({nombre:"ver codigo productos",estado:false,url:this.url+"almacen"});
+        this.encabezados.push({nombre:"Orden de pedido",abrir:false,estado:false,componentes:[]})
+        this.encabezados[9].componentes.push({nombre:"Agregar orden de pedido",estado:false,url:this.url+"pedido"});
+        this.encabezados[9].componentes.push({nombre:"lista de pedidos",estado:false,url:this.url+"pedido/listar"});
+        this.encabezados[9].componentes.push({nombre:"Imprimir/exportar(pdf) pedido",estado:false,url:this.url+"pedido/recibo"});
+        this.encabezados.push({nombre:"Inventario",abrir:false,estado:false,componentes:[]})
+        this.encabezados[10].componentes.push({nombre:"Modificar inventario",estado:false,url:this.url+"inventario"});
+        this.encabezados[10].componentes.push({nombre:"reportes de inventario",estado:false,url:this.url+"reporteInventario"});
+        this.encabezados.push({nombre:"Usuarios",abrir:false,estado:false,componentes:[]})
+        this.encabezados[11].componentes.push({nombre:"Agregar usuario",estado:false,url:this.url+"usuarios"});
+        this.encabezados[11].componentes.push({nombre:"Modificar usuario(datos generales)",estado:false,url:this.url+"editarusuario"});
+        this.encabezados[11].componentes.push({nombre:"Eliminar usuario",estado:false,url:this.url+"editarusuario"});
+        this.encabezados.push({nombre:"Cajas",abrir:false,estado:false,componentes:[]})
+        this.encabezados[12].componentes.push({nombre:"Agregar caja",estado:false,url:this.url+"cajas"});
+        this.encabezados[12].componentes.push({nombre:"Modificar caja",estado:false,url:this.url+"cajas"});
+        this.encabezados[12].componentes.push({nombre:"Eliminar caja",estado:false,url:this.url+"cajas"});
+        this.encabezados.push({nombre:"Ventas",abrir:false,estado:false,componentes:[]})
+        this.encabezados[13].componentes.push({nombre:"Ventas Gratuitas",estado:false,url:this.url+"ventas"});
+        this.encabezados[13].componentes.push({nombre:"Agregar descuento",estado:false,url:this.url+"ventas"});
+        this.encabezados[13].componentes.push({nombre:"Agregar Descuento global",estado:false,url:this.url+"ventas"});
+        
+        console.log(this.encabezados);
+        //this._router.navigate(['/'+this.user.rol+'/editarusuario']);
     }
     ngOnInit(){
         this.mostradocuemnto();
         this.mostrarsucursal();
         this.fechaactual();
         
+    }
+    abrirencabezado(indice){
+        let i=0;
+        while(i<this.encabezados.length){
+            if(indice==i){
+                this.encabezados[i].abrir=true;
+            }else{
+                this.encabezados[i].abrir=false;
+            }
+            i++
+        }
+    }
+    marcarencabezado(indice){
+        let i=0;
+        this.encabezados[indice].estado=true;
+        while(i<this.encabezados[indice].componentes.length){
+            this.encabezados[indice].componentes[i].estado=true;
+            this.siguientepermisosurl++;
+            i++;
+        }
+    }
+    desmarcarencabezado(indice){
+        
+        let i=0;
+        this.encabezados[indice].estado=false;
+        while(i<this.encabezados[indice].componentes.length){
+            this.encabezados[indice].componentes[i].estado=false;
+            this.siguientepermisosurl=this.siguientepermisosurl-1;
+            i++;
+        }
+    }
+    marcaropcion(indiceenca,indiceop){
+        this.siguientepermisosurl++;
+        let i=0;
+        let marca=true;
+        console.log(indiceenca,indiceop)
+        this.encabezados[indiceenca].componentes[indiceop].estado=true;
+        while(i<this.encabezados[indiceenca].componentes.length){
+            if(this.encabezados[indiceenca].componentes[i].estado==false){
+                marca=false;
+            }
+            i++;
+        }
+        if(marca==true){
+            this.marcarencabezado(indiceenca);
+        }
+    }
+    desmarcaropcion(indiceenca,indiceop){
+        this.siguientepermisosurl=this.siguientepermisosurl-1;
+        let i=0;
+        let cancel=true;
+        console.log(indiceenca,indiceop)
+        this.encabezados[indiceenca].componentes[indiceop].estado=false;
+        while(i<this.encabezados[indiceenca].componentes.length){
+            if(this.encabezados[indiceenca].componentes[i].estado==true){
+                cancel=false;
+            }
+            i++;
+        }
+        if(cancel==true){
+            this.desmarcarencabezado(indiceenca);
+        }
+    }
+    cerrarencabezado(indice){
+        this.encabezados[indice].abrir=false;
     }
     mostarriname(file: FileList,fileInput: any){
         this.filear=document.getElementById('image');

@@ -147,11 +147,11 @@ export class AnularVentaComponent{
         let mes=f.getMonth()*1+1;
         this.fecha=f.getDate()+'/'+mes+'/'+f.getFullYear();
         this.anular=new AnularModel(null,null,null,null,null,null,null,this.user.id,null,null,null,null,null,0,0,this.fecha);
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
         this.anulardetalle=new AnularDetalleModel(null,null,null,null,null,null,null,null,null,0);
         this.detalletenporal=new DetalleVentasModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
-        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
+        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,false,false,null)
         this.getempresa();
         this.modal=document.getElementById('myModal');
         this.modaldetalles=document.getElementById('modaldetalles');

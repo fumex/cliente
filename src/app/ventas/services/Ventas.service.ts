@@ -41,4 +41,21 @@ export class VentasService{
     getventasporid(id):Observable<any>{
         return this._http.get<any>(this.url+'/getventaporid/'+id).shareReplay();
     }
+
+    almacennardatosventas(ventas:any,detalle_ventas:any,impuestos:any,codigo:any){
+        if(codigo && ventas && detalle_ventas && impuestos){
+            localStorage.setItem('ventas',btoa(JSON.stringify(ventas)));
+            localStorage.setItem('detalle_ventas',btoa(JSON.stringify(detalle_ventas)));
+            localStorage.setItem('impuestos',btoa(JSON.stringify(impuestos)));
+            localStorage.setItem('codigo',btoa(JSON.stringify(codigo)));
+          return true;
+        } 
+        return false;
+    }
+    recojerdatos(nombredato):any{
+        return localStorage.getItem(nombredato)?JSON.parse(atob(localStorage.getItem(nombredato))):null;
+    }
+    cleardatos(nombre):void{
+        localStorage.removeItem(nombre);
+    }
 }

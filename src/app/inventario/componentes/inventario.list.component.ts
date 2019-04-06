@@ -27,7 +27,7 @@ declare var swal:any;
     public ident;
     public id:number;
     public almacenselec;
-    public inventarios:inventario[];
+    public inventarios:Array<inventario>=[];
     public cojeinventarioi:inventario;
     public almacenes:almacen;
     public productos:ProductosfiltradoporAlmacenModel[];
@@ -83,16 +83,19 @@ declare var swal:any;
         }
         mostrar(){
             this.id=0;
-            
+            let descrip=null;
             this.cojeinventarioi.id_producto=  this.idalmacen;
             this.cojeinventarioi.id_almacen= this.idproducto;
             this._InventarioService.SeleccionarInventario(this.cojeinventarioi).subscribe(
                 result=>{
+                    console.log(result);
                     this.inventarios=result;
                     
                    //console.log(this.inventarios);
-                    while(this.id<result.length){
+                    while(this.id<this.inventarios.length){
+                        descrip=this.inventarios[this.id].descripcion;
                         this.movimientos.push(this.inventarios[this.id]);
+                        
                         if(this.id>0)
                         {
                             if(this.inventarios[this.id].tipo_movimiento!=1)
@@ -119,8 +122,8 @@ declare var swal:any;
                                 this.cantotal=this.inventarios[this.id].cantidad;
                                 this.total=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
                                 this.movimientos[this.id].id_almacen=this.cantotal;
-                               this.movimientos[this.id].id=this.total;
-                               this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
+                                this.movimientos[this.id].id=this.total;
+                                this.multi=this.inventarios[this.id].cantidad*this.inventarios[this.id].precio;
                                 this.movimientos[this.id].descripcion=this.multi.toFixed(2);
 
                             }else{
@@ -133,9 +136,8 @@ declare var swal:any;
                             }
                             
                         }
-                        
-                        //console.log(this.cantotal);
-                        this.id=this.id+1;
+                        this.inventarios[this.id].descripcion=descrip;
+                        this.id++;
 
                     }
                     //console.log(this.cantotal);
@@ -149,7 +151,6 @@ declare var swal:any;
             this.cantotal=0;
             this.total=0;
             this.id=0;
-            console.log(this.cojeinventarioi);
         }
         
         cerrar(){

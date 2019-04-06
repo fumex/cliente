@@ -13,7 +13,7 @@ export class AdminLeftSideComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log('menu lateral')
   }
 
 }

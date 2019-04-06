@@ -312,7 +312,15 @@
                                 <div class="col-lg-12 row">
                                     <div class="col-lg-12" >
                                         <div class="row p-t-20">
-                                            <div class="col-sm-6"></div>
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5" style="text-align: left;">
+                                                <button *ngIf="gratuito!=true" (click)="irdocgratuito()" type="button" class="btn btn-link">
+                                                    Documento Gratutito <i class="fa fa-circle-o"></i> 
+                                                </button>
+                                                <button *ngIf="gratuito==true" (click)="irdocgratuito()" type="button" class="btn btn-link">
+                                                    Documento Gratutito <i class="fa fa-dot-circle-o"></i> 
+                                                </button>
+                                            </div>
                                             <div class="col-sm-5" style="text-align: right" >
                                                 <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
                                                     <i class="fa fa-sticky-note-o"></i> Factura
@@ -465,6 +473,13 @@
                                                             <td colspan="4" style="text-align: left">{{imp.nombre }}({{imp.porcentaje}}%)</td>
                                                             <td style="text-align: center;">{{imp.cantidad | number : '1.2-2'}}</td>
                                                         </tr>
+                                                        <tr style="border-color: transparent" >
+                                                            <td colspan="2"></td>
+                                                            <td colspan="4" style="text-align: left">Descuento Gloval ({{ventas.descuento_global_pocentage}}%)
+                                                                <i style="color: rgba(0, 92, 197, 0.966)" class="fa fa-plus-circle"></i>
+                                                            </td>
+                                                            <td style="text-align: center;">{{ventas.descuento_global | number : '1.2-2'}}</td>
+                                                        </tr>
                                                         <tr *ngIf="impuestos.length>0" style="border-color: transparent">
                                                             <td colspan="2"></td>
                                                             <td colspan="4" style="background:#88c8ff;border-top: solid black;color: black;text-align: left" >Total</td>
@@ -536,7 +551,7 @@
                                                 aria-expanded="false" ></a>
                                                 <div class=" dropdown-menu dropdown-menu-right  animated zoomIn " style="width: 230px;">
                                                     <ul class="dropdown-user">
-                                                        <li (click)="abrirmodalventa()" style="cursor: pointer"><a ><i class="fa fa-address-card"></i> ver venta</a></li>
+                                                        <li (click)="abrirmodalventas()" style="cursor: pointer"><a ><i class="fa fa-address-card"></i> ver venta</a></li>
                                                         <li (click)="volveraventadepagos()" style="cursor: pointer"><a ><i class="fa fa-angle-double-left"></i> volver</a></li>
                                                     </ul>
                                                 </div>
@@ -570,31 +585,6 @@
                                             </div> 
                                         </div>
                                     </div>
-                                    <!--<div class="col-lg-6" >
-                                        <div class="row p-t-20">
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Tipo de pago:</label>    
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <select  id="comboselect" (change)="seleccionartipo()" class="form-control custom-select"  [(ngModel)]="ventas.tipopago"  name="tiposelect" required>
-                                                    <option disabled value="0">seleccione metodo de pago</option>
-                                                    <option  *ngFor="let pag of pago" value="{{pag.id}}"><b>{{pag.descripcion}}</b></option>                        
-                                                </select>   
-                                            </div>
-                                            <br>
-                                            <br>
-                                            <br>
-                                            <div *ngIf="tipotrageta!=null" class="col-sm-4">
-                                                <label class="control-label">Tarjeta:</label>    
-                                            </div>
-                                            <div *ngIf="tipotrageta!=null" class="col-sm-8">
-                                                <select  id="combotarjeta" class="form-control custom-select" (change)="agregartarjeta()" [(ngModel)]="ventas.tarjeta" name="tarjeta" required>
-                                                    <option disabled >seleccione la Tarjeta</option>
-                                                    <option *ngFor="let ent of entidad" value="{{ent.id}}"><b>{{ent.descripcion}}</b></option>                       
-                                                </select>   
-                                            </div>
-                                        </div>
-                                    </div>-->
                                     <div  class="col-lg-6"  style="background: #dcdcdc" >
                                         <div class="row p-t-20">  
                                             <div class="col-sm-5">
@@ -659,7 +649,7 @@
                                     </div>
                                     <div  class="col-lg-6" style="margin-top: 10px;text-align: center">
                                         <button  (click)="volveraventadepagos()"  class="btn btn-danger"> <i class="fa fa-cloud-upload"></i> volver</button>
-                                        <button  (click)="abrirmodalventas()"  [disabled]="(ventas.id_moneda==null || ventas.id_moneda==0)"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Guardar</button>
+                                        <button  (click)="abrirmodalventas()"  [disabled]="(ventas.id_moneda==null || ventas.id_moneda==0)"   class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Continuar</button>
                                         
                                     </div>
                                 </div>
@@ -1033,7 +1023,7 @@
                                                             S/N
                                                         </div>
                                                         <ng-container *ngFor="let codigos of codigo_productos; let $index=index">
-                                                            <div class="col-sm-4"  *ngIf="codigos.id_detalle_pago==dproductos.id_producto && codigos.serie!=null">
+                                                            <div class="col-sm-4"  *ngIf="codigos.id_detalle_pago==dproductos .id_producto && codigos.serie!=null">
                                                                 <div >
                                                                     {{codigos.serie}}
                                                                 </div>

@@ -156,7 +156,7 @@ export class OrdenPedidoPdf implements OnInit{
         this.email_proveedor=provee.email;
     }
     asignarEmpresa(empresa:EmpresaModel){
-        this.nombre_empresa=empresa.nombre;
+        this.nombre_empresa=empresa.razon_social;
         this.ruc_empresa=empresa.ruc;
         this.direccion_empresa=empresa.direccion;
         this.departamento_empresa=empresa.departamento;

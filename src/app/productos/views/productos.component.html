@@ -65,7 +65,7 @@
                                     <label class="control-label">Categoria:</label>    
                                 </div>
                                 <div *ngIf="llamarcategoria==null" class="col-sm-6">
-                                     <div class="inner-addon left-addon">
+                                    <div class="inner-addon left-addon">
                                         <i *ngIf="cates.valid" style="color: green" class="fa fa-check"></i>
                                         <i *ngIf="!cates.valid && cates.touched" style="color: red" class="fa fa-times"></i>
                                         <select id="categoriaselect" #cates="ngModel" (change)="aparecermodificarcategoria(agregarpro.id_categoria)" name="cates" [(ngModel)]="agregarpro.id_categoria" class="form-control custom-select" required>

@@ -101,7 +101,7 @@ export class ReportesComponent{
     }
     ngOnInit(){
         this.detcaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null)
-        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null);
+        this.getventa=new VentasModel(null,null,null,null,null,null,null,null,null,null,this.user.id,null,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
         this.modal=document.getElementById('myModal');
         this.modal2=document.getElementById('myModal2');
         window.onclick = function(event) {

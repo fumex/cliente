@@ -1,6 +1,7 @@
 import { Component,ViewContainerRef } from "@angular/core";
 import { DetalleCaja } from "../modelos/detalle_cajas";
 import { DetalleCajasService } from '../services/DetalleCajas.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DetalleCajasUsuarioService } from '../../cajas/services/detalle.cajas.usuarios.services';
 import { AlmaceneService} from '../../almacen/services/almacen.services';
 import { producto} from '../../productos/modelos/productos';
@@ -52,6 +53,7 @@ export class VentasComponent{
     public codigo_productos:Array<codigoProductosModel>=[];
     public pro:ProductoModule;
     public nombre;
+    public idlastventa=null;
     public apertura=null;
     public cajas:any;
     public id_caja=0;
@@ -99,7 +101,9 @@ export class VentasComponent{
     public emailvalidado=null;
     public empresa:EmpresaModel;
     imageUrl: string = "assets/images/1.png";
+    public gratuito=null;
     constructor(
+        private router:Router,
         private _DetalleCajasService:DetalleCajasService,
         private _DetalleCajasUsuarioService:DetalleCajasUsuarioService,
         private _monedaservice:MonedaService,
@@ -124,11 +128,11 @@ export class VentasComponent{
         this.imageUrl=this.url+'/imagenes/2.png';
         this.DetalleCaja=new DetalleCaja(null,null,null," ",null,null,null,null,null,null);
         this.detallev=new DetalleVentasModel(null,null,null,null,0,null,null,0,0,0,null,0,0,0,0,0,0,0,0,0,null,null);
-        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id,0,null,null,null,0,null,null,null,null,null,null,null);
+        this.ventas=new VentasModel(null,null,null,null,null,0,0,0,null,null,this.user.id,0,null,null,null,0,null,null,null,null,null,null,null,null,0,0);
         this.arreglocantidad=new CantidadMOdel(0,0,0,0,0,0,0,0,0,0,0);
         this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
         this.cod_pro=new codigoProductosModel(null,null,null,null,null,null);
-        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,false,false,null)
         this.igv=0;
         this.letrado=this.conversor.NumeroALetras(0);
         this.iniciodeusuario();
@@ -156,7 +160,13 @@ export class VentasComponent{
         this.gettipopago();
         this.getempresa();
     }
-
+    irdocgratuito(){
+        if(this.gratuito==true){
+            this.gratuito=false;
+        }else{
+            this.gratuito=true;
+        }
+    }
     validaremail(){
         this.emailvalidado=this.ventas.email;
     }
@@ -182,6 +192,7 @@ export class VentasComponent{
 
     cerramodalventa(){
         //this.modalventa.className="modal-contente animated zoomOut";
+        this.cancelareditemail();
         this.modalventa.style.display = "none";
     }
     abrirmodalventas(){
@@ -588,9 +599,12 @@ export class VentasComponent{
         this.ventas.letrado=this.letrado;
         this._VentasService.GuardarVenta(this.ventas).subscribe(
             res=>{
-                console.log(res);
+                console.log(res.serie);
                 if(res.code==200){
                     this.guardardetalleventas();
+                    //this.ventas.serie_venta=res.serie;
+                    //this.idlastventa=res.serie;
+                    console.log(this.ventas)
                 }
             },
             err=>{
@@ -603,15 +617,17 @@ export class VentasComponent{
         );
     }
     guardardetalleventas(){
-        let i=0;
+        let i=0,j=0;
         let respuesta=0;
+        let validate=1;
+        let iddetalleventyas=null;
         while(i<this.detalleventas.length){
             this._DetalleVentasService.guardardetalleventas(this.detalleventas[i]).subscribe(
                 res=>{
                     
                     if(res.code==200){
                         console.log(res);
-                        
+                        iddetalleventyas=res.id;
                     }else{
                         respuesta+=1;
                         console.log(respuesta);
@@ -620,39 +636,72 @@ export class VentasComponent{
                 },
                 err=>{
                     console.log(<any>err);
-                    this.limpiar(); 
+                    respuesta+=1
+                    /*this.limpiar(); 
                     this.vuelto=0;
                     this.verusuarios=null;
-                    this.verpago=null;
+                    this.verpago=null;*/
                 }
             );
+            console.log(this.codigo_productos);
+            while(j<this.codigo_productos.length){
+                if(this.codigo_productos[j].id_detalle_pago==this.detalleventas[i].id_producto){
+                    this.codigo_productos[j].id_detalle_pago=iddetalleventyas;
+                    this._DetalleVentasService.editarcodigoproductos(this.codigo_productos[j]).subscribe(
+                        res=>{
+                            console.log(res);
+                            
+                        },
+                        err=>{
+                            console.log(err)
+                            respuesta+=1
+                        }
+                    )
+                }
+                j++
+            }
             this.inventario=new inventario(null,null,null,this.detalleventas[i].id_producto,null,null,this.detalleventas[i].cantidad,null,this.detalleventas[i].precio_unitario,null,this.user.id,this.detalleventas[i].codigo);
             this._DetalleVentasService.guardarmoveinv(this.inventario).subscribe(
                 res=>{
                     if(res.code==200){
                         this.inventario=new inventario(null,null,null,null,null,null,null,null,null,null,null,null);
+                    }else{
+                        respuesta+=1;
+                        console.log(respuesta);
+
                     }
                 },
                 err=>{
                     console.log(<any>err);
-                    this.limpiar(); 
+                    respuesta+=1
+                    /*this.limpiar(); 
                     this.vuelto=0;
                     this.verusuarios=null;
-                    this.verpago=null;
+                    this.verpago=null;*/
                 }
             );
+            j=0;
             i++;
             console.log(respuesta);
             if(i==this.detalleventas.length && respuesta==0){
                 this.alertaventa();
+                this._VentasService.almacennardatosventas(this.ventas,this.detalleventas,this.impuestos,this.codigo_productos);
                 //this.obtenerdocuemntos();
-                this.limpiar(); 
+                /*this.limpiar(); 
                 this.vuelto=0;
                 this.verusuarios=null;
-                this.verpago=null;
+                this.verpago=null;*/
             }
+
         }
     
+    }
+    guardarcodigos(){
+        let i=0;
+        while(i<this.codigo_productos.length){
+            
+            i++;
+        }
     }
     vermoneda(moenda){
         let i=0;
@@ -852,8 +901,10 @@ export class VentasComponent{
             this.total=this.ventas.total;
             this.antsubtotal=this.total;
         }else{
+            this.ventas.subtotal=this.ventas.total;
             this.antsubtotal=this.ventas.total;
             this.ventas.total=this.total;
+
         }
         console.log(this.ventas);
         this.tabs=document.getElementById('tabpago')
@@ -902,7 +953,7 @@ export class VentasComponent{
         while(i<this.impuestos.length){
             this.impuestos.splice(0,1);
         }
-        this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id,0,null,null,null,0,null,null,null,null,null,null,null);
+        this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id,0,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
     }
 
 
@@ -1617,6 +1668,7 @@ export class VentasComponent{
             buttons: true,
             timer: 1500
           })
+        this.router.navigate(['/'+this.user.rol+'/imprimir/venta']);
     }
     alertafactura(){
         swal({

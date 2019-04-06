@@ -55,6 +55,7 @@ import { NotaDevitoComponent } from '../../nota_devito/components/nota_devito.co
 import { VentasComponent} from '../../ventas/componentes/ventas.component';
 import { AnularVentaComponent} from '../../ventas/componentes/ventas_anular.component';
 import { ImprimirNotaCreditoComponent} from '../../ventas/componentes/imprimirnota.component';
+import { ImprimirVentasComponent} from '../../ventas/componentes/imprimirventa.component';
 import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
 import { ReportesComponent} from '../../ventas/componentes/reportes.component';
 
@@ -67,14 +68,15 @@ import { EntidadFinancieraComponent} from '../../entidad_financiera/components/e
 import { EmisorAddComponent } from '../../emisor/components/emisor-add.component';
 import { EmisorEditComponent } from '../../emisor/components/emisor-edit.component';
 
-
 @NgModule({
    
     imports:[
         RouterModule.forChild([
             {
+                
                 path:'admin',
                 component:AdminComponent,canActivate:[AuthGuard],canActivateChild:[AuthGuard],
+                
                 data:{
                     expectedRole:'admin',
                     id:1305,
@@ -153,7 +155,7 @@ import { EmisorEditComponent } from '../../emisor/components/emisor-edit.compone
                         component:EmpresaAddComponent
                     },
                     {
-                        path:'empresa/edit/:id',
+                        path:'empresa/edit',
                         component:EmpresaEditComponent
                     },
                     {
@@ -212,6 +214,7 @@ import { EmisorEditComponent } from '../../emisor/components/emisor-edit.compone
                     { path:'reportes',component:ReportesComponent},
                     { path:'imprimir/nota',component:ImprimirNotaCreditoComponent},
                     { path:'nota/debito',component:NotaDevitoComponent},
+                    { path:'imprimir/venta',component:ImprimirVentasComponent},
                 ]
             }
         ]),
@@ -233,11 +236,11 @@ export class AdminRoutingModule {
     ){
         this.url=environment.url;
         this.http.get<any>(`${environment.api_url}/auth/me`).subscribe(data=>{
-;
-            if(this.url+'/'+data.user.rol!=this.ruta){
+
+            /*if(this.url+'/'+data.user.rol!=this.ruta){*/
                 if(this.aurth.check()==true && location.href==this.url+'/auth/login'){
                     this.router.navigate([data.user.rol]);
-                }
+              /*  }*/
             }
             const   routes :   Routes   =   [ 
                 { path:'', redirectTo:data.user.rol, pathMatch:'full' } ,  

@@ -23,5 +23,8 @@ export class VentasModel{
         public moneda:string,
         public email:string,
         public tipo_documento_cliente:string,
+        public subtotal: number,
+        public descuento_global:number,
+        public descuento_global_pocentage:number
 	){}
 }

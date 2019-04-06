@@ -106,7 +106,7 @@
                                 </tr>
                             </thead>
                             <tbody  >         
-                                <tr *ngFor="let inventario of inventarios,let $index=index,let total of movimientos[index]">
+                                <tr *ngFor="let inventario of inventarios,let $index=index,let total of movimientos[index]"> 
                                     <td style="text-align:left;width: 180px;">{{inventario.created_at}}</td>
                                     <td style="text-align:left;width: 230px;">{{inventario.descripcion}}  de <strong> {{inventario.nombre_producto}} </strong></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
@@ -114,13 +114,14 @@
                                     <td style="text-align:right;width: 78px;padding-right: 10px" >
                                         <a *ngIf="inventario.tipo_movimiento==2" style="color: green"> {{inventario.precio | number:'1.2'}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
-                                        <a *ngIf="inventario.tipo_movimiento==2" style="color: green">{{total.descripcion}} </a></td>
+                                        <a *ngIf="inventario.tipo_movimiento==2" style="color: green">{{(total.cantidad*inventario.precio) | number:'1.2'}} </a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
                                         <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.cantidad}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
                                         <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{inventario.precio | number:'1.2'}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px">
-                                        <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{total.descripcion }}</a></td>
+                                        <a *ngIf="inventario.tipo_movimiento==1" style="color: red">{{(total.cantidad*inventario.precio) | number:'1.2'}} </a></td>
+
                                     <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id_almacen}}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id/total.id_almacen | number:'1.2' }}</a></td>
                                     <td style="text-align:right;width: 70px;padding-right: 10px"><a>{{total.id | number:'1.2'}}</a></td>

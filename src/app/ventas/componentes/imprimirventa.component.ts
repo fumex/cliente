@@ -11,15 +11,13 @@ import {ToastService} from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import {DetalleCaja} from '../modelos/detalle_cajas';
 import {DetalleVentasModel} from '../../ventas/modelos/detalle_ventas';
+import {codigoProductosModel} from '../../ventas/modelos/codigo_productos';
 import {DetalleVentasService} from '../services/DetalleVentas.service';
 import {VentasService} from '../services/Ventas.service';
 import { VentasModel } from '../modelos/ventas';
 import {AnularDetalleModel} from '../modelos/anular_detalle';
 import {EmpresaService}from '../../empresa/services/empresa.service'; 
 import {EmpresaModel}from '../../empresa/models/empresa' 
-import{AnularModel} from '../modelos/anular'
-import {AnularService} from '../services/notadecredito.service';
-
 import { ImpuestoService } from "../../impuesto/services/impuesto.service";
 
 import { environment } from '../../../environments/environment';
@@ -33,14 +31,13 @@ declare var swal:any;
 declare var kendo:any;
 @Component({
     selector:'cajasabiertas',
-    templateUrl:'../views/Imprimir_notas.html',
-    providers:[ToastService,DetalleVentasService,AnularService,ImpuestoService,conversordenumerosaletras,VentasService]
+    templateUrl:'../views/imprimirventas.html',
+    providers:[ToastService,DetalleVentasService,ImpuestoService,conversordenumerosaletras,VentasService]
 })
-export class ImprimirNotaCreditoComponent{
+export class ImprimirVentasComponent{
     public user:any;
     public getimp:Array<ImpuestoModel>=[];
-    public impuestos:any;
-    public anular:AnularModel;
+    public codigo_productos:codigoProductosModel;
     public id_nota_credito=null;
     public total=null;
     public subtotal=null;
@@ -54,10 +51,12 @@ export class ImprimirNotaCreditoComponent{
     public contenido=null;
     public contenidoOriginal=null;
     public empresa:EmpresaModel;
+    public impuestos:Array<any>=[];
+    public codigos:Array<codigoProductosModel>=[];
     public url;
     imageUrl: string = "assets/images/1.png";
+    public detalleventas:Array<DetalleVentasModel>=[];
     constructor(
-        private _AnularService:AnularService,
         private _DettaleUsuarioService:DettaleUsuarioService,
         public _DetalleCajasUsuarioService:DetalleCajasUsuarioService,
         private _DetalleVentasService:DetalleVentasService,
@@ -80,37 +79,29 @@ export class ImprimirNotaCreditoComponent{
     ngOnInit(){
         this.empresa=new EmpresaModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,false,false,null);
         this.getempresas();
-        this.anular=this._AnularService.recogernotacredito();
-        if(this.anular!=null){
-            //this._AnularService.clear();
-            if(this.anular.serie.charAt(0)=="F"){
-            this.tipoventa="FACTURA";
+        this.ventas=this._VentasService.recojerdatos('ventas');
+        if(this.ventas!=null){
+            
+            if(this.ventas.serie_venta.charAt(0)=="F"){
+                this.tipoventa="FACTURA";
             }else{
-            this.tipoventa="BOLETA";
+                this.tipoventa="BOLETA";
             }
-            this.tiponotas[0]=['Anulacion de la Operacion','01'];
-            this.tiponotas[1]=['Anulacion por error en el RUC','02'];
-            this.tiponotas[2]=['Correccion por error en la descripcion','03'];
-            this.tiponotas[3]=['Descuento Gloval','04'];
-            this.tiponotas[4]=['Descuento por Item','05'];
-            this.tiponotas[5]=['Devolución total','06'];
-            this.tiponotas[6]=['Devolucion por Item','07'];
-            this.seriedenota=this.anular.serie_nota;
-            this.nombretiponota=this.tiponotas[parseInt(this.anular.tipo_nota)-1][0];
-            this.ventas=this._AnularService.recojerdatos('ventas');
-            this.d_ventasvarante=this._AnularService.recojerdatos('detalle_ventas');
-            this.impuestos=this._AnularService.recojerdatos('impuestos');
-            /*this._AnularService.cleardatos('ventas');
-            this._AnularService.cleardatos('detalle_ventas');
-            this._AnularService.cleardatos('impuestos');*/
-            console.log(this.anular);
+            
+            this.detalleventas=this._VentasService.recojerdatos('detalle_ventas');
+            this.impuestos=this._VentasService.recojerdatos('impuestos');
+            this.codigos=this._VentasService.recojerdatos('codigo');
+            /*this._VentasService.cleardatos('ventas');
+            this._VentasService.cleardatos('detalle_ventas');
+            this._VentasService.cleardatos('impuestos');
+            this._VentasService.cleardatos('codigo');
+            
             console.log(this.ventas);
             console.log(this.d_ventasvarante);
-            console.log(this.impuestos);
+            console.log(this.impuestos);*/
         }else{
-            this.anular=new AnularModel(null,'00',null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-            this.ventas=new VentasModel(null,null,'f-000',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-            this.router.navigate(['/'+this.user.rol+'/nota/credito']);
+            this.ventas=new VentasModel(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+            this.router.navigate(['/'+this.user.rol+'/ventas']);
         }
     }
     getempresas(){

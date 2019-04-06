@@ -18,13 +18,19 @@ export class EmpresaAddComponent implements OnInit{
 
     public title:string;
     public empresa:EmpresaModel;
-    public empresas:EmpresaModel[];
     public confirmado:boolean;
     public user:User;
     public imageUrl:string;
     public filear;
+    public archs;
     public filesToUpload:File[];
     public fileToUpload:File=null;
+    public archsToUpload:File[];
+    public archToUpload:File=null;
+    public departamento:Array<any>=[];
+    public provincia:Array<any>=[];
+    public distrito:Array<any>=[];
+    public clave_sol=null;
     constructor(
         private empresaService:EmpresaService,
         private route:ActivatedRoute,
@@ -38,12 +44,97 @@ export class EmpresaAddComponent implements OnInit{
         this.title='Empresa';
         this.imageUrl=="/assets/images/2.png";
         this.user=this.auth.getUser();
-        this.empresa= new EmpresaModel(null,'','','','','','','','','','','',this.user.id);
+        this.empresa= new EmpresaModel(null,'','','','','','','','','','','',this.user.id,null,false,false,null);
         this.confirmado=true;
         this.filesToUpload=null; 
+        this.empresaService.revisarexistencias().subscribe(
+            res=>{
+                if(res==true){
+                    this.router.navigate(['/'+this.user.rol+'/empresa/perfil']);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
     }
     ngOnInit(){
+        this.getubigeos();
         console.log('hola');
+    } 
+    percepcionfalse(){
+        this.empresa.percepcion=false;
+    }
+    percepciontrue(){
+        this.empresa.percepcion=true;
+    }
+    selectdepartamento(departamento){
+        this.empresa.ubigeo=null;
+        let i=0
+        let j=0;
+        while(j<this.distrito.length){
+            this.distrito.splice(j,1);
+        }
+        this.empresaService.getprovincia().subscribe(
+            res=>{
+                this.provincia=res;
+                while(i<this.provincia.length){
+                    if(this.provincia[i].departamento==departamento){
+                        i++;
+                    }else{
+                        this.provincia.splice(i,1);
+                    }
+                }
+                console.log(this.provincia);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+        
+    }
+    selectprovincia(provincia){
+        let i=0;
+        this.empresa.ubigeo=null;
+        this.empresaService.getall().subscribe(
+            res=>{
+                console.log(res);
+                this.distrito=res;
+                while(i<this.distrito.length){
+                    if(this.distrito[i].provincia==provincia){
+                        i++;
+                    }else{
+                        this.distrito.splice(i,1);
+                    }
+                }
+                console.log(this.distrito);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
+        
+    }
+    selectdistrito(distrito){
+        let i=0;
+        while(i<this.distrito.length){
+            if(this.distrito[i].distrito==distrito){
+                this.empresa.ubigeo=this.distrito[i].ubigeo;
+            }
+            i++;
+        }
+        console.log(this.distrito);
+    }
+    getubigeos(){
+        this.empresaService.getdepartamento().subscribe(
+            res=>{
+                console.log(res);
+                this.departamento=res;
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
     }
     img(ruc){
         let f= new Date();
@@ -52,9 +143,11 @@ export class EmpresaAddComponent implements OnInit{
         return emp;
     }
     addEmpresa(ruc){
+        console.log(this.empresa);
         this.empresa.imagen=ruc
         this.empresaService.addEmpresa(this.empresa).subscribe(
             result=>{
+                this.addpfx();
                 console.log(result);
             },
             error=>{
@@ -100,6 +193,42 @@ export class EmpresaAddComponent implements OnInit{
                 }
             }
         }
+    }
+    viewpfx(file:FileList,fileInput:any){
+        this.archs=document.getElementById('archivosunat');
+        var archpath=this.archs.value;
+        console.log(file[0].size);
+        var allowedExtensions = /(.pfx)$/i;
+        if(!this.archs.value){
+            console.log('nada');
+            this.archsToUpload=null;
+            this.archToUpload=null;
+        }
+        else{
+            if(!allowedExtensions.exec(archpath)){
+                console.log('no entro');
+                this.archsToUpload=null;
+                this.archToUpload=null;
+                this.archs.value="";
+                return false;
+            }
+            else{
+                console.log('entro');
+                this.archsToUpload=fileInput.target.files;
+                this.archToUpload=file.item(0);
+            }
+        }
+    }
+    addpfx(){
+        this.empresaService.postpfx(this.empresa.ruc,this.archToUpload,this.clave_sol).subscribe(
+            result=>{
+                console.log(result);
+                this.router.navigate(['/'+this.user.rol+'/empresa/perfil']);
+            },
+            error=>{
+                console.log(<any>error);
+            }
+        ); 
     }
     onSubmit(ruc){
         let _ruc=this.img(ruc);

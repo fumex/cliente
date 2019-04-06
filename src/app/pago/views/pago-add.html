@@ -476,7 +476,7 @@
                             <br>
                             <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
                                 <button   class="btn btn-danger" > <i class="glyphicon glyphicon-remove"></i> Cancelar</button>
-                                <button (click)="addCompra(idAlmacen.value)"  [disabled]="!canti.valid && vendi.valid && precio.valid" class="btn btn-success" > <i class="fa fa-check"></i> Agregar</button>
+                                <button (click)="addCompra(idAlmacen.value)"  [disabled]="!canti.valid || !vendi.valid || !precio.valid" class="btn btn-success" > <i class="fa fa-check"></i> Agregar</button>
                             </div>
                         </div>    
                     </div>
