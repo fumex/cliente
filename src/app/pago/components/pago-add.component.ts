@@ -26,6 +26,9 @@ import { ProductoDetalleModel } from '../../productos/modelos/producto_detalle';
 import { ProductoService } from '../../productos/services/producto.service';
 
 import { CodigoProductoService } from '../services/codigo_producto.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare var jQuery:any;
 declare  var $:any;
@@ -85,6 +88,10 @@ export class PagoAddComponent implements OnInit{
     public inventarios:Array<inventario>=[];
     public fecha2=null;
     public selectvendible=null;
+    public mandar:PermisosRolesModel;
+    public url;
+    public verpago_add=null;
+    public verlistar=null;
     constructor(
         private pagoService:PagoService,
         private productoService:ProductoService,
@@ -98,31 +105,61 @@ export class PagoAddComponent implements OnInit{
         private _inventarioservice:InventarioService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
         //this.compra=new PagoDetalleModel(null,null,null,null,null);
-        this.toastr.setRootViewContainerRef(vcr);
+        this.url=environment.url+'admin/transaccion';
         this.user=this.auth.getUser();
-        this.pago= new PagoModel(null,this.codigo,null,null,null,'',null,'',null,0,0,0,0);
-        
-        this.title="Compras";
-        //----------impuestos
-        this.igv=0;
-        this.exoneracion=0;
-        this.otro=0;
-        //---------
-        this.total=0;
-        this.destruir();
-        this.tabla();
-        this.sumaTotal();
-        this.a1=true;
-        this.a2=true;
-        this.a3=true;
-        this.a4=true;
-        this.a5=true;
-        this.a6=true;
-        this.validacion=false;
-        this.val=false;
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    this.verpago_add=true;
+                    this.mandar.url=environment.url+'admin/transaccion/list';
+                    this._UsuarioService.getpermisos(this.mandar).subscribe(
+                        result=>{
+                            if(result.mensaje!=false){
+                                this.verlistar=true;
+                            }
+                        },
+                        err=>{
+                            console.log(<any>err);
+                        }
+                    )
+                    console.log('entro')
+                    this.toastr.setRootViewContainerRef(vcr);
+                    this.user=this.auth.getUser();
+                    this.pago= new PagoModel(null,this.codigo,null,null,null,'',null,'',null,0,0,0,0);
+                    
+                    this.title="Compras";
+                    //----------impuestos
+                    this.igv=0;
+                    this.exoneracion=0;
+                    this.otro=0;
+                    //---------
+                    this.total=0;
+                    this.destruir();
+                    this.tabla();
+                    this.sumaTotal();
+                    this.a1=true;
+                    this.a2=true;
+                    this.a3=true;
+                    this.a4=true;
+                    this.a5=true;
+                    this.a6=true;
+                    this.validacion=false;
+                    this.val=false;
+                }else{
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
     }
     ngOnInit(){
         var f=new Date();

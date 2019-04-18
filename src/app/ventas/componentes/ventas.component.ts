@@ -100,6 +100,9 @@ export class VentasComponent{
     public antsubtotal=null;
     public emailvalidado=null;
     public empresa:EmpresaModel;
+
+    public fecha;
+    public hora;
     imageUrl: string = "assets/images/1.png";
     public gratuito=null;
     constructor(
@@ -121,7 +124,7 @@ export class VentasComponent{
         private _EmpresaService:EmpresaService,
         vcr: ViewContainerRef
     ){
-
+        
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.titulo="Ventas";
@@ -596,10 +599,12 @@ export class VentasComponent{
     }
     guardarventas(){
         console.log(this.ventas)
+        var f=new Date();
+        this.fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+" "+f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
         this.ventas.letrado=this.letrado;
         this._VentasService.GuardarVenta(this.ventas).subscribe(
             res=>{
-                console.log(res.serie);
+                console.log(res);
                 if(res.code==200){
                     this.guardardetalleventas();
                     //this.ventas.serie_venta=res.serie;
@@ -686,6 +691,7 @@ export class VentasComponent{
             if(i==this.detalleventas.length && respuesta==0){
                 this.alertaventa();
                 this._VentasService.almacennardatosventas(this.ventas,this.detalleventas,this.impuestos,this.codigo_productos);
+                this._VentasService.almacenardato('fecha',this.fecha);
                 //this.obtenerdocuemntos();
                 /*this.limpiar(); 
                 this.vuelto=0;

@@ -3,11 +3,14 @@ import { ProveedorService } from '../services/proveedor.service';
 import { ProveedorModel } from '../models/proveedor';
 import { TipoProveedorService } from '../services/tipoProveedor.service';
 import { TipoProveedorModel } from '../models/tipoProveedor';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute,Params } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { environment } from "../../../environments/environment";
+import { PermisosRolesModel } from "../../usuarios/modelos/permisos_roles";
+import { UsuarioService } from "../../usuarios/services/usuarios.service";
 
 declare var jQuery:any;
 declare var $:any;
@@ -27,10 +30,16 @@ export class ProveedorAddComponent implements OnInit{
     public user:User;
     public proveedores:any=[];
     public confirmado:boolean;
+    public url;
+    public veradd=null;
+    public veredit=null;
+    public verdelete=null;
+    public mandar:PermisosRolesModel;
     constructor(
         private proveedorService:ProveedorService,
         private tipoProveedor:TipoProveedorService,
         private auth:AuthService,
+        private _UsuarioService:UsuarioService,
         private  route:ActivatedRoute,
         private router:Router,
         private toaste:ToastService,
@@ -44,7 +53,36 @@ export class ProveedorAddComponent implements OnInit{
         this.tipo = new TipoProveedorModel(null,null,null);
         this.title="Proveedor"
         this.confirmado=true;
-        this.tabla();  
+        
+        this.url=environment.url+'admin/Proveedor';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    while(i<res.length){ 
+                        if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
+                            this.veradd=true;
+                        }
+                        if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                            this.veredit=true;
+                        }
+                        if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                            this.verdelete=true;
+                        }
+                        i++
+                    }
+                    this.tabla(); 
+                }else{
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
     }
     ngOnInit(){
             

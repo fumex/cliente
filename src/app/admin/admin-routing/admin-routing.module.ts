@@ -57,6 +57,7 @@ import { AnularVentaComponent} from '../../ventas/componentes/ventas_anular.comp
 import { ImprimirNotaCreditoComponent} from '../../ventas/componentes/imprimirnota.component';
 import { ImprimirVentasComponent} from '../../ventas/componentes/imprimirventa.component';
 import { ResumenCajasAbiertasComponent} from '../../ventas/componentes/CajasAbiertas.component';
+import { ImprimirVentasTicketeraComponent} from '../../ventas/componentes/ticketeraimprimir.component';
 import { ReportesComponent} from '../../ventas/componentes/reportes.component';
 
 import { EmpresaPerfilComponent } from '../../empresa/components/empresa-perfil.component';
@@ -215,6 +216,7 @@ import { EmisorEditComponent } from '../../emisor/components/emisor-edit.compone
                     { path:'imprimir/nota',component:ImprimirNotaCreditoComponent},
                     { path:'nota/debito',component:NotaDevitoComponent},
                     { path:'imprimir/venta',component:ImprimirVentasComponent},
+                    { path:'imprimir-ticket/venta',component:ImprimirVentasTicketeraComponent},
                 ]
             }
         ]),

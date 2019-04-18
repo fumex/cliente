@@ -9,6 +9,9 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare  var $:any;
 declare var swal:any;
@@ -41,6 +44,8 @@ export class PagoAnularComponent implements OnInit{
     public user:User;
     public confirmado;
     public val:boolean;
+    public url;
+    public mandar:PermisosRolesModel;
     constructor(
         private pagoService:PagoService,
         private route:ActivatedRoute,
@@ -48,16 +53,36 @@ export class PagoAnularComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
-        this.toastr.setRootViewContainerRef(vcr);
-        this.user=auth.getUser();
-        this.title="ANULAR COMPRA";
-        this.code="";
-        this.user
-        this.tabla();
-        this.confirmado=null;
-        this.val=false;
+        this.url=environment.url+'admin/transaccion/anular';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                
+                if(res.mensaje!=false){
+                    this.toastr.setRootViewContainerRef(vcr);
+                    this.user=auth.getUser();
+                    this.title="ANULAR COMPRA";
+                    this.code="";
+                    this.user
+                    this.tabla();
+                    this.confirmado=null;
+                    this.val=false;
+                }else{
+                    
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
+        
     }
     ngOnInit(){
         this.listaPagos();

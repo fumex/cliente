@@ -9,6 +9,7 @@ import { AnularVentaComponent} from './componentes/ventas_anular.component';
 import { ImprimirVentasComponent} from './componentes/imprimirventa.component';
 import { ReportesComponent} from './componentes/reportes.component';
 import { ImprimirNotaCreditoComponent} from './componentes/imprimirnota.component';
+import { ImprimirVentasTicketeraComponent} from './componentes/ticketeraimprimir.component';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 @NgModule({
@@ -19,6 +20,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         AnularVentaComponent,
         ReportesComponent,
         ImprimirVentasComponent,
+        ImprimirVentasTicketeraComponent,
       ],
       imports: [
         CommonModule,

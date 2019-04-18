@@ -25,14 +25,28 @@
                     </ul>
                 </li>
                 <li class="nav-label" style="color: white">Procesos</li>
-                <li > <a  class="has-arrow" aria-expanded="false"><i class="fa fa-envelope" style="color: white"></i><span class="hide-menu" style="color: white">Gastos</span></a>
+                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"  style="color: white"></i><span class="hide-menu" style="color: white">Gastos <span class="label label-rouded label-success pull-right">8</span></span></a>
                     <ul aria-expanded="false" class="collapse" style="color: white">
-                        <li><a [routerLink]="['/admin/transaccion/list']">Compras</a></li>
-                        <li><a [routerLink]="['/admin/transaccion']">Agregar Compra</a></li>
-                        <li><a [routerLink]="['/admin/servicio/list']">Pagos Servicios</a></li>
-                        <li><a [routerLink]="['/admin/transaccion/anular']">Anular Pago Proveedor</a></li>
-                        <li><a [routerLink]="['/admin/servicio/anular']">Anular Pago Servicio</a></li>
-                        <li><a [routerLink]="['/admin/pedido/listar']">Orden Compra</a></li>
+                        <li><a href="#" class="has-arrow"  style="color: white">Productos <span class="label label-rounded label-success">3</span></a>
+                            <ul aria-expanded="false" class="collapse" style="color: white">
+                                <li><a [routerLink]="['/admin/transaccion/list']">Compras</a></li>
+                                <li><a [routerLink]="['/admin/transaccion']">Agregar Compra</a></li>
+                                <li><a [routerLink]="['/admin/transaccion/anular']">Anular Pago </a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="has-arrow"  style="color: white">Servicios <span class="label label-rounded label-success">3</span></a>
+                            <ul aria-expanded="false" class="collapse" style="color: white">
+                                <li><a [routerLink]="['/admin/servicio']">Agregar Servicios</a></li>
+                                <li><a [routerLink]="['/admin/servicio/list']">Pagos Servicios</a></li>
+                                <li><a [routerLink]="['/admin/servicio/anular']">Anular Pago Servicio</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="has-arrow"  style="color: white">Ordenes de Compra <span class="label label-rounded label-success">2</span></a>
+                            <ul aria-expanded="false" class="collapse" style="color: white">
+                                <li><a [routerLink]="['/admin/pedido']">Agregar Orden Compra</a></li>
+                                <li><a [routerLink]="['/admin/pedido/listar']">Orden Compra</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li > <a class="has-arrow  "  aria-expanded="false"><i class="fa fa-bar-chart" style="color: white"></i><span class="hide-menu" style="color: white">Contactos</span></a>

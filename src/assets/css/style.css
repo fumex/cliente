@@ -259,6 +259,10 @@
   border-top-right-radius: 25px;
 }
 
+.bordertablaimprimir{
+  border-top: 1px solid black;
+  border-bottom: 1px solid black
+}
 
 .usuariotext::-webkit-input-placeholder {
   text-align: center;

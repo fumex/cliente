@@ -95,7 +95,7 @@ export class EmpresaPerfilComponent implements OnInit{
         this.image=empresa.imagen;
     }
     edit(){
-        this.router.navigate(['/'+this.user.rol+'/empresa/edit/'+this.id]);
+        this.router.navigate(['/'+this.user.rol+'/empresa/edit']);
     }
     recargar(){
         $('#galeria').load();

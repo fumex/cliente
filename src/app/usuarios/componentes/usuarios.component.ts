@@ -84,60 +84,60 @@ export class usuarioscomponent{
         this.id=0;
         this.fecha=null;
         this.iguales=false;
-        this.url=environment.url+'admin/'; 
+        this.url=environment.url+'admin/';   
         this.filesToUpload=null;  
         this.image=this.url+'/imagenes/2.png';
         this.encabezados.push({nombre:"Inicio",abrir:false,estado:false,componentes:[]})
-        this.encabezados[0].componentes.push({nombre:"Reportes de Inicio",estado:false,url:this.url});
+        this.encabezados[0].componentes.push({nombre:"Reportes de Inicio",estado:false,url:this.url,tipo_permiso:'reporte'});
         this.encabezados.push({nombre:"Proveedor",abrir:false,estado:false,componentes:[]})
-        this.encabezados[1].componentes.push({nombre:"Agregar proveedor",estado:false,url:this.url+"Proveedor"});
-        this.encabezados[1].componentes.push({nombre:"Modificar proveedor",estado:false,url:this.url+"Proveedor"});
-        this.encabezados[1].componentes.push({nombre:"Eliminar proveedor",estado:false,url:this.url+"Proveedor"});
+        this.encabezados[1].componentes.push({nombre:"Agregar proveedor",estado:false,url:this.url+"Proveedor",tipo_permiso:'insercion'});
+        this.encabezados[1].componentes.push({nombre:"Modificar proveedor",estado:false,url:this.url+"Proveedor",tipo_permiso:'edicion'});
+        this.encabezados[1].componentes.push({nombre:"Eliminar proveedor",estado:false,url:this.url+"Proveedor",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Compras",abrir:false,estado:false,componentes:[]})
-        this.encabezados[2].componentes.push({nombre:"Agregar compra",estado:false,url:this.url+"transaccion"});
-        this.encabezados[2].componentes.push({nombre:"Lista de compras",estado:false,url:this.url+"transaccion/list"});
-        this.encabezados[2].componentes.push({nombre:"Anular compra",estado:false,url:this.url+"transaccion/anular"});
-        this.encabezados[2].componentes.push({nombre:"Imprimir/exportar(pdf) compra",estado:false,url:this.url+"transaccion/recibo"});
+        this.encabezados[2].componentes.push({nombre:"Agregar compra",estado:false,url:this.url+"transaccion",tipo_permiso:'insercion'});
+        this.encabezados[2].componentes.push({nombre:"Lista de compras",estado:false,url:this.url+"transaccion/list",tipo_permiso:'reporte'});
+        this.encabezados[2].componentes.push({nombre:"Anular compra",estado:false,url:this.url+"transaccion/anular",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Servicios",abrir:false,estado:false,componentes:[]})
-        this.encabezados[3].componentes.push({nombre:"Agregar servicio",estado:false,url:this.url+"servicio"});
-        this.encabezados[3].componentes.push({nombre:"Anular servicio",estado:false,url:this.url+"servicio/anular"});
-        this.encabezados[3].componentes.push({nombre:"Lista de Servicios",estado:false,url:this.url+"servicio/list"});
+        this.encabezados[3].componentes.push({nombre:"Agregar servicio",estado:false,url:this.url+"servicio",tipo_permiso:'insercion'});
+        this.encabezados[3].componentes.push({nombre:"Anular servicio",estado:false,url:this.url+"servicio/anular",tipo_permiso:'anulacion'});
+        this.encabezados[3].componentes.push({nombre:"Lista de Servicios",estado:false,url:this.url+"servicio/list",tipo_permiso:'reporte'});
         this.encabezados.push({nombre:"Cliente",abrir:false,estado:false,componentes:[]})
-        this.encabezados[4].componentes.push({nombre:"Agregar cliente",estado:false,url:this.url+"cliente"});
-        this.encabezados[4].componentes.push({nombre:"Modificar cliente",estado:false,url:this.url+"cliente/edit/:id"});
-        this.encabezados[4].componentes.push({nombre:"Eliminar cliente",estado:false,url:this.url+"cliente"});
+        this.encabezados[4].componentes.push({nombre:"Agregar cliente",estado:false,url:this.url+"cliente",tipo_permiso:'insercion'});
+        this.encabezados[4].componentes.push({nombre:"Modificar cliente",estado:false,url:this.url+"cliente/edit/:id",tipo_permiso:'edicion'});
+        this.encabezados[4].componentes.push({nombre:"Eliminar cliente",estado:false,url:this.url+"cliente",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Empresa",abrir:false,estado:false,componentes:[]})
-        this.encabezados[5].componentes.push({nombre:"Modificar Empresa",estado:false,url:this.url+"empresa/edit"});
+
+        
+        this.encabezados[5].componentes.push({nombre:"Modificar Empresa",estado:false,url:this.url+"empresa/edit",tipo_permiso:'edicion'});
         this.encabezados.push({nombre:"Productos",abrir:false,estado:false,componentes:[]})
-        this.encabezados[6].componentes.push({nombre:"Agregar productos",estado:false,url:this.url+"productos"});
-        this.encabezados[6].componentes.push({nombre:"Modificar productos",estado:false,url:this.url+"productos"});
-        this.encabezados[6].componentes.push({nombre:"Eliminar productos",estado:false,url:this.url+"productos"});
+        this.encabezados[6].componentes.push({nombre:"Agregar productos",estado:false,url:this.url+"productos",tipo_permiso:'insercion'});
+        this.encabezados[6].componentes.push({nombre:"Modificar productos",estado:false,url:this.url+"productos",tipo_permiso:'edicion'});
+        this.encabezados[6].componentes.push({nombre:"Eliminar productos",estado:false,url:this.url+"productos",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Almacenes",abrir:false,estado:false,componentes:[]})
-        this.encabezados[7].componentes.push({nombre:"Agregar almacen",estado:false,url:this.url+"almacenes"});
-        this.encabezados[7].componentes.push({nombre:"Modificar almacen",estado:false,url:this.url+"almacenes"});
-        this.encabezados[7].componentes.push({nombre:"Eliminar almacen",estado:false,url:this.url+"almacenes"});
+        this.encabezados[7].componentes.push({nombre:"Agregar almacen",estado:false,url:this.url+"almacenes",tipo_permiso:'insercion'});
+        this.encabezados[7].componentes.push({nombre:"Modificar almacen",estado:false,url:this.url+"almacenes",tipo_permiso:'edicion'});
+        this.encabezados[7].componentes.push({nombre:"Eliminar almacen",estado:false,url:this.url+"almacenes",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Precios de productos",abrir:false,estado:false,componentes:[]})
-        this.encabezados[8].componentes.push({nombre:"modificar precios",estado:false,url:this.url+"almacen"}); 
-        this.encabezados[8].componentes.push({nombre:"ver codigo productos",estado:false,url:this.url+"almacen"});
+        this.encabezados[8].componentes.push({nombre:"modificar precios",estado:false,url:this.url+"almacen",tipo_permiso:'edicion'}); 
+        //this.encabezados[8].componentes.push({nombre:"ver codigo productos",estado:false,url:this.url+"almacen",tipo_permiso:'reporte'});
         this.encabezados.push({nombre:"Orden de pedido",abrir:false,estado:false,componentes:[]})
-        this.encabezados[9].componentes.push({nombre:"Agregar orden de pedido",estado:false,url:this.url+"pedido"});
-        this.encabezados[9].componentes.push({nombre:"lista de pedidos",estado:false,url:this.url+"pedido/listar"});
-        this.encabezados[9].componentes.push({nombre:"Imprimir/exportar(pdf) pedido",estado:false,url:this.url+"pedido/recibo"});
+        this.encabezados[9].componentes.push({nombre:"Agregar orden de pedido",estado:false,url:this.url+"pedido",tipo_permiso:'insercion'});
+        this.encabezados[9].componentes.push({nombre:"lista de pedidos",estado:false,url:this.url+"pedido/listar",tipo_permiso:'reporte'});
         this.encabezados.push({nombre:"Inventario",abrir:false,estado:false,componentes:[]})
-        this.encabezados[10].componentes.push({nombre:"Modificar inventario",estado:false,url:this.url+"inventario"});
-        this.encabezados[10].componentes.push({nombre:"reportes de inventario",estado:false,url:this.url+"reporteInventario"});
+        this.encabezados[10].componentes.push({nombre:"Modificar inventario",estado:false,url:this.url+"inventario",tipo_permiso:'edicion'});
+        this.encabezados[10].componentes.push({nombre:"reportes de inventario",estado:false,url:this.url+"reporteInventario",tipo_permiso:'insercion'});
         this.encabezados.push({nombre:"Usuarios",abrir:false,estado:false,componentes:[]})
-        this.encabezados[11].componentes.push({nombre:"Agregar usuario",estado:false,url:this.url+"usuarios"});
-        this.encabezados[11].componentes.push({nombre:"Modificar usuario(datos generales)",estado:false,url:this.url+"editarusuario"});
-        this.encabezados[11].componentes.push({nombre:"Eliminar usuario",estado:false,url:this.url+"editarusuario"});
+        this.encabezados[11].componentes.push({nombre:"Agregar usuario",estado:false,url:this.url+"usuarios",tipo_permiso:'insercion'});
+        this.encabezados[11].componentes.push({nombre:"Modificar usuario(datos generales)",estado:false,url:this.url+"editarusuario",tipo_permiso:'insercion'});
+        this.encabezados[11].componentes.push({nombre:"Eliminar usuario",estado:false,url:this.url+"editarusuario",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Cajas",abrir:false,estado:false,componentes:[]})
-        this.encabezados[12].componentes.push({nombre:"Agregar caja",estado:false,url:this.url+"cajas"});
-        this.encabezados[12].componentes.push({nombre:"Modificar caja",estado:false,url:this.url+"cajas"});
-        this.encabezados[12].componentes.push({nombre:"Eliminar caja",estado:false,url:this.url+"cajas"});
+        this.encabezados[12].componentes.push({nombre:"Agregar caja",estado:false,url:this.url+"cajas",tipo_permiso:'insercion'});
+        this.encabezados[12].componentes.push({nombre:"Modificar caja",estado:false,url:this.url+"cajas",tipo_permiso:'edicion'});
+        this.encabezados[12].componentes.push({nombre:"Eliminar caja",estado:false,url:this.url+"cajas",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Ventas",abrir:false,estado:false,componentes:[]})
-        this.encabezados[13].componentes.push({nombre:"Ventas Gratuitas",estado:false,url:this.url+"ventas"});
-        this.encabezados[13].componentes.push({nombre:"Agregar descuento",estado:false,url:this.url+"ventas"});
-        this.encabezados[13].componentes.push({nombre:"Agregar Descuento global",estado:false,url:this.url+"ventas"});
+        this.encabezados[13].componentes.push({nombre:"Ventas Gratuitas",estado:false,url:this.url+"ventas",tipo_permiso:'venta_gratis'});
+        this.encabezados[13].componentes.push({nombre:"Agregar descuento",estado:false,url:this.url+"ventas",tipo_permiso:'descuento_producto'});
+        this.encabezados[13].componentes.push({nombre:"Agregar Descuento global",estado:false,url:this.url+"ventas",tipo_permiso:'descuento_producto'});
         
         console.log(this.encabezados);
         //this._router.navigate(['/'+this.user.rol+'/editarusuario']);
@@ -338,6 +338,7 @@ export class usuarioscomponent{
             console.log(this.usuario);
             this._UsuarioService.addusuario(this.usuario).subscribe(
             response=>{
+                console.log(response);
                 this.nombre.focus();
                 //this.usuario = new UsuarioModel(null,'','',0,0,'',0,'','','','','','',null);
                 if(response.code===300){
@@ -351,7 +352,7 @@ export class usuarioscomponent{
                 }else{
                     if(response.code===200){
                        this.guardardetalle();
-                       this._router.navigate(['/'+this.user.rol+'/editarusuario']);
+                       
                     }
                 }
 
@@ -369,7 +370,7 @@ export class usuarioscomponent{
     }
     guardardetalle(){
         this.id=0;
-       
+        let error=0;
         while(this.id<this.DetalleUsuario.length){
             console.log(this.id);
             this._DettaleUsuarioService.adddetalleusuario(this.DetalleUsuario[this.id]).subscribe(
@@ -380,14 +381,44 @@ export class usuarioscomponent{
                     console.log(this.DetalleUsuario);
                 },
                 error=>{
+                    error++;
                     console.log(<any>error);
                 }
             )
             this.id=this.id+1;
         }
+        if(error==0){
+            this.gurardarpermisos();
+            //this._router.navigate(['/'+this.user.rol+'/editarusuario']);
+        }
         this.id=0;
     }
-   
+    gurardarpermisos(){
+        console.log('entro')
+        /*this.encabezados.push({nombre:null,abrir:null,estado:null,componentes:[]})
+        this.encabezados[14].componentes.push({nombre:null,estado:false,url:this.url,tipo_permiso:null});
+        this.encabezados[14].componentes.push({nombre:null,estado:false,url:this.url+"ventas",tipo_permiso:null});
+        this.encabezados[14].componentes.push({nombre:null,estado:false,url:this.url+"ventas",tipo_permiso:null});*/
+        let i=0,j=0;
+        while(i<this.encabezados.length){
+            while(j<this.encabezados[i].componentes.length){
+                if(this.encabezados[i].componentes[j].estado==true){
+
+                    this._DettaleUsuarioService.addpermisosusuarios(this.encabezados[i].componentes[j]).subscribe(
+                        res=>{
+                            console.log(res)
+                        },
+                        err=>{
+                            console.log(<any>err);
+                        }
+                    )
+                }
+                j++;
+            }
+            j=0;
+            i++;
+        }
+    }
     mostradocuemnto(){
         this._DocumentoService.getDocumPersona().subscribe(
             response=>{

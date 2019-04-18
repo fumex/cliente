@@ -7,6 +7,9 @@ import { ToastsManager } from 'ng2-toastr';
 import { User } from '../../auth/interfaces/user.model';
 import { ClienteModel } from '../models/cliente';
 import { DocumentoService } from '../../TipoDocumento/services/documento.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -27,6 +30,11 @@ export class ClienteAddComponent implements OnInit{
     public documentos:any=[];
     public estado:boolean;
     public confirmado:boolean;
+    public url;
+    public veradd=null;
+    public veredit=null;
+    public verdelete=null;
+    public mandar:PermisosRolesModel;
     constructor(
         private clienteService:ClienteService,
         private auth:AuthService,
@@ -36,16 +44,46 @@ export class ClienteAddComponent implements OnInit{
         private toastr:ToastsManager,
         private documentoService:DocumentoService,
         vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
-        this.user=auth.getUser();
-        this.estado=true;
-        this.confirmado=true;
-        this.title='Agregar Cliente';
-        this.tipo='Nombre';
-        this.tipo_cliente='Nombre de Cliente';
-        this.toastr.setRootViewContainerRef(vcr);
-        this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
-        this.tabla();
+        this.url=environment.url+'admin/cliente';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    while(i<res.length){
+                        if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
+                            this.veradd=true;
+                        }
+                        if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                            this.veredit=true;
+                        }
+                        if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                            this.verdelete=true;
+                        }
+                        i++
+                    }
+                    this.user=auth.getUser();
+                    this.estado=true;
+                    this.confirmado=true;
+                    this.title='Agregar Cliente';
+                    this.tipo='Nombre';
+                    this.tipo_cliente='Nombre de Cliente';
+                    this.toastr.setRootViewContainerRef(vcr);
+                    this.cliente= new ClienteModel(null,'',null,'','','','','',this.user.id);
+                    this.tabla();
+                }else{
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
+        
     }
     ngOnInit(){
         this.getDocumentos();

@@ -4,11 +4,11 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><button class="btn btn-info" (click)="list()">Listar</button></li>
+            <li *ngIf="verlistar==true" class="breadcrumb-item"><button class="btn btn-info" (click)="list()">Listar</button></li>
         </ol>
     </div>
 </div>
-<div class="container">
+<div *ngIf="verpago_add==true" class="container" >
     <div class="fluid">
         <div class="col-lg-12">
             <div class="card">

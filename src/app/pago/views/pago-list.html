@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><button class="btn btn-info" (click)="agregar()"><i class="fa fa-plus"></i>Agregar</button></li>
+            <li *ngIf="veragregar==true" class="breadcrumb-item"><button class="btn btn-info" (click)="agregar()"><i class="fa fa-plus"></i>Agregar</button></li>
         </ol>
     </div>
 </div>

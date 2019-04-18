@@ -1,0 +1,314 @@
+<div class="row page-titles">
+    <div class="col-md-12 " style="text-align: right">
+        <button (click)="imprimirElemento()" class="btn btn-info"> <i class="fa fa-print"></i> </button>
+        <button (click)="pdf()" class="btn btn-info"> <i class="fa fa-file-pdf-o"></i> </button>
+    </div>
+</div>
+
+<div  class="main-wrapper">
+    <div class="unix-login">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <div class="login-content card" id="imprimir">
+            <div class="login-form" >
+                <h4>{{titulo}}</h4>   
+                <form #cambiocontra="ngForm" (ngSubmit)="modificar()" style="font-weight: bold;">
+                    <div class="form-body" style="text-align: center">
+                        <div class="col-md-12">
+                            <img id="mostrada" style="width: 180px;
+                            height: 90px;" [src]="imageUrl"/>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: center;font-size: 12px">{{empresa.razon_social}}</div>
+                                <div class="col-sm-12" style="text-align: center;font-size: 14px">RUC : {{empresa.ruc}}</div>
+                                <div class="col-sm-12" style="text-align: center;font-size: 12px">{{empresa.direccion}}</div>
+                                <div class="col-sm-12" style="text-align: center;font-size: 12px">{{empresa.departamento}}-{{empresa.provincia}}-{{empresa.distrito}}</div>
+                                
+                                <div class="col-sm-12" style="text-align: center;font-size: 14px">{{tipoventa}} ELECTRONICA : {{ventas.serie_venta}}</div>
+                                <div class="col-sm-12" style="text-align: left;font-size: 12px">{{fecha}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <table style="width: 100%;text-align: center;font-weight: bold;" >
+                                <tbody >
+                                    <tr>
+                                        <td  colspan="3" style="text-align: center; width: 25%;">
+                                            CANT
+                                        </td>
+                                        <td  colspan="3" style="text-align: center; width: 25%;">
+                                            PU
+                                        </td>
+                                        <td  colspan="3" style="text-align: center; width: 25%;">
+                                            DESC
+                                        </td>
+                                        <td  colspan="3" style="text-align: center; width: 25%;">
+                                            Subtotal
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let dproductos of detalleventas; let $index=index">
+                                    <tr>
+                                        <td colspan="12" style="width: 100%;text-align: center"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12" style="width: 100%;text-align: left">{{dproductos.descripcion}}</td>
+                                    </tr>
+                                    <tr style="font-size: 13px">
+                                        <td colspan="3" style="text-align: center;font-size: 10px; width: 25%;">
+                                            {{dproductos.cantidad}}
+                                        </td> 
+                                        <td colspan="3" style="text-align: center;font-size: 10px; width: 25%;">
+                                            {{dproductos.precio_unitario}}
+                                        </td>
+                                        <td colspan="3" style="text-align: center;font-size: 10px; width: 25%;">
+                                            {{dproductos.descuento}}%
+                                        </td>
+                                        <td colspan="3" style="text-align: center;font-size: 9px; width: 25%;">
+                                            {{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100 | number : '1.2-2'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12" style="width: 100%;text-align: center"><hr></td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: left; width: 41%;font-size: 14px">
+                                            Razon social
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.nombre_cliente}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: left; width: 41%;font-size: 14px">
+                                            {{ventas.tipo_documento_cliente}}
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.nro_documento}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: left; width: 41%;font-size: 14px">
+                                            Moneda
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.moneda}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: left; width: 41%;font-size: 14px">
+                                            Email
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.email}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: left; width: 41%;font-size: 14px">
+                                            Direccion
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.direccion}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12"><hr></td>
+                                    </tr>
+                                </tbody>
+                                <tbody >
+                                    <tr>
+                                        <td colspan="12" style="text-align: left;font-size: 14px" >
+                                            Son {{ventas.letrado}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let imp of impuestos;let $index=index;">
+                                        <td colspan="5" style="text-align: left;font-size: 14px; width: 41%;">
+                                            {{imp.nombre }}({{imp.porcentaje}}%)
+
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{imp.cantidad | number : '1.2-2'}}
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td colspan="5" style="text-align: left;font-size: 14px; width: 41%;">
+                                            Total S/.
+                                        </td>
+                                        <td colspan="7" style="text-align: left;font-size: 14px; width: 58%;">
+                                            :{{ventas.total | number : '1.2-2'}}
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td colspan="5" style="text-align: left;font-size: 14px; width: 41%;">
+                                            Pago S/.
+                                        </td>
+                                        <td colspan="3" style="text-align: left;font-size: 14px; width: 25%;">
+                                            :{{sumapago | number : '1.2-2'}} ::>
+                                        </td>
+                                        <td colspan="4" *ngIf="ventas.pago_tarjeta>0 && ventas.pago_efectivo<=0" style="text-align: left;font-size: 14px; width: 33%;">
+                                            TARJETA
+                                        </td>
+                                        <td colspan="4" *ngIf="ventas.pago_tarjeta<=0 && ventas.pago_efectivo>0" style="text-align: left;font-size: 14px; width: 33%;">
+                                            EFECTIVO
+                                        </td>
+                                        <td colspan="4" *ngIf="ventas.pago_tarjeta>0 && ventas.pago_efectivo>0" style="text-align: left;font-size: 14px; width: 33%;">
+                                            EFECTIVO/TARJETA
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12" style="text-align: center">
+                                            Gracias por su compra
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12" style="text-align: left;font-size: 10px; width: 100%;">
+                                            Vendedor => {{user.name}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--<div class="row">
+        <div class="col-sm-12" style="text-align: center;font-size: 10px">
+            ---------------------------------------------------------------------------
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            CANT
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            PU
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            DESC
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 9px">
+            Subtotal
+        </div>
+        <div class="col-sm-12" style="text-align: center;font-size: 10px">
+            ---------------------------------------------------------------------------
+        </div>
+    </div>
+    <div class="row" *ngFor="let dproductos of detalleventas; let $index=index">
+        <div class="col-sm-12" style="text-align: left;font-size: 14px">
+            {{dproductos.descripcion}}
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            {{dproductos.cantidad}}
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            {{dproductos.precio_unitario}}
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 10px">
+            {{dproductos.descuento}}%
+        </div>
+        <div class="col-sm-3" style="text-align: center;font-size: 9px">
+            {{(dproductos.precio_unitario*dproductos.cantidad)*(100-dproductos.descuento)/100}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="text-align: center;font-size: 10px">
+            ---------------------------------------------------------------------------
+        </div>
+        <div class="col-sm-4" style="text-align: left;font-size: 10px">
+            Razon social:
+        </div>
+        <div class="col-sm-8" style="text-align: left;font-size: 10px">
+            {{ventas.nombre_cliente}}
+        </div>
+        <div class="col-sm-4" style="text-align: left;font-size: 10px">
+            {{ventas.tipo_documento_cliente}}:
+        </div>
+        <div class="col-sm-8" style="text-align: left;font-size: 10px">
+            {{ventas.nro_documento}}
+        </div>
+         <div class="col-sm-4" style="text-align: left;font-size: 10px">
+                Moneda:
+        </div>
+        <div class="col-sm-8" style="text-align: left;font-size: 10px">
+            {{ventas.moneda}}
+        </div>
+         <div class="col-sm-4" style="text-align: left;font-size: 10px">
+            Email:
+        </div>
+        <div class="col-sm-8" style="text-align: left;font-size: 10px">
+            {{ventas.email}}
+        </div>
+         <div class="col-sm-4" style="text-align: left;font-size: 10px">
+            Direccion:
+        </div>
+        <div class="col-sm-8" style="text-align: left;font-size: 10px">
+            {{ventas.direccion}}
+        </div>
+        <div class="col-sm-12" style="text-align: center;font-size: 10px">
+            ---------------------------------------------------------------------------
+        </div>
+    </div>
+    
+    <div class="row">
+            <div class="col-sm-3" style="text-align: left;font-size: 10px">
+                Son 
+            </div>
+            <div class="col-sm-9" style="text-align: left;font-size: 10px">
+                {{ventas.letrado}}
+            </div>
+        </div>
+        <div class="row" *ngFor="let imp of impuestos;let $index=index;">
+            <div class="col-sm-4" style="text-align: left;font-size: 10px">
+                {{imp.nombre }}({{imp.porcentaje}}%):
+            </div>
+            <div class="col-sm-8" style="text-align: left;font-size: 10px">
+                {{imp.cantidad | number : '1.2-2'}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-4" style="text-align: left;font-size: 10px">
+                Total S/.
+            </div>
+            <div class="col-sm-8" style="text-align: left;font-size: 10px">
+                {{ventas.total | number : '1.2-2'}}
+            </div>
+        </div>
+    
+        <div class="row" >
+                <div class="col-sm-4" style="text-align: left;font-size: 10px">
+                    Pago S/.
+                </div>
+                <div class="col-sm-4" style="text-align: left;font-size: 10px">
+                    {{sumapago | number : '1.2-2'}} ::>
+                </div>
+                <div  *ngIf="ventas.pago_tarjeta>0 && ventas.pago_efectivo<=0" class="col-sm-4" style="text-align: left;font-size: 10px" >
+                    TARJETA
+                </div>
+                <div *ngIf="ventas.pago_tarjeta<=0 && ventas.pago_efectivo>0" class="col-sm-4" style="text-align: left;font-size: 10px">
+                    EFECTIVO
+                </div>
+                <div *ngIf="ventas.pago_tarjeta>0 && ventas.pago_efectivo>0" class="col-sm-4" style="text-align: left;font-size: 10px">
+                    EFECTIVO/TARJETA
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-sm-12" style="text-align: center;font-size: 10px">
+                    Gracias por su compra
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" style="text-align: center;font-size: 10px">
+                    Vendedor =>
+                </div>
+                <div class="col-sm-8" style="text-align: center;font-size: 10px">
+                    {{user.name}}
+                </div>
+            </div>
+-->

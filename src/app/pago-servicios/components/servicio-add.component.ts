@@ -8,6 +8,9 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { environment } from '../../../environments/environment';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 
 declare  var $:any;
@@ -46,6 +49,11 @@ export class ServicioAddComponent implements OnInit{
     public a6:boolean;  
 
     public confirmado;
+    public mandar:PermisosRolesModel;
+    public url;
+    public verpago_add=null;
+    public verlistar=null;
+    public verservicio_add=null;
     constructor(
         private serviPagoService:ServicioPagoService,
         private route:ActivatedRoute,
@@ -53,23 +61,53 @@ export class ServicioAddComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
-        this.toastr.setRootViewContainerRef(vcr);
-        this.title='SERVICIOS'
+        this.url=environment.url+'admin/servicio';
         this.user=this.auth.getUser();
-        this.tabla();
-        this.total=null;
-        this.igv=null;
-        this.confirmado=false;
-        this.a1=false;
-        this.a2=false;
-        this.a3=false;
-        this.a4=false;
-        this.a5=false;
-        this.validacion=false;
-        this.val=false;
-        this.a6=false;
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    this.verservicio_add=true
+                    this.mandar.url=environment.url+'admin/servicio/list';
+                    this._UsuarioService.getpermisos(this.mandar).subscribe(
+                        result=>{
+                            if(result.mensaje!=false){
+                                this.verlistar=true;
+                            }
+                        },
+                        err=>{
+                            console.log(<any>err);
+                        }
+                    )
+                    this.toastr.setRootViewContainerRef(vcr);
+                    this.title='SERVICIOS'
+                    this.user=this.auth.getUser();
+                    this.tabla();
+                    this.total=null;
+                    this.igv=null;
+                    this.confirmado=false;
+                    this.a1=false;
+                    this.a2=false;
+                    this.a3=false;
+                    this.a4=false;
+                    this.a5=false;
+                    this.validacion=false;
+                    this.val=false;
+                    this.a6=false;
+                }else{
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
+        
     }
     ngOnInit(){
         this.getCodigo();

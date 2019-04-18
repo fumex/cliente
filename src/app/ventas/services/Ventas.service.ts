@@ -52,6 +52,9 @@ export class VentasService{
         } 
         return false;
     }
+    almacenardato(nombre:string,dato:any){
+        localStorage.setItem(nombre,btoa(JSON.stringify(dato)));
+    }
     recojerdatos(nombredato):any{
         return localStorage.getItem(nombredato)?JSON.parse(atob(localStorage.getItem(nombredato))):null;
     }

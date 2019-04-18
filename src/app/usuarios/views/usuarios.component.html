@@ -352,7 +352,7 @@
                                         <div class="inner-addon left-addon">
                                             <i *ngIf="email.valid" style="color: green" class="fa fa-check"></i>
                                             <i *ngIf="!email.valid && email.touched" style="color: red" class="fa fa-times"></i>
-                                            <input type="text" id="emailunico"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control" required>
+                                            <input type="email" id="emailunico"  #email="ngModel" name="email" [(ngModel)]="usuario.email" class="form-control" required>
                                         </div>  
                                     </div>
                                     <br>

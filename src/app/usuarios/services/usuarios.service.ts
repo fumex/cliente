@@ -1,5 +1,6 @@
 import {Injectable} from'@angular/core';
 import {HttpClient,HttpHeaders}from '@angular/common/http';
+import { PermisosRolesModel } from "../../usuarios/modelos/permisos_roles";
 
 import { environment } from './../../../environments/environment';
 import 'rxjs/add/operator/map';
@@ -24,6 +25,14 @@ export class UsuarioService{
        
         return this._http.post(this.url+'/mantenimientousuario',params,{headers:headers});
             
+    }
+    getpermisos(mandar:PermisosRolesModel):Observable<any>{
+        let json = JSON.stringify(mandar);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/get_permisos',params,{headers:headers});
     }
     updateusuario(id,usuario:UsuarioModel):Observable<any>{
         let json = JSON.stringify(usuario);

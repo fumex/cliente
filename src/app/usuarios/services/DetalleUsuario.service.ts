@@ -26,6 +26,15 @@ export class DettaleUsuarioService{
         return this._http.post(this.url+'/detalleusuario',params,{headers:headers});
             
     }
+    addpermisosusuarios(permisos:any):Observable<any>{
+        let json = JSON.stringify(permisos);
+        
+        let params = "json="+json;
+        let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+       
+        return this._http.post(this.url+'/add_permiso',params,{headers:headers});
+            
+    }
     updatedetalleusuario(usuario:DetalleUsuarioModel):Observable<any>{
         let json = JSON.stringify(usuario);
         
