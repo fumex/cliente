@@ -31,6 +31,7 @@ export class EmpresaAddComponent implements OnInit{
     public provincia:Array<any>=[];
     public distrito:Array<any>=[];
     public clave_sol=null;
+    public verpag=true;
     constructor(
         private empresaService:EmpresaService,
         private route:ActivatedRoute,

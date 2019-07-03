@@ -9,7 +9,7 @@
         </ol>
     </div>
 </div>
-<div *ngIf="verreporte==true" class="container-fluid">
+<div *ngIf="verreporte!=null" class="container-fluid">
     <div class="row">
         <div class="col-md-3">
             <div class="card p-30">
@@ -18,8 +18,8 @@
                         <span><i class="fa fa-usd f-s-40 color-primary"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>568120</h2>
-                        <p class="m-b-0">Total Revenue</p>
+                        <h2>{{cantidadvendido}}</h2>
+                        <p class="m-b-0">Ganancias del dia</p>
                     </div>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                         <span><i class="fa fa-shopping-cart f-s-40 color-success"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>1178</h2>
-                        <p class="m-b-0">Sales</p>
+                        <h2>{{ventasdeldia}}</h2>
+                        <p class="m-b-0">Ventas</p>
                     </div>
                 </div>
             </div>
@@ -44,8 +44,8 @@
                         <span><i class="fa fa-archive f-s-40 color-warning"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>25</h2>
-                        <p class="m-b-0">Stores</p>
+                        <h2>{{almacenescantidad}}</h2>
+                        <p class="m-b-0">Almacenes</p>
                     </div>
                 </div>
             </div>
@@ -57,24 +57,72 @@
                         <span><i class="fa fa-user f-s-40 color-danger"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>847</h2>
-                        <p class="m-b-0">Customer</p>
+                        <h2>{{usuarioscantidad}}</h2>
+                        <p class="m-b-0">Usuarios</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div  class="col-md-3"></div>
+        <div class="col-lg-6">
             <div class="card">
-                <app-grafico-dona
-                    [chartLabels]="graficos.grafico1.labels"
-                    [chartData]="graficos.grafico1.data"
-                    chartType="doughnut"
-                ></app-grafico-dona>
+                <div class="card-title">
+                    <h4>Sucursales</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover ">
+                            <thead>
+                                <tr style="text-align: center">
+                                    <th>Nombre</th>
+                                    <th>Descripcion</th>
+                                    <th style="text-align: center">Almacen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let sucs of sucursales,let $index=index" style="cursor: pointer;text-align: center">
+                                    <td>{{sucs.nombre_sucursal}}</td>
+                                    <td>{{sucs.descripcion}}</td> 
+                                    <td style="text-align: center">{{sucs.nombre}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div  class="col-md-3" ></div>
+        <div class="col-md-6" *ngIf="verie!=null">
+            <div class="card">
+                <div style="display: block">
+                    <canvas baseChart
+                        [data]="doughnutChartData"
+                        [labels]="doughnutChartLabels"
+                        [chartType]="'pie'"
+                        [colors]="pieChartColors"
+                        [options]="pieChartOptions"
+                        (chartClick)="verdatosproducto($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="verie!=null">
+            <div class="card">
+                <div style="display: block">
+                    <canvas baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col-md-6">
             <div class="card">
                 <app-grafico-dona
                     [chartLabels]="graficos.grafico2.labels"
@@ -82,6 +130,6 @@
                     chartType="doughnut"
                 ></app-grafico-dona>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>

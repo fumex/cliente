@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import {Router,ActivatedRoute,Params}from '@angular/router';
 import { UsuarioService } from "../../usuarios/services/usuarios.service";
 import { UsuarioModel } from '../../usuarios/modelos/usuarios';
 import {SucursalModel} from '../../sucursales/modelos/sucursal';
@@ -10,6 +11,7 @@ import {DocumentoModel} from '../../TipoDocumento/models/documento';
 import {DocumentoService}from '../../TipoDocumento/services/documento.service';
 import { User } from '../../auth/interfaces/user.model';
 import { environment } from "../../../environments/environment";
+import { PermisosRolesModel } from "../modelos/permisos_roles";
 
 declare var jQuery:any;
 declare var $:any;
@@ -43,16 +45,58 @@ export class EditarUsuarioPersonal{
     public ruta;
     public filear;
     public res:any;
+    public user:User
     imageUrl: string = "assets/images/1.png";
     fileToUpload:File = null;
     public encabezados:Array<any>=[];
+    public url2;
+    public veredit=true;
+    public veranul=null;
+    public verpag=null;
+    public mandar:PermisosRolesModel;
     constructor(
+        private _route:ActivatedRoute,
+        private _router:Router,
         private _UsuarioService:UsuarioService,
         private _SucursalService:SucursalService,
         private _DettaleUsuarioService:DettaleUsuarioService,
+        private auth:AuthService,
         private _DocumentoService:DocumentoService,
     ){
-
+        this.url2=environment.url+'admin/editarusuario';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                    this.veredit=true;
+                    this.veranul=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        while(i<res.length){
+                            if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                                this.veredit=true;
+                            }
+                            if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                                this.veranul=true;
+                            }
+                            i++
+                        }
+                    }else{
+                        console.log('esta saliendo')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','',null);
         this.detalleusu=new DetalleUsuarioModel(null,0,0,null);
 

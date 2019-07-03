@@ -49,8 +49,11 @@ export class PagoListComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                
-                if(res.mensaje!=false){
+                if(res.mensaje==true){
+                    this.toastr.setRootViewContainerRef(vcr);
+                    this.user=this.auth.getUser();
+                    this.title='Lista de Compras';
+                    this.tabla();
                     this.mandar.url=environment.url+'admin/transaccion';
                     this._UsuarioService.getpermisos(this.mandar).subscribe(
                         result=>{
@@ -64,7 +67,26 @@ export class PagoListComponent implements OnInit{
                     )
                 }else{
                     
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        this.toastr.setRootViewContainerRef(vcr);
+                        this.user=this.auth.getUser();
+                        this.title='Lista de Compras';
+                        this.tabla();
+                        this.mandar.url=environment.url+'admin/transaccion';
+                        this._UsuarioService.getpermisos(this.mandar).subscribe(
+                            result=>{
+                                if(result.mensaje!=false){
+                                    this.veragregar=true;
+                                }
+                            },
+                            err=>{
+                                console.log(<any>err);
+                            }
+                        )
+                    }else{
+                        
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
                 console.log(this.veragregar);
             },
@@ -72,10 +94,6 @@ export class PagoListComponent implements OnInit{
                 console.log(<any>err);
             }
         )
-        this.toastr.setRootViewContainerRef(vcr);
-        this.user=this.auth.getUser();
-        this.title='Lista de Compras';
-        this.tabla();
 
     }
     ngOnInit(){
@@ -98,6 +116,7 @@ export class PagoListComponent implements OnInit{
          this.pagoService.listPago(this.user.id).subscribe(
              result=>{
                 this.pagos=result;
+                console.log(this.pagos)
              },
              error=>{
                 console.log(<any>error);

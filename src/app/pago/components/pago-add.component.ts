@@ -92,6 +92,7 @@ export class PagoAddComponent implements OnInit{
     public url;
     public verpago_add=null;
     public verlistar=null;
+    public idalmacen2=null;
     constructor(
         private pagoService:PagoService,
         private productoService:ProductoService,
@@ -116,7 +117,7 @@ export class PagoAddComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                if(res.mensaje!=false){
+                if(res.mensaje==true){
                     this.verpago_add=true;
                     this.mandar.url=environment.url+'admin/transaccion/list';
                     this._UsuarioService.getpermisos(this.mandar).subscribe(
@@ -153,8 +154,47 @@ export class PagoAddComponent implements OnInit{
                     this.validacion=false;
                     this.val=false;
                 }else{
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        this.verpago_add=true;
+                        this.mandar.url=environment.url+'admin/transaccion/list';
+                        this._UsuarioService.getpermisos(this.mandar).subscribe(
+                            result=>{
+                                if(result.mensaje!=false){
+                                    this.verlistar=true;
+                                }
+                            },
+                            err=>{
+                                console.log(<any>err);
+                            }
+                        )
+                        console.log('entro')
+                        this.toastr.setRootViewContainerRef(vcr);
+                        this.user=this.auth.getUser();
+                        this.pago= new PagoModel(null,this.codigo,null,null,null,'',null,'',null,0,0,0,0);
+                        
+                        this.title="Compras";
+                        //----------impuestos
+                        this.igv=0;
+                        this.exoneracion=0;
+                        this.otro=0;
+                        //---------
+                        this.total=0;
+                        this.destruir();
+                        this.tabla();
+                        this.sumaTotal();
+                        this.a1=true;
+                        this.a2=true;
+                        this.a3=true;
+                        this.a4=true;
+                        this.a5=true;
+                        this.a6=true;
+                        this.validacion=false;
+                        this.val=false;
+                    }else{
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
+                
             },
             err=>{
                 console.log(<any>err);
@@ -187,6 +227,7 @@ export class PagoAddComponent implements OnInit{
         this.pagoService.getProveedor().subscribe(
             result=>{
                 this.proveedores=result;
+                console.log(result);
             },
             error=>{
                 console.log(<any>error)
@@ -467,7 +508,7 @@ export class PagoAddComponent implements OnInit{
             }
         }
     }
-    addCompra(id_almacen){
+    addCompra(){ 
         console.log(this.compras);
         this.confirmado[this.compra.ind]=false;
         console.log('entro')
@@ -475,7 +516,7 @@ export class PagoAddComponent implements OnInit{
         console.log(this.compras);
         this.val=true;
         this.validar();
-        this.generararraycodigo(id_almacen);
+        this.generararraycodigo(this.idalmacen2);
         this.cerrarmodaldetalle(); 
         
     }
@@ -525,6 +566,7 @@ export class PagoAddComponent implements OnInit{
         let i=0;
         let valorv=true;
         let id=0;
+    
         console.log(this.compras)
         while(i<this.compras.length){
             console.log(this.compras[i].vendible,i);
@@ -663,9 +705,10 @@ export class PagoAddComponent implements OnInit{
         this.a3=false;
         this.validar();
     }
-    validate4(){
+    validate4(id){
         this.a4=false;
         this.validar();
+        console.log(id);
     }
     validate5(){
         this.a5=false;

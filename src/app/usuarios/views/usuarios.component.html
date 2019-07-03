@@ -3,7 +3,7 @@
         <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
-<div *ngIf="cuenta==1 && ap==1 && titulo=='Mantenimiento de Usuarios'" class="container-fluid">
+<div *ngIf="cuenta==1 && ap==1 && titulo=='Mantenimiento de Usuarios' && verpag==true" class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -37,8 +37,8 @@
                                 <tr *ngFor="let users of usuarios">
                                     <td style=" padding: 0px;width: 75px">
                                         <div style="text-align: center" >
-                                            <a style="color: white" class="btn btn-sm btn-primary  " (click)="confirmaractualizar(users.id)"><i class="fa fa-edit"></i></a>                                            
-                                            <a style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(users.id)" ><i class="fa fa-trash"></i></a>
+                                            <a *ngIf="veredit==true" style="color: white" class="btn btn-sm btn-primary  " (click)="confirmaractualizar(users.id)"><i class="fa fa-edit"></i></a>                                            
+                                            <a *ngIf="veranul==true" style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(users.id)" ><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                     <td>{{users.name}} {{users.apellidos}}</td>
@@ -55,7 +55,7 @@
     </div>
 </div>
 <form #fordatos="ngForm" >
-    <div *ngIf="cuenta==0 && ap==0" class="container-fluid">
+    <div *ngIf="cuenta==0 && ap==0 && verpag==true" class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card card-outline-primary">

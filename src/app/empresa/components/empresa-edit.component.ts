@@ -7,6 +7,8 @@ import { AuthService } from '../../auth/services/auth.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
 import { environment } from '../../../environments/environment.prod';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare var swal:any;
 @Component({
@@ -27,16 +29,46 @@ export class EmpresaEditComponent implements OnInit{
     public fileToUpload:File=null;
     public departamento:Array<any>=[];
     public provincia:Array<any>=[];
+    
     public distrito:Array<any>=[];
+    public url2;
+    public mandar:PermisosRolesModel;
+    public verpag=null;
     constructor(
         private auth:AuthService,
         private route:ActivatedRoute,
         private router:Router,
+        private _router:Router,
         private empresaService:EmpresaService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
+       
+        this.url2=environment.url+'admin/empresa/edit';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        
+                    }else{
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }   
+               
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.url=environment.api_url;
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Editar Empresa';

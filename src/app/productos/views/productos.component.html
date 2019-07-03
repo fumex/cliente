@@ -7,8 +7,8 @@
     <div class="col-lg-12">
         <div  class="card card-outline-primary">
             <div class="card-body">
-                <form #formProducto="ngForm"  action="#">
-                <div class="form-horizonta">
+                <form *ngIf="veradd==true" #formProducto="ngForm"  action="#">
+                <div  class="form-horizonta">
                     <div class="col-lg-12 row">
                         <div class="col-lg-12" style="text-align: right">
                             <ul class="navbar-nav my-lg-0">
@@ -275,7 +275,7 @@
             </form>
             <hr>
             <h4 class="card-title">Exportar Información</h4>
-            <div class="table-responsive m-t-40">
+            <div class="table-responsive">
                 <div *ngIf="!productos">
                         cargando listado de productos....
                 </div>
@@ -316,8 +316,8 @@
                                 <td >{{producto.descripcion}}
                                 <td  style="width: 80px;">
                                     <div>
-                                        <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(producto.id)"><i class="fa fa-edit"></i></a>                                            
-                                        <a style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(producto.id)" ><i class="fa fa-trash"></i></a>
+                                        <a *ngIf="veredit==true" style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(producto.id)"><i class="fa fa-edit"></i></a>                                            
+                                        <a *ngIf="verdelete==true" style="color: white" class="btn btn-sm btn-danger "(click)="borraralerta(producto.id)" ><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td> 
                                 <td style="border:solid 0px;background: white;text-align: center">

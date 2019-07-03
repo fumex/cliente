@@ -16,6 +16,7 @@ import { environment } from "../../../environments/environment";
 
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PermisosRolesModel } from "../modelos/permisos_roles";
 
 declare var jQuery:any;
 declare var $:any; 
@@ -56,6 +57,9 @@ export class usuarioscomponent{
     imageUrl: string = "assets/images/1.png";
     fileToUpload:File = null;
     public encabezados:Array<any>=[];
+    public url2;
+    public verpag=true;
+    public mandar:PermisosRolesModel;
     constructor(
         private _UsuarioService:UsuarioService,
         private _DocumentoService:DocumentoService,
@@ -68,6 +72,29 @@ export class usuarioscomponent{
         public toastr: ToastsManager,
         vcr: ViewContainerRef
     ){
+        this.url2=environment.url+'admin/usuarios';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                    }else{
+                        console.log('esta saliendo')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.usuario = new UsuarioModel(null,'','',null,null,'',null,'','1994-01-01','','','','',null);
@@ -106,9 +133,7 @@ export class usuarioscomponent{
         this.encabezados[4].componentes.push({nombre:"Modificar cliente",estado:false,url:this.url+"cliente/edit/:id",tipo_permiso:'edicion'});
         this.encabezados[4].componentes.push({nombre:"Eliminar cliente",estado:false,url:this.url+"cliente",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Empresa",abrir:false,estado:false,componentes:[]})
-
-        
-        this.encabezados[5].componentes.push({nombre:"Modificar Empresa",estado:false,url:this.url+"empresa/edit",tipo_permiso:'edicion'});
+        this.encabezados[5].componentes.push({nombre:"Modificar Empresa",estado:false,url:this.url+"empresa/edit",tipo_permiso:'pagina'});
         this.encabezados.push({nombre:"Productos",abrir:false,estado:false,componentes:[]})
         this.encabezados[6].componentes.push({nombre:"Agregar productos",estado:false,url:this.url+"productos",tipo_permiso:'insercion'});
         this.encabezados[6].componentes.push({nombre:"Modificar productos",estado:false,url:this.url+"productos",tipo_permiso:'edicion'});
@@ -121,14 +146,14 @@ export class usuarioscomponent{
         this.encabezados[8].componentes.push({nombre:"modificar precios",estado:false,url:this.url+"almacen",tipo_permiso:'edicion'}); 
         //this.encabezados[8].componentes.push({nombre:"ver codigo productos",estado:false,url:this.url+"almacen",tipo_permiso:'reporte'});
         this.encabezados.push({nombre:"Orden de pedido",abrir:false,estado:false,componentes:[]})
-        this.encabezados[9].componentes.push({nombre:"Agregar orden de pedido",estado:false,url:this.url+"pedido",tipo_permiso:'insercion'});
-        this.encabezados[9].componentes.push({nombre:"lista de pedidos",estado:false,url:this.url+"pedido/listar",tipo_permiso:'reporte'});
+        this.encabezados[9].componentes.push({nombre:"Agregar orden de pedido",estado:false,url:this.url+"pedido",tipo_permiso:'pagina'});
+        this.encabezados[9].componentes.push({nombre:"lista de pedidos",estado:false,url:this.url+"pedido/listar",tipo_permiso:'pagina'});
         this.encabezados.push({nombre:"Inventario",abrir:false,estado:false,componentes:[]})
         this.encabezados[10].componentes.push({nombre:"Modificar inventario",estado:false,url:this.url+"inventario",tipo_permiso:'edicion'});
         this.encabezados[10].componentes.push({nombre:"reportes de inventario",estado:false,url:this.url+"reporteInventario",tipo_permiso:'insercion'});
         this.encabezados.push({nombre:"Usuarios",abrir:false,estado:false,componentes:[]})
         this.encabezados[11].componentes.push({nombre:"Agregar usuario",estado:false,url:this.url+"usuarios",tipo_permiso:'insercion'});
-        this.encabezados[11].componentes.push({nombre:"Modificar usuario(datos generales)",estado:false,url:this.url+"editarusuario",tipo_permiso:'insercion'});
+        this.encabezados[11].componentes.push({nombre:"Modificar usuario(datos generales)",estado:false,url:this.url+"editarusuario",tipo_permiso:'edicion'});
         this.encabezados[11].componentes.push({nombre:"Eliminar usuario",estado:false,url:this.url+"editarusuario",tipo_permiso:'anulacion'});
         this.encabezados.push({nombre:"Cajas",abrir:false,estado:false,componentes:[]})
         this.encabezados[12].componentes.push({nombre:"Agregar caja",estado:false,url:this.url+"cajas",tipo_permiso:'insercion'});
@@ -137,7 +162,7 @@ export class usuarioscomponent{
         this.encabezados.push({nombre:"Ventas",abrir:false,estado:false,componentes:[]})
         this.encabezados[13].componentes.push({nombre:"Ventas Gratuitas",estado:false,url:this.url+"ventas",tipo_permiso:'venta_gratis'});
         this.encabezados[13].componentes.push({nombre:"Agregar descuento",estado:false,url:this.url+"ventas",tipo_permiso:'descuento_producto'});
-        this.encabezados[13].componentes.push({nombre:"Agregar Descuento global",estado:false,url:this.url+"ventas",tipo_permiso:'descuento_producto'});
+        this.encabezados[13].componentes.push({nombre:"Agregar Descuento global",estado:false,url:this.url+"ventas",tipo_permiso:'descuento_global'});
         
         console.log(this.encabezados);
         //this._router.navigate(['/'+this.user.rol+'/editarusuario']);

@@ -102,7 +102,7 @@
                                             <div class="col-sm-8">
                                                 <div class="inner-addon left-addon">
                                                     <i *ngIf="a4==false" style="color: green" class="fa fa-check"></i>
-                                                    <select class="form-control custom-select" #idAlmacen name="idAlmacen" (change)="validate4()">
+                                                    <select class="form-control custom-select" #idAlmacen name="idAlmacen" (change)="validate4(idAlmacen.value)">
                                                         <option disabled="disabled" hidden>Seleccione almacén </option>
                                                         <option *ngFor="let almacen of almacenes" [value]="almacen.id">
                                                             {{almacen.nombre}}
@@ -476,7 +476,7 @@
                             <br>
                             <div  class="col-sm-12" style="text-align: center;margin-top: 20px; margin-bottom: 10px;">
                                 <button   class="btn btn-danger" > <i class="glyphicon glyphicon-remove"></i> Cancelar</button>
-                                <button (click)="addCompra(idAlmacen.value)"  [disabled]="!canti.valid || !vendi.valid || !precio.valid" class="btn btn-success" > <i class="fa fa-check"></i> Agregar</button>
+                                <button (click)="addCompra()"  [disabled]="!canti.valid || !vendi.valid || !precio.valid" class="btn btn-success" > <i class="fa fa-check"></i> Agregar</button>
                             </div>
                         </div>    
                     </div>

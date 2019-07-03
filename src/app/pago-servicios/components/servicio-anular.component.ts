@@ -55,7 +55,7 @@ export class ServicioAnularComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                if(res.mensaje!=false){
+                if(res.mensaje!=true){
                     this.toastr.setRootViewContainerRef(vcr);
                     this.user=this.auth.getUser();
                     this.title='ANULAR SERVICIO';
@@ -64,7 +64,17 @@ export class ServicioAnularComponent implements OnInit{
                     this.confirmado=null;
                     this.val=false;
                 }else{
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        this.toastr.setRootViewContainerRef(vcr);
+                        this.user=this.auth.getUser();
+                        this.title='ANULAR SERVICIO';
+                        this.user=this.auth.getUser();
+                        this.tabla();
+                        this.confirmado=null;
+                        this.val=false;
+                    }else{
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
             },
             err=>{

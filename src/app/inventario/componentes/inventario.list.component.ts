@@ -7,6 +7,9 @@ import{almacen}from '../../Almacenes/modelos/almacenes';
 import{ProductosfiltradoporAlmacenModel} from '../modelos/almacenproducto';
 import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 
 declare var jQuery:any;
@@ -37,15 +40,41 @@ declare var swal:any;
     public idalmacen;
     public idproducto;
     public ocutarformulario;
-    public user:User
+    public user:User;
+    public url;
+    public mandar:PermisosRolesModel;
+    public verpag=null;
       constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _InventarioService:InventarioService,
         private _almacenesService:AlmacenesService,
         private auth:AuthService,
+        private _UsuarioService:UsuarioService,
       ){
+        this.url=environment.url+'admin/reporteInventario';
         this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                    }else{
+                        console.log('1')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.titulo = "reporte de almacen";
         this.tabla();
         //this.tabla2();

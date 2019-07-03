@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
 import { environment } from '../../../environments/environment.prod';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -38,7 +40,9 @@ export class EmpresaPerfilComponent implements OnInit{
     public email:string;
     public image:string;
     public url;
-
+    public url2;
+    public mandar:PermisosRolesModel;
+    public vereditar=null;
     constructor(
         private empresaService:EmpresaService,
         private route:ActivatedRoute,
@@ -46,8 +50,33 @@ export class EmpresaPerfilComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
+        
+        this.url2=environment.url+'admin/empresa/edit';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.vereditar=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.vereditar=true;
+                        
+                    }else{
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
+                }
+               
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Empresa';
         this.imageUrl=="/assets/images/2.png";
@@ -55,6 +84,7 @@ export class EmpresaPerfilComponent implements OnInit{
         this.confirmado=true;
         this.filesToUpload=null;
         this.url=environment.api_url;
+        
     }
     ngOnInit(){
         this.getEmpresa();

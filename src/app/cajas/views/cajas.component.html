@@ -3,7 +3,7 @@
         <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
-<div class="container">
+<div *ngIf="verpag==true " class="container">
     <div class="fluid">
         <div class="col-lg-12">
             <div class="card">
@@ -14,13 +14,12 @@
                     </label>
                 </div>
                 <ul class="nav nav-tabs profile-tab" role="tablist">
-                    
                     <li class="nav-item"> <a id="tabcli" class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos Generales</a> </li>
                     <li *ngIf="mostrauser!=null" class="nav-item"> <a class="nav-link" data-toggle="tab" href="#usuario" role="tab">Usuario</a> </li>
                 </ul>
                 <br>
-                <form #formCaja="ngForm"  action="#">
-                <div class="tab-content">
+                <form  #formCaja="ngForm"  action="#">
+                <div *ngIf="veradd==true || (veredit==true && vereditextra==true)" class="tab-content">
                     <div class="tab-pane active" id="datos" role="tabpanel">
                         <div class="card-body">
                             <div class="form-horizonta">
@@ -111,13 +110,13 @@
                 </div>
             </form>
             <br>
-            <div *ngIf="mostraeditcaja==null" style="text-align: center" class="form-actions">
+            <div *ngIf="mostraeditcaja==null && veradd==true" style="text-align: center" class="form-actions">
                 <button  (click)="guardarCaja()"  href="#datos" [disabled]="!formCaja.form.valid"  class="btn btn-info"> <i class="fa fa-save"></i> Guardar</button>
                 <button (click)="limpiar()"  class="btn btn-success"> <i class="fa fa-eraser"></i> Limpiar</button>
                 
             </div>
             <div *ngIf="mostraeditcaja!=null" style="text-align: center" class="form-actions">
-                <button  (click)="editcaja()"  href="#datos" [disabled]="!formCaja.form.valid"  class="btn btn-info"> <i class="fa fa-upload"></i> Actualizar</button>
+                <button  (click)="editcaja()"  href="#datos" class="btn btn-info"> <i class="fa fa-upload"></i> Actualizar</button>
                 <button (click)="cancelaredit()"  href="#datos" class="btn btn-success"> <i class="fa fa-ban"></i> cancelar</button>
             </div>
             <hr>              
@@ -146,8 +145,8 @@
                             <td>{{caj.direccion}}</td> 
                             <td>
                                 <div style="width: 80px;">  
-                                    <a class="btn btn-sm btn-info " (click)="getcaja(caj.id)" ><i class="fa fa-edit"></i></a>                                        
-                                    <a class="btn btn-sm btn-danger " (click)="alertaeliminar(caj.id)" ><i class="fa fa-trash"></i></a>            
+                                    <a *ngIf="veredit==true" class="btn btn-sm btn-info " (click)="getcaja(caj.id)" ><i class="fa fa-edit"></i></a>                                        
+                                    <a *ngIf="veranul==true" class="btn btn-sm btn-danger " (click)="alertaeliminar(caj.id)" ><i class="fa fa-trash"></i></a>            
                                 </div>
                             </td>
                         </tr>

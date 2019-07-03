@@ -1,3 +1,4 @@
+/* este es el modulo de ventas ,en aca se realizan todas la operciones relacionadas con ventas incluyendo la apertura de las cajas */
 import { Component,ViewContainerRef } from "@angular/core";
 import { DetalleCaja } from "../modelos/detalle_cajas";
 import { DetalleCajasService } from '../services/DetalleCajas.service';
@@ -29,6 +30,8 @@ import { AssertNotNull } from "@angular/compiler";
 import {EmpresaService} from '../../empresa/services/empresa.service';
 import {EmpresaModel} from '../../empresa/models/empresa';
 import { NULL_INJECTOR } from "@angular/core/src/render3/component";
+import { PermisosRolesModel } from "../../usuarios/modelos/permisos_roles";
+import { UsuarioService } from "../../usuarios/services/usuarios.service";
 
 declare var jQuery:any;
 declare var $:any;
@@ -105,6 +108,12 @@ export class VentasComponent{
     public hora;
     imageUrl: string = "assets/images/1.png";
     public gratuito=null;
+    public url2;
+    public desct_glob=null;
+    public venta_gratis=null;
+    public desct_prod=null;
+    public verpag=null;
+    public mandar:PermisosRolesModel;
     constructor(
         private router:Router,
         private _DetalleCajasService:DetalleCajasService,
@@ -122,9 +131,47 @@ export class VentasComponent{
         private toaste:ToastService,
         public toastr: ToastsManager,
         private _EmpresaService:EmpresaService,
-        vcr: ViewContainerRef
+        vcr: ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
-        
+        this.url2=environment.url+'admin/ventas';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    this.venta_gratis=true;
+                    this.verpag=true;
+                    this.desct_prod=true;
+                    this.desct_glob=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        while(i<res.length){
+                            if(res[i].tipo_permiso=="venta_gratis" && res[i].estado==true){
+                                this.venta_gratis=true;
+                            }
+                            if(res[i].tipo_permiso=="descuento_producto" && res[i].estado==true){
+                                this.desct_prod=true;
+                            }
+                            if(res[i].tipo_permiso=="descuento_global" && res[i].estado==true){
+                                this.desct_glob=true;
+                            }
+                            i++
+                        }
+                    }else{
+                        console.log('esta saliendo')
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.titulo="Ventas";
@@ -140,9 +187,10 @@ export class VentasComponent{
         this.letrado=this.conversor.NumeroALetras(0);
         this.iniciodeusuario();
     }
-    
+    /**obtenemos todos los pructos los tipos de moneda y las empresas y suauarios almacenados */
     ngOnInit(){
         this.modalventa=document.getElementById('modalventa');
+        //modal de apertura 
         window.onclick = function(event) {
             if (event.target == this.document.getElementById('modalventa') ) {
                 this.document.getElementById('modalventa').style.display = "none";
@@ -198,6 +246,8 @@ export class VentasComponent{
         this.cancelareditemail();
         this.modalventa.style.display = "none";
     }
+    //abrir model para el finmalde la venta
+
     abrirmodalventas(){
         let i=0,j=0,validar=null;
         while(i<this.detalleventas.length){
@@ -222,6 +272,7 @@ export class VentasComponent{
         console.log(this.codigo_productos);
         this.modalventa.style.display = "block";
     }
+    //funcion para el cierre de caja
     cerrarcaja(){
         this.verpago=null;
         this.tabs=document.getElementById('tabcierre');
@@ -238,6 +289,7 @@ export class VentasComponent{
         }
         this.volveraventas();
     }
+    // FUNCION PARA REGRESAR A LA PESTAÑA DE VENTAS
     volveraventas(){
         this.tabs=document.getElementById('tabini'); 
         this.tabs.click();
@@ -263,6 +315,7 @@ export class VentasComponent{
             }
         );
     }
+    //obtiene el numerod e serie
     obtenerdocuemntos(){
         this._VentasService.obtenerdocumentos().subscribe(
             res=>{
@@ -280,7 +333,7 @@ export class VentasComponent{
                     }
                     console.log(this.numerobol,'-',this.numerofac)
                     
-                    
+                    //guarda la venta
                     this.guardarventas();
                     
                     this.ventas.total=Math.round(this.total*100)/100;
@@ -294,6 +347,7 @@ export class VentasComponent{
             }
         );
     }
+    //suma el total de la venta
     sumartotal(){
         let k=0;
         this.total=0;
@@ -305,6 +359,14 @@ export class VentasComponent{
         this.total=Math.round((this.ventas.total+sumaimp)*100)/100;
     }
 
+    alertainvalido(){
+        this.toaste.WarningAlert('No tiene acceso a esta opcion','Error ');
+    }
+    //agrega desceunto gloval
+    agregardescuentoglobal(){
+        
+    }
+    //agrega descuento producto
     agregardescuento(arreglopro){
         let i=0,j=0,k=0,n=0;
         let precioanterior=0;
@@ -411,6 +473,7 @@ export class VentasComponent{
           });
 
     }
+    //agrega los productos desde la primera tabla
     addproducto(indice,arreglopro,descuento){
         console.log(this.productos);
         console.log(arreglopro);
@@ -580,6 +643,7 @@ export class VentasComponent{
         this.ventas.tarjeta=this.inps.value;
         console.log(this.inps.value)
     }
+    //configura DATOS DE LOS IMPUESTos llama a la funcion para obtener el numerod e serie
     guardarventa(){
         let i=0;
         while(i<this.impuestos.length){
@@ -597,6 +661,7 @@ export class VentasComponent{
         this.obtenerdocuemntos();   
         
     }
+    //guarda la venta en la base de datos y llama ala funcion para guardar eld etalle de las ventas
     guardarventas(){
         console.log(this.ventas)
         var f=new Date();
@@ -621,6 +686,7 @@ export class VentasComponent{
             }
         );
     }
+    //guarda el detalle de las ventas 
     guardardetalleventas(){
         let i=0,j=0;
         let respuesta=0;
@@ -702,13 +768,15 @@ export class VentasComponent{
         }
     
     }
-    guardarcodigos(){
+
+    /*guardarcodigos(){
         let i=0;
         while(i<this.codigo_productos.length){
             
             i++;
         }
-    }
+    }*/
+    //guarda la moneda q esta usando
     vermoneda(moenda){
         let i=0;
         console.log(this.ventas.id_moneda)
@@ -720,6 +788,7 @@ export class VentasComponent{
         }
         console.log(this.ventas);
     }
+    //selecciona el tipo de pago
     seleccionartipo(){
         let i=0;
         while(i<this.pago.length){
@@ -757,6 +826,7 @@ export class VentasComponent{
         }*/
         
     }
+    //suma las cantidad con tarjeta y efectivo
     sumarcuadros(){
         this.texttar=document.getElementById('pagotarjeta');
         this.textefec=document.getElementById('pagoefectivo');
@@ -770,6 +840,7 @@ export class VentasComponent{
         
         console.log(this.ventas.pago_efectivo+this.ventas.pago_tarjeta)
     }
+    //obtiene las monedas
     getmonedas(){
         this._monedaservice.getMonedas().subscribe(
             res=>{
@@ -781,6 +852,7 @@ export class VentasComponent{
             }
         );
     }
+    //obtiene los tipos de apgos
     gettipopago(){
         this._tipopagoservice.getTipoPagos().subscribe(
             res=>{
@@ -792,6 +864,7 @@ export class VentasComponent{
             }
         );
     }
+    //obtiene las entidades finacieras
     getentidad(){
         this._entidadservice.entidades().subscribe(
             res=>{
@@ -803,6 +876,7 @@ export class VentasComponent{
             }
         );
     }
+    //quita un producto agregado para la venta
     quitarproducto(indice,arreglo){
         console.log(arreglo);
         let i=0;
@@ -896,12 +970,14 @@ export class VentasComponent{
         this.letrado=this.conversor.NumeroALetras(Math.round( this.total *100)/100);
         console.log(this.codigo_productos);
     }
+    //limpia todos los productos agregados
     limpiarcodigo_productos(){
         let i=0;
         while(i<this.codigo_productos.length){
             this.codigo_productos.splice(0,1);
         }
     }
+    //va ala vistya final de pago
     pagar(){
         if(this.boleta==true){  
             this.total=this.ventas.total;
@@ -920,7 +996,7 @@ export class VentasComponent{
         this.gettipopago();
         this.verpago=1;
     }
-    
+    //vuelve a la vista de productos
     volveraproductos(){
         this.ventas.id_moneda=0;
         this.tabs=document.getElementById('tabini');
@@ -928,6 +1004,7 @@ export class VentasComponent{
         this.verpago=null;
         
     }
+    //limpia todos losd atos de la venta
     limpiar(){
         this.limpiarcodigo_productos();
         this.inps=document.getElementById('firstName');
@@ -962,7 +1039,7 @@ export class VentasComponent{
         this.ventas=new VentasModel(null,null,null,null,this.id_caja,null,null,null,null,null,this.user.id,0,null,null,null,0,null,null,null,null,null,null,null,null,null,null);
     }
 
-
+    //agrega una unidad a un productpoa gregado
     agregarunidadpro(indice,arreglo){
         console.log(arreglo);
         let i=0;
@@ -1078,7 +1155,7 @@ export class VentasComponent{
         this.letrado=this.conversor.NumeroALetras(Math.round( this.total *100)/100);
         console.log(this.codigo_productos);
     }
-
+    //quita un producto 
     quitarunidadpro(indice,arreglo){
         let i=0;
         let j=0;
@@ -1194,7 +1271,7 @@ export class VentasComponent{
         
         this.prodcant=id;
     }
-   
+   //cambia a factura
     seleccionarbfactura(){
         if(this.detalleventas.length>0){
            this.alertafactura();
@@ -1204,6 +1281,7 @@ export class VentasComponent{
         }
         
     }
+    //cambia a boleta
     seleccionarboleta(){
         if(this.detalleventas.length>0){
             this.alertaboleta();
@@ -1212,6 +1290,7 @@ export class VentasComponent{
             this.boleta=true;
         }
     }
+    //cambia la vista a la vista copn los usuarios
     irausuarios(){
         this.verusuarios=1; 
         this.tabs=document.getElementById('tabcli');
@@ -1219,6 +1298,7 @@ export class VentasComponent{
         this.tabs.click();
         this.recontruirtclient();
     }
+    //selecciona al cliente y lo almacena en un arreglo
     seleccionarcliente(id,nombre,doc,nrodoc,email,direc){
         this.idcliente=id;
         this.clientselec=id;
@@ -1231,6 +1311,7 @@ export class VentasComponent{
         this.ventas.email=email;
         this.ventas.tipo_documento_cliente=doc.toLowerCase();
     }
+    //agrega al susuario y lo manda al input de la vista de venta
     mandarusuario(){
         this.inps=document.getElementById('firstName');
 
@@ -1242,11 +1323,13 @@ export class VentasComponent{
         this.detruirtclient();
         this.ventas.id_cliente=this.idcliente;
     }
+    //elimina al cliente seleccionado
     cancelarcliente(){
         this.tabs=document.getElementById('tabini');
         this.tabs.click();
         this.detruirtclient();
     }
+    //llama a los clientes de la base de datos
     traercliente(){
         this._ClienteService.getClientes().subscribe(
             res=>{
@@ -1258,6 +1341,7 @@ export class VentasComponent{
             }
         );
     }
+    //apertura una caja
     aperturarcaja(id){
         this.DetalleCaja.id_caja=id;
         this.DetalleCaja.id_usuario=this.user.id;
@@ -1265,9 +1349,11 @@ export class VentasComponent{
         console.log(this.DetalleCaja);
         this.id_caja=id;
     }
+    //vuelve a la vista de las cajas
     volveralascajas(){
         this.DetalleCaja=new DetalleCaja(null,null,null,null,null,null,null,null,null,null);
     }
+    //suma todas la moneda que se agreguen
     sumartodaslasmonedas(){
         this.sumamonedas=0;
         if(this.arreglocantidad.c10>0){
@@ -1306,6 +1392,7 @@ export class VentasComponent{
             this.sumamonedas+=this.arreglocantidad.c02*200;
         }
     }
+    //guarad el mnetode apertura 
     mandarmontodeapertura(){
         this.DetalleCaja.monto_apertura="";
        
@@ -1346,6 +1433,7 @@ export class VentasComponent{
         
         this.mostarproductos();
     }
+    //almacen el monmtode  cierrre en un string y llama a la funcion de cierra de caja
     mandarmontocierre(){
         this.DetalleCaja.monto_cierre_efectivo="";
        
@@ -1385,6 +1473,7 @@ export class VentasComponent{
         console.log(this.DetalleCaja.monto_cierre_efectivo);
         this.cierredecaja();
     }
+    //cierra la caja y guarda la cantidad
     cierredecaja(){
         this._DetalleCajasService.CierreCaja(this.DetalleCaja).subscribe(
             res=>{
@@ -1412,6 +1501,8 @@ export class VentasComponent{
             this.productos.splice(0,1)
         }
     }
+    //suma una moneda de la apertura
+
     montoapertura(n){
         
         switch(n) {
@@ -1454,6 +1545,7 @@ export class VentasComponent{
     ponermonedaenelimput(n){
         this.sumartodaslasmonedas();
     }
+    //quita una unidad de moneda 
     quitarmoneda(n){
         switch(n) {
             case 0.1:
@@ -1518,6 +1610,7 @@ export class VentasComponent{
         console.log(nombre); 
         this.activin=nombre;
     }
+    //sumna el arreglo de la cantidad de apertura
     sumarcantidadapertura(){
         let i=0;
         while(i<11){
@@ -1525,6 +1618,7 @@ export class VentasComponent{
             i++;
         }
     }
+    //apertura la caja y llama a la funcion q traera losd pructos
     mostarproductos(){
         
         this._DetalleCajasService.AperturaCaja(this.DetalleCaja).subscribe(
@@ -1541,6 +1635,7 @@ export class VentasComponent{
             }
         );
     }
+    //trae todos los prudutos
     traerproductos(){
         this.apertura=1;
         let indice=0;
@@ -1579,6 +1674,7 @@ export class VentasComponent{
             }
         );
     }
+    //trae los impuestos que tiene cada producto
     mostrarimpuestosdeproductos(id,index){
         let indice=0;
         this._detalleimpuestoservice.seleccionardetealle(id).subscribe(
@@ -1603,6 +1699,7 @@ export class VentasComponent{
         );
         
     }
+    //obtiene todas la cajas al que el usuario puede acceder
     obtenercajas(){
         this._DetalleCajasUsuarioService.selectusuariocajas(this.user.id).subscribe(
             res=>{
@@ -1616,6 +1713,7 @@ export class VentasComponent{
             }
         );
     }
+    //ALERTAS Y TABLAS (de aca asta abajo)
     tablaclientes(){
         setTimeout(function(){
             $(document).ready(function() {

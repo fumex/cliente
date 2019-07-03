@@ -14,6 +14,10 @@ import {AuthService} from '../../auth/services/auth.service';
 
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { environment } from '../../../environments/environment';
+import { User } from '../../auth/interfaces/user.model';
 
 declare var jQuery:any;
 declare var $:any;
@@ -38,6 +42,7 @@ export class OrdenDePedidoComponent{
     public fecha2:string;
     public mostrar;
     public mostrarguardar;
+    public user:User;
     public id;
     public texto;
     public editar;
@@ -50,6 +55,10 @@ export class OrdenDePedidoComponent{
     public seleccionado;
     public textocantidad;
     public terminosycon;
+    public url;
+    public mandar:PermisosRolesModel;
+    public verlistar=null;
+    public verpag=null;
     constructor(
         private _almacenesService:AlmacenesService,
         private _route:ActivatedRoute,
@@ -61,8 +70,57 @@ export class OrdenDePedidoComponent{
         private auth:AuthService,
         private toaste:ToastService,
         public toastr: ToastsManager,
-        vcr: ViewContainerRef
+        vcr: ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
+        this.url=environment.url+'admin/pedido';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                    
+                    this.mandar.url=environment.url+'admin/pedido/listar';
+                    this._UsuarioService.getpermisos(this.mandar).subscribe(
+                        result=>{
+                            if(result.mensaje!=false){
+                                this.verlistar=true;
+                            }
+                        },
+                        err=>{
+                            console.log(<any>err);
+                        }
+                    )
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        
+                        this.mandar.url=environment.url+'admin/pedido/listar';
+                        this._UsuarioService.getpermisos(this.mandar).subscribe(
+                            result=>{
+                                if(result.mensaje!=false){
+                                    this.verlistar=true;
+                                }
+                            },
+                            err=>{
+                                console.log(<any>err);
+                            }
+                        )
+                    }else{
+                        console.log('1')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+               
+                console.log(this.verlistar);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.titulo="Orden De Pedido";
         
@@ -205,8 +263,9 @@ export class OrdenDePedidoComponent{
         this.pedidos.push(this.agregarDetalleOrden);
         this.agregarDetalleOrden=new DetalleOrdenDePedidoModel(null,null,null,null);
         console.log(this.pedidos);
-        console.log(this.productos);
 
+        console.log(this.productos);
+        console.log(this.agregarOrdenPedido)
         
     }
     mostarterminos(){
@@ -243,24 +302,30 @@ export class OrdenDePedidoComponent{
             index=index+1;
         }
         if(aprobado===true){
-            this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
-                result=>{
-                    let resultado=result;
-                    this.storagePedido(resultado);//--------Almacenamiento en el local storage
-                    this.guardardetalleorden();
-                    this.guardaralerta();
-                    this.limpiar();
-                },
-                error=>{
-                    console.log(<any>error);
-                }
-    
-            );
+            if(this.agregarOrdenPedido.id_almacen>0){
+                this._ordenPedidoService.addOrdenPedido(this.agregarOrdenPedido).subscribe(
+                    result=>{
+                        let resultado=result;
+                        this.storagePedido(resultado);//--------Almacenamiento en el local storage
+                        this.guardardetalleorden();
+                        this.guardaralerta();
+                        this.limpiar();
+                    },
+                    error=>{
+                        console.log(<any>error);
+                    }
+        
+                );
+            }else{
+                let text="seleccione un almacen";
+                this.toaste.errorAlerta(text,'Error!No se pudo guardar su pedido ');
+            }
+            
         }else{
             let text="coloque una cantidad superio a 0";
             this.toaste.errorAlerta(text,'Error!No se pudo guardar su pedido ');
             this.texto=indice;
-            this.textocantidad.focus();
+            //this.textocantidad.focus();
         }
     }
     guardardetalleorden(){

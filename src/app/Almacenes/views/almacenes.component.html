@@ -7,7 +7,7 @@
     <div class="col-lg-12">
         <div class="card card-outline-primary">
             <div class="card-body">
-                <form #formAlmacen="ngForm"  action="#">
+                <form *ngIf="veradd==true" #formAlmacen="ngForm"  action="#">
                    <!--<span *ngIf="!formAlmacen.form.valid ">rellenar todos los campo requeridos(<label id="rec" >*</label>)</span>-->
                 <div class="form-horizonta">
                     <div class="col-lg-12 row">
@@ -139,8 +139,8 @@
                                     </td>
                                     <td style="width: 80px;">
                                         <div *ngIf="idalmacen!=almacen.id">
-                                            <a style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
-                                            <a style="color: white"class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
+                                            <a *ngIf="veredit==true"style="color: white" class="btn btn-sm btn-info " (click)="confirmaractualizar(almacen.id)"><i class="fa fa-edit"></i></a>                                            
+                                            <a *ngIf="verdelete==true" style="color: white"class="btn btn-sm btn-danger "(click)="borraralerta(almacen.id)" ><i class="fa fa-trash"></i></a>            
                                         </div>
                                         <div *ngIf="idalmacen==almacen.id">
                                             <button style="color: white" class="btn btn-sm btn-info" type="submit"><i class="fa fa-check"></i></button>                                            

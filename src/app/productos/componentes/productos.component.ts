@@ -18,6 +18,8 @@ import { DetalleImpuestoModel} from '../../detalle_impuesto/models/detalle_impue
 import {ToastService} from '../../toastalert/service/toasts.service'
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
 
 
 declare var jQuery:any;
@@ -89,7 +91,11 @@ export class ProductosComponent{
     imageUrl: string = "assets/images/1.png";
     imageedit: string = "assets/images/1.png";
     fileToUpload:File = null;
-
+    public url2;
+    public veradd=null;
+    public veredit=null;
+    public verdelete=null;
+    public mandar:PermisosRolesModel;
 
 	constructor(
         private _route:ActivatedRoute,
@@ -103,9 +109,45 @@ export class ProductosComponent{
         private auth:AuthService,
         private toaste:ToastService,
         public toastr: ToastsManager,
-        vcr: ViewContainerRef
+        vcr: ViewContainerRef,
+        private _UsuarioService:UsuarioService,
 
     ){
+        this.url2=environment.url+'admin/productos';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=false){
+                    this.veradd=true;
+                    this.veredit=true;
+                    this.verdelete=true;
+                }else{
+                    if(res.mensaje!=false){
+                        while(i<res.length){
+                            if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
+                                this.veradd=true;
+                            }
+                            if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                                this.veredit=true;
+                            }
+                            if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                                this.verdelete=true;
+                            }
+                            i++
+                        }
+                    }else{
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.titulo = "productos";
         this.user=this.auth.getUser();

@@ -61,23 +61,31 @@ export class ProveedorAddComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                if(res.mensaje!=false){
-                    while(i<res.length){ 
-                        if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
-                            this.veradd=true;
-                        }
-                        if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
-                            this.veredit=true;
-                        }
-                        if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
-                            this.verdelete=true;
-                        }
-                        i++
-                    }
-                    this.tabla(); 
+                if(res.mensaje==true){
+                    console.log("entro");
+                    this.veradd=true;
+                    this.veredit=true;
+                    this.verdelete=true;
                 }else{
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        while(i<res.length){ 
+                            if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
+                                this.veradd=true;
+                            }
+                            if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                                this.veredit=true;
+                            }
+                            if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                                this.verdelete=true;
+                            }
+                            i++
+                        }
+                        this.tabla(); 
+                    }else{
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
+               
             },
             err=>{
                 console.log(<any>err);

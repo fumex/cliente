@@ -32,9 +32,9 @@
                                             <strong><span><i class="fa fa-mobile"></i></span> </strong> {{ telefono1 }} <br>
                                             <strong><span><i class="fa fa-phone"></i></span> </strong> {{ telefono2 }} <br>
                                             <br>
-                                            <div class="col-md-12">
+                                            <div *ngIf="vereditar==true" class="col-md-12">
                                                 <div class="row">
-                                                    <button type="button" (click)="edit()" class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                                                    <button  type="button" (click)="edit()" class="btn btn-warning"><i class="fa fa-pencil"></i></button>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,4 +1,5 @@
 import { Component,ViewContainerRef } from "@angular/core";
+import {Router,ActivatedRoute,Params}from '@angular/router';
 import { CajasModels } from "../modelos/cajas";
 import { DetalleCajasUsuariosModels } from "../modelos/detalle_cajas_usuario";
 import { CajasService } from '../services/cajas.services';
@@ -11,6 +12,9 @@ import {SucursalModel} from '../../sucursales/modelos/sucursal';
 import {UsuarioModel} from '../../usuarios/modelos/usuarios';
 import {ToastService} from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PermisosRolesModel } from "../../usuarios/modelos/permisos_roles";
+import { environment } from "../../../environments/environment";
+import { UsuarioService } from "../../usuarios/services/usuarios.service";
 
 declare var jQuery:any;
 declare var $:any;
@@ -35,8 +39,17 @@ export class CajasComponent{
     public mostrauser=null;
     public mostraeditcaja=null;
     public campodetexto;
+    public vereditextra=null;
     public datos;
+    public url2;
+    public veredit=null;
+    public veradd=null;
+    public veranul=null;
+    public verpag=null;
+    public mandar:PermisosRolesModel;
     constructor(
+        private _route:ActivatedRoute,
+        private _router:Router,
         private _cajasservice:CajasService,
         private _SucursalService:SucursalService,
         private _DettaleUsuarioService:DettaleUsuarioService,
@@ -44,8 +57,46 @@ export class CajasComponent{
         private auth:AuthService,
         private toaste:ToastService,
         public toastr: ToastsManager,
-        vcr: ViewContainerRef
+        vcr: ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
+        this.url2=environment.url+'admin/cajas';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                    this.veradd=true;
+                    this.veredit=true;
+                    this.veranul=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        while(i<res.length){
+                            if(res[i].tipo_permiso=="insercion" && res[i].estado==true){
+                                this.veradd=true;
+                            }
+                            if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                                this.veredit=true;
+                            }
+                            if(res[i].tipo_permiso=="anulacion" && res[i].estado==true){
+                                this.veranul=true;
+                            }
+                            i++
+                        }
+                    }else{
+                        console.log('esta saliendo')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.toastr.setRootViewContainerRef(vcr);
         this.user=this.auth.getUser();
         this.cajas = new CajasModels(0,null,null,null,this.user.id);
@@ -155,7 +206,7 @@ export class CajasComponent{
         );
     }
     getcaja(id){
-        
+        this.vereditextra=true;
         this.mostraeditcaja=id;
         this.campodetexto=document.getElementById('firstName');
         this._cajasservice.selectcajas(id).subscribe(
@@ -166,7 +217,7 @@ export class CajasComponent{
                     this.toaste.SuccessAlert('','Echo!!');
                     
                     this.obtenerusuario(this.cajas.id_sucursal);
-                    this.campodetexto.focus();
+                    //this.campodetexto.focus();
                     console.log(this.cajas);
                 }else{
                     this.toaste.errorAlerta('intentelo mas tarde','Error!!');

@@ -6,6 +6,9 @@ import { User } from '../../auth/interfaces/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { environment } from '../../../environments/environment';
 
 declare var jQuery:any;
 declare var $:any;
@@ -22,6 +25,8 @@ export class MonedaAddComponent implements OnInit{
     public monedas:MonedaModel[];
     public confirmado:boolean;
     public user:User;
+    public url2;
+    public mandar:PermisosRolesModel;
 
     constructor(
         private monedaService:MonedaService,
@@ -30,10 +35,28 @@ export class MonedaAddComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
+        
+        private _UsuarioService:UsuarioService,
         vcr:ViewContainerRef
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Moneda';
+        this.url2=environment.url+'admin/emisor';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=true){
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
         this.user=this.auth.getUser();
         this.moneda= new MonedaModel(null,'',null,this.user.id,null,null);
         this.confirmado=true;

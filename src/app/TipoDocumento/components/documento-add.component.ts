@@ -6,6 +6,9 @@ import { AuthService } from '../../auth/services/auth.service';
 import { User } from '../../auth/interfaces/user.model';
 import { ToastService } from '../../toastalert/service/toasts.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { environment } from '../../../environments/environment';
 
 declare var jQuery:any;
 declare var $:any;
@@ -23,6 +26,8 @@ export class TipoDocumentoAddComponent implements OnInit{
     public documentos:DocumentoModel[];
     public confirmado:boolean;
     public user:User;
+    public url2;
+    public mandar:PermisosRolesModel;
     constructor(
         private documentoService:DocumentoService,
         private route:ActivatedRoute,
@@ -30,10 +35,27 @@ export class TipoDocumentoAddComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
-        vcr:ViewContainerRef
+        vcr:ViewContainerRef,
+        private _UsuarioService:UsuarioService,
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Documento';
+        this.url2=environment.url+'admin/emisor';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=true){
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
         this.user=this.auth.getUser();
         this.documento= new DocumentoModel(null,'','',this.user.id);
         this.confirmado=true;

@@ -18,6 +18,9 @@ export class AlmaceneService{
     getAlmacen(id){
         return this._http.get<any>(this.url+'/mostrarlamacen/'+id).shareReplay();
     }
+    getallproductos(){
+        return this._http.get<any>(this.url+'/todoslosproductos').shareReplay();
+    }
     addAlmacen(almacen:almacenstock):Observable<any>{
         let json = JSON.stringify(almacen);
         

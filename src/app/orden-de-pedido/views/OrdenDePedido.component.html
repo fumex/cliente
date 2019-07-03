@@ -4,11 +4,11 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><button class="btn btn-info" (click)="volver()"><i class="fa fa-arrow-circle-left"></i> volver</button></li>
+            <li *ngIf="verlistar==true" class="breadcrumb-item"><button class="btn btn-info" (click)="volver()"><i class="fa fa-arrow-circle-left"></i> volver</button></li>
         </ol>
     </div>
 </div>
-<form #formOrdenPedido="ngForm" (ngSubmit)="guardartodo()" >
+<form *ngIf="verpag==true" #formOrdenPedido="ngForm" (ngSubmit)="guardartodo()" >
     <div class="container">
         <div class="fluid">
             <div class="col-lg-12">
@@ -194,7 +194,7 @@
                             </table> 
                             <br>
                             <div *ngIf="mostrarguardar>=1 && almacenvalid==true && provedorvalid==true && fechavalidad==true" style="text-align:right;">
-                                <button type="submit"   class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
+                                <button type="submit"  class="btn btn-info"> <i class="fa fa-check"></i> Guardar</button>
                                 <button  class="btn btn-danger" (click)="limpiar()"><i class="fa fa-trash"></i>Limpiar</button>
                             </div>       
                         </div>

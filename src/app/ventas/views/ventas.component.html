@@ -3,7 +3,7 @@
         <h3 class="text-primary">{{titulo}}</h3>
     </div>
 </div>
-<div *ngIf="apertura==null" class="container-fluid">
+<div *ngIf="apertura==null && verpag==true" class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-primary">
@@ -12,7 +12,7 @@
                         <div *ngIf="almacenselec!=0 && DetalleCaja.id_caja==null" class="container-fluid">
                             <div class="table-responsive m-t-40">
                                 <div *ngIf="!cajas">
-                                    cargando listado de almacenes....
+                                    cargando listado de Cajas....
                                 </div>
                                 <div *ngIf="cajas">
                                 <table  style="width: 100%;text-align: center">
@@ -285,7 +285,7 @@
     </div>
 </div>
 
-<div *ngIf="apertura!=null" class="container">
+<div *ngIf="apertura!=null && verpag==true" class="container">
     <div class="fluid">
         <div class="col-lg-12">
             <div class="card">
@@ -313,7 +313,7 @@
                                     <div class="col-lg-12" >
                                         <div class="row p-t-20">
                                             <div class="col-sm-1"></div>
-                                            <div class="col-sm-5" style="text-align: left;">
+                                            <div *ngIf="venta_gratis==true" class="col-sm-5" style="text-align: left;">
                                                 <button *ngIf="gratuito!=true" (click)="irdocgratuito()" type="button" class="btn btn-link">
                                                     Documento Gratutito <i class="fa fa-circle-o"></i> 
                                                 </button>
@@ -321,6 +321,7 @@
                                                     Documento Gratutito <i class="fa fa-dot-circle-o"></i> 
                                                 </button>
                                             </div>
+                                            <div *ngIf="venta_gratis!=true" class="col-sm-5" style="text-align: left;"></div>
                                             <div class="col-sm-5" style="text-align: right" >
                                                 <button *ngIf="factura!=true" (click)="seleccionarbfactura()"  class="botonfacturaclick">
                                                     <i class="fa fa-sticky-note-o"></i> Factura
@@ -335,7 +336,6 @@
                                                 <button *ngIf="boleta==true" style="margin-left: -4px;" class="botonboleta">
                                                     <i class="fa fa-sticky-note"></i> Boleta
                                                 </button>
-                                                
                                             </div>
                                             <div class="col-sm-1"></div>
                                             <br>
@@ -437,7 +437,8 @@
                                                         <tr  *ngFor="let dventa of detalleventas;let $index=index;">
                                                             <td style="text-align: center">{{$index +1}}</td>
                                                             <td style="text-align: center">{{dventa.descripcion}}</td>
-                                                            <td style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}} %</td>
+                                                            <td *ngIf="desct_prod==true" style="text-align: center" (click)="agregardescuento(dventa)">{{dventa.descuento}} %</td>
+                                                            <td *ngIf="desct_prod!=true" style="text-align: center" (click)="alertainvalido()">{{dventa.descuento}} %</td>
                                                             <td style="text-align: center" >{{dventa.descuento_cant | number : '1.2-2'}}</td>
                                                             <td style="text-align: center">{{dventa.precio_unitario | number : '1.2-2'}}</td>
                                                             <td style="text-align: center" >{{dventa.cantidad}}</td>

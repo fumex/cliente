@@ -63,8 +63,7 @@ export class PagoAnularComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                
-                if(res.mensaje!=false){
+                if(res.mensaje==true){
                     this.toastr.setRootViewContainerRef(vcr);
                     this.user=auth.getUser();
                     this.title="ANULAR COMPRA";
@@ -74,9 +73,21 @@ export class PagoAnularComponent implements OnInit{
                     this.confirmado=null;
                     this.val=false;
                 }else{
-                    
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        this.toastr.setRootViewContainerRef(vcr);
+                        this.user=auth.getUser();
+                        this.title="ANULAR COMPRA";
+                        this.code="";
+                        this.user
+                        this.tabla();
+                        this.confirmado=null;
+                        this.val=false;
+                    }else{
+                        
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
+                
             },
             err=>{
                 console.log(<any>err);

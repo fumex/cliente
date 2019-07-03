@@ -41,8 +41,7 @@ export class ServicioListComponent implements OnInit{
         this._UsuarioService.getpermisos(this.mandar).subscribe(
             res=>{
                 console.log(res)
-                
-                if(res.mensaje!=false){
+                if(res.mensaje==true){
                     this.mandar.url=environment.url+'admin/servicio';
                     this._UsuarioService.getpermisos(this.mandar).subscribe(
                         result=>{
@@ -60,7 +59,26 @@ export class ServicioListComponent implements OnInit{
                     this.tabla();
                 }else{
                     
-                    this.router.navigate(['/'+this.user.rol]);
+                    if(res.mensaje!=false){
+                        this.mandar.url=environment.url+'admin/servicio';
+                        this._UsuarioService.getpermisos(this.mandar).subscribe(
+                            result=>{
+                                if(result.mensaje!=false){
+                                    this.veragregar=true;
+                                }
+                            },
+                            err=>{
+                                console.log(<any>err);
+                            }
+                        )
+                        this.toastr.setRootViewContainerRef(vcr);
+                        this.user=this.auth.getUser();
+                        this.title='LISTA SERVICIOS';
+                        this.tabla();
+                    }else{
+                        
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
                 }
             },
             err=>{

@@ -15,4 +15,7 @@ export class GraficoDonaComponnent implements OnInit{
     
     ngOnInit(){
     }
+    ver(e:any): void{
+       
+    }
 }

@@ -6,6 +6,9 @@ import { User } from '../../auth/interfaces/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -22,6 +25,8 @@ export class EntidadFinancieraComponent implements OnInit{
     public entidadedit:EntidadFinancieraModel;
     public entidadesadd:EntidadFinancieraModel;
     public veredit=null;
+    public url2;
+    public mandar:PermisosRolesModel;
     constructor(
         private _EntidadFinancieraService:EntidadFinancieraService,
         private route:ActivatedRoute,
@@ -29,10 +34,27 @@ export class EntidadFinancieraComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
+        private _UsuarioService:UsuarioService,
         vcr:ViewContainerRef 
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Entidad Financiera';
+        this.url2=environment.url+'admin/EntidadFinaciera';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=true){
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
         this.user=this.auth.getUser();
         this.entidadesadd=new EntidadFinancieraModel(null,null,this.user.id,null);
         this.entidadedit=new EntidadFinancieraModel(null,null,this.user.id,null);

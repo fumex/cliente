@@ -6,6 +6,9 @@ import { AuthService } from '../../auth/services/auth.service';
 import { ToastsManager } from 'ng2-toastr';
 import { User } from '../../auth/interfaces/user.model';
 import { ImpuestoModel } from '../models/impuesto';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
 
 declare var jQuery:any;
 declare var $:any;
@@ -21,6 +24,8 @@ export class ImpuestoAddComponent implements OnInit{
     public impuestos:ImpuestoModel[];
     public confirmado:boolean;
     public user:User;
+    public url2;
+    public mandar:PermisosRolesModel;
     constructor(
         private impuestoService:ImpuestoService,
         private route:ActivatedRoute,
@@ -28,10 +33,27 @@ export class ImpuestoAddComponent implements OnInit{
         private auth:AuthService,
         private toaste:ToastService,
         private toastr:ToastsManager,
+        private _UsuarioService:UsuarioService,
         vcr:ViewContainerRef
     ){
         this.toastr.setRootViewContainerRef(vcr);
         this.title='Impuesto';
+        this.url2=environment.url+'admin/emisor';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje!=true){
+                    this.router.navigate(['/'+this.user.rol]);
+                }
+
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        );
         this.user=this.auth.getUser();
         this.impuesto= new ImpuestoModel(null,'',null,'','',this.user.id);
         this.confirmado=true;

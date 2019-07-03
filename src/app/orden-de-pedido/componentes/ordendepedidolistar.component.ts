@@ -9,6 +9,9 @@ import { AuthService } from '../../auth/services/auth.service';
 import{almacen} from '../../Almacenes/modelos/almacenes';
 import {AlmacenesService}from '../../Almacenes/services/almacenes.service';
 import { ProveedorService } from '../../proveedor/services/proveedor.service';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
 
 declare var jQuery:any;
 declare var $:any;
@@ -34,6 +37,10 @@ export class pedidolistarcomponent {
     public fecha2;
     public fechatrue;
     public code:string;
+    public url;
+    public mandar:PermisosRolesModel;
+    public veragregar=null;
+    public verpag=null;
     constructor(
         private _pedidoservice:OrdenPedidosService,
         private _detallepdidoservice:DetalleOrdenPedidosService,
@@ -42,7 +49,54 @@ export class pedidolistarcomponent {
         private router:Router,
         private auth:AuthService,
         private _proveedorservice:ProveedorService,
+        private _UsuarioService:UsuarioService,
     ){
+        this.url=environment.url+'admin/pedido/listar';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                    this.mandar.url=environment.url+'admin/pedido';
+                    this._UsuarioService.getpermisos(this.mandar).subscribe(
+                        result=>{
+                            if(result.mensaje!=false){
+                                this.veragregar=true;
+                            }
+                        },
+                        err=>{
+                            console.log(<any>err);
+                        }
+                    )
+                }else{
+                    
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        this.mandar.url=environment.url+'admin/pedido';
+                        this._UsuarioService.getpermisos(this.mandar).subscribe(
+                            result=>{
+                                if(result.mensaje!=false){
+                                    this.veragregar=true;
+                                }
+                            },
+                            err=>{
+                                console.log(<any>err);
+                            }
+                        )
+                    }else{
+                        console.log('1')
+                        this.router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                console.log(this.veragregar);
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.editarpedido=new OrdenDePedidoModel(null,null,null,null,null,null)
         this.user=this.auth.getUser();
         this.title='Lista de Pedidos';
@@ -186,12 +240,6 @@ export class pedidolistarcomponent {
             }
         );
     }
-
-
-
-
-
-
 
     getpedidos(){
         this._pedidoservice.getpedidos().subscribe(

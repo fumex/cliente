@@ -7,6 +7,10 @@ import{inventario} from '../modelos/inventario';
 import{almacen}from '../../Almacenes/modelos/almacenes';
 import{ProductosfiltradoporAlmacenModel} from '../modelos/almacenproducto';
 import {AuthService} from '../../auth/services/auth.service';
+import { User } from '../../auth/interfaces/user.model';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { environment } from '../../../environments/environment';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
 
 
 declare var jQuery:any;
@@ -36,6 +40,10 @@ export class InventarioComponent{
     public input;
     public usuario;
     public otroalmacenvalid;
+    public user:User;
+    public url;
+    public mandar:PermisosRolesModel;
+    public verpag=null;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
@@ -43,7 +51,31 @@ export class InventarioComponent{
         private _almacenesService:AlmacenesService,
         private _ProductoService:ProductoService,
         private auth:AuthService,
+        private _UsuarioService:UsuarioService,
     ){
+        this.url=environment.url+'admin/inventario';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url,null,null);
+        let i=0; 
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.verpag=true;
+                }else{
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                    }else{
+                        console.log('1')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+               
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.titulo = "Ajustes de inventario";
         //this.productos=new ProductosfiltradoporAlmacenModel(0,'','',0,0,'',0,0);
         this.inventario=new inventario(null,'','',0,null,0,0,null,0,0,0,0);
@@ -72,6 +104,7 @@ export class InventarioComponent{
         console.log(this.almacenselec);
         this.mostrarveralmacen(this.almacenselec);
     }
+    //elemento retirado
     addcantidad(idente,idpro,cantida){
         this.mostarguardar=this.mostarguardar+1;
         this.productos[idente].id=null;
@@ -88,6 +121,7 @@ export class InventarioComponent{
         console.log(this.movimientos);
 
     }
+    //selecciona el producto que sera reducido
     quitarcantidad(idindice){
         this.mostarguardar=this.mostarguardar-1;
         this.productos[idindice].canti=0;
@@ -104,11 +138,13 @@ export class InventarioComponent{
         this.id=0;
         console.log(this.movimientos);
     }
+    //valida la opcion otro de el combobox
     validacionotro(des){
         if(this.inventario.opciones==null){
             this.inventario.opciones='otro';
         }
     }
+    //guarda en la tabla movimientos los ajustes q se hagan
     guardarmoviemientos(){
         
         while(this.id<this.movimientos.length){
@@ -137,6 +173,7 @@ export class InventarioComponent{
         console.log(this.inventario2);
         this.id=0;
     }
+    //muestra el(los) almacen(es) al que el usuario tenga acceso
     mostrarveralmacen(almacenselec){
         this._almacenesService.veralmacen(this.almacenselec).subscribe(
             response => {
@@ -148,6 +185,7 @@ export class InventarioComponent{
                 }
             );
     }
+    
     actualizar(id){
         this.ident=id;
         console.log(this.almacenselec);

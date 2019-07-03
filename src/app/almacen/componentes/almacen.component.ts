@@ -6,6 +6,9 @@ import { User } from '../../auth/interfaces/user.model';
 import { AuthService } from '../../auth/services/auth.service';
 import{AlmacenesService} from'../../Almacenes/services/almacenes.service';
 import{almacen} from'../../Almacenes/modelos/almacenes';
+import { PermisosRolesModel } from '../../usuarios/modelos/permisos_roles';
+import { UsuarioService } from '../../usuarios/services/usuarios.service';
+import { environment } from '../../../environments/environment';
 
 declare var jQuery:any;
 declare var $:any;
@@ -24,15 +27,51 @@ export class AlmacenComponent{
     public idalmacen;
     public editalmecen:almacenstock;
     public usuario;
+    public user:User
     public ocuataralmacenes;
     public almacenes:almacen;
+    public url2;
+    public veredit=null;
+    public verpag=null;
+    public mandar:PermisosRolesModel;
 	constructor(
         private _route:ActivatedRoute,
         private _router:Router,
         private _almacenService:AlmaceneService,
         private auth:AuthService,
         private _almacenesservice:AlmacenesService,
+        private _UsuarioService:UsuarioService,
     ){
+        this.url2=environment.url+'admin/almacen';
+        this.user=this.auth.getUser();
+        this.mandar = new PermisosRolesModel(this.user.id,null,this.url2,null,null);
+        let i=0;
+        this._UsuarioService.getpermisos(this.mandar).subscribe(
+            res=>{
+                console.log(res)
+                if(res.mensaje==true){
+                    this.veredit=true;
+                }else{
+                    console.log('entro aca')
+                    if(res.mensaje!=false){
+                        this.verpag=true;
+                        while(i<res.length){
+                            if(res[i].tipo_permiso=="edicion" && res[i].estado==true){
+                                this.veredit=true;
+                            }
+                            i++
+                        }
+                    }else{
+                        console.log('esta saliendo')
+                        this._router.navigate(['/'+this.user.rol]);
+                    }
+                }
+                
+            },
+            err=>{
+                console.log(<any>err);
+            }
+        )
         this.titulo = "resumen de almacenes";
         this.stok=new almacenstock(0,0,'',null,0,0,0,0,0);
         this.editalmecen=new almacenstock(0,0,'',null,0,0,0,0,0);
